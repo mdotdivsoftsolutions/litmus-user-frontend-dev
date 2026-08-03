@@ -16,9 +16,32 @@ import { useCartDrawer } from "@/components/cart/CartDrawerContext";
 
 type Product = (typeof products)[number];
 
+export type TestItemType = {
+  _id?: string;
+  name?: string;
+  testName?: string;
+  category?: string;
+  testCount?: number;
+  offerPrice?: number;
+  price?: number;
+  mrp?: number;
+  turnAroundTime?: string;
+  tat?: string;
+  isPopular?: boolean;
+  tag?: string;
+  description?: string;
+  features?: (string | { name?: string })[];
+  image?: string;
+  imageUrl?: string;
+  icon?: string;
+  metadata?: {
+    parameters?: string[];
+  };
+};
+
 export type TestCardProps = {
   p?: Product;
-  t?: any;
+  t?: TestItemType;
   cartItems?: Record<string, number>;
   addToCart?: (id: string, e: MouseEvent<HTMLButtonElement>) => void;
   removeFromCart?: (id: string, e: MouseEvent<HTMLButtonElement>) => void;
@@ -37,7 +60,7 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
   const id = t?._id || p?.id || "unknown";
 
   // Determine if this is a package or a test
-  const isPackage = t && (t.name !== undefined || t.category !== undefined);
+  // const isPackage = t && (t.name !== undefined || t.category !== undefined);
   const isTest = t && t.testName !== undefined;
   const itemType = isTest ? 'TEST' : 'PACKAGE';
 
@@ -52,7 +75,7 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
   const turnAroundTime = t?.turnAroundTime || t?.tat || "2-3 Days";
 
   const topBadgeLeft = t?.category || "COMPLIANCE";
-  const topBadgeRight = t?.isPopular ? "MOST POPULAR" : (t?.tag || (p as any)?.badge);
+  const topBadgeRight = t?.isPopular ? "MOST POPULAR" : (t?.tag || (p as Product & { badge?: string })?.badge);
 
   const description = t?.description || "Essential testing parameters for small-scale food manufacturers and businesses.";
   const features = t?.metadata?.parameters?.slice(0, 4) || t?.features?.slice(0, 4) || [
@@ -69,19 +92,19 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
   const cartItems = cartResponse?.data?.items || [];
 
   // Determine if this item is in the cart
-  const isInCart = cartItems.some((item: any) =>
+  const isInCart = cartItems.some((item: { itemType: string; testId?: { _id: string }; packageId?: { _id: string } }) =>
     (item.itemType === 'TEST' && item.testId?._id === id) ||
     (item.itemType === 'PACKAGE' && item.packageId?._id === id)
   );
 
   const addMutation = useMutation({
-    mutationFn: (data: any) => cartApi.addToCart(data),
+    mutationFn: (data: { itemType: "TEST" | "PACKAGE"; testId?: string; packageId?: string; parameters?: string[] }) => cartApi.addToCart(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['cart'] });
       toast.success("Added to cart!");
       openCart();
     },
-    onError: (err: any) => {
+    onError: (err: Error & { response?: { data?: { message?: string } } }) => {
       toast.error(err.response?.data?.message || "Failed to add to cart");
     }
   });
@@ -165,7 +188,7 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
 
         {/* Features List */}
         <div className="grid grid-cols-2 gap-y-2 gap-x-2">
-          {features.map((feature: any, idx: number) => (
+          {features.map((feature: string | { name?: string }, idx: number) => (
             <div key={idx} className="flex items-start gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
               <span className="text-[10px] text-slate-600 font-medium leading-tight line-clamp-2">
@@ -214,7 +237,6 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
   );
 };
 
-
 export type HomeTestsProps = {
   activeTab: string;
   setActiveTab: (tab: string) => void;
@@ -223,7 +245,7 @@ export type HomeTestsProps = {
   removeFromCart: (id: string, e: MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const HomeTests = ({ activeTab, setActiveTab, cartItems, addToCart, removeFromCart }: HomeTestsProps) => {
+export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsProps) => {
   const { data: popularPackagesData, isLoading } = useQuery({
     queryKey: ['popularPackages'],
     queryFn: () => packageApi.getAllPackages()
@@ -235,7 +257,7 @@ export const HomeTests = ({ activeTab, setActiveTab, cartItems, addToCart, remov
 
   return (
     <>
-      <section className="pt-8 lg:pt-16 pb-10 relative overflow-hidden bg-slate-50">
+      <section className="pt-8 lg:pt-16 pb-10 relative overflow-hidden bg-white">
         <div className="max-w-7xl mx-auto px-4 relative z-10 w-full">
           <SectionHeader
             title={
@@ -277,7 +299,7 @@ export const HomeTests = ({ activeTab, setActiveTab, cartItems, addToCart, remov
                 </div>
               ))
             ) : displayPackages.length > 0 ? (
-              displayPackages.map((t: any) => (
+              displayPackages.map((t: TestItemType) => (
                 <TestCard key={`popular-pkg-${t._id}`} t={t} cartItems={cartItems} addToCart={addToCart} removeFromCart={removeFromCart} />
               ))
             ) : (
