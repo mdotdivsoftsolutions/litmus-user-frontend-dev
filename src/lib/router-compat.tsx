@@ -123,3 +123,27 @@ export function OutletProvider({ children, outlet }: { children: React.ReactNode
     </OutletContext.Provider>
   );
 }
+
+export interface NavLinkProps extends Omit<LinkProps, 'className' | 'style' | 'children'> {
+  className?: string | ((props: { isActive: boolean; isPending: boolean }) => string | undefined);
+  style?: React.CSSProperties | ((props: { isActive: boolean; isPending: boolean }) => React.CSSProperties | undefined);
+  children?: React.ReactNode | ((props: { isActive: boolean; isPending: boolean }) => React.ReactNode);
+  end?: boolean;
+}
+
+export const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(
+  ({ to, className, style, children, end, ...rest }, ref) => {
+    const pathname = usePathname();
+    const isActive = end ? pathname === to : pathname?.startsWith(to);
+
+    const computedClassName = typeof className === 'function' ? className({ isActive, isPending: false }) : className;
+    const computedStyle = typeof style === 'function' ? style({ isActive, isPending: false }) : style;
+
+    return (
+      <Link to={to} ref={ref} className={computedClassName} style={computedStyle} {...rest}>
+        {typeof children === 'function' ? children({ isActive, isPending: false }) : children}
+      </Link>
+    );
+  }
+);
+NavLink.displayName = "NavLink";
