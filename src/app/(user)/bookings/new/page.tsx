@@ -1,4 +1,4 @@
 "use client";
 
-import NewBookingPage from "@/pages/user/NewBookingPage";
+import NewBookingPage from "@/views/user/NewBookingPage";
 export default function Page() { return <NewBookingPage />; }

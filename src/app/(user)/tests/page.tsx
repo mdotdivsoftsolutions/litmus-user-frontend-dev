@@ -1,4 +1,4 @@
 "use client";
 
-import TestsListingPage from "@/pages/user/TestsListingPage";
+import TestsListingPage from "@/views/user/TestsListingPage";
 export default function Page() { return <TestsListingPage />; }

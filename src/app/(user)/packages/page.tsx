@@ -1,4 +1,4 @@
 "use client";
 
-import PackagesPage from "@/pages/user/PackagesPage";
+import PackagesPage from "@/views/user/PackagesPage";
 export default function Page() { return <PackagesPage />; }

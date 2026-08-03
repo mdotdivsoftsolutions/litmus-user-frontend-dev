@@ -1,4 +1,4 @@
 "use client";
 
-import LabDetailConsumerPage from "@/pages/user/LabDetailConsumerPage";
+import LabDetailConsumerPage from "@/views/user/LabDetailConsumerPage";
 export default function Page() { return <LabDetailConsumerPage />; }

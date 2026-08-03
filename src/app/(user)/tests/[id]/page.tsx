@@ -1,4 +1,4 @@
 "use client";
 
-import TestDetailPage from "@/pages/user/TestDetailPage";
+import TestDetailPage from "@/views/user/TestDetailPage";
 export default function Page() { return <TestDetailPage />; }

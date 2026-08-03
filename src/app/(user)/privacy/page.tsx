@@ -1,4 +1,4 @@
 "use client";
 
-import PrivacyPage from "@/pages/user/PrivacyPage";
+import PrivacyPage from "@/views/user/PrivacyPage";
 export default function Page() { return <PrivacyPage />; }

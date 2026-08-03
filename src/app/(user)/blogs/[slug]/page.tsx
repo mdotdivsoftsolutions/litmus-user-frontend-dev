@@ -1,4 +1,4 @@
 "use client";
 
-import BlogDetailPage from "@/pages/user/BlogDetailPage";
+import BlogDetailPage from "@/views/user/BlogDetailPage";
 export default function Page() { return <BlogDetailPage />; }

@@ -1,4 +1,4 @@
 "use client";
 
-import ConsultationPage from "@/pages/user/ConsultationPage";
+import ConsultationPage from "@/views/user/ConsultationPage";
 export default function Page() { return <ConsultationPage />; }

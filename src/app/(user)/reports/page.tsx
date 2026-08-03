@@ -1,4 +1,4 @@
 "use client";
 
-import ConsumerReportsPage from "@/pages/user/ConsumerReportsPage";
+import ConsumerReportsPage from "@/views/user/ConsumerReportsPage";
 export default function Page() { return <ConsumerReportsPage />; }

@@ -1,4 +1,4 @@
 "use client";
 
-import FaqsPage from "@/pages/user/FaqsPage";
+import FaqsPage from "@/views/user/FaqsPage";
 export default function Page() { return <FaqsPage />; }

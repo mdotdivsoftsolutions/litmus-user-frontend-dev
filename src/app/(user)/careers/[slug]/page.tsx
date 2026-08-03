@@ -1,4 +1,4 @@
 "use client";
 
-import CareerDetailPage from "@/pages/user/CareerDetailPage";
+import CareerDetailPage from "@/views/user/CareerDetailPage";
 export default function Page() { return <CareerDetailPage />; }

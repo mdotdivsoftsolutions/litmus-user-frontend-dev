@@ -1,4 +1,4 @@
 "use client";
 
-import OrdersPage from "@/pages/user/OrdersPage";
+import OrdersPage from "@/views/user/OrdersPage";
 export default function Page() { return <OrdersPage />; }
