@@ -225,7 +225,7 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
             }}
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 pb-5 pt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 pb-5 pt-6 ">
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="flex w-full flex-col overflow-hidden rounded-[1.25rem] border border-brand-card-from/10 bg-white shadow-sm">
