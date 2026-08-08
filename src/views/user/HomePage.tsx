@@ -12,6 +12,18 @@ import { SpecialityCarousel } from "./components/home/SpecialityCarousel";
 import { HowToBookProcess } from "./components/home/HowToBookProcess";
 import { SafetyCheckupBanner } from "./components/home/SafetyCheckupBanner";
 import { FooterSEO } from "@/components/layout/footer/FooterSEO";
+import { motion } from "framer-motion";
+
+const FadeIn = ({ children }: { children: React.ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-100px" }}
+    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+  >
+    {children}
+  </motion.div>
+);
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("tests");
@@ -43,37 +55,55 @@ export default function HomePage() {
       />
 
       {/* ═══════════ POPULAR TESTS CAROUSEL ═══════════ */}
-      <HomeTests
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        cartItems={cartItems}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-      />
+      <FadeIn>
+        <HomeTests
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          cartItems={cartItems}
+          addToCart={addToCart}
+          removeFromCart={removeFromCart}
+        />
+      </FadeIn>
 
-      {/* ═══════════ POPULAR PACKAGES — "Popular Packages Near You" ═══════════ */}
-      <PromoBanner className="pb-12 md:pb-16" />
+      {/* ═══════════ POPULAR PACKAGES ═══════════ */}
+      <FadeIn>
+        <PromoBanner className="pb-12 md:pb-16" />
+      </FadeIn>
 
-      {/* ═══════════ TESTS BY FOOD CATEGORY (2 rows, 8 cards) ═══════════ */}
-      <SpecialityCarousel />
+      {/* ═══════════ TESTS BY FOOD CATEGORY ═══════════ */}
+      <FadeIn>
+        <SpecialityCarousel />
+      </FadeIn>
 
-      {/* ═══════════ HOW WE WORK (flow chart with icons) ═══════════ */}
-      <HowToBookProcess className="bg-white" />
+      {/* ═══════════ HOW WE WORK ═══════════ */}
+      <FadeIn>
+        <HowToBookProcess className="bg-white" />
+      </FadeIn>
 
       {/* ═══════════ TRUSTED PARTNER LABORATORIES ═══════════ */}
-      <PartnerLabs />
+      <FadeIn>
+        <PartnerLabs />
+      </FadeIn>
 
-      {/* ═══════════ CUSTOMER REVIEWS (marquee ticker) ═══════════ */}
-      <CustomerReviews />
+      {/* ═══════════ CUSTOMER REVIEWS ═══════════ */}
+      <FadeIn>
+        <CustomerReviews />
+      </FadeIn>
 
-      {/* ═══════════ SAFETY CHECKUP BANNER (4-slide carousel) ═══════════ */}
-      <SafetyCheckupBanner />
+      {/* ═══════════ SAFETY CHECKUP BANNER ═══════════ */}
+      <FadeIn>
+        <SafetyCheckupBanner />
+      </FadeIn>
 
       {/* ═══════════ FAQ ═══════════ */}
-      <FAQ />
+      <FadeIn>
+        <FAQ />
+      </FadeIn>
 
       {/* ═══════════ SEO CONTENT ═══════════ */}
-      <FooterSEO />
+      <FadeIn>
+        <FooterSEO />
+      </FadeIn>
     </div>
   );
 }

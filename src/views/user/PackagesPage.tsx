@@ -57,7 +57,7 @@ export default function PackagesPage() {
       />
 
       {/* 2. PACKAGES GRID */}
-      <section ref={resultsRef} className="bg-slate-50 scroll-mt-6">
+      <section ref={resultsRef} className=" scroll-mt-6">
         <PackagesGrid
           packages={packagesData}
           search={search}

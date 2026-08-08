@@ -22,7 +22,7 @@ export function PackagesGrid({ packages, search, isLoading, selectedCategory, vi
 
   return (
     <div className="max-w-7xl mx-auto px-3 py-12 md:py-20 relative z-20">
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid md:grid-cols-4 lg:grid-cols-4 gap-5">
         {isLoading ? (
            Array.from({ length: 6 }).map((_, i) => (
              <div key={i} className="bg-white rounded-[1rem] p-5 md:p-6 border-2 border-slate-50 flex flex-col gap-5 w-full">

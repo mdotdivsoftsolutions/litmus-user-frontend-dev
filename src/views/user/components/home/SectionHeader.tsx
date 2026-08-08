@@ -29,7 +29,7 @@ export function SectionHeader({
     <div className={cn("mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end", className)}>
       <div className="flex-1">
         {badge && (
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-red-100 bg-red-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-[#D32F2F]">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-card-from">
             {badge}
           </div>
         )}
@@ -47,7 +47,7 @@ export function SectionHeader({
         {action && (
           <Link
             to={action.href}
-            className="group flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full border border-red-100 bg-red-50 px-6 py-3 text-xs font-semibold text-[#D32F2F] shadow-sm transition-all hover:bg-white hover:shadow-md"
+            className="group flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full border border-blue-100 bg-blue-50 px-6 py-3 text-xs font-semibold text-brand-card-from shadow-sm transition-all hover:bg-white hover:shadow-md hover:border-blue-200"
           >
             {action.label}
             <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

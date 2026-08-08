@@ -119,9 +119,9 @@ export default function PackageDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20 animate-fade-in font-inter">
+    <div className="min-h-screen bg-slate-50/50 pb-20 animate-fade-in font-inter mt-24">
       {/* 1. Glassy Breadcrumb Section */}
-      <div className="bg-white border-b border-slate-100 py-4 shadow-sm sticky top-0 z-30 backdrop-blur-md bg-white/90">
+      <div className=" z-30 ">
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
           <nav className="flex items-center gap-1.5 text-sm text-slate-500 font-medium">
             <Link to="/packages" className="hover:text-[#D32F2F] transition-colors">Packages</Link>
@@ -153,7 +153,7 @@ export default function PackageDetailPage() {
                   {pkg.category}
                 </span>
                 {pkg.tag && (
-                  <span className="bg-red-50 text-[#D32F2F] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-red-100/50">
+                  <span className="bg-blue-50 text-brand-card-from text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider border border-blue-100">
                     {pkg.tag}
                   </span>
                 )}
@@ -170,8 +170,8 @@ export default function PackageDetailPage() {
               {/* Lab Parameters Overview */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-6 pt-4 border-t border-slate-100">
                 <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100/50">
-                  <div className="h-10 w-10 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
-                    <Activity className="h-5 w-5 text-[#F06C00]" />
+                  <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                    <Activity className="h-5 w-5 text-brand-action" />
                   </div>
                   <div>
                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider leading-none">Parameters</p>
@@ -180,8 +180,8 @@ export default function PackageDetailPage() {
                 </div>
 
                 <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100/50">
-                  <div className="h-10 w-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
-                    <FileText className="h-5 w-5 text-[#D32F2F]" />
+                  <div className="h-10 w-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
+                    <FileText className="h-5 w-5 text-brand-card-from" />
                   </div>
                   <div>
                     <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider leading-none">Reports TAT</p>
@@ -205,7 +205,7 @@ export default function PackageDetailPage() {
             <div className="bg-white rounded-xl p-6 md:p-8 border border-slate-100 shadow-sm space-y-6">
               <div>
                 <h3 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                  <FlaskConical className="h-5 w-5 text-[#D32F2F]" /> What&apos;s Included inside the Panel?
+                  <FlaskConical className="h-5 w-5 text-brand-action" /> What&apos;s Included inside the Panel?
                 </h3>
                 <p className="text-slate-500 text-xs mt-1 font-medium">Critical testing parameters and analytes analyzed in this package</p>
               </div>
@@ -213,7 +213,7 @@ export default function PackageDetailPage() {
               <div className="grid gap-3 sm:grid-cols-2">
                 {pkg.tests && pkg.tests.length > 0 ? (
                   pkg.tests.map((test: any, i: number) => (
-                    <div key={test._id || i} className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl hover:bg-white hover:border-[#D32F2F]/20 border border-slate-100 transition-all duration-300 group">
+                    <div key={test._id || i} className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl hover:bg-white hover:border-brand-action/30 border border-slate-100 transition-all duration-300 group">
                       <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                       <div>
                         <span className="text-sm text-slate-700 font-bold block">{test.testName}</span>
@@ -221,14 +221,14 @@ export default function PackageDetailPage() {
                           {test.offerPrice && test.price > test.offerPrice ? (
                             <span className="text-[11px] text-slate-400 font-medium line-through mr-2">₹{test.price.toLocaleString()}</span>
                           ) : null}
-                          <span className="text-[11px] text-[#D32F2F] font-bold">₹{(test.offerPrice || test.price || 0).toLocaleString()}</span>
+                          <span className="text-[11px] text-brand-action font-bold">₹{(test.offerPrice || test.price || 0).toLocaleString()}</span>
                         </div>
                       </div>
                     </div>
                   ))
                 ) : (
                   pkg.features?.map((feature: string, i: number) => (
-                    <div key={i} className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl hover:bg-white hover:border-[#D32F2F]/20 border border-slate-100 transition-all duration-300 group">
+                    <div key={i} className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl hover:bg-white hover:border-brand-action/30 border border-slate-100 transition-all duration-300 group">
                       <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                       <div>
                         <span className="text-sm text-slate-700 font-bold block">{feature}</span>
@@ -248,7 +248,7 @@ export default function PackageDetailPage() {
               
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="faq-1" className="border-b border-slate-100 py-1">
-                  <AccordionTrigger className="text-slate-800 font-bold hover:no-underline hover:text-[#D32F2F] text-left">
+                  <AccordionTrigger className="text-slate-800 font-bold hover:no-underline hover:text-brand-action text-left">
                     What is the sample size requirement for this package?
                   </AccordionTrigger>
                   <AccordionContent className="text-slate-500 leading-relaxed text-sm font-medium">
@@ -257,7 +257,7 @@ export default function PackageDetailPage() {
                 </AccordionItem>
                 
                 <AccordionItem value="faq-2" className="border-b border-slate-100 py-1">
-                  <AccordionTrigger className="text-slate-800 font-bold hover:no-underline hover:text-[#D32F2F] text-left">
+                  <AccordionTrigger className="text-slate-800 font-bold hover:no-underline hover:text-brand-action text-left">
                     How is the sample collected?
                   </AccordionTrigger>
                   <AccordionContent className="text-slate-500 leading-relaxed text-sm font-medium">
@@ -266,7 +266,7 @@ export default function PackageDetailPage() {
                 </AccordionItem>
 
                 <AccordionItem value="faq-3" className="border-0 py-1">
-                  <AccordionTrigger className="text-slate-800 font-bold hover:no-underline hover:text-[#D32F2F] text-left">
+                  <AccordionTrigger className="text-slate-800 font-bold hover:no-underline hover:text-brand-action text-left">
                     Are the reports valid for FSSAI / legal compliance?
                   </AccordionTrigger>
                   <AccordionContent className="text-slate-500 leading-relaxed text-sm font-medium">
@@ -305,7 +305,7 @@ export default function PackageDetailPage() {
 
                 <div className="space-y-3.5">
                   <div className="flex items-center gap-3 text-xs text-slate-500 font-bold">
-                    <Clock className="h-4 w-4 text-[#F06C00]" />
+                    <Clock className="h-4 w-4 text-brand-action" />
                     <span>Reports guaranteed in {pkg.tat}</span>
                   </div>
                   
@@ -325,7 +325,7 @@ export default function PackageDetailPage() {
                     onClick={handleAddToCart}
                     disabled={isInCart || addMutation.isPending}
                     variant="outline"
-                    className="w-full h-12 rounded-xl border-2 border-primary text-primary hover:bg-primary/5 hover:text-primary font-extrabold text-sm transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-12 rounded-xl border-2 border-brand-action text-brand-action hover:bg-brand-action/5 hover:text-brand-action font-extrabold text-sm transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {addMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : isInCart ? <Check className="h-5 w-5" /> : <ShoppingCart className="h-5 w-5" />} 
                     {isInCart ? "In Cart" : "Add to Cart"}
