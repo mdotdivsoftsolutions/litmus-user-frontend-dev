@@ -16,10 +16,10 @@ import { motion } from "framer-motion";
 
 const FadeIn = ({ children }: { children: React.ReactNode }) => (
   <motion.div
-    initial={{ opacity: 0, y: 40 }}
-    whileInView={{ opacity: 1, y: 0 }}
+    initial={{ opacity: 0 }}
+    whileInView={{ opacity: 1 }}
     viewport={{ once: true, margin: "-100px" }}
-    transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+    transition={{ duration: 0.7 }}
   >
     {children}
   </motion.div>
@@ -46,7 +46,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="bg-white min-h-screen overflow-x-hidden">
+    <div className="bg-white min-h-screen">
 
       {/* ═══════════ HERO & METRICS ═══════════ */}
       <HomeHero
