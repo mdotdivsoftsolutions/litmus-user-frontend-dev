@@ -87,7 +87,7 @@ export function SpecialityCarousel() {
           }}
         />
 
-        <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 pb-4 pt-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 pb-4 pt-4">
           {isLoading ? (
             Array.from({ length: 8 }).map((_, i) => (
               <div key={i} className="flex h-full min-h-[220px] flex-col overflow-hidden rounded-2xl border border-slate-100/90 bg-white p-0 shadow-[0_10px_40px_-12px_rgba(15,23,42,0.12)]">
