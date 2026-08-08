@@ -210,7 +210,7 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
 
   return (
     <>
-      <section className="pt-8 lg:pt-16 pb-10 relative overflow-hidden bg-white">
+      <section className="pt-8 lg:pt-16 pb-10 md:pb-20 relative overflow-hidden bg-white">
         <div className="max-w-7xl mx-auto px-4 relative z-10 w-full">
           <SectionHeader
             title={
