@@ -225,10 +225,10 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
             }}
           />
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 pb-5 pt-6 ">
+          <div className="flex overflow-x-auto scrollbar-hide pb-5 pt-2 -mx-2">
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="flex w-full flex-col overflow-hidden rounded-[1.25rem] border border-brand-card-from/10 bg-white shadow-sm">
+                <div key={i} className="m-2 flex w-[280px] shrink-0 flex-col overflow-hidden rounded-[1.25rem] border border-brand-card-from/10 bg-white">
                   <div className="h-[120px] bg-slate-100 rounded-b-[1.25rem] p-5 flex flex-col justify-end">
                     <Skeleton className="h-6 w-3/4 mb-2" />
                     <Skeleton className="h-8 w-1/3" />
@@ -253,7 +253,7 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
               ))
             ) : displayPackages.length > 0 ? (
               displayPackages.map((t: TestItemType) => (
-                <TestCard key={`popular-pkg-${t._id}`} t={t} cartItems={cartItems} addToCart={addToCart} removeFromCart={removeFromCart} className="!w-full !m-0" />
+                <TestCard key={`popular-pkg-${t._id}`} t={t} cartItems={cartItems} addToCart={addToCart} removeFromCart={removeFromCart} />
               ))
             ) : (
               <div className="w-full text-center py-10 text-muted-foreground">
