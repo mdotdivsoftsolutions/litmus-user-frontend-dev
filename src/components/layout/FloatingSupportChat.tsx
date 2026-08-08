@@ -47,16 +47,16 @@ export function FloatingSupportChat() {
         {/* Animated Rings */}
         {!isOpen && (
           <>
-            <div className="absolute inset-0 bg-[#D32F2F] rounded-full animate-ping opacity-20 scale-150 pointer-events-none" />
-            <div className="absolute inset-0 bg-[#feba50] rounded-full animate-pulse opacity-10 scale-125 pointer-events-none" />
+            <div className="absolute inset-0 bg-brand-action rounded-full animate-ping opacity-20 scale-150 pointer-events-none" />
+            <div className="absolute inset-0 bg-blue-400 rounded-full animate-pulse opacity-10 scale-125 pointer-events-none" />
           </>
         )}
         
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={cn(
-            "h-12 w-12 rounded-full shadow-[0_20px_50px_rgba(211,47,47,0.4)] flex items-center justify-center transition-all duration-700 hover:scale-105 active:scale-95 group relative border-0 overflow-hidden",
-            isOpen ? "bg-slate-950 rotate-180" : "bg-gradient-to-br from-[#D32F2F] to-[#feba50]"
+            "h-12 w-12 rounded-full shadow-[0_20px_50px_rgba(0,75,96,0.4)] flex items-center justify-center transition-all duration-700 hover:scale-105 active:scale-95 group relative border-0 overflow-hidden",
+            isOpen ? "bg-slate-950 rotate-180" : "bg-gradient-to-br from-brand-action to-blue-500"
           )}
         >
           <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -82,12 +82,12 @@ export function FloatingSupportChat() {
           {/* Clinical Header */}
           <CardHeader className="bg-slate-950 p-8 relative overflow-hidden shrink-0">
              <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
-             <div className="absolute top-0 right-0 w-48 h-48 bg-[#D32F2F]/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
+             <div className="absolute top-0 right-0 w-48 h-48 bg-brand-action/20 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2" />
              
              <div className="relative z-10 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                    <div className="h-14 w-14 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center backdrop-blur-xl group-hover:bg-white/20 transition-all">
-                      <HeadphonesIcon className="h-7 w-7 text-[#feba50]" />
+                      <HeadphonesIcon className="h-7 w-7 text-blue-400" />
                    </div>
                    <div className="space-y-0.5">
                       <CardTitle className="text-white text-xl font-bold tracking-tighter">Clinical Intelligence</CardTitle>
@@ -122,7 +122,7 @@ export function FloatingSupportChat() {
                 )}>
                    <div className={cn(
                      "h-7 w-7 rounded-lg flex items-center justify-center text-[10px] font-bold",
-                     msg.sender === "user" ? "bg-slate-900 text-white" : "bg-[#D32F2F]/10 text-[#D32F2F]"
+                     msg.sender === "user" ? "bg-slate-900 text-white" : "bg-brand-action/10 text-brand-action"
                    )}>
                       {msg.sender === "user" ? <User className="h-3.5 w-3.5" /> : <Activity className="h-3.5 w-3.5" />}
                    </div>
@@ -154,7 +154,7 @@ export function FloatingSupportChat() {
                       placeholder="Consult with our experts..."
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
-                      className="w-full h-14 rounded-2xl border-slate-100 bg-white/80 focus-visible:ring-[#D32F2F] text-sm font-medium pr-12 shadow-inner"
+                      className="w-full h-14 rounded-2xl border-slate-100 bg-white/80 focus-visible:ring-brand-action text-sm font-medium pr-12 shadow-inner"
                     />
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
                        <Waves className="h-4 w-4 text-slate-200 animate-pulse" />
@@ -162,7 +162,7 @@ export function FloatingSupportChat() {
                  </div>
                  <Button 
                    type="submit" 
-                   className="h-14 px-6 rounded-2xl bg-gradient-to-br from-[#D32F2F] to-[#feba50] shadow-[0_12px_24px_rgba(211,47,47,0.3)] hover:shadow-[#D32F2F]/40 transition-all active:scale-95 border-0 text-white font-bold"
+                   className="h-14 px-6 rounded-2xl bg-gradient-to-br from-brand-action to-blue-500 shadow-[0_12px_24px_rgba(0,75,96,0.3)] hover:shadow-brand-action/40 transition-all active:scale-95 border-0 text-white font-bold"
                  >
                    <Send className="h-5 w-5" />
                  </Button>
@@ -173,7 +173,7 @@ export function FloatingSupportChat() {
                    { icon: HelpCircle, label: "Safety Docs" },
                    { icon: Heart, label: "Symptom Check" }
                  ].map((act, i) => (
-                    <button key={i} className="flex items-center gap-1.5 text-slate-400 hover:text-[#D32F2F] transition-colors group/act">
+                    <button key={i} className="flex items-center gap-1.5 text-slate-400 hover:text-brand-action transition-colors group/act">
                        <act.icon className="h-3.5 w-3.5 group-hover/act:scale-110 transition-transform" />
                        <span className="text-[10px] font-bold uppercase tracking-widest leading-none">{act.label}</span>
                     </button>

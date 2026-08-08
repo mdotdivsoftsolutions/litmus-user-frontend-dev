@@ -35,8 +35,8 @@ interface HeaderProps {
   user?: any;
 }
 
-export function Header({ 
-  scrolled, city, setCity, cartCount, showSearch, setShowSearch, 
+export function Header({
+  scrolled, city, setCity, cartCount, showSearch, setShowSearch,
   mobileMenuOpen, setMobileMenuOpen, onLoginClick, onLogoutClick, user
 }: HeaderProps) {
   const location = useLocation();
@@ -49,20 +49,23 @@ export function Header({
   return (
     <>
       <header className={cn(
-        "sticky top-0 z-50 bg-card border-b border-border transition-shadow duration-200",
-        scrolled && "shadow-md"
+        "fixed left-0 right-0 w-full z-50 transition-all duration-300 backdrop-blur-md",
+        "top-0 md:top-4 md:max-w-7xl md:mx-auto md:px-3 md:rounded-full",
+        scrolled 
+          ? "bg-white shadow-md border-b border-slate-200 md:border" 
+          : "bg-white/90 shadow-sm border-b border-transparent md:border"
       )}>
         <div className="max-w-7xl mx-auto flex items-center h-16 px-4 gap-3">
           {/* Logo */}
           <Link to="/home" className="flex items-center shrink-0">
-             <img src="/logo.png" alt="Litmus Food Analytics" className="h-9 sm:h-10 object-contain" />
+            <img src="/logo.png" alt="Litmus Food Analytics" className="h-9 sm:h-10 object-contain" />
           </Link>
 
           {/* Location Selector */}
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="gap-1 text-xs hover:bg-transparent px-2 ml-1">
-                <MapPin className="h-3.5 w-3.5 text-primary" />
+                <MapPin className="h-3.5 w-3.5 text-brand-action" />
                 <div className="text-left hidden sm:block">
                   <span className="block text-[10px] text-muted-foreground leading-none">MY LOCATION</span>
                   <span className="block text-sm font-semibold text-foreground leading-tight">{city}</span>
@@ -80,7 +83,7 @@ export function Header({
 
           {/* Desktop Search Bar */}
           <div className="hidden lg:flex flex-1 max-w-md mx-4 relative">
-            <SearchAutocomplete 
+            <SearchAutocomplete
               placeholder="Search for tests, products..."
               className="w-full"
               inputClassName="h-10 rounded-full border-border focus:border-accent bg-background text-sm"
@@ -95,7 +98,9 @@ export function Header({
                 <Link key={link.href} to={link.href}
                   className={cn(
                     "px-3 py-1.5 text-sm font-semibold transition-colors",
-                    isActive ? "text-gradient-brand" : "text-slate-900 hover:text-gradient-brand"
+                    isActive
+                      ? "text-brand-action"
+                      : "text-slate-700 hover:text-brand-action"
                   )}>
                   {link.label}
                 </Link>
@@ -107,15 +112,15 @@ export function Header({
 
           {/* Right side icons */}
           <div className="flex items-center gap-0.5">
-            {/* Mobile search icon */}
-            <Button
+            {/* Mobile search icon (Hidden for now) */}
+            {/* <Button
               variant="ghost"
               size="icon"
               className="h-9 w-9 lg:hidden hover:bg-transparent active:bg-transparent focus:bg-transparent"
               onClick={() => setShowSearch(!showSearch)}
             >
               <Search className="h-4.5 w-4.5 text-foreground" />
-            </Button>
+            </Button> */}
 
             {/* Phone — hidden on mobile */}
             <Button variant="ghost" size="icon" className="h-9 w-9 hidden sm:flex group/phone hover:bg-transparent" asChild>
@@ -146,7 +151,7 @@ export function Header({
                 </Avatar>
               </Button>
             ) : (
-              <DropdownMenu>
+              <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="h-9 w-9 hidden sm:flex hover:bg-transparent">
                     <Avatar className="h-7 w-7">
@@ -192,10 +197,10 @@ export function Header({
         {/* Mobile search bar */}
         {showSearch && (
           <div className="lg:hidden px-4 pb-3 animate-fade-in">
-            <SearchAutocomplete 
-              placeholder="Search for tests, products..." 
+            <SearchAutocomplete
+              placeholder="Search for tests, products..."
               className="w-full"
-              inputClassName="h-10 rounded-full border-border bg-background text-sm" 
+              inputClassName="h-10 rounded-full border-border bg-background text-sm"
             />
           </div>
         )}

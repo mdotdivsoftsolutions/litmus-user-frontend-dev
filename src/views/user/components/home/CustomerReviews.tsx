@@ -22,7 +22,7 @@ function ReviewCard({ r }: { r: any }) {
 
          <div className="mt-8 pt-5 border-t border-slate-100 flex justify-between items-center relative z-10">
             <div className="flex items-center gap-3">
-               <div className="h-10 w-10 bg-gradient-brand text-white rounded-full flex items-center justify-center font-bold text-sm">
+               <div className="h-10 w-10 bg-gradient-to-br from-blue-600 to-cyan-400 shadow-md text-white rounded-full flex items-center justify-center font-bold text-sm">
                   {r.name.charAt(0)}
                </div>
                <div>
