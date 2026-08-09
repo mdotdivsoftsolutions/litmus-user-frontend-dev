@@ -23,7 +23,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         once: false,
         offset: 100,
       });
-    }, 100);
+    }, 1000);
 
     const lenis = new Lenis();
     function raf(time: number) {

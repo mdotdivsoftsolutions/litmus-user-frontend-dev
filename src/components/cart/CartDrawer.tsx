@@ -15,6 +15,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ShoppingCart, Shield, Tag, ChevronRight, Trash2, ArrowRight, Loader2 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { cartApi } from "@/lib/api/cart";
+import { authApi } from "@/lib/api/auth";
 
 interface CartDrawerProps {
   children: React.ReactNode;
@@ -28,6 +29,13 @@ export function CartDrawer({ children }: CartDrawerProps) {
     queryKey: ['cart'],
     queryFn: () => cartApi.getCart(),
   });
+
+  const { data: userResponse } = useQuery({ 
+    queryKey: ["userProfile"], 
+    queryFn: authApi.getMe, 
+    retry: false 
+  });
+  const user = userResponse?.data;
 
   const cartItems = cartResponse?.data?.items || [];
 
@@ -46,6 +54,16 @@ export function CartDrawer({ children }: CartDrawerProps) {
 
   const removeItem = (id: string) => {
     removeMutation.mutate(id);
+  };
+
+  const handleCheckoutClick = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      setIsOpen(false);
+      window.dispatchEvent(new Event('openAuthModal'));
+    } else {
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -151,7 +169,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                <Button asChild onClick={() => setIsOpen(false)} variant="outline" className="flex-1 h-11 border-slate-200 text-slate-500 hover:text-slate-800 font-semibold uppercase text-[10px] tracking-widest rounded-lg flex items-center justify-center gap-2 transition-all">
                   <Link to="/home">Explore</Link>
                </Button>
-               <Button asChild onClick={() => setIsOpen(false)} className="flex-[2] h-11 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
+               <Button asChild onClick={handleCheckoutClick} className="flex-[2] h-11 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
                   <Link to="/bookings/new">Checkout <ArrowRight className="h-4 w-4" /></Link>
                </Button>
             </div>
