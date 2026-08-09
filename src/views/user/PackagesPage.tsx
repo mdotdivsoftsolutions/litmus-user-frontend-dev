@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useNavigate } from "@/lib/router-compat";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { categoryApi } from "@/lib/api/category";
 import { packageApi } from "@/lib/api/package";
 import { CategoryStrip } from "./components/tests-listing/CategoryStrip";
@@ -29,13 +29,21 @@ export default function PackagesPage() {
 
   const debouncedSearch = useDebounce(search, 300);
 
-  const { data: pkgRes } = useQuery({
+  const { 
+    data: pkgRes,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading: pkgLoading
+  } = useInfiniteQuery({
     queryKey: ['packages', debouncedSearch],
-    queryFn: () => packageApi.getAllPackages({ search: debouncedSearch })
+    queryFn: ({ pageParam = 1 }) => packageApi.getAllPackages({ search: debouncedSearch, page: pageParam, limit: 12 }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.page < lastPage.pages ? lastPage.page + 1 : undefined,
   });
 
   const apiCategories = catRes?.data || [];
-  const packagesData = pkgRes?.data || [];
+  const packagesData = pkgRes?.pages.flatMap(p => p.data || []) || [];
 
   const handleSearch = () => {
     if (resultsRef.current) {
@@ -61,10 +69,11 @@ export default function PackagesPage() {
         <PackagesGrid
           packages={packagesData}
           search={search}
-          isLoading={!pkgRes}
+          isLoading={!pkgRes && pkgLoading}
           selectedCategory={selectedCategory}
-          visibleCount={visibleCount}
-          setVisibleCount={setVisibleCount}
+          hasMore={hasNextPage}
+          onLoadMore={() => fetchNextPage()}
+          isFetchingNextPage={isFetchingNextPage}
         />
       </section>
 

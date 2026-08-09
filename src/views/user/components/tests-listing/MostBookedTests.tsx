@@ -2,6 +2,7 @@
 
 import { Clock, Plus, ArrowRight, Search } from "lucide-react";
 import { Link } from "@/lib/router-compat";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CategoryStrip } from "./CategoryStrip";
 import { SectionHeader } from "../home/SectionHeader";
@@ -34,6 +35,9 @@ interface MostBookedTestsProps {
   iconMap: Record<string, React.ElementType>;
   cn: (...args: (string | undefined | false | null)[]) => string;
   isLoading?: boolean;
+  hasMore?: boolean;
+  onLoadMore?: () => void;
+  isFetchingNextPage?: boolean;
 }
 
 export const MostBookedTests = ({
@@ -44,11 +48,15 @@ export const MostBookedTests = ({
   categories,
   iconMap,
   cn,
-  isLoading
+  isLoading,
+  hasMore,
+  onLoadMore,
+  isFetchingNextPage
 }: MostBookedTestsProps) => {
+
   return (
-    <div className="space-y-10 bg-slate-50 pb-12 md:pb-20">
-      <div className="max-w-7xl mx-auto px-4 py-6 space-y-12">
+    <div className="bg-slate-50 pb-12 md:pb-20">
+      <div className="max-w-7xl mx-auto px-4 py-4 md:py-6 space-y-6 md:space-y-12">
         <SectionHeader
           title={
             <>
@@ -81,41 +89,53 @@ export const MostBookedTests = ({
               </div>
             ))
           ) : (
-            /* Tests List (6 Rows x 2 Columns) */
-            tests.length > 0 ? tests.map((t) => (
-              <Link to={`/tests/${t.id}`} key={t.id} className="group bg-white rounded-[1rem] p-6 shadow-sm border-2 border-slate-50 flex items-center gap-6 hover:border-[#D32F2F]/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500">
-                <div className="flex-1 min-w-0 space-y-2">
-                  <h3 className="font-bold text-slate-800 text-lg tracking-tight group-hover:text-[#D32F2F] transition-colors">{t.name}</h3>
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <span className="bg-red-50 text-[#D32F2F] text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider border border-red-100">{t.tests} specialized tests</span>
-                    <span className="text-[11px] text-slate-400 font-bold flex items-center gap-1.5 uppercase tracking-wide"><Clock className="h-4 w-4 text-[#F06C00]" />Reports in {t.tat}</span>
+            <>
+              {tests.length > 0 ? tests.map((t) => (
+                <Link to={`/tests/${t.id}`} key={t.id} className="group bg-white rounded-[1rem] p-6 shadow-sm border-2 border-slate-50 flex items-center gap-6 hover:border-[#D32F2F]/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500">
+                  <div className="flex-1 min-w-0 space-y-2">
+                    <h3 className="text-[17px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-[#D32F2F] transition-colors">{t.name}</h3>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <span className="bg-red-50 text-[#D32F2F] text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider border border-red-100">{t.tests} specialized tests</span>
+                      <span className="text-[11px] text-slate-400 font-bold flex items-center gap-1.5 uppercase tracking-wide"><Clock className="h-4 w-4 text-[#F06C00]" />Reports in {t.tat}</span>
+                    </div>
                   </div>
+                  <div className="text-right shrink-0">
+                    <div className="flex items-baseline justify-end gap-2 text-slate-400 line-through text-xs font-medium">₹{t.mrp?.toLocaleString()}</div>
+                    <div className="font-black text-slate-800 text-2xl tracking-tighter">₹{t.price?.toLocaleString()}</div>
+                    <span className="bg-emerald-50 text-emerald-600 text-[10px] font-black px-2 py-0.5 rounded-md mt-1 inline-block uppercase tracking-widest border border-emerald-100">{discountPct(t.price, t.mrp)}% Off</span>
+                  </div>
+                </Link>
+              )) : (
+                <div className="col-span-1 md:col-span-2 flex flex-col items-center justify-center py-16 text-center border-2 border-dashed border-slate-200 rounded-[2rem] bg-white/50 min-h-[300px]">
+                  <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                    <Search className="h-8 w-8 text-slate-400" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">No diagnostics found</h3>
+                  <p className="text-slate-500 max-w-sm">We couldn't find any tests matching your current search or category filters.</p>
+                  <Button 
+                    variant="outline" 
+                    className="mt-6 border-slate-200 text-slate-600 hover:text-slate-900"
+                    onClick={() => {
+                      setSelectedCategory('All');
+                      window.location.href = '/tests';
+                    }}
+                  >
+                    Clear all filters
+                  </Button>
                 </div>
-                <div className="text-right shrink-0">
-                  <div className="flex items-baseline justify-end gap-2 text-slate-400 line-through text-xs font-medium">₹{t.mrp?.toLocaleString()}</div>
-                  <div className="font-black text-slate-800 text-2xl tracking-tighter">₹{t.price?.toLocaleString()}</div>
-                  <span className="bg-emerald-50 text-emerald-600 text-[10px] font-black px-2 py-0.5 rounded-md mt-1 inline-block uppercase tracking-widest border border-emerald-100">{discountPct(t.price, t.mrp)}% Off</span>
+              )}
+              {hasMore && (
+                <div className="col-span-1 md:col-span-2 flex justify-center mt-6">
+                  <Button
+                    onClick={onLoadMore}
+                    disabled={isFetchingNextPage}
+                    className="bg-white border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 font-bold px-8 h-12 rounded-xl transition-all shadow-sm"
+                  >
+                    {isFetchingNextPage ? "Loading..." : "Load More Tests"}
+                  </Button>
                 </div>
-              </Link>
-            )) : (
-              <div className="col-span-1 md:col-span-2 flex flex-col items-center justify-center py-16 text-center border-2 border-dashed border-slate-200 rounded-[2rem] bg-white/50 min-h-[300px]">
-                <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-                  <Search className="h-8 w-8 text-slate-400" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-800 mb-2">No diagnostics found</h3>
-                <p className="text-slate-500 max-w-sm">We couldn't find any tests matching your current search or category filters.</p>
-                <Button 
-                  variant="outline" 
-                  className="mt-6 border-slate-200 text-slate-600 hover:text-slate-900"
-                  onClick={() => {
-                    setSelectedCategory('All');
-                    window.location.href = '/tests';
-                  }}
-                >
-                  Clear all filters
-                </Button>
-              </div>
-            )
+              )}
+            </>
           )}
         </div>
       </div>

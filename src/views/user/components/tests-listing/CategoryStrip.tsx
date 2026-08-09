@@ -2,7 +2,7 @@
 
 import { Link, useLocation } from "@/lib/router-compat";
 import { cn } from "@/lib/utils";
-
+import { ArrowUpRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface CategoryStripProps {
@@ -14,7 +14,7 @@ interface CategoryStripProps {
 
 export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categories, isLoading }: CategoryStripProps) => {
   // If no categories from API, fallback to a single "All" category or just render what we have.
-  const displayCategories = categories?.length > 0 
+  const displayCategories: Array<{ name: any; img: any; isLink: boolean; href?: string }> = categories?.length > 0 
     ? [
         { name: "All", img: "https://images.unsplash.com/photo-1490818387583-1baba5e638af?q=80&w=400", isLink: false },
         ...categories.map(c => ({
@@ -32,7 +32,7 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
   console.log(path);
 
   return (
-    <div className="w-full py-16 md:py-20">
+    <div className="w-full pt-6 pb-2 md:pt-20 md:pb-14">
       <div className="max-w-7xl mx-auto px-4">
         {path && (
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-8">
@@ -49,11 +49,11 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
         )}
 
         <div className="flex flex-col gap-6">
-          {/* Grid Container for 16 categories */}
-          <div className="grid grid-cols-4 md:grid-cols-8 gap-4 pb-4">
+          {/* Container for categories */}
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 md:grid md:grid-cols-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {isLoading ? (
               Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="relative h-[140px] md:h-[180px] w-full rounded-[2rem] overflow-hidden bg-slate-100 flex flex-col justify-end p-4 border-2 border-slate-50/50">
+                <div key={i} className="relative h-[140px] md:h-[180px] w-[110px] shrink-0 md:w-full rounded-2xl overflow-hidden bg-slate-100 flex flex-col justify-end p-4 border-2 border-slate-50/50 snap-start">
                    <div className="absolute inset-0 bg-slate-200/50 animate-pulse" />
                    <div className="absolute inset-0 bg-gradient-to-t from-slate-300/50 to-transparent" />
                    <div className="relative z-10">
@@ -74,10 +74,11 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
 
                   <div className="relative z-10">
                     <p className={cn(
-                      "text-[10px] md:text-xs font-black uppercase tracking-widest leading-tight transition-colors",
+                      "text-[10px] md:text-xs font-black uppercase tracking-widest leading-tight transition-colors flex items-center justify-between w-full gap-1",
                       selectedCategory === cat.name ? "text-white" : "text-white/90"
                     )}>
-                      {cat.name}
+                      <span className="flex-1">{cat.name}</span>
+                      <ArrowUpRight className="h-4 w-4 opacity-0 -translate-x-2 translate-y-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0 transition-all duration-300 shrink-0" />
                     </p>
                   </div>
 
@@ -91,7 +92,7 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
               );
 
               const buttonClass = cn(
-                "group relative h-[140px] md:h-[180px] rounded-[2rem] overflow-hidden flex flex-col justify-end p-4 transition-all duration-300 border-2 text-left",
+                "group relative h-[140px] md:h-[180px] w-[110px] shrink-0 md:w-full rounded-2xl overflow-hidden flex flex-col justify-end p-4 transition-all duration-300 border-2 text-left snap-start",
                 selectedCategory === cat.name
                   ? "border-[#D32F2F] ring-4 ring-[#D32F2F]/5"
                   : "border-transparent hover:border-slate-200 hover:-translate-y-1"

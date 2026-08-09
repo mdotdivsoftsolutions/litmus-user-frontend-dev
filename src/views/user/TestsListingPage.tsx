@@ -6,7 +6,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { useSearchParams } from "@/lib/router-compat";
 import { Package, Milk, Coffee, Wheat, Flame, Drumstick, Droplets, Cookie } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { testApi } from "@/lib/api/test";
 import { categoryApi } from "@/lib/api/category";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -65,15 +65,23 @@ export default function TestsListingPage() {
   }
   const debouncedSearch = useDebounce(search, 300);
 
-  const { data: testsRes, isLoading: testsLoading } = useQuery({
+  const { 
+    data: testsRes, 
+    isLoading: testsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useInfiniteQuery({
     queryKey: ['tests', debouncedSearch, selectedCategoryId],
-    queryFn: () => testApi.getTests({ search: debouncedSearch, category: selectedCategoryId })
+    queryFn: ({ pageParam }) => testApi.getTests({ search: debouncedSearch, category: selectedCategoryId, page: pageParam, limit: 10 }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.page < lastPage.pages ? lastPage.page + 1 : undefined,
   });
 
-  const testsData = testsRes?.data || [];
+  const testsData = testsRes?.pages.flatMap(p => p.data || []) || [];
   const filtered = testsData;
 
-  const formattedTests = filtered.slice(0, visibleItems).map((t: any) => ({
+  const formattedTests = filtered.map((t: any) => ({
     id: t._id,
     name: t.testName,
     price: t.offerPrice || t.price,
@@ -148,6 +156,9 @@ export default function TestsListingPage() {
           iconMap={iconMap}
           cn={cn}
           isLoading={testsLoading}
+          hasMore={hasNextPage}
+          onLoadMore={() => fetchNextPage()}
+          isFetchingNextPage={isFetchingNextPage}
         />
       </div>
 

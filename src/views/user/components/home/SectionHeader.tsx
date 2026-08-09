@@ -26,7 +26,7 @@ export function SectionHeader({
   className,
 }: SectionHeaderProps) {
   return (
-    <div className={cn("mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end", className)}>
+    <div className={cn("md:mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end", className)}>
       <div className="flex-1">
         {badge && (
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-card-from">

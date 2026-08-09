@@ -11,11 +11,12 @@ interface PackagesGridProps {
   search: string;
   isLoading: boolean;
   selectedCategory: string;
-  visibleCount: number;
-  setVisibleCount: React.Dispatch<React.SetStateAction<number>>;
+  hasMore?: boolean;
+  onLoadMore?: () => void;
+  isFetchingNextPage?: boolean;
 }
 
-export function PackagesGrid({ packages, search, isLoading, selectedCategory, visibleCount, setVisibleCount }: PackagesGridProps) {
+export function PackagesGrid({ packages, search, isLoading, selectedCategory, hasMore, onLoadMore, isFetchingNextPage }: PackagesGridProps) {
   const filteredPackages = packages.filter((p: any) => {
     return selectedCategory === "All" || p.category === selectedCategory;
   });
@@ -33,7 +34,7 @@ export function PackagesGrid({ packages, search, isLoading, selectedCategory, vi
                <Skeleton className="h-12 w-full mt-auto" />
              </div>
            ))
-        ) : filteredPackages.slice(0, visibleCount).map((pkg: any) => (
+        ) : filteredPackages.map((pkg: any) => (
           <TestCard key={pkg._id} t={pkg} className="m-0 w-full shrink h-full" />
         ))}
 
@@ -50,14 +51,15 @@ export function PackagesGrid({ packages, search, isLoading, selectedCategory, vi
         )}
       </div>
 
-      {filteredPackages.length > visibleCount && (
+      {hasMore && (
          <div className="mt-12 flex justify-center">
             <Button 
-              onClick={() => setVisibleCount(prev => prev + 2)}
+              onClick={onLoadMore}
+              disabled={isFetchingNextPage}
               variant="outline" 
               className="h-12 px-10 rounded-xl border-slate-200 text-slate-500 hover:text-[#D32F2F] hover:border-[#D32F2F]/20 font-semibold text-xs tracking-[0.2em] uppercase transition-all flex items-center gap-3 bg-white shadow-sm hover:shadow-md"
             >
-              Discover More Packages <ArrowRight className="h-4 w-4" />
+              {isFetchingNextPage ? "Loading..." : "Discover More Packages"} <ArrowRight className="h-4 w-4" />
             </Button>
          </div>
       )}
