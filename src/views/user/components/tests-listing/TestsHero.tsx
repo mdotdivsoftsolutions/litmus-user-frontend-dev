@@ -49,7 +49,7 @@ export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHero
     : tests.filter(t => t.testName?.toLowerCase().includes(search.toLowerCase())).slice(0, 5);
 
   return (
-    <div className="relative bg-white py-6 md:py-10 flex flex-col justify-center border-b border-white">
+    <div className="relative bg-white py-16 md:py-24 flex flex-col justify-center border-b border-white">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Cinematic Background Elements */}
         <div className="absolute top-0 right-0 w-[60%] h-full bg-slate-50/50 skew-x-[-12deg] translate-x-1/4 pointer-events-none border-l border-slate-100" />

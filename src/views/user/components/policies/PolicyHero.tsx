@@ -30,7 +30,7 @@ export function PolicyHero({ icon: Icon, eyebrow, title, subtitle, wide }: Polic
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-10 md:py-14">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full py-16 md:py-24">
         <div className={cn("space-y-5", wide ? "max-w-7xl" : "max-w-3xl")}>
           <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white shadow-sm border border-slate-100 text-[#D32F2F] text-[10px] font-semibold uppercase tracking-[0.35em]">
             <Icon className="h-4 w-4 shrink-0" aria-hidden />

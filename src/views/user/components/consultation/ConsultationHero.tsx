@@ -41,7 +41,7 @@ export function ConsultationHero() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-white group/hero lg:h-[calc(100vh-80px)] lg:max-h-[850px] lg:min-h-[600px] flex items-center py-20 lg:py-0">
+    <section className="relative overflow-hidden bg-white group/hero lg:min-h-[calc(100vh-80px)] flex items-center pt-28 pb-16 lg:pt-32 lg:pb-16">
       {/* Animated Background Textures */}
       <div className="absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-slate-50/50 to-transparent pointer-events-none" />
       <div className="absolute top-0 right-0 w-[45%] h-full bg-slate-900 overflow-hidden hidden lg:block">

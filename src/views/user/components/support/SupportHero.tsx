@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 
 export function SupportHero() {
   return (
-      <section className="relative pt-20 pb-8 md:pb-20 overflow-hidden bg-white">
+      <section className="relative pt-28 md:pt-36 pb-16 md:pb-24 overflow-hidden bg-white">
         {/* Cinematic Accents */}
         <div className="absolute top-0 right-0 w-[55%] h-full bg-slate-50 skew-x-[-15deg] translate-x-1/4 pointer-events-none transition-transform duration-[3000ms]" />
         <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">

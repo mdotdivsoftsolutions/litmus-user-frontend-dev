@@ -56,7 +56,7 @@ export function LabsHero({ search, setSearch, selectedCity, setSelectedCity, lab
   };
 
   return (
-    <section className="relative pt-12 pb-12 bg-white">
+    <section className="relative pt-16 md:pt-24 pb-16 md:pb-24 bg-white">
       {/* Background Elements Container */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Panoramic Background Texture */}
