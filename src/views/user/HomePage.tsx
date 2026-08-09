@@ -9,6 +9,7 @@ import { WhatsAppBanner } from "./components/home/WhatsAppBanner";
 import { CustomerReviews } from "./components/home/CustomerReviews";
 import { FAQ } from "./components/home/FAQ";
 import { SpecialityCarousel } from "./components/home/SpecialityCarousel";
+import { ConsultancyServices } from "./components/home/ConsultancyServices";
 import { HowToBookProcess } from "./components/home/HowToBookProcess";
 import { SafetyCheckupBanner } from "./components/home/SafetyCheckupBanner";
 import { FooterSEO } from "@/components/layout/footer/FooterSEO";
@@ -73,6 +74,10 @@ export default function HomePage() {
       {/* ═══════════ TESTS BY FOOD CATEGORY ═══════════ */}
       <FadeIn>
         <SpecialityCarousel />
+      </FadeIn>
+
+      <FadeIn>
+        <ConsultancyServices />
       </FadeIn>
 
       {/* ═══════════ HOW WE WORK ═══════════ */}
