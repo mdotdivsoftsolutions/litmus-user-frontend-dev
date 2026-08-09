@@ -59,7 +59,7 @@ function FAQItem({
       className={cn(
         "group border rounded-2xl overflow-hidden transition-all duration-300",
         isOpen
-          ? "border-[#f06c00]/30 bg-white shadow-md shadow-orange-50"
+          ? "border-slate-200 bg-white shadow-md"
           : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm"
       )}
     >
@@ -71,7 +71,7 @@ function FAQItem({
         <span
           className={cn(
             "font-semibold text-sm leading-snug transition-colors duration-200 md:text-base",
-            isOpen ? "text-[#f06c00]" : "text-slate-800 group-hover:text-slate-900"
+            isOpen ? "text-gradient-brand" : "text-slate-800 group-hover:text-slate-900"
           )}
         >
           {faq.question}
@@ -80,7 +80,7 @@ function FAQItem({
           className={cn(
             "flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full transition-all duration-300",
             isOpen
-              ? "bg-[#f06c00] text-white rotate-0"
+              ? "bg-gradient-brand text-white rotate-0 shadow-sm"
               : "bg-slate-100 text-slate-500 group-hover:bg-slate-200"
           )}
         >
@@ -100,7 +100,7 @@ function FAQItem({
         )}
       >
         <div className="px-6 pb-5">
-          <div className="h-px bg-gradient-to-r from-[#f06c00]/20 via-[#ff9a3c]/30 to-transparent mb-4" />
+          <div className="h-px bg-gradient-to-r from-slate-200 via-slate-100 to-transparent mb-4" />
           <p className="text-sm text-slate-600 leading-relaxed">{faq.answer}</p>
         </div>
       </div>
@@ -114,10 +114,10 @@ export function FAQ() {
   const toggle = (id: number) => setOpenId((prev) => (prev === id ? null : id));
 
   return (
-    <section className="relative overflow-hidden bg-[#F6FBFF] py-10 md:py-16">
+    <section className="relative overflow-hidden  py-10 md:py-16">
       {/* Background blobs */}
-      <div className="pointer-events-none absolute left-0 top-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-50/60 blur-[120px]" />
-      <div className="pointer-events-none absolute right-0 bottom-0 h-[400px] w-[400px] translate-x-1/3 translate-y-1/3 rounded-full bg-amber-50/60 blur-[100px]" />
+      <div className="pointer-events-none absolute left-0 top-0 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-50/60 blur-[120px]" />
+      <div className="pointer-events-none absolute right-0 bottom-0 h-[400px] w-[400px] translate-x-1/3 translate-y-1/3 rounded-full bg-sky-50/60 blur-[100px]" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-20 lg:items-start">
@@ -137,8 +137,8 @@ export function FAQ() {
             />
 
             {/* Decorative stat card */}
-            <div className="mt-10 rounded-2xl border border-orange-100 bg-gradient-to-br from-[#fff7f0] to-[#fff3e6] p-6">
-              <p className="text-xs font-bold uppercase tracking-widest text-[#f06c00] mb-4">
+            <div className="mt-10 rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 to-sky-50 p-6">
+              <p className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-4">
                 Still have questions?
               </p>
               <p className="text-sm text-slate-600 leading-relaxed mb-5">
@@ -149,7 +149,7 @@ export function FAQ() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#f06c00] to-[#ff9a3c] px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-orange-200 hover:shadow-lg hover:shadow-orange-300 transition-all duration-200 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] px-5 py-2.5 text-xs font-bold text-white shadow-md shadow-green-200 hover:shadow-lg hover:shadow-green-300 transition-all duration-200 hover:-translate-y-0.5"
               >
                 {/* WhatsApp icon */}
                 <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
