@@ -1,9 +1,9 @@
 "use client";
 
-import { type MouseEvent } from "react";
+import { type MouseEvent, useRef } from "react";
 import { Link } from "@/lib/router-compat";
 import { products } from "@/lib/placeholder-data";
-import { Activity, FileText, Check, Loader2, CheckCircle2, Beaker, ChevronDown } from "lucide-react";
+import { Activity, FileText, Check, Loader2, CheckCircle2, Beaker, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "./home/SectionHeader";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -199,6 +199,18 @@ export type HomeTestsProps = {
 };
 
 export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = scrollRef.current.clientWidth * 0.8;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   const { data: popularPackagesData, isLoading } = useQuery({
     queryKey: ['popularPackages'],
     queryFn: () => packageApi.getAllPackages()
@@ -210,7 +222,7 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
 
   return (
     <>
-      <section className="pt-8 lg:pt-16 pb-10 md:pb-20 relative overflow-hidden bg-white">
+      <section className="pt-8 lg:pt-16 pb-10 md:pb-18 relative overflow-hidden bg-white">
         <div className="max-w-7xl mx-auto px-4 relative z-10 w-full">
           <SectionHeader
             title={
@@ -225,7 +237,24 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
             }}
           />
 
-          <div className="flex overflow-x-auto scrollbar-hide pb-5 pt-2 -mx-2">
+          <div className="relative group">
+            <button
+              onClick={() => scroll('left')}
+              className="absolute -left-4 top-[45%] -translate-y-1/2 z-20 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-xl border border-slate-100 text-slate-600 transition-all duration-300 hover:scale-105 hover:text-brand-action opacity-0 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </button>
+
+            <button
+              onClick={() => scroll('right')}
+              className="absolute -right-4 top-[45%] -translate-y-1/2 z-20 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-xl border border-slate-100 text-slate-600 transition-all duration-300 hover:scale-105 hover:text-brand-action opacity-0 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="h-6 w-6" />
+            </button>
+
+            <div ref={scrollRef} className="flex overflow-x-auto scrollbar-hide pb-5 pt-2 -mx-2 scroll-smooth">
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <div key={i} className="m-2 flex w-[280px] shrink-0 flex-col overflow-hidden rounded-[1.25rem] border border-brand-card-from/10 bg-white">
@@ -260,6 +289,7 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
                 No popular packages found.
               </div>
             )}
+            </div>
           </div>
         </div>
       </section>
