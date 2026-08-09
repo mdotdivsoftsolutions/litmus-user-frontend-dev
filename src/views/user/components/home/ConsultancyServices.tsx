@@ -16,7 +16,7 @@ const IMAGES = ["/images/icons/1-1.webp", "/images/icons/3-1.webp"];
 
 function ConsultancyCard({ service }: { service: any }) {
   return (
-    <div className="relative bg-white p-4 w-[260px] h-full flex flex-col justify-center items-center">
+    <div className="relative bg-white p-4 w-[270px] h-full flex flex-col justify-center items-center">
       <div className="border-2 w-full h-full p-5 text-center gap-1 items-center justify-center flex flex-col">
         <div className="flex items-end relative text-9xl select-none z-0">
           <h1 className="font-serif font-bold text-slate-200 mr-12">{service.letter || "A"}</h1>
@@ -26,14 +26,14 @@ function ConsultancyCard({ service }: { service: any }) {
           </div>
         </div>
 
-        <h4 className="text-lg font-extrabold text-slate-800 mb-2 px-2 leading-tight">
+        <h4 className="text-xl font-extrabold text-slate-800 mb-2 px-2 leading-tight">
           {service.title}
         </h4>
-        <p className="text-xs text-center text-slate-500  px-2 line-clamp-3">
+        <p className="text-sm text-center text-slate-500  px-2 line-clamp-3">
           {service.desc}
         </p>
 
-        <button className="flex items-center pt-2 justify-center gap-2 text-xs font-semibold text-slate-700 hover:text-slate-900 group-hover:gap-3 transition-all">
+        <button className="flex items-center pt-4 justify-center gap-2 text-xs font-semibold text-slate-700 hover:text-slate-900 group-hover:gap-3 transition-all">
           <span className={`flex items-center justify-center w-6 h-6 rounded-full text-white ${service.bgColor}`}>
             <ArrowRight className="w-3 h-3" />
           </span>
@@ -70,7 +70,7 @@ export function ConsultancyServices() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  justify-items-start">
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
               <div key={i} className="relative bg-white p-5 w-[280px] h-[350px] flex flex-col justify-center items-center">
