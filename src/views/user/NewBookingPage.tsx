@@ -574,9 +574,9 @@ export default function NewBookingPage() {
   };
 
   return (
-    <div className="bg-[#f8fafc] min-h-screen pb-20 animate-fade-in font-inter">
+    <div className="bg-[#f8fafc] min-h-screen pb-20 animate-fade-in font-inter mt-20 md:mt-24">
       {/* ===== STEP INDICATOR ===== */}
-      <div className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+      <div className="">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-start justify-start py-4 sm:py-6 overflow-x-auto scrollbar-hide">
             <div className="flex items-center gap-2 sm:gap-4 min-w-max">
@@ -586,7 +586,7 @@ export default function NewBookingPage() {
                     className={cn(
                       "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300",
                       i === step 
-                        ? "bg-primary/5 text-primary" 
+                        ? "bg-brand-action/5 text-brand-action" 
                         : i < step 
                           ? "text-litmus-teal" 
                           : "text-slate-400"
@@ -595,7 +595,7 @@ export default function NewBookingPage() {
                     <div className={cn(
                       "flex items-center justify-center h-8 w-8 rounded-lg text-xs font-bold transition-all",
                       i === step 
-                        ? "bg-primary text-white" 
+                        ? "bg-brand-action text-white" 
                         : i < step 
                           ? "bg-litmus-teal text-white" 
                           : "bg-slate-100 text-slate-400 border border-slate-200"
@@ -624,7 +624,7 @@ export default function NewBookingPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 pt-8 sm:pt-12">
+      <div className="max-w-7xl mx-auto px-4 pt-3">
         <div className="grid gap-8 lg:grid-cols-12">
           
           <div className={cn(
@@ -644,7 +644,7 @@ export default function NewBookingPage() {
 
                 {!dataLoaded || isCartLoading || isTestLoading || isPackageLoading ? (
                   <Card className="rounded-lg border-2 border-slate-100 bg-white/50 p-12 text-center flex flex-col items-center justify-center">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary mb-4" />
+                    <Loader2 className="h-8 w-8 animate-spin text-brand-action mb-4" />
                     <p className="text-slate-500 font-medium">Loading your selection...</p>
                   </Card>
                 ) : items.length === 0 ? (
@@ -654,7 +654,7 @@ export default function NewBookingPage() {
                     </div>
                     <h3 className="text-lg font-bold text-slate-800">Your selection is empty</h3>
                     <p className="text-slate-500 mt-2 max-w-xs mx-auto text-sm">Looks like you haven&apos;t added any tests yet.</p>
-                    <Button asChild className="mt-6 bg-primary hover:bg-primary-deep rounded-lg px-8 h-12 font-bold">
+                    <Button asChild className="mt-6 bg-brand-action hover:bg-brand-action-hover rounded-lg px-8 h-12 font-bold">
                       <Link to="/tests">Browse All Tests</Link>
                     </Button>
                   </Card>
@@ -667,13 +667,13 @@ export default function NewBookingPage() {
                             <div className="p-5 space-y-4">
                               <div className="flex items-start justify-between gap-4">
                                 <div className="space-y-1">
-                                  <Badge className="bg-flame-amber-tint text-accent border-0 mb-1 font-bold uppercase tracking-wider text-[10px]">
+                                  <Badge className="bg-emerald-50 text-brand-primary border-0 mb-1 font-bold uppercase tracking-wider text-[10px]">
                                     {item.category}
                                   </Badge>
                                   <h3 className="font-bold text-lg text-slate-900">{item.product} Test Panel</h3>
                                   <div className="flex items-center gap-3 text-sm text-slate-500">
                                     <span className="flex items-center gap-1.5"><InfoIcon className="h-4 w-4 text-litmus-teal" /> {item.availableParameters?.length || 0} available parameters</span>
-                                    <span className="flex items-center gap-1.5"><ClockIcon className="h-4 w-4 text-primary" /> {item.testObj?.turnAroundTime || '3-5 Days'} TAT</span>
+                                    <span className="flex items-center gap-1.5"><ClockIcon className="h-4 w-4 text-brand-action" /> {item.testObj?.turnAroundTime || '3-5 Days'} TAT</span>
                                   </div>
                                   <p className="text-xs text-slate-400 mt-2">Samples and testing parameters are configured in the next step.</p>
                                 </div>
@@ -759,7 +759,7 @@ export default function NewBookingPage() {
                                     className={cn(
                                       "flex items-center gap-3 p-2.5 rounded-lg border transition-all cursor-pointer",
                                       sample.selectedParameters.includes(param.name) 
-                                        ? "border-primary bg-primary/5 shadow-sm" 
+                                        ? "border-brand-action bg-brand-action/5 shadow-sm" 
                                         : "border-slate-100 hover:border-slate-200 bg-white"
                                     )}
                                   >
@@ -840,7 +840,7 @@ export default function NewBookingPage() {
                         <Button 
                           onClick={() => addSample(item.id)}
                           variant="outline" 
-                          className="w-full border-dashed border-2 border-slate-200 hover:border-primary hover:bg-primary/5 text-primary font-bold h-12 rounded-xl mt-2"
+                          className="w-full border-dashed border-2 border-slate-200 hover:border-brand-action hover:bg-brand-action/5 text-brand-action font-bold h-12 rounded-xl mt-2"
                         >
                           <PlusIcon className="h-5 w-5 mr-2" /> Add Another Product for {item.product}
                         </Button>
@@ -867,10 +867,10 @@ export default function NewBookingPage() {
                   <p className="text-slate-500 text-sm font-medium">Select an accredited laboratory or let Litmus experts decide.</p>
                 </div>
                 <div className="grid gap-4">
-                  <Card onClick={() => setSelectedLab("admin")} className={cn("cursor-pointer transition-all border rounded-lg relative overflow-hidden group shadow-sm", selectedLab === "admin" ? "border-primary bg-primary/5 ring-1 ring-primary/20" : "border-slate-200 hover:border-primary/40 hover:bg-slate-50")}>
-                    <div className="absolute top-0 right-0 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-widest">Recommended</div>
+                  <Card onClick={() => setSelectedLab("admin")} className={cn("cursor-pointer transition-all border rounded-lg relative overflow-hidden group shadow-sm", selectedLab === "admin" ? "border-brand-action bg-brand-action/5 ring-1 ring-primary/20" : "border-slate-200 hover:border-brand-action/40 hover:bg-slate-50")}>
+                    <div className="absolute top-0 right-0 bg-brand-action text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg uppercase tracking-widest">Recommended</div>
                     <CardContent className="p-6 flex items-start gap-6">
-                       <div className={cn("h-14 w-14 rounded-lg flex items-center justify-center shrink-0", selectedLab === "admin" ? "bg-primary text-white" : "bg-slate-100 text-primary")}>
+                       <div className={cn("h-14 w-14 rounded-lg flex items-center justify-center shrink-0", selectedLab === "admin" ? "bg-brand-action text-white" : "bg-slate-100 text-brand-action")}>
                          <ShieldIcon className="h-7 w-7" />
                        </div>
                        <div className="space-y-1">
@@ -881,7 +881,7 @@ export default function NewBookingPage() {
                   </Card>
                     {isLabsLoading ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                        <Loader2 className="h-6 w-6 animate-spin text-brand-action" />
                       </div>
                     ) : eligibleLabs.length === 0 ? (
                       <div className="rounded-lg border border-slate-200 bg-white p-6 text-center shadow-sm">
@@ -890,12 +890,12 @@ export default function NewBookingPage() {
                       </div>
                     ) : (
                       eligibleLabs.map((lab: any) => (
-                        <Card key={lab._id} onClick={() => setSelectedLab(lab._id)} className={cn("cursor-pointer transition-all rounded-lg border group shadow-sm", selectedLab === lab._id ? "border-primary bg-primary/5" : "border-slate-200 hover:border-slate-300 hover:bg-white")}>
+                        <Card key={lab._id} onClick={() => setSelectedLab(lab._id)} className={cn("cursor-pointer transition-all rounded-lg border group shadow-sm", selectedLab === lab._id ? "border-brand-action bg-brand-action/5" : "border-slate-200 hover:border-slate-300 hover:bg-white")}>
                           <CardContent className="p-5 flex flex-col sm:flex-row gap-5 justify-between items-start sm:items-center">
                             <div className="flex gap-4 items-center">
-                               <div className={cn("h-12 w-12 rounded-lg flex items-center justify-center text-lg font-bold uppercase", selectedLab === lab._id ? "bg-primary text-white" : "bg-slate-100 text-slate-400 group-hover:bg-slate-200")}>{lab.labName.charAt(0)}</div>
+                               <div className={cn("h-12 w-12 rounded-lg flex items-center justify-center text-lg font-bold uppercase", selectedLab === lab._id ? "bg-brand-action text-white" : "bg-slate-100 text-slate-400 group-hover:bg-slate-200")}>{lab.labName.charAt(0)}</div>
                                <div className="space-y-0.5">
-                                 <h3 className="font-bold text-slate-900 text-base group-hover:text-primary transition-colors">{lab.labName}</h3>
+                                 <h3 className="font-bold text-slate-900 text-base group-hover:text-brand-action transition-colors">{lab.labName}</h3>
                                  <div className="flex items-center gap-3 text-[11px] font-bold text-slate-400 uppercase tracking-tight">
                                    <span className="flex items-center gap-1"><MapPinIcon className="h-3 w-3"/> {lab.location?.city || 'India'}</span>
                                    <span className="flex items-center gap-1"><ClockIcon className="h-3 w-3"/> {lab.availability?.turnaroundTime || '24-48 hrs'}</span>
@@ -927,7 +927,7 @@ export default function NewBookingPage() {
                       {/* Personal Info */}
                       <div className="space-y-4">
                         <h4 className="font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide">
-                          <UserIcon className="h-4 w-4 text-primary" /> Contact Information
+                          <UserIcon className="h-4 w-4 text-brand-action" /> Contact Information
                         </h4>
                         <div className="grid sm:grid-cols-2 gap-4">
                           <div className="space-y-1.5">
@@ -948,7 +948,7 @@ export default function NewBookingPage() {
                       {/* Address Info */}
                       <div className="space-y-4">
                         <h4 className="font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide">
-                          <HomeIcon className="h-4 w-4 text-primary" /> Pickup Address
+                          <HomeIcon className="h-4 w-4 text-brand-action" /> Pickup Address
                         </h4>
                         <div className="grid sm:grid-cols-2 gap-4">
                           <div className="sm:col-span-2 space-y-1.5">
@@ -969,7 +969,7 @@ export default function NewBookingPage() {
                       {/* Scheduling */}
                       <div className="space-y-4">
                         <h4 className="font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide">
-                          <CalendarIcon className="h-4 w-4 text-primary" /> Preferred Schedule
+                          <CalendarIcon className="h-4 w-4 text-brand-action" /> Preferred Schedule
                         </h4>
                         <p className="text-xs text-slate-600 font-medium bg-blue-50/50 p-3 rounded border border-blue-100">
                           <span className="font-bold text-blue-700">Note:</span> This is your preferred collection time. Our collection agent will try their best to meet this, but the actual time may vary slightly depending on agent availability.
@@ -978,7 +978,7 @@ export default function NewBookingPage() {
                           <div className="space-y-1.5">
                             <Label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Pickup Date</Label>
                             <Input name="pickupDate" min={minDateString} type="date" value={formData.pickupDate} onChange={handleInputChange} className={cn("h-10 bg-slate-50 border-slate-200 rounded-lg text-sm", dateError ? "border-red-500 focus-visible:ring-red-500" : "")} />
-                            {isAvailabilityLoading && <p className="text-xs text-primary animate-pulse mt-1">Checking lab availability...</p>}
+                            {isAvailabilityLoading && <p className="text-xs text-brand-action animate-pulse mt-1">Checking lab availability...</p>}
                             {dateError && <p className="text-xs text-red-500 font-bold mt-1">{dateError}</p>}
                           </div>
                           <div className="space-y-1.5">
@@ -1018,7 +1018,7 @@ export default function NewBookingPage() {
                   <p className="text-slate-500 text-sm font-medium">Your transaction is encrypted and secured.</p>
                 </div>
                 <Card className="rounded-lg border border-slate-200 shadow-sm overflow-hidden bg-white">
-                   <div className="bg-slate-50 px-5 py-4 border-b border-slate-200 flex justify-between items-center"><h4 className="font-bold text-slate-900 text-sm uppercase">Order Summary</h4><Badge className="bg-primary/10 text-primary border-0 font-bold">{items.length} Products</Badge></div>
+                   <div className="bg-slate-50 px-5 py-4 border-b border-slate-200 flex justify-between items-center"><h4 className="font-bold text-slate-900 text-sm uppercase">Order Summary</h4><Badge className="bg-brand-action/10 text-brand-action border-0 font-bold">{items.length} Products</Badge></div>
                    <CardContent className="p-0">
                       <div className="divide-y divide-slate-100">
                          {items.map((item) => (
@@ -1044,11 +1044,11 @@ export default function NewBookingPage() {
                     <div className="space-y-1"><h1 className="text-2xl font-bold text-slate-900">Booking Confirmed!</h1><p className="text-slate-500 font-medium max-w-lg mx-auto text-sm">Thank you for choosing Litmus Food Analytics. Your order <span className="text-slate-900 font-bold font-mono">#{orderId.substring(orderId.length - 8).toUpperCase()}</span> has been received.</p></div>
                  </div>
                  <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-                    <Card className="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden"><div className="bg-slate-900 p-4 text-white flex justify-between items-center"><span className="font-bold text-[10px] uppercase tracking-widest opacity-80">Order Details</span><Badge className="bg-white/20 text-white border-0 font-bold text-[10px]">Confirmed</Badge></div><CardContent className="p-5 space-y-5"><div className="grid grid-cols-1 sm:grid-cols-2 gap-6"><div><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Order ID</p><p className="font-bold text-slate-900 text-base font-mono">BKG-{orderId.substring(orderId.length - 8).toUpperCase()}</p></div><div><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Timestamp</p><p className="font-bold text-slate-900 text-sm">{new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</p></div></div><div className="pt-4 border-t border-slate-100"><h4 className="font-bold text-slate-900 flex items-center gap-2 mb-3 text-sm uppercase tracking-wide"><BuildingIcon className="h-4 w-4 text-primary" /> Fulfilment Partner</h4><div className="bg-slate-50 rounded-lg p-4 border border-slate-100">{selectedLab === "admin" ? <div className="space-y-1"><p className="font-bold text-slate-900 text-sm">Litmus Smart Allocation</p><p className="text-[11px] text-slate-600 font-medium leading-relaxed">Our team will assign the best lab within 2 hours.</p></div> : <div className="space-y-1"><p className="font-bold text-slate-900 text-sm">{eligibleLabs?.find((l: any) => l._id === selectedLab)?.labName || 'Selected Laboratory'}</p><p className="text-[11px] text-slate-600 font-medium">Lab has been notified.</p></div>}</div></div></CardContent></Card>
-                    <Card className="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden h-fit"><div className="bg-slate-50 border-b border-slate-200 p-4"><h4 className="font-bold text-slate-900 text-sm uppercase tracking-wide">Final Billing</h4></div><CardContent className="p-0"><div className="divide-y divide-slate-100 p-5 space-y-3">{items.map((item) => (<div key={item.id} className="flex justify-between items-start"><div><p className="font-bold text-slate-900 text-sm">{item.product} Panel</p><p className="text-[10px] font-bold text-slate-400 uppercase">{item.samples.reduce((acc, s) => acc + s.selectedParameters.length, 0)} Tests</p></div><p className="font-bold text-slate-900 text-sm">₹{calculateItemPrice(item).toLocaleString()}</p></div>))}</div><div className="p-5 bg-slate-50 border-t border-slate-200 space-y-2"><div className="flex justify-between text-xs font-medium"><span className="text-slate-500">Subtotal</span><span className="text-slate-900">₹{subtotal.toLocaleString()}</span></div><div className="flex justify-between text-xs font-medium"><span className="text-slate-500">GST (18%)</span><span className="text-slate-900">₹{gst.toLocaleString()}</span></div><div className="flex justify-between border-t border-slate-200 pt-3 mt-1"><span className="font-bold text-slate-900">Total Paid</span><span className="font-bold text-primary text-xl tracking-tight">₹{total.toLocaleString()}</span></div></div></CardContent></Card>
+                    <Card className="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden"><div className="bg-slate-900 p-4 text-white flex justify-between items-center"><span className="font-bold text-[10px] uppercase tracking-widest opacity-80">Order Details</span><Badge className="bg-white/20 text-white border-0 font-bold text-[10px]">Confirmed</Badge></div><CardContent className="p-5 space-y-5"><div className="grid grid-cols-1 sm:grid-cols-2 gap-6"><div><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Order ID</p><p className="font-bold text-slate-900 text-base font-mono">BKG-{orderId.substring(orderId.length - 8).toUpperCase()}</p></div><div><p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Timestamp</p><p className="font-bold text-slate-900 text-sm">{new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</p></div></div><div className="pt-4 border-t border-slate-100"><h4 className="font-bold text-slate-900 flex items-center gap-2 mb-3 text-sm uppercase tracking-wide"><BuildingIcon className="h-4 w-4 text-brand-action" /> Fulfilment Partner</h4><div className="bg-slate-50 rounded-lg p-4 border border-slate-100">{selectedLab === "admin" ? <div className="space-y-1"><p className="font-bold text-slate-900 text-sm">Litmus Smart Allocation</p><p className="text-[11px] text-slate-600 font-medium leading-relaxed">Our team will assign the best lab within 2 hours.</p></div> : <div className="space-y-1"><p className="font-bold text-slate-900 text-sm">{eligibleLabs?.find((l: any) => l._id === selectedLab)?.labName || 'Selected Laboratory'}</p><p className="text-[11px] text-slate-600 font-medium">Lab has been notified.</p></div>}</div></div></CardContent></Card>
+                    <Card className="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden h-fit"><div className="bg-slate-50 border-b border-slate-200 p-4"><h4 className="font-bold text-slate-900 text-sm uppercase tracking-wide">Final Billing</h4></div><CardContent className="p-0"><div className="divide-y divide-slate-100 p-5 space-y-3">{items.map((item) => (<div key={item.id} className="flex justify-between items-start"><div><p className="font-bold text-slate-900 text-sm">{item.product} Panel</p><p className="text-[10px] font-bold text-slate-400 uppercase">{item.samples.reduce((acc, s) => acc + s.selectedParameters.length, 0)} Tests</p></div><p className="font-bold text-slate-900 text-sm">₹{calculateItemPrice(item).toLocaleString()}</p></div>))}</div><div className="p-5 bg-slate-50 border-t border-slate-200 space-y-2"><div className="flex justify-between text-xs font-medium"><span className="text-slate-500">Subtotal</span><span className="text-slate-900">₹{subtotal.toLocaleString()}</span></div><div className="flex justify-between text-xs font-medium"><span className="text-slate-500">GST (18%)</span><span className="text-slate-900">₹{gst.toLocaleString()}</span></div><div className="flex justify-between border-t border-slate-200 pt-3 mt-1"><span className="font-bold text-slate-900">Total Paid</span><span className="font-bold text-brand-action text-xl tracking-tight">₹{total.toLocaleString()}</span></div></div></CardContent></Card>
                  </div>
                  <div className="flex flex-col sm:flex-row items-center gap-4 justify-center py-6">
-                    <Button onClick={() => navigate("/orders")} className="w-full sm:w-auto h-12 px-10 rounded-lg bg-primary hover:bg-primary-deep text-white font-bold">Track My Order</Button>
+                    <Button onClick={() => navigate("/orders")} className="w-full sm:w-auto h-12 px-10 rounded-lg bg-brand-action hover:bg-brand-action-hover text-white font-bold">Track My Order</Button>
                     <Button variant="outline" onClick={() => navigate("/home")} className="w-full sm:w-auto h-12 px-10 rounded-lg font-bold text-slate-600 border-slate-200 hover:bg-slate-50">Return to Home</Button>
                  </div>
               </div>
@@ -1066,7 +1066,7 @@ export default function NewBookingPage() {
                       <div className="flex justify-between text-xs font-bold uppercase tracking-wide"><span className="text-slate-400">Total MRP</span><span className="text-slate-800">₹{totalMrp.toLocaleString()}</span></div>
                       <div className="flex justify-between text-xs font-bold uppercase tracking-wide"><span className="text-litmus-teal">Litmus Discount</span><span className="text-litmus-teal">- ₹{discount.toLocaleString()}</span></div>
                       {step >= 4 && (<div className="flex justify-between text-xs font-bold uppercase tracking-wide pt-2 border-t border-dashed border-slate-200"><span className="text-slate-400">GST (18%)</span><span className="text-slate-800">+ ₹{gst.toLocaleString()}</span></div>)}
-                      <div className="pt-4 mt-1 flex flex-col gap-0.5"><div className="flex justify-between items-baseline"><span className="text-slate-900 font-bold text-lg">Total Amount</span><span className="text-2xl font-bold text-primary tracking-tight">₹{step >= 4 ? total.toLocaleString() : subtotal.toLocaleString()}</span></div><p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-right">Inc. of all taxes</p></div>
+                      <div className="pt-4 mt-1 flex flex-col gap-0.5"><div className="flex justify-between items-baseline"><span className="text-slate-900 font-bold text-lg">Total Amount</span><span className="text-2xl font-bold text-brand-action tracking-tight">₹{step >= 4 ? total.toLocaleString() : subtotal.toLocaleString()}</span></div><p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-right">Inc. of all taxes</p></div>
                     </div>
                     <div className="pt-3 space-y-2">
                        {step === 0 && (
@@ -1076,7 +1076,7 @@ export default function NewBookingPage() {
                              !items.every((item) => item.samples.length > 0)
                            }
                            onClick={handleNext}
-                           className="w-full bg-primary hover:bg-primary-deep text-white rounded-lg h-14 font-bold text-base group transition-all"
+                           className="w-full bg-brand-action hover:bg-brand-action-hover text-white rounded-lg h-14 font-bold text-base group transition-all"
                          >
                            Describe samples &amp; scope{" "}
                            <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -1086,7 +1086,7 @@ export default function NewBookingPage() {
                          <Button
                            disabled={!canProceedSampleDetails}
                            onClick={handleNext}
-                           className="w-full bg-primary hover:bg-primary-deep text-white rounded-lg h-14 font-bold text-base group transition-all"
+                           className="w-full bg-brand-action hover:bg-brand-action-hover text-white rounded-lg h-14 font-bold text-base group transition-all"
                          >
                            Select lab partner{" "}
                            <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -1101,7 +1101,7 @@ export default function NewBookingPage() {
                          <Button
                            disabled={!selectedLab}
                            onClick={handleNext}
-                           className="w-full bg-primary hover:bg-primary-deep text-white rounded-lg h-14 font-bold text-base group transition-all"
+                           className="w-full bg-brand-action hover:bg-brand-action-hover text-white rounded-lg h-14 font-bold text-base group transition-all"
                          >
                            Enter collection details{" "}
                            <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
@@ -1111,7 +1111,7 @@ export default function NewBookingPage() {
                          <Button
                            disabled={!isStep3Valid}
                            onClick={handleNext}
-                           className="w-full bg-primary hover:bg-primary-deep text-white rounded-lg h-14 font-bold text-base group transition-all disabled:opacity-50"
+                           className="w-full bg-brand-action hover:bg-brand-action-hover text-white rounded-lg h-14 font-bold text-base group transition-all disabled:opacity-50"
                          >
                            Proceed to payment{" "}
                            <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

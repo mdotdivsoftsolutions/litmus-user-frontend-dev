@@ -146,7 +146,7 @@ export default function TestDetailPage() {
           We couldn't find the test you're looking for. It might have been removed or the URL is incorrect.
         </p>
         <Link to="/tests">
-          <Button className="bg-primary hover:bg-primary-deep h-11 px-8 rounded-xl font-medium shadow-sm transition-all duration-300">
+          <Button className="bg-brand-action hover:bg-brand-action-hover h-11 px-8 rounded-xl font-medium shadow-sm transition-all duration-300">
             Browse All Tests
           </Button>
         </Link>
@@ -180,12 +180,12 @@ export default function TestDetailPage() {
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Test Details - Left */}
         <div className="lg:col-span-3 space-y-6">
-          <div>
-            <div className="flex gap-2 mb-3">
+          <div className="">
+            <div className="flex gap-2 my-3 ">
               {testObj.applicableCategories?.map((c: any) => (
-                <Badge key={c._id} className="bg-flame-amber-tint text-accent border-0 text-xs">{c.name}</Badge>
+                <Badge key={c._id} className="bg-brand-primary text-white border-0 text-xs">{c.name}</Badge>
               ))}
-              {testObj.isApplicableToAll && <Badge className="bg-flame-amber-tint text-accent border-0 text-xs">All Categories</Badge>}
+              {testObj.isApplicableToAll && <Badge className="bg-brand-primary text-white border-0 text-xs">All Categories</Badge>}
             </div>
             <h1 className="text-3xl font-bold text-foreground">{testObj.testName}</h1>
             {testObj.description && <p className="text-muted-foreground mt-2">{testObj.description}</p>}
@@ -211,7 +211,7 @@ export default function TestDetailPage() {
           <div className="space-y-4">
             <div>
               <h2 className="text-xl font-semibold flex items-center gap-2 text-foreground">
-                <FlaskConical className="h-5 w-5 text-primary" /> Test Parameters
+                <FlaskConical className="h-5 w-5 text-brand-action" /> Test Parameters
               </h2>
               <p className="text-sm text-muted-foreground mt-1">Select the specific parameters you want to test. All are selected by default.</p>
             </div>
@@ -235,7 +235,7 @@ export default function TestDetailPage() {
                       </label>
                       <div className="flex gap-4 mt-1 items-center">
                         {param.price && (
-                          <span className="text-xs text-primary font-bold bg-primary/10 px-2 py-0.5 rounded-full">
+                          <span className="text-xs text-brand-action font-bold bg-brand-action/10 px-2 py-0.5 rounded-full">
                             ₹{param.price}
                           </span>
                         )}
@@ -267,7 +267,7 @@ export default function TestDetailPage() {
                 
                 <div className="flex flex-col gap-1">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-primary">₹{price.toLocaleString()}</span>
+                    <span className="text-4xl font-bold text-brand-action">₹{price.toLocaleString()}</span>
                     {originalPrice > price && (
                       <span className="text-sm text-muted-foreground line-through font-medium">₹{originalPrice.toLocaleString()}</span>
                     )}
@@ -289,15 +289,15 @@ export default function TestDetailPage() {
                 </div>
 
                 <div className="flex gap-2">
-                  <Badge className="bg-litmus-dark text-primary-foreground border-0 hover:bg-litmus-dark/90">NABL</Badge>
-                  <Badge className="bg-litmus-teal text-primary-foreground border-0 hover:bg-litmus-teal/90">FSSAI</Badge>
+                  <Badge className="bg-litmus-teal text-white border-0 hover:bg-litmus-dark/90">NABL</Badge>
+                  <Badge className="bg-litmus-teal text-white border-0 hover:bg-litmus-teal/90">FSSAI</Badge>
                 </div>
 
                 <div className="space-y-3 pt-2">
                   <Button 
                     onClick={handleAddToCart}
                     disabled={isInCart || addMutation.isPending}
-                    className="w-full bg-primary hover:bg-primary-deep rounded-lg gap-2 h-12 text-base shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                    className="w-full bg-brand-action hover:bg-brand-action-hover rounded-lg gap-2 h-12 text-base shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
                     {addMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : isInCart ? <Check className="h-5 w-5" /> : <ShoppingCart className="h-5 w-5" />} 
                     {isInCart ? "In Cart" : "Add to Cart"}
                   </Button>
@@ -326,7 +326,7 @@ export default function TestDetailPage() {
                     { icon: MessageCircle, label: "WhatsApp Reports" },
                   ].map((b) => (
                     <div key={b.label} className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-                      <b.icon className="h-4 w-4 text-accent" />
+                      <b.icon className="h-4 w-4 text-brand-primary" />
                       {b.label}
                     </div>
                   ))}
