@@ -61,7 +61,7 @@ export const MostBookedTests = ({
           title={
             <>
               Most Booked{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#F06C00]">
+              <span className="text-gradient-brand">
                 Diagnostics
               </span>
             </>
@@ -72,7 +72,7 @@ export const MostBookedTests = ({
         <div className="grid gap-6 md:grid-cols-2">
           {isLoading ? (
             Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-[1rem] p-6 shadow-sm border-2 border-slate-50 flex items-center gap-6 relative overflow-hidden">
+              <div key={i} data-aos="fade-up" data-aos-delay={(i % 6) * 100} className="bg-white rounded-[1rem] p-6 shadow-sm border-2 border-slate-50 flex items-center gap-6 relative overflow-hidden">
                 <div className="flex-1 min-w-0 space-y-3 relative z-10">
                   <div className="h-5 md:h-6 w-3/4 bg-slate-200 rounded-md animate-pulse" />
                   <div className="flex items-center gap-3">
@@ -90,13 +90,13 @@ export const MostBookedTests = ({
             ))
           ) : (
             <>
-              {tests.length > 0 ? tests.map((t) => (
-                <Link to={`/tests/${t.id}`} key={t.id} className="group bg-white rounded-[1rem] p-6 shadow-sm border-2 border-slate-50 flex items-center gap-6 hover:border-[#D32F2F]/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500">
+              {tests.length > 0 ? tests.map((t, i) => (
+                <Link to={`/tests/${t.id}`} key={t.id} data-aos="fade-up" data-aos-delay={(i % 10) * 50} className="group bg-white rounded-[1rem] p-6 shadow-sm border-2 border-slate-50 flex items-center gap-6 hover:border-brand-action/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500">
                   <div className="flex-1 min-w-0 space-y-2">
-                    <h3 className="text-[17px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-[#D32F2F] transition-colors">{t.name}</h3>
+                    <h3 className="text-[17px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-brand-action transition-colors">{t.name}</h3>
                     <div className="flex items-center gap-3 flex-wrap">
-                      <span className="bg-red-50 text-[#D32F2F] text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider border border-red-100">{t.tests} specialized tests</span>
-                      <span className="text-[11px] text-slate-400 font-bold flex items-center gap-1.5 uppercase tracking-wide"><Clock className="h-4 w-4 text-[#F06C00]" />Reports in {t.tat}</span>
+                      <span className="bg-brand-primary/10 text-brand-primary text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider border border-brand-primary/20">{t.tests} specialized tests</span>
+                      <span className="text-[11px] text-slate-400 font-bold flex items-center gap-1.5 uppercase tracking-wide"><Clock className="h-4 w-4 text-brand-action" />Reports in {t.tat}</span>
                     </div>
                   </div>
                   <div className="text-right shrink-0">

@@ -48,9 +48,10 @@ export function Header({
 
   return (
     <>
+      <div className="fixed top-0 left-0 right-0 w-full z-50 pointer-events-none pt-0 md:pt-4" style={{ paddingRight: "var(--removed-body-scroll-bar-size, 0px)" }}>
       <header className={cn(
-        "fixed left-0 right-0 w-full z-50 transition-all duration-300 backdrop-blur-md",
-        "top-0 md:top-4 md:max-w-7xl md:mx-auto md:px-3 md:rounded-full",
+        "pointer-events-auto mx-auto w-full transition-all duration-300 backdrop-blur-md",
+        "md:max-w-7xl md:px-3 md:rounded-full",
         scrolled 
           ? "bg-white shadow-md border-b border-slate-200 md:border" 
           : "bg-white/90 shadow-sm border-b border-transparent md:border"
@@ -205,6 +206,7 @@ export function Header({
           </div>
         )}
       </header>
+    </div>
 
       {/* ═══════════ MOBILE DRAWER ═══════════ */}
       {/* Backdrop overlay */}

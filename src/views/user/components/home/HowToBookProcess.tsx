@@ -8,7 +8,7 @@ const processSteps = [
         number: "01",
         title: "Create Account",
         subtitle: "Sign up or login to your Litmus account",
-        icon: UserPlus,
+        image: "/images/icons/icon_account_3d.png",
         colorClass: "text-blue-600",
         bgClass: "bg-blue-50 border-blue-200 group-hover:border-blue-400 group-hover:bg-blue-100",
         shadowClass: "shadow-blue-500/20 group-hover:shadow-blue-500/40"
@@ -17,7 +17,7 @@ const processSteps = [
         number: "02",
         title: "Browse & Select Tests",
         subtitle: "Choose from our extensive food safety test catalog",
-        icon: Search,
+        image: "/images/icons/icon_search_3d.png",
         colorClass: "text-purple-600",
         bgClass: "bg-purple-50 border-purple-200 group-hover:border-purple-400 group-hover:bg-purple-100",
         shadowClass: "shadow-purple-500/20 group-hover:shadow-purple-500/40"
@@ -26,7 +26,7 @@ const processSteps = [
         number: "03",
         title: "Book and Pay",
         subtitle: "Securely pay for your selected tests",
-        icon: FileCheck,
+        image: "/images/icons/icon_payment_3d.png",
         colorClass: "text-emerald-600",
         bgClass: "bg-emerald-50 border-emerald-200 group-hover:border-emerald-400 group-hover:bg-emerald-100",
         shadowClass: "shadow-emerald-500/20 group-hover:shadow-emerald-500/40"
@@ -35,7 +35,7 @@ const processSteps = [
         number: "04",
         title: "Schedule Pickup",
         subtitle: "Book your preferred collection time and location",
-        icon: CalendarCheck,
+        image: "/images/icons/icon_calendar_3d.png",
         colorClass: "text-orange-600",
         bgClass: "bg-orange-50 border-orange-200 group-hover:border-orange-400 group-hover:bg-orange-100",
         shadowClass: "shadow-orange-500/20 group-hover:shadow-orange-500/40"
@@ -44,7 +44,7 @@ const processSteps = [
         number: "05",
         title: "Sample Collection",
         subtitle: "Safe and secure sample collection at your doorstep",
-        icon: Truck,
+        image: "/images/icons/icon_truck_3d.png",
         colorClass: "text-pink-600",
         bgClass: "bg-pink-50 border-pink-200 group-hover:border-pink-400 group-hover:bg-pink-100",
         shadowClass: "shadow-pink-500/20 group-hover:shadow-pink-500/40"
@@ -53,7 +53,7 @@ const processSteps = [
         number: "06",
         title: "Lab Analysis",
         subtitle: "Advanced testing in NABL accredited laboratories",
-        icon: FlaskConical,
+        image: "/images/icons/icon_lab_3d.png",
         colorClass: "text-teal-600",
         bgClass: "bg-teal-50 border-teal-200 group-hover:border-teal-400 group-hover:bg-teal-100",
         shadowClass: "shadow-teal-500/20 group-hover:shadow-teal-500/40"
@@ -62,7 +62,7 @@ const processSteps = [
         number: "07",
         title: "Get Reports",
         subtitle: "Download FSSAI-verified reports to your profile",
-        icon: FileCheck,
+        image: "/images/icons/icon_report_3d.png",
         colorClass: "text-indigo-600",
         bgClass: "bg-indigo-50 border-indigo-200 group-hover:border-indigo-400 group-hover:bg-indigo-100",
         shadowClass: "shadow-indigo-500/20 group-hover:shadow-indigo-500/40"
@@ -107,12 +107,11 @@ export function HowToBookProcess({ className }: { className?: string }) {
                         {/* Steps grid */}
                         <div className="grid grid-cols-7 gap-3 lg:gap-5">
                             {processSteps.map((step) => {
-                                const Icon = step.icon;
                                 return (
                                     <div key={step.number} className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
                                         {/* Icon circle */}
-                                        <div className={`relative z-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 group-hover:scale-110 ${step.bgClass} ${step.shadowClass}`}>
-                                            <Icon className={`h-8 w-8 transition-colors ${step.colorClass}`} />
+                                        <div className={`relative z-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 group-hover:scale-110 ${step.bgClass} ${step.shadowClass} overflow-hidden bg-white`}>
+                                            <img src={step.image} alt={step.title} className="w-full h-full object-cover mix-blend-multiply" />
                                         </div>
 
                                         {/* Step number badge */}
@@ -139,12 +138,11 @@ export function HowToBookProcess({ className }: { className?: string }) {
                 {/* Mobile: Vertical Flow */}
                 <div className="md:hidden space-y-6">
                     {processSteps.map((step) => {
-                        const Icon = step.icon;
                         return (
                             <div key={step.number} className="flex gap-4 group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
                                 {/* Icon */}
-                                <div className={`flex-shrink-0 flex h-14 w-14 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 ${step.bgClass}`}>
-                                    <Icon className={`h-6 w-6 ${step.colorClass}`} />
+                                <div className={`flex-shrink-0 flex h-14 w-14 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 ${step.bgClass} overflow-hidden bg-white`}>
+                                    <img src={step.image} alt={step.title} className="w-full h-full object-cover mix-blend-multiply" />
                                 </div>
 
                                 {/* Content */}

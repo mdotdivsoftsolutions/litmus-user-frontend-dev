@@ -145,7 +145,7 @@ export default function TestsListingPage() {
       </div>
 
       {/* 5. MOST BOOKED DIAGNOSTICS */}
-      <div ref={resultsRef} className="scroll-mt-6" data-aos="fade-up" data-aos-delay="200">
+      <div ref={resultsRef} className="scroll-mt-6">
         <MostBookedTests
           tests={formattedTests}
           discountPct={discountPct}

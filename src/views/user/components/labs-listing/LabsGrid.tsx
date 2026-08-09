@@ -39,7 +39,7 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
         {isLoading ? (
           Array.from({ length: 4 }).map((_, i) => (
-            <Card key={`skeleton-${i}`} className="border-1 border-slate-50 shadow-sm rounded-[1rem] overflow-hidden bg-white">
+            <Card key={`skeleton-${i}`} data-aos="fade-up" data-aos-delay={(i % 4) * 100} className="border-1 border-slate-50 shadow-sm rounded-[1rem] overflow-hidden bg-white">
               <CardContent className="p-4 space-y-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
@@ -78,8 +78,8 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
               </CardContent>
             </Card>
           ))
-        ) : filtered.map((lab) => (
-          <Link key={lab.id} to={`/labs/${lab.id}`} className="block group decoration-transparent">
+        ) : filtered.map((lab, i) => (
+          <Link key={lab.id} to={`/labs/${lab.id}`} data-aos="fade-up" data-aos-delay={(i % 10) * 50} className="block group decoration-transparent">
             <Card className="h-full border-1 border-slate-50 shadow-sm group-hover:border-[#D32F2F]/10 group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.05)] transition-all duration-500 rounded-[1rem] overflow-hidden bg-white">
               <CardContent className="p-4 space-y-4">
                 <div className="flex items-start justify-between">

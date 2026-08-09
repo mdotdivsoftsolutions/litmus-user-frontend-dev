@@ -69,7 +69,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
         <ScrollArea className="flex-1">
           {isLoading ? (
             <div className="flex justify-center items-center h-48">
-              <Loader2 className="h-8 w-8 animate-spin text-[#D32F2F]" />
+              <Loader2 className="h-8 w-8 animate-spin text-brand-primary" />
             </div>
           ) : cartItems.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-[60vh] p-8 text-center space-y-4">
@@ -80,7 +80,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                 <p className="text-base font-semibold text-slate-800">Your cart is empty</p>
                 <p className="text-xs text-slate-400 max-w-[200px] mx-auto leading-relaxed">Discover our premium testing packages to start your food safety journey.</p>
               </div>
-              <Button onClick={() => setIsOpen(false)} asChild className="h-10 px-6 bg-[#D32F2F] text-white font-semibold text-xs rounded-lg">
+              <Button onClick={() => setIsOpen(false)} asChild className="h-10 px-6 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xs rounded-lg">
                 <Link to="/packages">Browse Packages</Link>
               </Button>
             </div>
@@ -104,7 +104,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                          <button 
                            onClick={() => removeItem(item._id)} 
                            disabled={removeMutation.isPending}
-                           className="text-slate-300 hover:text-[#D32F2F] transition-colors p-1 disabled:opacity-50"
+                           className="text-slate-300 hover:text-brand-primary transition-colors p-1 disabled:opacity-50"
                          >
                             {removeMutation.isPending && removeMutation.variables === item._id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                          </button>
@@ -143,7 +143,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                </div>
                <div className="flex justify-between items-center pt-2 text-base font-semibold text-slate-800 border-t border-slate-50 mt-2">
                   <span>To Pay</span>
-                  <span className="text-[#D32F2F]">₹{total.toLocaleString()}</span>
+                  <span className="text-brand-primary">₹{total.toLocaleString()}</span>
                </div>
             </div>
 
@@ -151,7 +151,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                <Button asChild onClick={() => setIsOpen(false)} variant="outline" className="flex-1 h-11 border-slate-200 text-slate-500 hover:text-slate-800 font-semibold uppercase text-[10px] tracking-widest rounded-lg flex items-center justify-center gap-2 transition-all">
                   <Link to="/home">Explore</Link>
                </Button>
-               <Button asChild onClick={() => setIsOpen(false)} className="flex-[2] h-11 bg-[#D32F2F] hover:bg-[#B71C1C] text-white font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
+               <Button asChild onClick={() => setIsOpen(false)} className="flex-[2] h-11 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
                   <Link to="/bookings/new">Checkout <ArrowRight className="h-4 w-4" /></Link>
                </Button>
             </div>

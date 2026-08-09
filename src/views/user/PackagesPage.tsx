@@ -67,7 +67,7 @@ export default function PackagesPage() {
       </div>
 
       {/* 2. PACKAGES GRID */}
-      <section ref={resultsRef} className="scroll-mt-6" data-aos="fade-up" data-aos-delay="100">
+      <section ref={resultsRef} className="scroll-mt-6">
         <PackagesGrid
           packages={packagesData}
           search={search}

@@ -26,7 +26,7 @@ export function PackagesGrid({ packages, search, isLoading, selectedCategory, ha
       <div className="grid md:grid-cols-4 lg:grid-cols-4 gap-5">
         {isLoading ? (
            Array.from({ length: 6 }).map((_, i) => (
-             <div key={i} className="bg-white rounded-[1rem] p-5 md:p-6 border-2 border-slate-50 flex flex-col gap-5 w-full">
+             <div key={i} data-aos="fade-up" data-aos-delay={(i % 6) * 100} className="bg-white rounded-[1rem] p-5 md:p-6 border-2 border-slate-50 flex flex-col gap-5 w-full">
                <Skeleton className="h-6 w-1/3 rounded-full" />
                <Skeleton className="h-8 w-3/4" />
                <Skeleton className="h-10 w-full" />
@@ -34,8 +34,10 @@ export function PackagesGrid({ packages, search, isLoading, selectedCategory, ha
                <Skeleton className="h-12 w-full mt-auto" />
              </div>
            ))
-        ) : filteredPackages.map((pkg: any) => (
-          <TestCard key={pkg._id} t={pkg} className="m-0 w-full shrink h-full" />
+        ) : filteredPackages.map((pkg: any, i: number) => (
+          <div key={pkg._id} data-aos="fade-up" data-aos-delay={(i % 12) * 50} className="w-full h-full">
+            <TestCard t={pkg} className="m-0 w-full shrink h-full" />
+          </div>
         ))}
 
         {!isLoading && filteredPackages.length === 0 && (
@@ -57,7 +59,7 @@ export function PackagesGrid({ packages, search, isLoading, selectedCategory, ha
               onClick={onLoadMore}
               disabled={isFetchingNextPage}
               variant="outline" 
-              className="h-12 px-10 rounded-xl border-slate-200 text-slate-500 hover:text-[#D32F2F] hover:border-[#D32F2F]/20 font-semibold text-xs tracking-[0.2em] uppercase transition-all flex items-center gap-3 bg-white shadow-sm hover:shadow-md"
+              className="h-12 px-10 rounded-xl border-slate-200 text-slate-500 hover:text-brand-action hover:border-brand-action/20 font-semibold text-xs tracking-[0.2em] uppercase transition-all flex items-center gap-3 bg-white shadow-sm hover:shadow-md"
             >
               {isFetchingNextPage ? "Loading..." : "Discover More Packages"} <ArrowRight className="h-4 w-4" />
             </Button>
