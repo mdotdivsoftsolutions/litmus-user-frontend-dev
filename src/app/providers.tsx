@@ -15,11 +15,15 @@ const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    AOS.init({
-      duration: 700,
-      once: false,
-      offset: 100,
-    });
+    // Delay AOS initialization to allow React 18 hydration to complete first
+    // This prevents hydration mismatch errors caused by AOS mutating the DOM
+    const aosTimeout = setTimeout(() => {
+      AOS.init({
+        duration: 700,
+        once: false,
+        offset: 100,
+      });
+    }, 100);
 
     const lenis = new Lenis();
     function raf(time: number) {
@@ -27,7 +31,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
-    return () => lenis.destroy();
+    return () => {
+      clearTimeout(aosTimeout);
+      lenis.destroy();
+    };
   }, []);
 
   return (

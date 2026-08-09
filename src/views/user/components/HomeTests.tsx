@@ -107,6 +107,7 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
     onError: (err: Error & { response?: { data?: { message?: string } } }) => {
       toast.error(err.response?.data?.message || "Failed to add to cart");
     }
+
   });
 
   const { data: userResponse } = useQuery({ queryKey: ["userProfile"], queryFn: authApi.getMe, retry: false });
@@ -114,10 +115,6 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
 
   const handleAddToCart = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!user) {
-      window.dispatchEvent(new Event('openAuthModal'));
-      return;
-    }
     if (isInCart || addMutation.isPending) return;
     addMutation.mutate({
       itemType,

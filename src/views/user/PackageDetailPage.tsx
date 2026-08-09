@@ -82,10 +82,6 @@ export default function PackageDetailPage() {
   });
 
   const handleAddToCart = () => {
-    if (!user) {
-      window.dispatchEvent(new Event('openAuthModal'));
-      return;
-    }
     if (!pkg || isInCart || addMutation.isPending) return;
     addMutation.mutate({
       itemType: 'PACKAGE',

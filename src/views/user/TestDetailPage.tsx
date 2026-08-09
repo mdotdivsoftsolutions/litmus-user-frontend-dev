@@ -49,10 +49,6 @@ export default function TestDetailPage() {
   });
 
   const handleAddToCart = () => {
-    if (!user) {
-      window.dispatchEvent(new Event('openAuthModal'));
-      return;
-    }
     if (!testObj || isInCart || addMutation.isPending) return;
     addMutation.mutate({
       itemType: 'TEST',
