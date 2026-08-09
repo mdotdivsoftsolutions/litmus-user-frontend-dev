@@ -9,42 +9,63 @@ const processSteps = [
         title: "Create Account",
         subtitle: "Sign up or login to your Litmus account",
         icon: UserPlus,
+        colorClass: "text-blue-600",
+        bgClass: "bg-blue-50 border-blue-200 group-hover:border-blue-400 group-hover:bg-blue-100",
+        shadowClass: "shadow-blue-500/20 group-hover:shadow-blue-500/40"
     },
     {
         number: "02",
         title: "Browse & Select Tests",
         subtitle: "Choose from our extensive food safety test catalog",
         icon: Search,
+        colorClass: "text-purple-600",
+        bgClass: "bg-purple-50 border-purple-200 group-hover:border-purple-400 group-hover:bg-purple-100",
+        shadowClass: "shadow-purple-500/20 group-hover:shadow-purple-500/40"
     },
     {
         number: "03",
         title: "Book and Pay",
         subtitle: "Securely pay for your selected tests",
-        icon: FileCheck, // Or a payment icon if available, but FileCheck works
+        icon: FileCheck,
+        colorClass: "text-emerald-600",
+        bgClass: "bg-emerald-50 border-emerald-200 group-hover:border-emerald-400 group-hover:bg-emerald-100",
+        shadowClass: "shadow-emerald-500/20 group-hover:shadow-emerald-500/40"
     },
     {
         number: "04",
         title: "Schedule Pickup",
         subtitle: "Book your preferred collection time and location",
         icon: CalendarCheck,
+        colorClass: "text-orange-600",
+        bgClass: "bg-orange-50 border-orange-200 group-hover:border-orange-400 group-hover:bg-orange-100",
+        shadowClass: "shadow-orange-500/20 group-hover:shadow-orange-500/40"
     },
     {
         number: "05",
         title: "Sample Collection",
         subtitle: "Safe and secure sample collection at your doorstep",
         icon: Truck,
+        colorClass: "text-pink-600",
+        bgClass: "bg-pink-50 border-pink-200 group-hover:border-pink-400 group-hover:bg-pink-100",
+        shadowClass: "shadow-pink-500/20 group-hover:shadow-pink-500/40"
     },
     {
         number: "06",
         title: "Lab Analysis",
         subtitle: "Advanced testing in NABL accredited laboratories",
         icon: FlaskConical,
+        colorClass: "text-teal-600",
+        bgClass: "bg-teal-50 border-teal-200 group-hover:border-teal-400 group-hover:bg-teal-100",
+        shadowClass: "shadow-teal-500/20 group-hover:shadow-teal-500/40"
     },
     {
         number: "07",
         title: "Get Reports",
         subtitle: "Download FSSAI-verified reports to your profile",
         icon: FileCheck,
+        colorClass: "text-indigo-600",
+        bgClass: "bg-indigo-50 border-indigo-200 group-hover:border-indigo-400 group-hover:bg-indigo-100",
+        shadowClass: "shadow-indigo-500/20 group-hover:shadow-indigo-500/40"
     },
 ] as const;
 
@@ -75,35 +96,27 @@ export function HowToBookProcess({ className }: { className?: string }) {
                                 {/* Path for 7 items. Centers at 100, 300, 500, 700, 900, 1100, 1300 */}
                                 <path 
                                     d="M 100 50 Q 200 0 300 50 T 500 50 T 700 50 T 900 50 T 1100 50 T 1300 50" 
-                                    stroke="#67CBA0" 
-                                    strokeWidth="3" 
-                                    strokeDasharray="8 8" 
+                                    stroke="#cbd5e1" 
+                                    strokeWidth="2" 
+                                    strokeDasharray="6 6" 
                                     fill="none" 
-                                    opacity="0.6" 
                                 />
-                                {/* Dots along the curve */}
-                                <circle cx="200" cy="25" r="5" fill="#008eb3" opacity="0.8" />
-                                <circle cx="400" cy="75" r="5" fill="#008eb3" opacity="0.8" />
-                                <circle cx="600" cy="25" r="5" fill="#008eb3" opacity="0.8" />
-                                <circle cx="800" cy="75" r="5" fill="#008eb3" opacity="0.8" />
-                                <circle cx="1000" cy="25" r="5" fill="#008eb3" opacity="0.8" />
-                                <circle cx="1200" cy="75" r="5" fill="#008eb3" opacity="0.8" />
                             </svg>
                         </div>
 
                         {/* Steps grid */}
                         <div className="grid grid-cols-7 gap-3 lg:gap-5">
-                            {processSteps.map((step, idx) => {
+                            {processSteps.map((step) => {
                                 const Icon = step.icon;
                                 return (
-                                    <div key={step.number} className="flex flex-col items-center text-center group">
+                                    <div key={step.number} className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
                                         {/* Icon circle */}
-                                        <div className="relative z-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-white border-2 border-[#008eb3]/30 shadow-[0_4px_20px_-4px_rgba(0,78,100,0.15)] transition-all duration-300 group-hover:border-[#008eb3] group-hover:shadow-[0_8px_30px_-4px_rgba(0,78,100,0.25)] group-hover:scale-105">
-                                            <Icon className="h-8 w-8 text-[#004e64] group-hover:text-[#008eb3] transition-colors" />
+                                        <div className={`relative z-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 group-hover:scale-110 ${step.bgClass} ${step.shadowClass}`}>
+                                            <Icon className={`h-8 w-8 transition-colors ${step.colorClass}`} />
                                         </div>
 
                                         {/* Step number badge */}
-                                        <span className="text-[10px] font-black text-[#008eb3] tracking-wider mb-2">
+                                        <span className={`text-[10px] font-black tracking-wider mb-2 ${step.colorClass}`}>
                                             STEP {step.number}
                                         </span>
 
@@ -125,18 +138,18 @@ export function HowToBookProcess({ className }: { className?: string }) {
 
                 {/* Mobile: Vertical Flow */}
                 <div className="md:hidden space-y-6">
-                    {processSteps.map((step, idx) => {
+                    {processSteps.map((step) => {
                         const Icon = step.icon;
                         return (
-                            <div key={step.number} className="flex gap-4">
+                            <div key={step.number} className="flex gap-4 group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
                                 {/* Icon */}
-                                <div className="flex-shrink-0 flex h-14 w-14 items-center justify-center rounded-full bg-white border-2 border-[#008eb3]/30 shadow-sm">
-                                    <Icon className="h-6 w-6 text-[#004e64]" />
+                                <div className={`flex-shrink-0 flex h-14 w-14 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 ${step.bgClass}`}>
+                                    <Icon className={`h-6 w-6 ${step.colorClass}`} />
                                 </div>
 
                                 {/* Content */}
                                 <div className="flex-1 pt-1">
-                                    <span className="text-[9px] font-black text-[#008eb3] tracking-wider">STEP {step.number}</span>
+                                    <span className={`text-[9px] font-black tracking-wider ${step.colorClass}`}>STEP {step.number}</span>
                                     <h4 className="text-base font-bold text-slate-900 mt-0.5">{step.title}</h4>
                                     <p className="mt-1 text-sm text-slate-600">{step.subtitle}</p>
                                 </div>

@@ -144,7 +144,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
             <CarouselContent>
               {slides.map((slide) => (
                 <CarouselItem key={slide.id}>
-                  <div className="overflow-hidden relative h-[65vh] md:h-screen min-h-[400px] md:min-h-[600px] max-h-[850px] flex flex-col justify-center">
+                  <div className="overflow-hidden relative h-[75vh] md:h-screen min-h-[500px] md:min-h-[600px] max-h-[850px] flex flex-col justify-center">
                     {slide.video ? (
                       <video 
                         autoPlay muted playsInline 
