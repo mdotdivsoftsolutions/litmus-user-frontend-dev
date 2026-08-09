@@ -7,25 +7,35 @@ import { LabsHero } from "./components/labs-listing/LabsHero";
 import { LabsGrid } from "./components/labs-listing/LabsGrid";
 import { ConsultationServices } from "./components/consultation/ConsultationServices";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { labApi } from "@/lib/api/lab";
 
 export default function LabsListingPage() {
   const [search, setSearch] = useState("");
   const [selectedCity, setSelectedCity] = useState("All Cities");
-  const [visibleCount, setVisibleCount] = useState(10);
+  const [visibleCount, setVisibleCount] = useState(10); // kept for any un-removed refs but replaced by backend pagination
 
   const debouncedSearch = useDebounce(search, 300);
 
-  const { data: labsResponse, isLoading } = useQuery({
+  const { 
+    data: labsResponse, 
+    isLoading: labsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useInfiniteQuery({
     queryKey: ["publicLabs", { location: selectedCity !== "All Cities" ? selectedCity : undefined, search: debouncedSearch }],
-    queryFn: () => labApi.getLabsPublic({ 
+    queryFn: ({ pageParam = 1 }) => labApi.getLabsPublic({ 
       location: selectedCity !== "All Cities" ? selectedCity : undefined,
-      search: debouncedSearch
+      search: debouncedSearch,
+      page: pageParam,
+      limit: 12
     }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.page < lastPage.pages ? lastPage.page + 1 : undefined,
   });
 
-  const rawLabs = labsResponse?.data || [];
+  const rawLabs = labsResponse?.pages.flatMap(p => p.data || []) || [];
 
   const mappedLabs = rawLabs.map((l: any) => ({
       id: l._id,
@@ -64,7 +74,10 @@ export default function LabsListingPage() {
           filtered={filtered}
           visibleCount={visibleCount}
           setVisibleCount={setVisibleCount}
-          isLoading={isLoading}
+          isLoading={!labsResponse && labsLoading}
+          hasMore={hasNextPage}
+          onLoadMore={() => fetchNextPage()}
+          isFetchingNextPage={isFetchingNextPage}
         />
       </div>
       <ConsultationServices />

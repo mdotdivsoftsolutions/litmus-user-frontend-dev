@@ -26,11 +26,14 @@ interface LabItem {
 interface LabsGridProps {
   filtered: LabItem[];
   visibleCount: number;
-  setVisibleCount: Dispatch<SetStateAction<number>>;
+  setVisibleCount?: Dispatch<SetStateAction<number>>;
   isLoading?: boolean;
+  hasMore?: boolean;
+  onLoadMore?: () => void;
+  isFetchingNextPage?: boolean;
 }
 
-export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading }: LabsGridProps) {
+export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, hasMore, onLoadMore, isFetchingNextPage }: LabsGridProps) {
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
@@ -75,7 +78,7 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading }:
               </CardContent>
             </Card>
           ))
-        ) : filtered.slice(0, visibleCount).map((lab) => (
+        ) : filtered.map((lab) => (
           <Link key={lab.id} to={`/labs/${lab.id}`} className="block group decoration-transparent">
             <Card className="h-full border-1 border-slate-50 shadow-sm group-hover:border-[#D32F2F]/10 group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.05)] transition-all duration-500 rounded-[1rem] overflow-hidden bg-white">
               <CardContent className="p-4 space-y-4">
@@ -141,14 +144,15 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading }:
         ))}
       </div>
 
-      {!isLoading && filtered.length > visibleCount && (
+      {hasMore && (
          <div className="mt-12 flex justify-center">
             <Button 
-              onClick={() => setVisibleCount(filtered.length)}
+              onClick={onLoadMore}
+              disabled={isFetchingNextPage}
               variant="outline" 
               className="h-10 px-8 rounded-xl border-slate-200 text-slate-500 hover:text-[#D32F2F] hover:border-[#D32F2F]/20 font-semibold text-[10px] tracking-[0.2em] uppercase transition-all flex items-center gap-2 bg-white shadow-sm hover:shadow-md"
             >
-              View All <ArrowRight className="h-3 w-3" />
+              {isFetchingNextPage ? "Loading..." : "Load More"} <ArrowRight className="h-3 w-3" />
             </Button>
          </div>
       )}

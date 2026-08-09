@@ -51,7 +51,7 @@ export function SupportContact() {
                         </div>
                         <div>
                            <p className="text-[9px] font-black text-emerald-500 uppercase tracking-widest mb-1 flex items-center gap-2">
-                             <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> WhatsApp Support
+                             <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" /> WhatsApp Support
                            </p>
                            <p className="text-xs font-semibold text-white tracking-tight">Message Our Scientists Live</p>
                         </div>
