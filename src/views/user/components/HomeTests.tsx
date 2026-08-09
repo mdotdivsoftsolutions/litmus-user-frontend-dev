@@ -235,24 +235,27 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
               label: "View All Packages",
               href: "/packages",
             }}
+            rightContent={
+              <div className="hidden md:flex gap-2">
+                <button
+                  onClick={() => scroll('left')}
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm border border-slate-200 text-slate-600 transition-all duration-300 hover:shadow-md hover:text-brand-action hover:border-brand-action/30"
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <button
+                  onClick={() => scroll('right')}
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm border border-slate-200 text-slate-600 transition-all duration-300 hover:shadow-md hover:text-brand-action hover:border-brand-action/30"
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            }
           />
 
-          <div className="relative group">
-            <button
-              onClick={() => scroll('left')}
-              className="absolute -left-4 top-[45%] -translate-y-1/2 z-20 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-xl border border-slate-100 text-slate-600 transition-all duration-300 hover:scale-105 hover:text-brand-action opacity-0 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-
-            <button
-              onClick={() => scroll('right')}
-              className="absolute -right-4 top-[45%] -translate-y-1/2 z-20 hidden md:flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-xl border border-slate-100 text-slate-600 transition-all duration-300 hover:scale-105 hover:text-brand-action opacity-0 group-hover:opacity-100 focus:opacity-100 disabled:opacity-0"
-              aria-label="Scroll right"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
+          <div className="relative">
 
             <div ref={scrollRef} className="flex overflow-x-auto scrollbar-hide pb-5 pt-2 -mx-2 scroll-smooth">
             {isLoading ? (
@@ -281,8 +284,10 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
                 </div>
               ))
             ) : displayPackages.length > 0 ? (
-              displayPackages.map((t: TestItemType) => (
-                <TestCard key={`popular-pkg-${t._id}`} t={t} cartItems={cartItems} addToCart={addToCart} removeFromCart={removeFromCart} />
+              displayPackages.map((t: TestItemType, index: number) => (
+                <div key={`popular-pkg-${t._id}`} data-aos="fade-up" data-aos-delay={index * 100}>
+                  <TestCard t={t} cartItems={cartItems} addToCart={addToCart} removeFromCart={removeFromCart} />
+                </div>
               ))
             ) : (
               <div className="w-full text-center py-10 text-muted-foreground">

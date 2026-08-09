@@ -29,15 +29,15 @@ export function SectionHeader({
     <div className={cn("md:mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end", className)}>
       <div className="flex-1">
         {badge && (
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-card-from">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-brand-card-from" data-aos="fade-right">
             {badge}
           </div>
         )}
-        <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-800 lg:text-3xl">
+        <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-800 lg:text-3xl" data-aos="fade-right" data-aos-delay="100">
           {title}
         </h2>
         {subtitle && (
-          <p className="mt-4 text-base font-medium text-slate-500 max-w-xl leading-relaxed line-clamp-2">
+          <p className="mt-4 text-base font-medium text-slate-500 max-w-xl leading-relaxed line-clamp-2" data-aos="fade-right" data-aos-delay="200">
             {subtitle}
           </p>
         )}

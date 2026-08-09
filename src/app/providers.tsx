@@ -8,11 +8,19 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 import Lenis from 'lenis';
 import { useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    AOS.init({
+      duration: 700,
+      once: false,
+      offset: 100,
+    });
+
     const lenis = new Lenis();
     function raf(time: number) {
       lenis.raf(time);

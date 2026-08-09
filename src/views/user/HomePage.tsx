@@ -1,7 +1,7 @@
 "use client";
 
 import { HomeHero } from "./components/HomeHero";
-import { useState, type MouseEvent } from "react";
+import { useState, useEffect, type MouseEvent } from "react";
 import { HomeTests } from "./components/HomeTests";
 import { PartnerLabs } from "./components/home/PartnerLabs";
 import { PromoBanner } from "./components/home/PromoBanner";
@@ -13,18 +13,6 @@ import { ConsultancyServices } from "./components/home/ConsultancyServices";
 import { HowToBookProcess } from "./components/home/HowToBookProcess";
 import { SafetyCheckupBanner } from "./components/home/SafetyCheckupBanner";
 import { FooterSEO } from "@/components/layout/footer/FooterSEO";
-import { motion } from "framer-motion";
-
-const FadeIn = ({ children }: { children: React.ReactNode }) => (
-  <motion.div
-    initial={{ opacity: 0 }}
-    whileInView={{ opacity: 1 }}
-    viewport={{ once: true, margin: "-100px" }}
-    transition={{ duration: 0.7 }}
-  >
-    {children}
-  </motion.div>
-);
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("tests");
@@ -48,7 +36,6 @@ export default function HomePage() {
 
   return (
     <div className="bg-white min-h-screen">
-
       {/* ═══════════ HERO & METRICS ═══════════ */}
       <HomeHero
         searchQuery={searchQuery}
@@ -56,59 +43,39 @@ export default function HomePage() {
       />
 
       {/* ═══════════ POPULAR TESTS CAROUSEL ═══════════ */}
-      <FadeIn>
-        <HomeTests
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
-          cartItems={cartItems}
-          addToCart={addToCart}
-          removeFromCart={removeFromCart}
-        />
-      </FadeIn>
+      <HomeTests
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        cartItems={cartItems}
+        addToCart={addToCart}
+        removeFromCart={removeFromCart}
+      />
 
       {/* ═══════════ POPULAR PACKAGES ═══════════ */}
-      <FadeIn>
-        <PromoBanner className="pb-12 md:pb-16" />
-      </FadeIn>
+      <PromoBanner className="pb-12 md:pb-16" />
 
       {/* ═══════════ TESTS BY FOOD CATEGORY ═══════════ */}
-      <FadeIn>
-        <SpecialityCarousel />
-      </FadeIn>
+      <SpecialityCarousel />
 
-      <FadeIn>
-        <ConsultancyServices />
-      </FadeIn>
+      <ConsultancyServices />
 
       {/* ═══════════ HOW WE WORK ═══════════ */}
-      <FadeIn>
-        <HowToBookProcess className="bg-white" />
-      </FadeIn>
+      <HowToBookProcess className="bg-white" />
 
       {/* ═══════════ TRUSTED PARTNER LABORATORIES ═══════════ */}
-      <FadeIn>
-        <PartnerLabs />
-      </FadeIn>
+      <PartnerLabs />
 
       {/* ═══════════ CUSTOMER REVIEWS ═══════════ */}
-      <FadeIn>
-        <CustomerReviews />
-      </FadeIn>
+      <CustomerReviews />
 
       {/* ═══════════ SAFETY CHECKUP BANNER ═══════════ */}
-      <FadeIn>
-        <SafetyCheckupBanner />
-      </FadeIn>
+      <SafetyCheckupBanner />
 
       {/* ═══════════ FAQ ═══════════ */}
-      <FadeIn>
-        <FAQ />
-      </FadeIn>
+      <FAQ />
 
       {/* ═══════════ SEO CONTENT ═══════════ */}
-      <FadeIn>
-        <FooterSEO />
-      </FadeIn>
+      <FooterSEO />
     </div>
   );
 }

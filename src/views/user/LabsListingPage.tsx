@@ -61,15 +61,17 @@ export default function LabsListingPage() {
 
   return (
     <div className="animate-fade-in min-h-screen bg-white">
-      <LabsHero
-        search={search}
-        setSearch={setSearch}
-        selectedCity={selectedCity}
-        setSelectedCity={setSelectedCity}
-        labs={mappedLabs}
-        onSearch={handleSearch}
-      />
-      <div ref={resultsRef} className="bg-slate-50 scroll-mt-6">
+      <div data-aos="fade-up">
+        <LabsHero
+          search={search}
+          setSearch={setSearch}
+          selectedCity={selectedCity}
+          setSelectedCity={setSelectedCity}
+          labs={mappedLabs}
+          onSearch={handleSearch}
+        />
+      </div>
+      <div ref={resultsRef} className="bg-slate-50 scroll-mt-6" data-aos="fade-up" data-aos-delay="100">
         <LabsGrid
           filtered={filtered}
           visibleCount={visibleCount}
@@ -80,7 +82,9 @@ export default function LabsListingPage() {
           isFetchingNextPage={isFetchingNextPage}
         />
       </div>
-      <ConsultationServices />
+      <div data-aos="fade-up" data-aos-delay="150">
+        <ConsultationServices />
+      </div>
     </div>
   );
 }

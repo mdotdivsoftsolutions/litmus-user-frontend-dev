@@ -125,28 +125,27 @@ export default function TestsListingPage() {
     <div className="animate-fade-in bg-slate-50 min-h-screen">
 
       {/* 1. PANORAMIC HERO */}
-      <TestsHero search={search} setSearch={setSearch} tests={testsData} onSearch={handleSearch} />
+      <div data-aos="fade-up">
+        <TestsHero search={search} setSearch={setSearch} tests={testsData} onSearch={handleSearch} />
+      </div>
 
       {/* 2. STATS STRIP */}
-      <TestsStatsStrip /> 
+      <div data-aos="fade-up" data-aos-delay="100">
+        <TestsStatsStrip /> 
+      </div>
 
       {/* 3. CATEGORY STRIP — always at top for filtering */}
-      <CategoryStrip
-        selectedCategory={activeCategoryName}
-        setSelectedCategory={handleCategoryChange}
-        categories={categoriesData}
-        isLoading={catLoading}
-      />
-
-      {/* 4. TEST PACKAGES GRID */}
-      {/* <div className="max-w-7xl mx-auto px-4 py-6 my-16">
-        <TestsGrid
-          ...
+      <div data-aos="fade-up" data-aos-delay="150">
+        <CategoryStrip
+          selectedCategory={activeCategoryName}
+          setSelectedCategory={handleCategoryChange}
+          categories={categoriesData}
+          isLoading={catLoading}
         />
-      </div> */}
+      </div>
 
       {/* 5. MOST BOOKED DIAGNOSTICS */}
-      <div ref={resultsRef} className="scroll-mt-6">
+      <div ref={resultsRef} className="scroll-mt-6" data-aos="fade-up" data-aos-delay="200">
         <MostBookedTests
           tests={formattedTests}
           discountPct={discountPct}
@@ -163,10 +162,14 @@ export default function TestsListingPage() {
       </div>
 
       {/* TRUST & ORDERING SECTION (Customized for Litmus) */}
-      <TrustAndOrdering />
+      <div data-aos="fade-up">
+        <TrustAndOrdering />
+      </div>
 
       {/* PROMO BANNER CAROUSEL (From Home Page) */}
-      <PromoBanner className="py-12 bg-slate-50 md:py-20" />
+      <div data-aos="fade-up">
+        <PromoBanner className="py-12 bg-slate-50 md:py-20" />
+      </div>
 
       <div className="max-w-7xl mx-auto px-4">
         {/* Empty state is now handled inside MostBookedTests */}

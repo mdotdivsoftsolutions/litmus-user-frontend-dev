@@ -54,18 +54,20 @@ export default function PackagesPage() {
   return (
     <div className="animate-fade-in bg-white min-h-screen">
       {/* 1. VIBRANT PANORAMIC HERO */}
-      <PackagesHero
-        categories={heroCategories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        search={search}
-        setSearch={setSearch}
-        packages={packagesData}
-        onSearch={handleSearch}
-      />
+      <div data-aos="fade-up">
+        <PackagesHero
+          categories={heroCategories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          search={search}
+          setSearch={setSearch}
+          packages={packagesData}
+          onSearch={handleSearch}
+        />
+      </div>
 
       {/* 2. PACKAGES GRID */}
-      <section ref={resultsRef} className=" scroll-mt-6">
+      <section ref={resultsRef} className="scroll-mt-6" data-aos="fade-up" data-aos-delay="100">
         <PackagesGrid
           packages={packagesData}
           search={search}
@@ -78,12 +80,12 @@ export default function PackagesPage() {
       </section>
 
       {/* 3. CALL TO ACTION */}
-      <section className="bg-white py-10 md:py-20">
+      <section className="bg-white py-10 md:py-20" data-aos="fade-up" data-aos-delay="150">
         <PackagesCTA />
       </section>
 
       {/* 4. FOOD CATEGORY WISE PACKAGES */}
-      <section className="bg-slate-50 ">
+      <section className="bg-slate-50" data-aos="fade-up">
         <CategoryStrip 
           selectedCategory={""} 
           setSelectedCategory={(cat) => {
