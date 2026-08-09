@@ -51,6 +51,7 @@ export function AuthModal({ isOpen, onClose, isSkippable = true }: AuthModalProp
     onSuccess: () => {
       toast.success("Welcome back!");
       queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
       onClose();
     },
     onError: (error: any) => {
@@ -74,6 +75,7 @@ export function AuthModal({ isOpen, onClose, isSkippable = true }: AuthModalProp
     onSuccess: () => {
       toast.success("Account created successfully!");
       queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
       onClose();
     },
     onError: (error: any) => {
