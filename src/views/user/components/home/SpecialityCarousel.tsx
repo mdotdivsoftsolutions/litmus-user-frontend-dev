@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { SectionHeader } from "./SectionHeader";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const FALLBACK_IMAGE = "/stock_image/speciality-1.png";
 
