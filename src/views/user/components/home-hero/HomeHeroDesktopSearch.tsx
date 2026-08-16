@@ -5,11 +5,15 @@ import { Search, Microscope, Ticket, Package } from "lucide-react";
 import { SearchAutocomplete } from "@/components/common/SearchAutocomplete";
 import { ConsultationBookingModal } from "../consultation/ConsultationBookingModal";
 
-interface HomeHeroDesktopSearchProps {
-  searchQuery: string;
+function submitSearch(form: HTMLFormElement) {
+  const input = form.querySelector("input");
+  const query = input?.value?.trim();
+  if (query) {
+    window.location.href = `/tests?search=${encodeURIComponent(query)}`;
+  }
 }
 
-export function HomeHeroDesktopSearch({ searchQuery }: HomeHeroDesktopSearchProps) {
+export function HomeHeroDesktopSearch() {
   return (
     <div className="absolute bottom-10 left-0 right-0 z-20 pointer-events-none hidden lg:block">
       <div className="w-full max-w-7xl mx-auto px-4">
@@ -18,9 +22,7 @@ export function HomeHeroDesktopSearch({ searchQuery }: HomeHeroDesktopSearchProp
             className="relative flex-1"
             onSubmit={(e) => {
               e.preventDefault();
-              if (searchQuery.trim()) {
-                window.location.href = `/tests?search=${encodeURIComponent(searchQuery.trim())}`;
-              }
+              submitSearch(e.currentTarget);
             }}
           >
             <SearchAutocomplete

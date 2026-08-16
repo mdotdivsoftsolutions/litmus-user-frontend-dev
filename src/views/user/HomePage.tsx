@@ -1,91 +1,66 @@
-"use client";
-
+import { Suspense } from "react";
 import { HomeHero } from "./components/HomeHero";
-import { useState, useEffect, type MouseEvent } from "react";
 import { HomeTests } from "./components/HomeTests";
 import { PartnerLabs } from "./components/home/PartnerLabs";
 import { PromoBanner } from "./components/home/PromoBanner";
-import { WhatsAppBanner } from "./components/home/WhatsAppBanner";
 import { CustomerReviews } from "./components/home/CustomerReviews";
 import { FAQ } from "./components/home/FAQ";
 import { SpecialityCarousel } from "./components/home/SpecialityCarousel";
-import { ConsultancyServices } from "./components/home/ConsultancyServices";
 import { HowToBookProcess } from "./components/home/HowToBookProcess";
 import { SafetyCheckupBanner } from "./components/home/SafetyCheckupBanner";
 import { FooterSEO } from "@/components/layout/footer/FooterSEO";
+import { packageApi } from "@/lib/api/package";
+import { categoryApi } from "@/lib/api/category";
+import { labApi } from "@/lib/api/lab";
+import { reviewApi } from "@/lib/api/review";
 
-interface HomePageProps {
-  initialPackages?: any;
-  initialCategories?: any;
-  initialLabs?: any;
-  initialReviews?: any;
+const withTimeout = <T,>(promise: Promise<T>, ms = 2500): Promise<T | null> => {
+  return Promise.race([
+    promise,
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), ms)),
+  ]).catch(() => null);
+};
+
+async function PopularPackages() {
+  const res = await withTimeout(packageApi.getAllPackages());
+  return <HomeTests initialPackages={res} />;
 }
 
-export default function HomePage({
-  initialPackages,
-  initialCategories,
-  initialLabs,
-  initialReviews,
-}: HomePageProps = {}) {
-  const [activeTab, setActiveTab] = useState("tests");
-  const [cartItems, setCartItems] = useState<Record<string, number>>({});
-  const [searchQuery, setSearchQuery] = useState("");
+async function CategorySection() {
+  const res = await withTimeout(categoryApi.getCategories());
+  return <SpecialityCarousel initialCategories={res} />;
+}
 
-  const addToCart = (id: string, e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setCartItems(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
-  };
+async function LabsSection() {
+  const res = await withTimeout(labApi.getLabsPublic({ isTrusted: true }));
+  return <PartnerLabs initialLabs={res} />;
+}
 
-  const removeFromCart = (id: string, e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setCartItems(prev => {
-      const next = { ...prev };
-      if (next[id] > 1) next[id]--;
-      else delete next[id];
-      return next;
-    });
-  };
+async function ReviewsSection() {
+  const res = await withTimeout(reviewApi.getPublicReviews());
+  return <CustomerReviews initialReviews={res} />;
+}
 
+export default function HomePage() {
   return (
     <div className="bg-white min-h-screen">
-      {/* ═══════════ HERO & METRICS ═══════════ */}
-      <HomeHero
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
-
-      {/* ═══════════ POPULAR TESTS CAROUSEL ═══════════ */}
-      <HomeTests
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        cartItems={cartItems}
-        addToCart={addToCart}
-        removeFromCart={removeFromCart}
-        initialPackages={initialPackages}
-      />
-
-      {/* ═══════════ POPULAR PACKAGES ═══════════ */}
+      <HomeHero />
+      <Suspense fallback={null}>
+        <PopularPackages />
+      </Suspense>
       <PromoBanner className="pb-12 md:pb-16" />
-
-      {/* ═══════════ TESTS BY FOOD CATEGORY ═══════════ */}
-      <SpecialityCarousel initialCategories={initialCategories} />
-
-      {/* ═══════════ HOW WE WORK ═══════════ */}
+      <Suspense fallback={null}>
+        <CategorySection />
+      </Suspense>
       <HowToBookProcess className="bg-white" />
-
-      {/* ═══════════ TRUSTED PARTNER LABORATORIES ═══════════ */}
-      <PartnerLabs initialLabs={initialLabs} />
-
-      {/* ═══════════ CUSTOMER REVIEWS ═══════════ */}
-      <CustomerReviews initialReviews={initialReviews} />
-
-      {/* ═══════════ SAFETY CHECKUP BANNER ═══════════ */}
+      <Suspense fallback={null}>
+        <LabsSection />
+      </Suspense>
+      <Suspense fallback={null}>
+        <ReviewsSection />
+      </Suspense>
       <SafetyCheckupBanner />
-
-      {/* ═══════════ FAQ ═══════════ */}
       <FAQ />
-
-      {/* ═══════════ SEO CONTENT ═══════════ */}
       <FooterSEO />
     </div>
   );

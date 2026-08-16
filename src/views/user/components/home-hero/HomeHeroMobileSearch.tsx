@@ -5,11 +5,15 @@ import { Search, Microscope, Ticket, Package } from "lucide-react";
 import { SearchAutocomplete } from "@/components/common/SearchAutocomplete";
 import { ConsultationBookingModal } from "../consultation/ConsultationBookingModal";
 
-interface HomeHeroMobileSearchProps {
-  searchQuery: string;
+function submitSearch(form: HTMLFormElement) {
+  const input = form.querySelector("input");
+  const query = input?.value?.trim();
+  if (query) {
+    window.location.href = `/tests?search=${encodeURIComponent(query)}`;
+  }
 }
 
-export function HomeHeroMobileSearch({ searchQuery }: HomeHeroMobileSearchProps) {
+export function HomeHeroMobileSearch() {
   return (
     <section className="relative z-20 max-w-5xl mx-auto px-4 -mt-10 sm:-mt-10 mb-6 lg:hidden">
       <div className="bg-white rounded-3xl sm:rounded-full p-4 sm:p-3 shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-slate-100">
@@ -18,9 +22,7 @@ export function HomeHeroMobileSearch({ searchQuery }: HomeHeroMobileSearchProps)
             className="relative min-w-0 flex-1 flex w-full"
             onSubmit={(e) => {
               e.preventDefault();
-              if (searchQuery.trim()) {
-                window.location.href = `/tests?search=${encodeURIComponent(searchQuery.trim())}`;
-              }
+              submitSearch(e.currentTarget);
             }}
           >
             <SearchAutocomplete

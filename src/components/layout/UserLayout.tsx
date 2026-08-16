@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -15,9 +15,25 @@ import { MobileTabNavigation } from "./MobileTabNavigation";
 import { FooterSearchLinks } from "./footer/FooterSearchLinks";
 import { LocationProvider } from "@/components/location/LocationContext";
 
+function AuthLoginQuerySync({ setOpen }: { setOpen: (open: boolean) => void }) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const handled = useRef(false);
+
+  useEffect(() => {
+    if (handled.current) return;
+    if (searchParams?.get("login") === "true") {
+      handled.current = true;
+      setOpen(true);
+      window.history.replaceState({}, "", pathname);
+    }
+  }, [searchParams, pathname, setOpen]);
+
+  return null;
+}
+
 export function UserLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -62,15 +78,6 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
     setShowSearch(false);
   }, [pathname]);
 
-  // Handle URL search params for login modal
-  useEffect(() => {
-    if (searchParams?.get("login") === "true") {
-      setIsAuthModalOpen(true);
-      // Clean up the URL without reloading the page
-      window.history.replaceState({}, '', pathname);
-    }
-  }, [searchParams, pathname]);
-
   // Handle global event for opening auth modal
   useEffect(() => {
     const handleOpenAuth = () => setIsAuthModalOpen(true);
@@ -104,6 +111,10 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
 
         <FloatingSupportChat />
         <MobileTabNavigation cartCount={cartCount} />
+
+        <Suspense fallback={null}>
+          <AuthLoginQuerySync setOpen={setIsAuthModalOpen} />
+        </Suspense>
 
         <AuthModal
           isOpen={isAuthModalOpen}

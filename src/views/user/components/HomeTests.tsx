@@ -1,20 +1,15 @@
 "use client";
 
-import { useRef, type MouseEvent } from "react";
+import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeader } from "./home/SectionHeader";
 import { TestCard, TestItemType } from "./TestCard";
 
 export type HomeTestsProps = {
-  activeTab?: string;
-  setActiveTab?: (tab: string) => void;
-  cartItems?: Record<string, number>;
-  addToCart?: (id: string, e: MouseEvent<HTMLButtonElement>) => void;
-  removeFromCart?: (id: string, e: MouseEvent<HTMLButtonElement>) => void;
   initialPackages?: any;
 };
 
-export const HomeTests = ({ cartItems, addToCart, removeFromCart, initialPackages }: HomeTestsProps) => {
+export const HomeTests = ({ initialPackages }: HomeTestsProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: "left" | "right") => {
@@ -74,7 +69,7 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart, initialPackage
             {displayPackages.length > 0 ? (
               displayPackages.map((t: TestItemType, index: number) => (
                 <div suppressHydrationWarning key={`popular-pkg-${t._id || index}`} data-aos="fade-up" data-aos-delay={index * 100}>
-                  <TestCard t={t} cartItems={cartItems} addToCart={addToCart} removeFromCart={removeFromCart} />
+                  <TestCard t={t} />
                 </div>
               ))
             ) : (
