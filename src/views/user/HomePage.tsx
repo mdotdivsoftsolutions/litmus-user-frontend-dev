@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { HomeHero } from "./components/HomeHero";
-import { HomeTests } from "./components/HomeTests";
+import { HomeTests, HomeTestsSkeleton } from "./components/HomeTests";
 import { PartnerLabs } from "./components/home/PartnerLabs";
 import { PromoBanner } from "./components/home/PromoBanner";
 import { CustomerReviews } from "./components/home/CustomerReviews";
@@ -45,7 +45,7 @@ export default function HomePage() {
   return (
     <div className="bg-white min-h-screen">
       <HomeHero />
-      <Suspense fallback={null}>
+      <Suspense fallback={<HomeTestsSkeleton />}>
         <PopularPackages />
       </Suspense>
       <PromoBanner className="pb-12 md:pb-16" />

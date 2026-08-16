@@ -6,17 +6,15 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
-import Lenis from 'lenis';
-import { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import Lenis from "lenis";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Delay AOS initialization to allow React 18 hydration to complete first
-    // This prevents hydration mismatch errors caused by AOS mutating the DOM
     const aosTimeout = setTimeout(() => {
       AOS.init({
         duration: 700,

@@ -11,6 +11,7 @@ interface OrderInfoCardsProps {
   labCity?: string;
   totalAmount?: number;
   paymentStatus?: string;
+  bookingStatus?: string;
 }
 
 export function OrderInfoCards({
@@ -20,8 +21,9 @@ export function OrderInfoCards({
   labCity,
   totalAmount = 0,
   paymentStatus,
+  bookingStatus,
 }: OrderInfoCardsProps) {
-  const label = paymentStatusLabel(paymentStatus);
+  const label = paymentStatusLabel(paymentStatus, bookingStatus);
   const isPaid = label === "Paid";
   const isFailed = label === "Failed";
 

@@ -29,7 +29,7 @@ export function OrderTrackingTimeline({ currentStep }: OrderTrackingTimelineProp
                   className={cn(
                     "h-8 w-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 border-2",
                     isReached
-                      ? "bg-primary border-primary text-white"
+                      ? "bg-brand-action border-brand-action text-white"
                       : "bg-white border-slate-200 text-slate-400"
                   )}
                 >
@@ -48,7 +48,7 @@ export function OrderTrackingTimeline({ currentStep }: OrderTrackingTimelineProp
               {!isLast && (
                 <div className="flex-1 h-[2px] mt-[15px] mx-1 sm:mx-2 rounded-full bg-slate-200 overflow-hidden">
                   <div
-                    className="h-full bg-primary transition-all duration-300"
+                    className="h-full bg-brand-action transition-all duration-300"
                     style={{ width: isDone ? "100%" : "0%" }}
                   />
                 </div>
