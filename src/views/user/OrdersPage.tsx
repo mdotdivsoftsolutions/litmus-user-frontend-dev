@@ -66,7 +66,7 @@ export default function OrdersPage() {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 md:pb-20 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 pt-24 md:pt-28 pb-16 md:pb-20 space-y-6">
       
       {/* Header & Controls */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -146,6 +146,11 @@ export default function OrdersPage() {
                        <span className="flex items-center gap-1"><FlaskConical className="h-3.5 w-3.5" /> {b.testsCount} Tests</span>
                        <span className="flex items-center gap-1 truncate"><MapPin className="h-3.5 w-3.5" /> {b.lab}</span>
                     </div>
+                    {b.isCourier && (
+                      <p className={cn("mt-1.5 text-[11px] font-semibold", b.hasTracking ? "text-emerald-700" : "text-brand-action")}>
+                        {b.hasTracking ? "Courier tracking submitted" : "Add courier tracking ID"}
+                      </p>
+                    )}
                  </div>
                  
                  <div className="shrink-0 w-32">
@@ -160,6 +165,10 @@ export default function OrdersPage() {
                    <Button size="sm" onClick={(e) => e.preventDefault()} className="bg-litmus-teal hover:bg-litmus-dark text-primary-foreground h-8 rounded-lg gap-1.5 text-xs">
                      <Download className="h-3.5 w-3.5" /> Report
                    </Button>
+                 ) : b.isCourier && !b.hasTracking ? (
+                   <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-action">
+                     <Truck className="h-3.5 w-3.5" /> Tracking
+                   </span>
                  ) : (
                    <ChevronRight className="h-5 w-5 text-muted-foreground hidden md:block" />
                  )}
