@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import NewBookingPage from "@/views/user/NewBookingPage";
+import { BookingWizard } from "@/components/booking/BookingWizard";
 
 export const metadata: Metadata = {
   title: "Book Diagnostic Tests | Litmus",
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-slate-50 animate-pulse" />}>
-      <NewBookingPage />
+      <BookingWizard />
     </Suspense>
   );
 }
