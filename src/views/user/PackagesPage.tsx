@@ -21,10 +21,7 @@ export default function PackagesPage() {
 
   const { data: catRes, isLoading: catLoading } = useQuery({
     queryKey: ['categories'],
-    queryFn: async () => {
-      const res = await categoryApi.getCategories();
-      return res.data;
-    }
+    queryFn: () => categoryApi.getCategories(),
   });
 
   const debouncedSearch = useDebounce(search, 300);
@@ -42,7 +39,8 @@ export default function PackagesPage() {
     getNextPageParam: (lastPage) => lastPage.page < lastPage.pages ? lastPage.page + 1 : undefined,
   });
 
-  const apiCategories = catRes?.data || [];
+  const rawCategories = catRes?.data?.data || catRes?.data || catRes || [];
+  const apiCategories = Array.isArray(rawCategories) ? rawCategories : [];
   const packagesData = pkgRes?.pages.flatMap(p => p.data || []) || [];
 
   const handleSearch = () => {
