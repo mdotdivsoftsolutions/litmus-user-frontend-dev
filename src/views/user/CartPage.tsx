@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,7 +32,7 @@ export default function CartPage() {
         <div className="text-center py-20 space-y-4">
           <ShoppingCart className="mx-auto h-16 w-16 text-muted-foreground/30" />
           <p className="text-muted-foreground">Your cart is empty</p>
-          <Button asChild className="bg-primary hover:bg-primary-deep rounded-full"><Link to="/tests">Browse Tests</Link></Button>
+          <Button asChild className="bg-primary hover:bg-primary-deep rounded-full"><Link href="/tests">Browse Tests</Link></Button>
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-5">
@@ -78,7 +78,7 @@ export default function CartPage() {
                   </div>
 
                   <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground rounded-lg h-12 font-semibold text-base" asChild>
-                    <Link to="/bookings/new">Proceed to Book</Link>
+                    <Link href="/bookings/new">Proceed to Book</Link>
                   </Button>
 
                   {/* Coupon */}

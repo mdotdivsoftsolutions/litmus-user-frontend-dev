@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -45,7 +45,7 @@ export default function ProductsPage() {
               onClick={() => setSelectedCategory(selectedCategory === cat.name ? null : cat.name)}
               className={`rounded-lg border p-4 text-center transition-all hover:shadow-sm ${selectedCategory === cat.name ? "border-primary bg-primary/5 shadow-sm" : "border-border bg-card"}`}
             >
-              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-flame-red-tint">
+              <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
                 <IconComp className="h-5 w-5 text-primary" />
               </div>
               <p className="mt-2 text-sm font-medium text-foreground">{cat.name}</p>
@@ -81,8 +81,8 @@ export default function ProductsPage() {
                 <Badge variant="secondary">{p.category}</Badge>
               </div>
               <p className="text-sm text-muted-foreground">{p.testCount} tests available</p>
-              <Button className="w-full" size="sm" asChild>
-                <Link to={`/dashboard/products/${p.id}`}>Select Tests</Link>
+              <Button className="w-full bg-primary hover:bg-primary-deep" size="sm" asChild>
+                <Link href={`/tests?category=${encodeURIComponent(p.category)}`}>Select Tests</Link>
               </Button>
             </CardContent>
           </Card>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Link, useNavigate } from "@/lib/router-compat";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Eye, EyeOff, Flame, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, FlaskConical, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { authApi } from "@/lib/api/auth";
@@ -26,10 +27,10 @@ export function LoginSection({ className, showLogo = false, defaultRole }: Login
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showBlockedModal, setShowBlockedModal] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const roleRedirects: Record<string, string> = { 
-    user: "/home", 
+    user: "/", 
     admin: "/admin/dashboard", 
     lab: "/lab/dashboard" 
   };
@@ -47,7 +48,7 @@ export function LoginSection({ className, showLogo = false, defaultRole }: Login
          toast.error("Not authorized as Lab");
          return;
       }
-      navigate(roleRedirects[role]);
+      router.push(roleRedirects[role]);
     },
     onError: (error: any) => {
       if (error.response?.data?.message === "ACCOUNT_BLOCKED") {
@@ -68,8 +69,8 @@ export function LoginSection({ className, showLogo = false, defaultRole }: Login
       <Card className={cn("w-full max-w-md shadow-lg border border-border bg-card/50 backdrop-blur-sm", className)}>
       <CardHeader className="items-center pb-2">
         {showLogo && (
-          <Link to="/" className="flex items-center gap-2 mb-6">
-            <Flame className="h-8 w-8 text-primary" />
+          <Link href="/" className="flex items-center gap-2 mb-6">
+            <FlaskConical className="h-8 w-8 text-primary" />
             <span className="text-xl font-bold text-foreground tracking-tight">LITMUS</span>
           </Link>
         )}
@@ -102,7 +103,7 @@ export function LoginSection({ className, showLogo = false, defaultRole }: Login
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password" className="text-sm font-medium text-foreground">Password</Label>
-              <Link to="/forgot-password" className="text-xs text-primary hover:underline font-medium">Forgot Password?</Link>
+              <Link href="/forgot-password" className="text-xs text-primary hover:underline font-medium">Forgot Password?</Link>
             </div>
             <div className="relative">
               <Input 
@@ -134,7 +135,7 @@ export function LoginSection({ className, showLogo = false, defaultRole }: Login
         {!defaultRole && (
           <p className="text-center text-sm text-muted-foreground">
             Don't have an account?{" "}
-            <Link to="/register" className="font-medium text-primary hover:underline">Register</Link>
+            <Link href="/register" className="font-medium text-primary hover:underline">Register</Link>
           </p>
         )}
       </CardContent>

@@ -1,6 +1,7 @@
 "use client";
 
-import { Link, useParams } from "@/lib/router-compat";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Check, MapPin, CreditCard, Download, FileText, ChevronRight, FlaskConical, Loader2, Package } from "lucide-react";
@@ -10,8 +11,9 @@ import { bookingApi } from "@/lib/api/booking";
 
 const timelineSteps = ["Booked", "Payment", "Approved", "Lab Testing", "Report Ready"];
 
-export default function OrderDetailPage() {
-  const { id } = useParams();
+export default function OrderDetailPage({ id: propId }: { id?: string }) {
+  const params = useParams();
+  const id = propId || (params?.id as string);
   const { data, isLoading } = useQuery({
     queryKey: ['booking', id],
     queryFn: () => bookingApi.getBookingById(id as string),
@@ -33,7 +35,7 @@ export default function OrderDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
         <p className="text-muted-foreground font-medium">Booking not found.</p>
-        <Link to="/orders"><Button>Back to Orders</Button></Link>
+        <Link href="/orders"><Button>Back to Orders</Button></Link>
       </div>
     );
   }
@@ -62,7 +64,7 @@ export default function OrderDetailPage() {
       {/* Header */}
       <div>
          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-           <Link to="/orders" className="hover:text-foreground transition-colors">Orders</Link>
+           <Link href="/orders" className="hover:text-foreground transition-colors">Orders</Link>
            <ChevronRight className="h-3.5 w-3.5" />
            <span className="text-foreground font-mono font-medium">{apiBooking._id}</span>
          </nav>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "@/lib/router-compat";
+import { useRouter } from "next/navigation";
 
 interface PackagesHeroProps {
   categories: string[];
@@ -20,7 +20,7 @@ interface PackagesHeroProps {
 export function PackagesHero({ categories, selectedCategory, setSelectedCategory, search, setSearch, packages = [], onSearch }: PackagesHeroProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -39,7 +39,7 @@ export function PackagesHero({ categories, selectedCategory, setSelectedCategory
 
   const handleSuggestionClick = (packageId: string) => {
     setShowSuggestions(false);
-    navigate(`/packages/${packageId}`);
+    router.push(`/packages/${packageId}`);
   };
 
   const handleExploreClick = () => {

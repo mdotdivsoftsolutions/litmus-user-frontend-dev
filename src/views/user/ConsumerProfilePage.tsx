@@ -15,14 +15,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/auth";
 import { uploadApi } from "@/lib/api/uploadApi";
 import { toast } from "sonner";
-import { useNavigate } from "@/lib/router-compat";
 import { useRef } from "react";
 
 export default function ConsumerProfilePage() {
   const [activeTab, setActiveTab] = useState("info");
   const [notifications, setNotifications] = useState({ email: true, whatsapp: true, promo: false });
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const { data: userResponse, isLoading } = useQuery({
     queryKey: ['user'],

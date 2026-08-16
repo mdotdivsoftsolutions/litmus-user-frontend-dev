@@ -1,4 +1,11 @@
-"use client";
+import type { Metadata } from "next";
+import CartPage from "@/views/user/CartPage";
 
-import CartOpenerPage from "@/views/user/CartOpenerPage";
-export default function Page() { return <CartOpenerPage />; }
+export const metadata: Metadata = {
+  title: "Your Cart | Litmus Diagnostics",
+  description: "Review selected tests, testing packages, order summary, and proceed to booking.",
+};
+
+export default function Page() {
+  return <CartPage />;
+}

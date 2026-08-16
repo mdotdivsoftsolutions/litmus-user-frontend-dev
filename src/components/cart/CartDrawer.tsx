@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { useCartDrawer } from "./CartDrawerContext";
 import { 
   Sheet, 
@@ -99,7 +99,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
                 <p className="text-xs text-slate-400 max-w-[200px] mx-auto leading-relaxed">Discover our premium testing packages to start your food safety journey.</p>
               </div>
               <Button onClick={() => setIsOpen(false)} asChild className="h-10 px-6 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xs rounded-lg">
-                <Link to="/packages">Browse Packages</Link>
+                <Link href="/packages">Browse Packages</Link>
               </Button>
             </div>
           ) : (
@@ -120,9 +120,9 @@ export function CartDrawer({ children }: CartDrawerProps) {
                             </p>
                          </div>
                          <button 
-                           onClick={() => removeItem(item._id)} 
-                           disabled={removeMutation.isPending}
-                           className="text-slate-300 hover:text-brand-primary transition-colors p-1 disabled:opacity-50"
+                            onClick={() => removeItem(item._id)} 
+                            disabled={removeMutation.isPending}
+                            className="text-slate-300 hover:text-brand-primary transition-colors p-1 disabled:opacity-50"
                          >
                             {removeMutation.isPending && removeMutation.variables === item._id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
                          </button>
@@ -167,10 +167,10 @@ export function CartDrawer({ children }: CartDrawerProps) {
 
             <div className="flex items-center gap-3">
                <Button asChild onClick={() => setIsOpen(false)} variant="outline" className="flex-1 h-11 border-slate-200 text-slate-500 hover:text-slate-800 font-semibold uppercase text-[10px] tracking-widest rounded-lg flex items-center justify-center gap-2 transition-all">
-                  <Link to="/home">Explore</Link>
+                  <Link href="/">Explore</Link>
                </Button>
                <Button asChild onClick={handleCheckoutClick} className="flex-[2] h-11 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
-                  <Link to="/bookings/new">Checkout <ArrowRight className="h-4 w-4" /></Link>
+                  <Link href="/bookings/new">Checkout <ArrowRight className="h-4 w-4" /></Link>
                </Button>
             </div>
           </div>

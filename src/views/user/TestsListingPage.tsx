@@ -3,7 +3,7 @@
 import { useState, useRef, type MouseEvent } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
 
-import { useSearchParams } from "@/lib/router-compat";
+import { useSearchParams } from "next/navigation";
 import { Package, Milk, Coffee, Wheat, Flame, Drumstick, Droplets, Cookie } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";

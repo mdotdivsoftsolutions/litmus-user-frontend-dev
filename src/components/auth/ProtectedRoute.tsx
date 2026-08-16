@@ -1,21 +1,47 @@
 "use client";
 
-import { Navigate, Outlet, useLocation } from "@/lib/router-compat";
+import { useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/auth";
 
 interface ProtectedRouteProps {
   allowedRoles?: string[];
+  children?: React.ReactNode;
 }
 
-export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const location = useLocation();
+export const ProtectedRoute = ({ allowedRoles, children }: ProtectedRouteProps) => {
+  const pathname = usePathname();
+  const router = useRouter();
 
   const { data: userResponse, isLoading, isError } = useQuery({
     queryKey: ["userProfile"],
     queryFn: authApi.getMe,
     retry: false,
   });
+
+  const user = userResponse?.data;
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (isError || !user) {
+      let loginPath = "/?login=true";
+      if (pathname.startsWith("/admin")) {
+        loginPath = "/admin/login";
+      } else if (pathname.startsWith("/lab")) {
+        loginPath = "/laboratory/login";
+      }
+      router.replace(loginPath);
+      return;
+    }
+
+    if (allowedRoles && !allowedRoles.includes(user.role)) {
+      if (user.role === "ADMIN") router.replace("/admin/dashboard");
+      else if (user.role === "LAB") router.replace("/lab/dashboard");
+      else router.replace("/");
+    }
+  }, [isLoading, isError, user, pathname, allowedRoles, router]);
 
   if (isLoading) {
     return (
@@ -28,28 +54,13 @@ export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     );
   }
 
-  const user = userResponse?.data;
-
-  // Not logged in
   if (isError || !user) {
-    // Determine the best login route based on the requested path or allowed roles
-    let loginPath = "/?login=true";
-    if (location.pathname.startsWith("/admin")) {
-      loginPath = "/admin/login";
-    } else if (location.pathname.startsWith("/lab")) {
-      loginPath = "/laboratory/login";
-    }
-
-    return <Navigate to={loginPath} state={{ from: location }} replace />;
+    return null;
   }
 
-  // Logged in, but wrong role
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    // Send them to their appropriate dashboard/home
-    if (user.role === "ADMIN") return <Navigate to="/admin/dashboard" replace />;
-    if (user.role === "LAB") return <Navigate to="/lab/dashboard" replace />;
-    return <Navigate to="/" replace />;
+    return null;
   }
 
-  return <Outlet />;
+  return <>{children}</>;
 };

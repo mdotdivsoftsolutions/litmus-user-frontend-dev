@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,7 +26,7 @@ export default function BookingHistoryPage() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-foreground">Booking History</h1>
-        <Button asChild><Link to="/dashboard/bookings/new">New Booking</Link></Button>
+        <Button asChild className="bg-primary hover:bg-primary-deep"><Link href="/bookings/new">New Booking</Link></Button>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row">
@@ -73,7 +73,7 @@ export default function BookingHistoryPage() {
                 <TableCell className="font-medium">₹{b.amount.toLocaleString()}</TableCell>
                 <TableCell>
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="sm" asChild><Link to={`/dashboard/bookings/${b.id}`}>View</Link></Button>
+                    <Button variant="ghost" size="sm" asChild><Link href={`/orders/${b.id}`}>View</Link></Button>
                     {b.status === "Completed" && <Button variant="ghost" size="icon" className="h-8 w-8"><Download className="h-3.5 w-3.5" /></Button>}
                   </div>
                 </TableCell>

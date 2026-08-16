@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -22,10 +22,12 @@ export default function UserDashboard() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Good morning, Rajesh ðŸ‘‹</h1>
+          <h1 className="text-2xl font-bold text-foreground">Good morning, Rajesh 👋</h1>
           <p className="text-muted-foreground">Here's what's happening with your tests today.</p>
         </div>
-        <Button asChild className="gap-2 bg-primary hover:bg-primary-deep"><Link to="/dashboard/bookings/new"><Plus className="h-4 w-4" />New Booking</Link></Button>
+        <Button asChild className="gap-2 bg-primary hover:bg-primary-deep">
+          <Link href="/bookings/new"><Plus className="h-4 w-4" />New Booking</Link>
+        </Button>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -33,7 +35,7 @@ export default function UserDashboard() {
           <Card key={kpi.label} className="border border-border shadow-sm relative overflow-hidden">
             <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary" />
             <CardContent className="flex items-center gap-4 p-5 pl-5">
-              <div className="h-10 w-10 rounded-full bg-flame-red-tint flex items-center justify-center">
+              <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
                 <kpi.icon className="h-5 w-5 text-primary" />
               </div>
               <div>
@@ -50,7 +52,7 @@ export default function UserDashboard() {
         <Card className="border border-border shadow-sm lg:col-span-2">
           <CardHeader className="flex-row items-center justify-between">
             <CardTitle className="text-base">Recent Bookings</CardTitle>
-            <Button variant="ghost" size="sm" asChild><Link to="/dashboard/bookings">View All</Link></Button>
+            <Button variant="ghost" size="sm" asChild><Link href="/orders">View All</Link></Button>
           </CardHeader>
           <CardContent>
             <Table>
@@ -62,7 +64,7 @@ export default function UserDashboard() {
                     <TableCell>{b.product}</TableCell>
                     <TableCell className="hidden sm:table-cell text-muted-foreground text-sm">{b.lab.split(" ")[0]}</TableCell>
                     <TableCell><StatusBadge status={b.status} /></TableCell>
-                    <TableCell><Button variant="ghost" size="sm" asChild><Link to={`/dashboard/bookings/${b.id}`}>View</Link></Button></TableCell>
+                    <TableCell><Button variant="ghost" size="sm" asChild><Link href={`/orders/${b.id}`}>View</Link></Button></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -80,12 +82,12 @@ export default function UserDashboard() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border border-border shadow-sm bg-gradient-to-br from-flame-red-tint to-flame-amber-tint">
+          <Card className="border border-border shadow-sm bg-gradient-to-br from-primary/5 to-brand-action/5">
             <CardContent className="p-5 text-center space-y-3">
               <BookOpen className="mx-auto h-10 w-10 text-primary" />
               <h3 className="font-semibold text-foreground">Quick Book a Test</h3>
               <p className="text-sm text-muted-foreground">Start a new food testing booking in minutes</p>
-              <Button asChild className="bg-primary hover:bg-primary-deep"><Link to="/dashboard/bookings/new">Book Now</Link></Button>
+              <Button asChild className="bg-primary hover:bg-primary-deep"><Link href="/bookings/new">Book Now</Link></Button>
             </CardContent>
           </Card>
         </div>

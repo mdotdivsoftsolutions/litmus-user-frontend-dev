@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Input } from "@/components/ui/input";
@@ -130,7 +130,7 @@ export default function OrdersPage() {
          ) : (
            <>
              {filtered.map((b: any) => (
-           <Link to={`/orders/${b.originalId}`} key={b.id} className="block bg-card rounded-xl border border-border shadow-sm hover:border-accent transition-colors p-4 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+           <Link href={`/orders/${b.originalId}`} key={b.id} className="block bg-card rounded-xl border border-border shadow-sm hover:border-accent transition-colors p-4 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
               
               <div className="flex-1 min-w-0 w-full flex flex-col md:flex-row gap-4 md:items-center">
                  <div className="shrink-0 space-y-1 w-24">

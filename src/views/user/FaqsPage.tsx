@@ -1,7 +1,7 @@
 "use client";
 
 import { CircleHelp } from "lucide-react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { PolicyHero } from "./components/policies/PolicyHero";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
@@ -49,7 +49,7 @@ export default function FaqsPage() {
         title={
           <>
             Frequently asked{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-action">
               questions
             </span>
           </>
@@ -59,30 +59,34 @@ export default function FaqsPage() {
 
       <section className="bg-white border-t border-slate-100 py-12 md:py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <Accordion type="single" collapsible className="w-full border border-slate-100 rounded-2xl px-2 bg-slate-50/30">
-            {faqs.map((item, i) => (
-              <AccordionItem key={i} value={`item-${i}`} className="border-slate-100 px-4">
-                <AccordionTrigger className="text-left text-base font-semibold text-slate-800 hover:no-underline py-5">
-                  {item.q}
+          <Accordion type="single" collapsible className="space-y-4">
+            {faqs.map((faq, i) => (
+              <AccordionItem
+                key={i}
+                value={`faq-${i}`}
+                className="rounded-2xl border border-slate-100 bg-slate-50/50 px-6 py-1 shadow-sm data-[state=open]:bg-white data-[state=open]:border-brand-primary/20 transition-colors"
+              >
+                <AccordionTrigger className="text-left font-semibold text-slate-800 hover:no-underline text-base py-5">
+                  {faq.q}
                 </AccordionTrigger>
-                <AccordionContent className="text-[15px] md:text-base text-slate-600 leading-relaxed pb-5">
-                  {item.a}
+                <AccordionContent className="text-slate-600 text-sm leading-relaxed pb-5 pt-1">
+                  {faq.a}
                 </AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
 
-          <p className="mt-10 text-center text-sm text-slate-500">
-            Did not find what you need?{" "}
-            <Link to="/support" className="font-semibold text-[#D32F2F] hover:underline">
-              Visit Support
+          <div className="mt-12 text-center text-sm text-slate-500">
+            Still have questions?{" "}
+            <Link href="/contact" className="font-semibold text-brand-primary hover:underline">
+              Contact our team
             </Link>{" "}
-            or{" "}
-            <Link to="/help" className="font-semibold text-[#D32F2F] hover:underline">
+            or visit the{" "}
+            <Link href="/help" className="font-semibold text-brand-primary hover:underline">
               Help Center
             </Link>
             .
-          </p>
+          </div>
         </div>
       </section>
     </div>

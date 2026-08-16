@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { ChevronRight, ArrowUpRight, Milk, Coffee, Wheat, Flame, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "./SectionHeader";
@@ -11,47 +11,47 @@ const featuredCategoryCards = [
     subtitle: "Milk, cheese & butter safety panels",
     count: 120,
     icon: Milk,
-    color: "bg-[#D32F2F]",
-    lightColor: "bg-red-50",
-    textColor: "text-[#D32F2F]",
+    color: "bg-brand-primary",
+    lightColor: "bg-emerald-50",
+    textColor: "text-brand-primary",
   },
   {
     name: "Beverages",
     subtitle: "Juice, dairy drinks & bottled checks",
     count: 85,
     icon: Coffee,
-    color: "bg-[#F06C00]",
-    lightColor: "bg-orange-50",
-    textColor: "text-[#F06C00]",
+    color: "bg-brand-action",
+    lightColor: "bg-cyan-50",
+    textColor: "text-brand-action",
   },
   {
     name: "Grains & Cereals",
     subtitle: "Staple quality & residue screening",
     count: 210,
     icon: Wheat,
-    color: "bg-[#D32F2F]",
-    lightColor: "bg-red-50",
-    textColor: "text-[#D32F2F]",
+    color: "bg-brand-primary",
+    lightColor: "bg-emerald-50",
+    textColor: "text-brand-primary",
   },
   {
     name: "Spices",
     subtitle: "Adulteration & purity you can trust",
     count: 145,
     icon: Flame,
-    color: "bg-[#F06C00]",
-    lightColor: "bg-orange-50",
-    textColor: "text-[#F06C00]",
+    color: "bg-brand-action",
+    lightColor: "bg-cyan-50",
+    textColor: "text-brand-action",
   },
 ] as const;
 
 function FeaturedPackageCard({
-  to,
+  href,
   title,
   footnote,
   icon: Icon,
   color,
 }: {
-  to: string;
+  href: string;
   title: string;
   footnote: string;
   icon: LucideIcon;
@@ -60,7 +60,7 @@ function FeaturedPackageCard({
 }) {
   return (
     <Link
-      to={to}
+      href={href}
       className="group flex flex-col rounded-[1.5rem] border border-slate-100 bg-white p-8 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_60px_-12px_rgba(0,0,0,0.1)]"
     >
       <div className="flex flex-col items-center text-center">
@@ -92,7 +92,7 @@ function FeaturedPackageCard({
         <div
           className={cn(
             "flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg",
-            "bg-red-50 text-brand-primary group-hover:bg-gradient-brand group-hover:text-white"
+            "bg-emerald-50 text-brand-primary group-hover:bg-gradient-brand group-hover:text-white"
           )}
         >
           <ArrowUpRight className="h-5 w-5 transition-transform group-hover:rotate-45" />
@@ -106,8 +106,8 @@ export function FeaturedPackages() {
   return (
     <section className="relative flex min-h-[80vh] flex-col justify-center overflow-hidden border-slate-100 bg-slate-50 py-12 md:py-20">
       {/* Decorative background shadows */}
-      <div className="pointer-events-none absolute right-[-5%] top-0 h-[600px] w-[600px] rounded-full bg-red-50/40 blur-[120px]" />
-      <div className="pointer-events-none absolute left-[-5%] bottom-0 h-[600px] w-[600px] rounded-full bg-orange-50/30 blur-[120px]" />
+      <div className="pointer-events-none absolute right-[-5%] top-0 h-[600px] w-[600px] rounded-full bg-emerald-50/40 blur-[120px]" />
+      <div className="pointer-events-none absolute left-[-5%] bottom-0 h-[600px] w-[600px] rounded-full bg-cyan-50/30 blur-[120px]" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4">
         <SectionHeader
@@ -130,7 +130,7 @@ export function FeaturedPackages() {
           {featuredCategoryCards.map((cat) => (
             <FeaturedPackageCard
               key={cat.name}
-              to={`/tests?category=${encodeURIComponent(cat.name)}`}
+              href={`/tests?category=${encodeURIComponent(cat.name)}`}
               title={cat.name}
               footnote={`${cat.count}+ Verified Tests`}
               icon={cat.icon}

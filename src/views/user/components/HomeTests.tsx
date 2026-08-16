@@ -1,7 +1,7 @@
 "use client";
 
 import { type MouseEvent, useRef } from "react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { products } from "@/lib/placeholder-data";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -107,7 +107,7 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
 
   return (
     <Link
-      to={itemType === 'TEST' ? `/tests/${id}` : `/packages/${id}`}
+      href={itemType === 'TEST' ? `/tests/${id}` : `/packages/${id}`}
       className={cn("group m-2 flex w-[280px] shrink-0 flex-col overflow-hidden bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:border-brand-action/30 transition-all duration-300 cursor-pointer decoration-transparent", className)}
     >
       {/* Custom Icon / Image slot - Top Left */}

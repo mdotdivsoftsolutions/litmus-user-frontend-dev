@@ -1,7 +1,7 @@
 "use client";
 
 import { Clock, Plus, ArrowRight, Search } from "lucide-react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CategoryStrip } from "./CategoryStrip";
@@ -91,7 +91,7 @@ export const MostBookedTests = ({
           ) : (
             <>
               {tests.length > 0 ? tests.map((t, i) => (
-                <Link suppressHydrationWarning to={`/tests/${t.id}`} key={t.id} data-aos="fade-up" data-aos-delay={(i % 10) * 50} className="group bg-white rounded-[1rem] p-6 shadow-sm border-2 border-slate-50 flex items-center gap-6 hover:border-brand-action/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500">
+                <Link suppressHydrationWarning href={`/tests/${t.id}`} key={t.id} data-aos="fade-up" data-aos-delay={(i % 10) * 50} className="group bg-white rounded-[1rem] p-6 shadow-sm border-2 border-slate-50 flex items-center gap-6 hover:border-brand-action/20 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] transition-all duration-500">
                   <div className="flex-1 min-w-0 space-y-2">
                     <h3 className="text-[17px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-brand-action transition-colors">{t.name}</h3>
                     <div className="flex items-center gap-3 flex-wrap">

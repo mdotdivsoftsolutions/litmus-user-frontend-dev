@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { Search, Shield, FileText, Package, Microscope, Ticket, Currency, CurrencyIcon } from "lucide-react";
 import { useState, useEffect } from "react";
 import { SearchAutocomplete } from "@/components/common/SearchAutocomplete";
@@ -226,7 +226,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
 
                 <div className="flex shrink-0 items-center gap-3">
                   <Link
-                    to="/tests"
+                    href="/tests"
                     className="flex items-center justify-center gap-2 rounded-full bg-white border-2 border-brand-primary px-6 py-3.5 text-xs font-bold text-slate-800 shadow-sm transition hover:bg-brand-primary/10 whitespace-nowrap group"
                   >
                     <Microscope className="h-4 w-4 text-brand-primary group-hover:scale-110 transition-transform" /> Book a Lab Test
@@ -240,7 +240,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
                     </button>
                   </ConsultationBookingModal>
                   <Link
-                    to="/packages"
+                    href="/packages"
                     className="flex items-center justify-center gap-2 rounded-full bg-white border-2 border-brand-primary px-6 py-3.5 text-xs font-bold text-slate-800 shadow-sm transition hover:bg-brand-primary/10 whitespace-nowrap group"
                   >
                     <Package className="h-4 w-4 text-brand-primary group-hover:scale-110 transition-transform" /> Health Packages
@@ -277,7 +277,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
             
             <div className="flex shrink-0 w-full sm:w-auto overflow-x-auto gap-2 pb-1 sm:pb-0 scrollbar-hide">
               <Link
-                to="/tests"
+                href="/tests"
                 className="inline-flex items-center justify-center gap-1.5 rounded-full bg-white border-2 border-brand-primary px-5 py-3 text-xs font-bold text-brand-primary shadow-sm transition hover:bg-brand-primary/10 whitespace-nowrap"
               >
                 Book test
@@ -293,7 +293,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
                 </button>
               </ConsultationBookingModal>
               <Link
-                to="/packages"
+                href="/packages"
                 className="inline-flex items-center justify-center gap-1.5 rounded-full bg-white border-2 border-brand-primary px-5 py-3 text-xs font-bold text-brand-primary shadow-sm transition hover:bg-brand-primary/10 whitespace-nowrap"
               >
                 book a package

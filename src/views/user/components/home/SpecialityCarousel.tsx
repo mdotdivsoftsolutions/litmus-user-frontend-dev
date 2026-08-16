@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { SectionHeader } from "./SectionHeader";
 import { useQuery } from "@tanstack/react-query";
 import { categoryApi } from "@/lib/api/category";
@@ -18,14 +18,14 @@ const TINTS = [
 ];
 
 function PastelCategoryCard({
-  to,
+  href,
   title,
   subtitle,
   footnote,
   image,
   tint,
 }: {
-  to: string;
+  href: string;
   title: string;
   subtitle: string;
   footnote: string;
@@ -34,7 +34,7 @@ function PastelCategoryCard({
 }) {
   return (
     <Link
-      to={to}
+      href={href}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-100/90 bg-white shadow-[0_10px_40px_-12px_rgba(15,23,42,0.12)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-16px_rgba(15,23,42,0.18)]"
     >
       <div
@@ -103,7 +103,7 @@ export function SpecialityCarousel() {
             categories.map((cat: any, i: number) => (
               <div key={cat._id}>
                 <PastelCategoryCard
-                  to={`/tests?category=${encodeURIComponent(cat._id)}`}
+                  href={`/tests?category=${encodeURIComponent(cat._id)}`}
                   title={cat.name}
                   subtitle={cat.description || "Explore specialized diagnostic tests for this category."}
                   footnote={`${cat.testCount || 0} tests available`}

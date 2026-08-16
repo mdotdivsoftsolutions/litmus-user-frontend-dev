@@ -1,6 +1,7 @@
 "use client";
 
-import { Link, useParams } from "@/lib/router-compat";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,8 +12,9 @@ import { Star, MapPin, Phone, Mail, ShoppingCart, Shield, Clock, FileText, Check
 import { labApi } from "@/lib/api/lab";
 import { cn } from "@/lib/utils";
 
-export default function LabDetailConsumerPage() {
-   const { id } = useParams();
+export default function LabDetailConsumerPage({ id: propId }: { id?: string }) {
+   const params = useParams();
+   const id = propId || (params?.id as string);
    
    const { data: response, isLoading } = useQuery({
      queryKey: ["publicLab", id],
@@ -416,9 +418,9 @@ export default function LabDetailConsumerPage() {
                      {/* Quality Assurance Card */}
                      <div className="rounded-[2rem] bg-slate-900 p-8 space-y-6 relative overflow-hidden">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full translate-x-1/2 -translate-y-1/2 blur-2xl" />
-                        <p className="text-[10px] font-semibold text-[#D32F2F] uppercase tracking-[0.3em]">Institutional Verification</p>
+                        <p className="text-[10px] font-semibold text-brand-primary uppercase tracking-[0.3em]">Institutional Verification</p>
                         <p className="text-xs font-normal text-white leading-normal tracking-wide">Every diagnostic result from this facility is clinical-grade and legally valid for FSSAI audits.</p>
-                        <Link to="/support" className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors uppercase tracking-widest">
+                        <Link href="/support" className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors uppercase tracking-widest">
                            Learn about our standards <ChevronRight className="h-3 w-3" />
                         </Link>
                      </div>

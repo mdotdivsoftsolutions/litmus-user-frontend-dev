@@ -1,7 +1,7 @@
 "use client";
 
 import { Inbox, Clock, Headphones } from "lucide-react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 
 const steps = [
   {
@@ -29,13 +29,13 @@ const steps = [
 export function ContactExpectations() {
   return (
     <section className="relative overflow-hidden bg-white border-t border-slate-100 py-14 md:py-20">
-      <div className="pointer-events-none absolute left-0 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-50/40 blur-[100px]" />
+      <div className="pointer-events-none absolute left-0 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-50/40 blur-[100px]" />
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <div className="mb-12 md:mb-14 max-w-3xl">
-          <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-[#D32F2F] mb-3">What to expect</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-brand-primary mb-3">What to expect</p>
           <h2 className="text-2xl md:text-3xl font-semibold text-slate-800 tracking-tight leading-tight">
             The same clarity we bring to{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">support</span>,
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-action">support</span>,
             applied to corporate contact.
           </h2>
           <p className="mt-4 text-sm md:text-base text-slate-500 font-medium leading-relaxed">
@@ -49,19 +49,19 @@ export function ContactExpectations() {
             return (
               <div
                 key={step.title}
-                className="rounded-2xl border border-slate-100 bg-slate-50/50 p-8 shadow-[0_12px_40px_rgba(0,0,0,0.04)] hover:border-[#D32F2F]/15 transition-colors"
+                className="rounded-2xl border border-slate-100 bg-slate-50/50 p-8 shadow-[0_12px_40px_rgba(0,0,0,0.04)] hover:border-brand-primary/20 transition-colors"
               >
-                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white border border-slate-100 text-[#D32F2F] shadow-sm">
+                <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-white border border-slate-100 text-brand-primary shadow-sm">
                   <Icon className="h-5 w-5" aria-hidden />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-800 tracking-tight mb-3">{step.title}</h3>
                 <p className="text-sm text-slate-500 leading-relaxed mb-4">{step.description}</p>
                 {"linkHref" in step && step.linkHref ? (
                   <Link
-                    to={step.linkHref}
-                    className="inline-flex text-xs font-bold uppercase tracking-widest text-[#D32F2F] hover:underline"
+                    href={step.linkHref}
+                    className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-brand-primary hover:underline"
                   >
-                    {step.linkLabel}
+                    {step.linkLabel} →
                   </Link>
                 ) : null}
               </div>

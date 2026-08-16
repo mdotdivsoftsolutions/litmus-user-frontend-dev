@@ -1,6 +1,7 @@
 "use client";
 
-import { useParams, Link } from "@/lib/router-compat";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -19,15 +20,16 @@ const timelineSteps = [
   { label: "Complete", time: "Mar 19, 2024 10:00 AM", actor: "System" },
 ];
 
-export default function BookingDetailPage() {
-  const { id } = useParams();
+export default function BookingDetailPage({ id: propId }: { id?: string }) {
+  const params = useParams();
+  const id = propId || (params?.id as string);
   const booking = bookings.find((b) => b.id === id) || bookings[0];
   const completedSteps = booking.status === "Completed" ? 8 : booking.status === "In Progress" ? 5 : booking.status === "Approved" ? 4 : 2;
 
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Link to="/dashboard/bookings" className="hover:text-foreground">Bookings</Link>
+        <Link href="/orders" className="hover:text-foreground">Bookings</Link>
         <span>/</span>
         <span className="text-foreground font-medium">{booking.id}</span>
       </div>

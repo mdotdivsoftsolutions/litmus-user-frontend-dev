@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Link, useNavigate } from "@/lib/router-compat";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Flame, CheckCircle2, Upload, Eye, EyeOff } from "lucide-react";
+import { FlaskConical, CheckCircle2, Upload, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { authApi } from "@/lib/api/auth";
@@ -19,7 +20,7 @@ const stepLabels = ["Business Info", "FSSAI & GST", "Set Password", "OTP Verific
 export default function RegisterPage() {
   const [step, setStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Form State
   const [formData, setFormData] = useState({
@@ -48,7 +49,7 @@ export default function RegisterPage() {
     mutationFn: authApi.sendOtp,
     onSuccess: () => {
       toast.success("OTP sent to your email!");
-      setStep(3); // Go to OTP step
+      setStep(3); // jump to OTP
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Failed to send OTP");
@@ -58,8 +59,8 @@ export default function RegisterPage() {
   const registerMutation = useMutation({
     mutationFn: authApi.register,
     onSuccess: () => {
-      toast.success("Registration successful!");
-      navigate("/login");
+      toast.success("Registration successful! Please log in.");
+      router.push("/");
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Registration failed");
@@ -67,22 +68,34 @@ export default function RegisterPage() {
   });
 
   const handleNext = () => {
-    if (step === 2) {
-      if (formData.password !== formData.confirmPassword) {
-        toast.error("Passwords do not match");
+    if (step === 0) {
+      if (!formData.businessName || !formData.ownerName || !formData.phone || !formData.email) {
+        toast.error("Please fill in all required fields");
         return;
       }
-      sendOtpMutation.mutate({ email: formData.email });
-    } else {
-      setStep(step + 1);
+      setStep(1);
+    } else if (step === 1) {
+      setStep(2);
+    } else if (step === 2) {
+      if (!formData.password || formData.password !== formData.confirmPassword) {
+        toast.error("Passwords do not match or are empty");
+        return;
+      }
+      // Trigger OTP
+      sendOtpMutation.mutate({ email: formData.email, type: "REGISTER" });
     }
   };
 
   const handleRegister = () => {
-    // Map frontend fields to backend schema
-    const nameParts = formData.ownerName.split(" ");
+    if (!formData.otp || formData.otp.length < 6) {
+      toast.error("Please enter a valid 6-digit OTP");
+      return;
+    }
+    
+    // Split ownerName into first and last
+    const nameParts = formData.ownerName.trim().split(" ");
     const firstName = nameParts[0] || "";
-    const lastName = nameParts.slice(1).join(" ") || "User";
+    const lastName = nameParts.slice(1).join(" ") || "";
 
     registerMutation.mutate({
       firstName,
@@ -90,36 +103,34 @@ export default function RegisterPage() {
       email: formData.email,
       phone: formData.phone,
       password: formData.password,
-      otp: formData.otp,
-      role: "USER", // Default role for standard registration
-      // Address, FSSAI could be passed if we update backend register logic to accept it
+      role: "USER",
     });
   };
 
   return (
     <div className="flex min-h-screen">
       {/* Left Panel */}
-      <div className="hidden lg:flex lg:w-5/12 items-center justify-center bg-gradient-to-br from-[#1C1C1E] via-[#2D1A0A] to-[#3D1F0A] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-flame-orange rounded-full blur-[120px]" />
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-flame-amber rounded-full blur-[120px]" />
+      <div className="hidden lg:flex lg:w-5/12 items-center justify-center bg-gradient-to-br from-[#002e3b] via-[#004B60] to-[#00751F] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-brand-primary rounded-full blur-[120px]" />
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-brand-action rounded-full blur-[120px]" />
         </div>
         <div className="relative z-10 px-12 text-center max-w-md">
           <div className="flex items-center justify-center gap-3 mb-8">
-            <Flame className="h-12 w-12 text-flame-amber" />
+            <FlaskConical className="h-12 w-12 text-white" />
             <div className="text-left">
-              <h1 className="text-3xl font-bold text-flame-amber">LITMUS</h1>
-              <p className="text-xs tracking-[0.2em] text-white/50">FOOD ANALYTICS</p>
+              <h1 className="text-3xl font-bold text-white tracking-tight">LITMUS</h1>
+              <p className="text-xs tracking-[0.2em] text-white/70">FOOD ANALYTICS</p>
             </div>
           </div>
           <h2 className="text-2xl font-semibold text-white mb-4">Create Your Account</h2>
-          <p className="text-white/60 text-sm leading-relaxed">
+          <p className="text-white/80 text-sm leading-relaxed">
             Join thousands of food businesses ensuring FSSAI compliance through accredited laboratory testing.
           </p>
-          <div className="mt-10 space-y-3 text-left text-white/60 text-sm">
+          <div className="mt-10 space-y-3 text-left text-white/90 text-sm">
             {["500+ FSSAI-aligned tests", "NABL accredited laboratories", "Transparent pricing & reports"].map((t) => (
               <div key={t} className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-litmus-emerald shrink-0" />
+                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
                 <span>{t}</span>
               </div>
             ))}
@@ -131,8 +142,8 @@ export default function RegisterPage() {
       <div className="flex flex-1 items-center justify-center bg-background px-6 py-8">
         <Card className="w-full max-w-lg shadow-lg border border-border">
           <CardHeader className="items-center pb-2">
-            <Link to="/" className="flex items-center gap-2 mb-4 lg:hidden">
-              <Flame className="h-8 w-8 text-flame-orange" />
+            <Link href="/" className="flex items-center gap-2 mb-4 lg:hidden">
+              <FlaskConical className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold text-foreground">LITMUS</span>
             </Link>
             <h2 className="text-xl font-bold text-foreground">Register Your Business</h2>
@@ -143,13 +154,13 @@ export default function RegisterPage() {
                   <div className="flex flex-col items-center gap-1">
                     <div className={cn(
                       "flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors",
-                      i < step ? "bg-litmus-emerald text-white" : i === step ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                      i < step ? "bg-primary text-primary-foreground" : i === step ? "bg-brand-action text-white" : "bg-muted text-muted-foreground"
                     )}>
                       {i < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
                     </div>
                     <span className="text-[11px] text-muted-foreground hidden sm:block">{label}</span>
                   </div>
-                  {i < stepLabels.length - 1 && <div className={cn("mx-2 h-0.5 flex-1 rounded-full", i < step ? "bg-litmus-emerald" : "bg-muted")} />}
+                  {i < stepLabels.length - 1 && <div className={cn("mx-2 h-0.5 flex-1 rounded-full", i < step ? "bg-primary" : "bg-muted")} />}
                 </div>
               ))}
             </div>
@@ -215,15 +226,15 @@ export default function RegisterPage() {
                 <div className="space-y-1.5">
                   <div className="flex gap-1">
                     <div className="h-1.5 flex-1 rounded-full bg-status-rejected" />
-                    <div className="h-1.5 flex-1 rounded-full bg-flame-amber" />
-                    <div className="h-1.5 flex-1 rounded-full bg-litmus-emerald" />
+                    <div className="h-1.5 flex-1 rounded-full bg-status-inprogress" />
+                    <div className="h-1.5 flex-1 rounded-full bg-primary" />
                     <div className="h-1.5 flex-1 rounded-full bg-muted" />
                   </div>
                   <p className="text-xs text-muted-foreground">Password strength: Good</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Checkbox id="terms" />
-                  <Label htmlFor="terms" className="text-sm font-normal">I agree to the <a href="#" className="text-primary hover:underline">Terms & Conditions</a></Label>
+                  <Label htmlFor="terms" className="text-sm font-normal">I agree to the <Link href="/terms" className="text-primary hover:underline">Terms & Conditions</Link></Label>
                 </div>
               </>
             )}
@@ -249,7 +260,7 @@ export default function RegisterPage() {
             </div>
             <p className="text-center text-sm text-muted-foreground">
               Already have an account?{" "}
-              <Link to="/login" className="font-medium text-primary hover:underline">Login</Link>
+              <Link href="/" className="font-medium text-primary hover:underline">Login</Link>
             </p>
           </CardContent>
         </Card>

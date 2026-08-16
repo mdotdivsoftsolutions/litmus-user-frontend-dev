@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -143,8 +143,8 @@ export default function LaboratoriesPage() {
                   <MapPin className="h-3.5 w-3.5" />{lab.location?.city || "Unknown"}
                 </div>
                 <div className="flex items-center gap-2">
-                  {lab.isNablAccredited && <Badge variant="approved" className="bg-[#D32F2F] text-white hover:bg-[#D32F2F]/90">NABL</Badge>}
-                  {lab.isFssaiApproved && <Badge variant="completed">FSSAI</Badge>}
+                  {lab.isNablAccredited && <Badge variant="nabl">NABL</Badge>}
+                  {lab.isFssaiApproved && <Badge variant="fssai">FSSAI</Badge>}
                   <div className="ml-auto flex items-center gap-1 shrink-0">
                     <Star className="h-3.5 w-3.5 fill-status-pending text-status-pending" />
                     <span className="text-sm font-medium">{getRating(lab.reviews)}</span>
@@ -152,7 +152,7 @@ export default function LaboratoriesPage() {
                 </div>
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-sm text-muted-foreground">From {getLowestPrice(lab.pricing)}</span>
-                  <Button size="sm" asChild className="bg-primary hover:bg-primary-deep"><Link to={`/dashboard/laboratories/${lab._id}`}>View Lab</Link></Button>
+                  <Button size="sm" asChild className="bg-primary hover:bg-primary-deep"><Link href={`/labs/${lab._id}`}>View Lab</Link></Button>
                 </div>
               </CardContent>
             </Card>
@@ -178,8 +178,8 @@ export default function LaboratoriesPage() {
                   <TableCell>{lab.location?.city || "Unknown"}</TableCell>
                   <TableCell>
                     <div className="flex gap-1 flex-wrap">
-                      {lab.isNablAccredited && <Badge variant="approved" className="bg-[#D32F2F] text-white hover:bg-[#D32F2F]/90">NABL</Badge>}
-                      {lab.isFssaiApproved && <Badge variant="completed">FSSAI</Badge>}
+                      {lab.isNablAccredited && <Badge variant="nabl">NABL</Badge>}
+                      {lab.isFssaiApproved && <Badge variant="fssai">FSSAI</Badge>}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -191,7 +191,7 @@ export default function LaboratoriesPage() {
                   <TableCell>{getLowestPrice(lab.pricing)}</TableCell>
                   <TableCell className="text-right">
                     <Button variant="ghost" size="sm" asChild className="text-primary hover:text-primary-deep hover:bg-primary/10">
-                      <Link to={`/dashboard/laboratories/${lab._id}`}>View</Link>
+                      <Link href={`/labs/${lab._id}`}>View</Link>
                     </Button>
                   </TableCell>
                 </TableRow>

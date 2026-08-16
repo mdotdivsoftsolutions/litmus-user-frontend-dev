@@ -5,7 +5,7 @@ import { Search, Microscope, FlaskConical, MapPin, ArrowRight } from "lucide-rea
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "@/lib/router-compat";
+import { useRouter } from "next/navigation";
 
 const cities = ["All Cities", "Chennai", "Mumbai", "New Delhi", "Bangalore", "Hyderabad", "Kolkata"];
 
@@ -21,7 +21,7 @@ interface LabsHeroProps {
 export function LabsHero({ search, setSearch, selectedCity, setSelectedCity, labs = [], onSearch }: LabsHeroProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -46,7 +46,7 @@ export function LabsHero({ search, setSearch, selectedCity, setSelectedCity, lab
   };
 
   const handleSuggestionClick = (id: string) => {
-    navigate(`/labs/${id}`);
+    router.push(`/labs/${id}`);
     setShowSuggestions(false);
   };
 

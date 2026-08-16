@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircle2, ChevronLeft, ChevronRight, Check, ArrowRight } from "lucide-react";
-import { useNavigate } from "@/lib/router-compat";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/auth";
@@ -38,7 +38,7 @@ const trustCarouselSlides = [
 ];
 
 export const TrustAndOrdering = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const n = trustCarouselSlides.length;
 
@@ -115,7 +115,7 @@ export const TrustAndOrdering = () => {
                     <p className="text-[12px] leading-snug text-white/65">{slide.packagesCaption}</p>
                     <button
                       type="button"
-                      onClick={() => navigate("/packages")}
+                      onClick={() => router.push("/packages")}
                       className="group mt-1 inline-flex w-fit items-center gap-2 rounded-lg border border-white/25 bg-white/[0.07] px-3.5 py-2 text-left text-[13px] font-semibold text-white transition hover:border-white/40 hover:bg-white/[0.12]"
                     >
                       Explore packages
@@ -183,7 +183,7 @@ export const TrustAndOrdering = () => {
                     if (!user) {
                       window.dispatchEvent(new Event('openAuthModal'));
                     } else {
-                      navigate("/bookings/new");
+                      router.push("/bookings/new");
                     }
                   }}
                   className="h-14 md:h-16 mt-2 px-10 md:px-14 bg-gradient-brand text-white font-semibold text-xl rounded-xl  hover:-translate-y-1 transition-all z-10 relative"

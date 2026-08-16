@@ -1,6 +1,7 @@
 "use client";
 
-import { Link, useParams, useNavigate } from "@/lib/router-compat";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
@@ -31,9 +32,10 @@ import { authApi } from "@/lib/api/auth";
 import { toast } from "sonner";
 import { WHATSAPP_URL } from "@/lib/constants";
 
-export default function PackageDetailPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
+export default function PackageDetailPage({ id: propId }: { id?: string }) {
+  const params = useParams();
+  const id = propId || (params?.id as string);
+  const router = useRouter();
   const { openCart } = useCartDrawer();
   const queryClient = useQueryClient();
 
@@ -66,7 +68,7 @@ export default function PackageDetailPage() {
       return;
     }
     if (!pkg) return;
-    navigate(`/bookings/new?packageId=${pkg._id}`);
+    router.push(`/bookings/new?packageId=${pkg._id}`);
   };
 
   const addMutation = useMutation({
@@ -108,7 +110,7 @@ export default function PackageDetailPage() {
           <AlertCircle className="h-12 w-12 text-slate-400 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-slate-800">Package Not Found</h2>
           <p className="text-slate-500 mt-2">The package you are looking for does not exist.</p>
-          <Button className="mt-6" onClick={() => navigate("/packages")}>Back to Packages</Button>
+          <Button className="mt-6" onClick={() => router.push("/packages")}>Back to Packages</Button>
         </div>
       </div>
     );
@@ -120,7 +122,7 @@ export default function PackageDetailPage() {
       <div className=" z-30 ">
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
           <nav className="flex items-center gap-1.5 text-sm text-slate-500 font-medium">
-            <Link to="/packages" className="hover:text-[#D32F2F] transition-colors">Packages</Link>
+            <Link href="/packages" className="hover:text-brand-primary transition-colors">Packages</Link>
             <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
             <span className="text-slate-800 font-bold truncate max-w-[200px] sm:max-w-none">{pkg.name}</span>
           </nav>

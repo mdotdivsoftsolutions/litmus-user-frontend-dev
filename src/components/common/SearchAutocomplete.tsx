@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "@/lib/router-compat";
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { searchApi } from "@/lib/api/search";
 
@@ -26,7 +26,7 @@ export function SearchAutocomplete({
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Debounce the query
   useEffect(() => {
@@ -59,7 +59,7 @@ export function SearchAutocomplete({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       setIsOpen(false);
-      navigate(`/tests?search=${encodeURIComponent(query)}`);
+      router.push(`/tests?search=${encodeURIComponent(query)}`);
     }
   };
 
@@ -68,10 +68,10 @@ export function SearchAutocomplete({
     setQuery("");
     
     // Navigate based on type
-    if (item.type === 'test') navigate(`/tests/${item.id}`);
-    else if (item.type === 'package') navigate(`/packages/${item.id}`);
-    else if (item.type === 'category') navigate(`/tests?category=${encodeURIComponent(item.name)}`);
-    else navigate(`/tests?search=${encodeURIComponent(item.name)}`); // fallback
+    if (item.type === 'test') router.push(`/tests/${item.id}`);
+    else if (item.type === 'package') router.push(`/packages/${item.id}`);
+    else if (item.type === 'category') router.push(`/tests?category=${encodeURIComponent(item.name)}`);
+    else router.push(`/tests?search=${encodeURIComponent(item.name)}`); // fallback
   };
 
 

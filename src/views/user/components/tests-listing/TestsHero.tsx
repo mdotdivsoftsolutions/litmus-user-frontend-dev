@@ -4,7 +4,7 @@ import { Shield, Search, ArrowRight, Star, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "@/lib/router-compat";
+import { useRouter } from "next/navigation";
 
 interface TestsHeroProps {
   search: string;
@@ -16,7 +16,7 @@ interface TestsHeroProps {
 export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHeroProps) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   // Handle click outside to close suggestions
   useEffect(() => {
@@ -36,7 +36,7 @@ export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHero
 
   const handleSuggestionClick = (testId: string) => {
     setShowSuggestions(false);
-    navigate(`/tests/${testId}`);
+    router.push(`/tests/${testId}`);
   };
 
   const handleExploreClick = () => {

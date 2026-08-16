@@ -1,6 +1,8 @@
 "use client";
 
-import { Link, Navigate, useParams } from "@/lib/router-compat";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { ArrowLeft, ArrowRight, Clock, User } from "lucide-react";
 import { getBlogBySlug, getRelatedPosts, type BlogContentBlock } from "@/lib/company-blogs-data";
 
@@ -62,13 +64,21 @@ function BlogBlocks({ blocks }: { blocks: BlogContentBlock[] }) {
   );
 }
 
-export default function BlogDetailPage() {
-  const { slug } = useParams();
+export default function BlogDetailPage({ slug: propSlug }: { slug?: string }) {
+  const params = useParams();
+  const router = useRouter();
+  const slug = propSlug || (params?.slug as string);
   const post = slug ? getBlogBySlug(slug) : undefined;
   const related = slug ? getRelatedPosts(slug, 5) : [];
 
+  useEffect(() => {
+    if (!post && slug) {
+      router.replace("/blogs");
+    }
+  }, [post, slug, router]);
+
   if (!post) {
-    return <Navigate to="/blogs" replace />;
+    return null;
   }
 
   return (
@@ -87,7 +97,7 @@ export default function BlogDetailPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent" />
         <div className="relative z-10 max-w-7xl mx-auto px-6 h-full flex flex-col justify-end pb-10 pt-24">
           <Link
-            to="/blogs"
+            href="/blogs"
             className="inline-flex items-center gap-2 text-xs font-semibold text-white/80 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
@@ -125,7 +135,7 @@ export default function BlogDetailPage() {
                 {related.map((item) => (
                   <li key={item.slug}>
                     <Link
-                      to={`/blogs/${item.slug}`}
+                      href={`/blogs/${item.slug}`}
                       className="group flex gap-4 rounded-xl border border-transparent p-1 -m-1 hover:border-slate-100 hover:bg-slate-50/80 transition-colors"
                     >
                       <div className="w-20 h-14 shrink-0 rounded-lg overflow-hidden bg-slate-100">
@@ -143,7 +153,7 @@ export default function BlogDetailPage() {
                         <p className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 mb-1 line-clamp-1">
                           {item.category}
                         </p>
-                        <p className="text-sm font-semibold text-slate-800 leading-snug group-hover:text-[#D32F2F] transition-colors line-clamp-2">
+                        <p className="text-sm font-semibold text-slate-800 leading-snug group-hover:text-brand-primary transition-colors line-clamp-2">
                           {item.title}
                         </p>
                         <span className="inline-flex items-center gap-1 mt-2 text-[11px] font-medium text-slate-400">
@@ -158,8 +168,8 @@ export default function BlogDetailPage() {
             </div>
 
             <Link
-              to="/blogs"
-              className="group flex items-center justify-between rounded-2xl border border-dashed border-slate-200 bg-white/60 px-5 py-4 text-sm font-semibold text-slate-700 hover:border-[#D32F2F]/30 hover:text-[#D32F2F] transition-colors"
+              href="/blogs"
+              className="group flex items-center justify-between rounded-2xl border border-dashed border-slate-200 bg-white/60 px-5 py-4 text-sm font-semibold text-slate-700 hover:border-brand-primary/30 hover:text-brand-primary transition-colors"
             >
               Browse all articles
               <ArrowRight className="h-4 w-4 shrink-0 opacity-60 group-hover:translate-x-0.5 transition-transform" />

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "@/lib/router-compat";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,14 +17,15 @@ import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { WHATSAPP_URL } from "@/lib/constants";
 
-export default function TestDetailPage() {
-  const { id } = useParams();
+export default function TestDetailPage({ id: propId }: { id?: string }) {
+  const params = useParams();
+  const id = propId || (params?.id as string);
   const [testObj, setTestObj] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
   const { openCart } = useCartDrawer();
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const { data: userResponse } = useQuery({ queryKey: ["userProfile"], queryFn: authApi.getMe, retry: false });
   const user = userResponse?.data;
@@ -68,7 +69,7 @@ export default function TestDetailPage() {
     if (selectedParams.length > 0) {
       searchParams.set("params", selectedParams.join(","));
     }
-    navigate(`/bookings/new?${searchParams.toString()}`);
+    router.push(`/bookings/new?${searchParams.toString()}`);
   };
 
   useEffect(() => {
@@ -141,7 +142,7 @@ export default function TestDetailPage() {
         <p className="text-slate-500 max-w-md mx-auto mb-8">
           We couldn't find the test you're looking for. It might have been removed or the URL is incorrect.
         </p>
-        <Link to="/tests">
+        <Link href="/tests">
           <Button className="bg-brand-action hover:bg-brand-action-hover h-11 px-8 rounded-xl font-medium shadow-sm transition-all duration-300">
             Browse All Tests
           </Button>
@@ -168,7 +169,7 @@ export default function TestDetailPage() {
     <div className="max-w-7xl mx-auto px-4 py-12 md:pb-20 space-y-6 animate-fade-in">
       {/* Breadcrumb */}
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground">
-        <Link to="/tests" className="hover:text-foreground">Tests</Link>
+        <Link href="/tests" className="hover:text-foreground">Tests</Link>
         <ChevronRight className="h-3.5 w-3.5" />
         <span className="text-foreground font-medium">{testObj.testName}</span>
       </nav>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import type { Dispatch, SetStateAction } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -79,17 +79,17 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
             </Card>
           ))
         ) : filtered.map((lab, i) => (
-          <Link suppressHydrationWarning key={lab.id} to={`/labs/${lab.id}`} data-aos="fade-up" data-aos-delay={(i % 10) * 50} className="block group decoration-transparent">
-            <Card className="h-full border-1 border-slate-50 shadow-sm group-hover:border-[#D32F2F]/10 group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.05)] transition-all duration-500 rounded-[1rem] overflow-hidden bg-white">
+          <Link suppressHydrationWarning key={lab.id} href={`/labs/${lab.id}`} data-aos="fade-up" data-aos-delay={(i % 10) * 50} className="block group decoration-transparent">
+            <Card className="h-full border-1 border-slate-50 shadow-sm group-hover:border-brand-primary/10 group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.05)] transition-all duration-500 rounded-[1rem] overflow-hidden bg-white">
               <CardContent className="p-4 space-y-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-slate-50 border border-slate-100 text-[#D32F2F] flex items-center justify-center font-bold text-sm shrink-0 shadow-sm transition-transform group-hover:-rotate-6">
+                    <div className="h-10 w-10 rounded-xl bg-slate-50 border border-slate-100 text-brand-primary flex items-center justify-center font-bold text-sm shrink-0 shadow-sm transition-transform group-hover:-rotate-6">
                       {lab.name.split(" ").map((w: string) => w[0]).slice(0, 2).join("")}
                     </div>
                     <div className="space-y-0.5">
-                      <h3 className="text-lg font-semibold text-slate-800 tracking-tight group-hover:text-[#D32F2F] transition-colors">{lab.name}</h3>
-                      <p className="text-[10px] font-semibold text-slate-400 flex items-center gap-1 uppercase tracking-widest"><MapPin className="h-3 w-3 text-[#D32F2F]" />{lab.city}, India</p>
+                      <h3 className="text-lg font-semibold text-slate-800 tracking-tight group-hover:text-brand-primary transition-colors">{lab.name}</h3>
+                      <p className="text-[10px] font-semibold text-slate-400 flex items-center gap-1 uppercase tracking-widest"><MapPin className="h-3 w-3 text-brand-primary" />{lab.city}, India</p>
                     </div>
                   </div>
                      <div className="flex flex-col items-end gap-1">

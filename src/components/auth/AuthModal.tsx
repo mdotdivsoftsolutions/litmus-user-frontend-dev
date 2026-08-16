@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { Eye, EyeOff, Loader2, ArrowLeft, User, Mail, Phone, Lock, KeyRound, CheckCircle2 } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -491,9 +491,9 @@ export function AuthModal({ isOpen, onClose, isSkippable = true }: AuthModalProp
             <div className="mt-7 text-center px-4">
               <p className="text-[11px] text-slate-400 leading-relaxed">
                 By proceeding, you agree to our{" "}
-                <Link to="/terms" onClick={onClose} className="underline hover:text-slate-600">Terms of Service</Link>{" "}
+                <Link href="/terms" onClick={onClose} className="underline hover:text-slate-600">Terms of Service</Link>{" "}
                 &{" "}
-                <Link to="/privacy" onClick={onClose} className="underline hover:text-slate-600">Privacy Policy</Link>
+                <Link href="/privacy" onClick={onClose} className="underline hover:text-slate-600">Privacy Policy</Link>
               </p>
             </div>
           )}

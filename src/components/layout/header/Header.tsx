@@ -1,6 +1,7 @@
 "use client";
 
-import { Link, useLocation } from "@/lib/router-compat";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Search, ShoppingCart, MapPin, ChevronDown, Phone, Menu, X, Home, FlaskConical, Package, Building2, Stethoscope, Headphones, LogIn, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -13,7 +14,7 @@ import { SearchAutocomplete } from "@/components/common/SearchAutocomplete";
 const cities = ["Chennai", "Mumbai", "New Delhi", "Bangalore", "Hyderabad", "Kolkata"];
 
 const navLinks = [
-  { label: "Home", href: "/home", icon: Home },
+  { label: "Home", href: "/", icon: Home },
   { label: "Tests", href: "/tests", icon: FlaskConical },
   { label: "Packages", href: "/packages", icon: Package },
   { label: "Labs", href: "/labs", icon: Building2 },
@@ -39,7 +40,7 @@ export function Header({
   scrolled, city, setCity, cartCount, showSearch, setShowSearch,
   mobileMenuOpen, setMobileMenuOpen, onLoginClick, onLogoutClick, user
 }: HeaderProps) {
-  const location = useLocation();
+  const pathname = usePathname();
 
   const getInitials = () => {
     if (!user) return "U";
@@ -58,7 +59,7 @@ export function Header({
       )}>
         <div className="max-w-7xl mx-auto flex items-center h-16 px-4 gap-3">
           {/* Logo */}
-          <Link to="/home" className="flex items-center shrink-0">
+          <Link href="/" className="flex items-center shrink-0">
             <img src="/logo.png" alt="Litmus Food Analytics" className="h-9 sm:h-10 object-contain" />
           </Link>
 
@@ -94,9 +95,12 @@ export function Header({
           {/* Desktop Nav Links */}
           <nav className="hidden lg:flex items-center gap-1 ml-auto">
             {navLinks.map((link) => {
-              const isActive = location.pathname === link.href || location.pathname.startsWith(link.href + "/");
+              const isActive =
+                link.href === "/"
+                  ? pathname === "/" || pathname === "/home"
+                  : pathname === link.href || pathname?.startsWith(link.href + "/");
               return (
-                <Link key={link.href} to={link.href}
+                <Link key={link.href} href={link.href}
                   className={cn(
                     "px-3 py-1.5 text-sm font-semibold transition-colors",
                     isActive
@@ -162,16 +166,16 @@ export function Header({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   {user.role === "ADMIN" && (
-                    <DropdownMenuItem asChild><Link to="/admin/dashboard">Admin Dashboard</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/admin/dashboard">Admin Dashboard</Link></DropdownMenuItem>
                   )}
                   {user.role === "LAB" && (
-                    <DropdownMenuItem asChild><Link to="/lab/dashboard">Lab Dashboard</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/lab/dashboard">Lab Dashboard</Link></DropdownMenuItem>
                   )}
                   {(!user.role || user.role === "USER") && (
                     <>
-                      <DropdownMenuItem asChild><Link to="/profile">Profile</Link></DropdownMenuItem>
-                      <DropdownMenuItem asChild><Link to="/orders">My Orders</Link></DropdownMenuItem>
-                      <DropdownMenuItem asChild><Link to="/reports">Reports</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild><Link href="/profile">Profile</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild><Link href="/orders">My Orders</Link></DropdownMenuItem>
+                      <DropdownMenuItem asChild><Link href="/reports">Reports</Link></DropdownMenuItem>
                     </>
                   )}
                   <DropdownMenuSeparator />
@@ -240,11 +244,14 @@ export function Header({
         <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
           {navLinks.map((link) => {
             const Icon = link.icon;
-            const isActive = location.pathname === link.href || location.pathname.startsWith(link.href + "/");
+            const isActive =
+              link.href === "/"
+                ? pathname === "/" || pathname === "/home"
+                : pathname === link.href || pathname?.startsWith(link.href + "/");
             return (
               <Link
                 key={link.href}
-                to={link.href}
+                href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
                   "flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors",
@@ -286,12 +293,12 @@ export function Header({
               </div>
             </div>
             {user.role === "ADMIN" && (
-              <Link to="/admin/dashboard" className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-brand-primary/20 bg-brand-primary/5 text-brand-primary text-sm font-semibold hover:bg-brand-primary/10 transition-colors mb-2">
+              <Link href="/admin/dashboard" className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-brand-primary/20 bg-brand-primary/5 text-brand-primary text-sm font-semibold hover:bg-brand-primary/10 transition-colors mb-2">
                 Go to Admin Dashboard
               </Link>
             )}
             {user.role === "LAB" && (
-              <Link to="/lab/dashboard" className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-brand-primary/20 bg-brand-primary/5 text-brand-primary text-sm font-semibold hover:bg-brand-primary/10 transition-colors mb-2">
+              <Link href="/lab/dashboard" className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-brand-primary/20 bg-brand-primary/5 text-brand-primary text-sm font-semibold hover:bg-brand-primary/10 transition-colors mb-2">
                 Go to Lab Dashboard
               </Link>
             )}

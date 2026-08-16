@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Link, useNavigate } from "@/lib/router-compat";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { authApi } from "@/lib/api/auth";
@@ -10,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
-import { Flame, ArrowLeft } from "lucide-react";
+import { FlaskConical, ArrowLeft } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const [step, setStep] = useState(0);
@@ -18,7 +19,7 @@ export default function ForgotPasswordPage() {
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const forgotPasswordMutation = useMutation({
     mutationFn: authApi.forgotPassword,
@@ -35,7 +36,7 @@ export default function ForgotPasswordPage() {
     mutationFn: authApi.resetPassword,
     onSuccess: () => {
       toast.success("Password reset successfully!");
-      navigate("/"); // Redirect to home or login modal opens from there
+      router.push("/"); // Redirect to home
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Failed to reset password");
@@ -68,7 +69,7 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md shadow-lg border border-border">
         <CardHeader className="items-center pb-2">
-          <Flame className="h-8 w-8 text-flame-orange mb-2" />
+          <FlaskConical className="h-8 w-8 text-primary mb-2" />
           <h2 className="text-xl font-bold text-foreground">
             {step === 0 ? "Forgot Password" : step === 1 ? "Enter OTP" : "Reset Password"}
           </h2>
@@ -108,7 +109,7 @@ export default function ForgotPasswordPage() {
             </>
           )}
           <div className="text-center">
-            <Link to="/login" className="inline-flex items-center gap-1 text-sm text-primary hover:underline font-medium">
+            <Link href="/" className="inline-flex items-center gap-1 text-sm text-primary hover:underline font-medium">
               <ArrowLeft className="h-3.5 w-3.5" />Back to Login
             </Link>
           </div>

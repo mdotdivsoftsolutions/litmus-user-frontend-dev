@@ -13,7 +13,7 @@ import {
   ArrowRight,
   Sparkles,
 } from "lucide-react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { PolicyHero } from "./components/policies/PolicyHero";
 
 const metrics = [
@@ -263,7 +263,7 @@ export default function AboutPage() {
               <li>Privacy posture described in our Privacy Policy; retention tuned for healthcare-adjacent records.</li>
               <li>
                 Read how we talk about NABL data on the dedicated{" "}
-                <Link to="/nabl" className="font-semibold text-[#D32F2F] hover:underline">
+                <Link href="/nabl" className="font-semibold text-brand-primary hover:underline">
                   NABL statement
                 </Link>
                 .
@@ -277,19 +277,19 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                to="/careers"
-                className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-xl bg-gradient-to-r from-[#D32F2F] to-[#feba50] text-white text-sm font-semibold"
+                href="/careers"
+                className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-xl bg-brand-action hover:bg-brand-action-hover text-white text-sm font-semibold transition-colors"
               >
                 View openings <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                to="/blogs"
+                href="/blogs"
                 className="inline-flex items-center justify-center h-11 px-6 rounded-xl border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition-colors"
               >
                 Read the blog
               </Link>
             </div>
-            <Link to="/contact" className="mt-6 text-sm text-white/60 hover:text-white underline-offset-4 hover:underline">
+            <Link href="/contact" className="mt-6 text-sm text-white/60 hover:text-white underline-offset-4 hover:underline">
               Corporate & media enquiries → Contact
             </Link>
           </div>

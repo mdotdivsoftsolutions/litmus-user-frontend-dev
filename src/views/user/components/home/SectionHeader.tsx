@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { Link } from "@/lib/router-compat";
+import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -46,7 +46,7 @@ export function SectionHeader({
       <div className="flex items-center gap-4">
         {action && (
           <Link
-            to={action.href}
+            href={action.href}
             className="group flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full border border-blue-100 bg-blue-50 px-6 py-3 text-xs font-semibold text-brand-card-from shadow-sm transition-all hover:bg-white hover:shadow-md hover:border-blue-200"
           >
             {action.label}

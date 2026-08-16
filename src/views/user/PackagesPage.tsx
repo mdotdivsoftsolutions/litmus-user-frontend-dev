@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
-import { useNavigate } from "@/lib/router-compat";
+import { useRouter } from "next/navigation";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { categoryApi } from "@/lib/api/category";
 import { packageApi } from "@/lib/api/package";
@@ -15,7 +15,7 @@ export default function PackagesPage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [visibleCount, setVisibleCount] = useState(12);
-  const navigate = useNavigate();
+  const router = useRouter();
   const heroCategories = ["All", "Compliance", "Clinical", "Labeling"];
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -90,9 +90,9 @@ export default function PackagesPage() {
           selectedCategory={""} 
           setSelectedCategory={(cat) => {
             if (cat === "All") {
-              navigate("/tests");
+              router.push("/tests");
             } else {
-              navigate(`/tests?category=${encodeURIComponent(cat)}`);
+              router.push(`/tests?category=${encodeURIComponent(cat)}`);
             }
           }} 
           categories={apiCategories}

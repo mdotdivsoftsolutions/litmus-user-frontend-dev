@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { Link, useNavigate, useLocation, useSearchParams } from "@/lib/router-compat";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -655,7 +655,7 @@ export default function NewBookingPage() {
                     <h3 className="text-lg font-bold text-slate-800">Your selection is empty</h3>
                     <p className="text-slate-500 mt-2 max-w-xs mx-auto text-sm">Looks like you haven&apos;t added any tests yet.</p>
                     <Button asChild className="mt-6 bg-brand-action hover:bg-brand-action-hover rounded-lg px-8 h-12 font-bold">
-                      <Link to="/tests">Browse All Tests</Link>
+                      <Link href="/tests">Browse All Tests</Link>
                     </Button>
                   </Card>
                 ) : (
