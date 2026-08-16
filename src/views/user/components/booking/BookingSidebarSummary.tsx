@@ -18,6 +18,7 @@ interface BookingSidebarSummaryProps {
   canProceedSampleDetails: boolean;
   isStep3Valid: boolean;
   isCreatingBooking: boolean;
+  isPaymentProcessing: boolean;
   onNext: () => void;
   onBack: () => void;
 }
@@ -34,6 +35,7 @@ export function BookingSidebarSummary({
   canProceedSampleDetails,
   isStep3Valid,
   isCreatingBooking,
+  isPaymentProcessing,
   onNext,
   onBack,
 }: BookingSidebarSummaryProps) {
@@ -117,11 +119,15 @@ export function BookingSidebarSummary({
               )}
               {step === 4 && (
                 <Button
-                  disabled={isCreatingBooking}
+                  disabled={isCreatingBooking || isPaymentProcessing}
                   onClick={onNext}
-                  className="w-full bg-slate-900 hover:bg-black text-white rounded-lg h-14 font-bold text-base transition-all"
+                  className="w-full bg-slate-900 hover:bg-black text-white rounded-lg h-14 font-bold text-base transition-all disabled:opacity-60"
                 >
-                  {isCreatingBooking ? "Processing..." : `Pay Now ₹${total.toLocaleString()}`}
+                  {isCreatingBooking
+                    ? "Creating Booking..."
+                    : isPaymentProcessing
+                    ? "Opening Payment..."
+                    : `Pay Now ₹${total.toLocaleString()}`}
                 </Button>
               )}
               {step > 0 && (

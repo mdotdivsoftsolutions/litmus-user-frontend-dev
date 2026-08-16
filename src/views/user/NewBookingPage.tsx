@@ -75,6 +75,9 @@ export default function NewBookingPage() {
               <BookingStep4Payment
                 items={state.items}
                 calculateItemPrice={state.calculateItemPrice}
+                paymentError={state.paymentError}
+                isPaymentProcessing={state.isPaymentProcessing}
+                total={state.total}
               />
             )}
 
@@ -104,6 +107,7 @@ export default function NewBookingPage() {
             canProceedSampleDetails={state.canProceedSampleDetails}
             isStep3Valid={state.isStep3Valid}
             isCreatingBooking={state.isCreatingBooking}
+            isPaymentProcessing={state.isPaymentProcessing}
             onNext={state.handleNext}
             onBack={state.handleBack}
           />
