@@ -48,13 +48,13 @@ export function AuthOtpForm({
         <Button
           type="submit"
           disabled={isLoading || !isOtpComplete}
-          className="w-full h-12 bg-gradient-brand text-white font-bold rounded-lg shadow-lg transition-all"
+          className="w-full h-12 bg-brand-action hover:bg-brand-action-hover text-white font-bold rounded-lg shadow-md transition-all active:scale-95"
         >
           {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : submitLabel}
         </Button>
         <p className="text-sm text-slate-500">
           Didn&apos;t receive the code?{" "}
-          <button type="button" onClick={onResend} className="text-brand-primary font-bold hover:underline">
+          <button type="button" onClick={onResend} className="text-brand-action font-bold hover:underline">
             Resend OTP
           </button>
         </p>

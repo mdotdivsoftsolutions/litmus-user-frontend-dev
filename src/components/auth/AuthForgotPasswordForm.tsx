@@ -41,7 +41,7 @@ export function AuthForgotPasswordForm({ onSubmit, onGoToLogin, isLoading }: Aut
           "w-full h-12 font-bold rounded-lg transition-all",
           isLoading || !identifier.trim()
             ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-            : "bg-gradient-brand text-white hover:opacity-90 shadow-md"
+            : "bg-brand-action hover:bg-brand-action-hover text-white shadow-md active:scale-95"
         )}
       >
         {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Send Reset Code"}
@@ -49,7 +49,7 @@ export function AuthForgotPasswordForm({ onSubmit, onGoToLogin, isLoading }: Aut
 
       <p className="text-center text-sm text-slate-500">
         Remember your password?{" "}
-        <button type="button" onClick={onGoToLogin} className="text-brand-primary font-bold hover:underline">
+        <button type="button" onClick={onGoToLogin} className="text-brand-action font-bold hover:underline">
           Sign in
         </button>
       </p>

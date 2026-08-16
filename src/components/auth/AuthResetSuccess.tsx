@@ -19,7 +19,7 @@ export function AuthResetSuccess({ onGoToLogin }: AuthResetSuccessProps) {
       </div>
       <Button
         onClick={onGoToLogin}
-        className="w-full h-12 bg-gradient-brand text-white font-bold rounded-lg shadow-md hover:opacity-90 transition-all"
+        className="w-full h-12 bg-brand-action hover:bg-brand-action-hover text-white font-bold rounded-lg shadow-md transition-all active:scale-95"
       >
         Back to Sign In
       </Button>

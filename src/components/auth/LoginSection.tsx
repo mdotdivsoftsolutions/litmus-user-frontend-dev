@@ -125,7 +125,7 @@ export function LoginSection({ className, showLogo = false, defaultRole }: Login
             </div>
             <Button 
               type="submit"
-              className="w-full bg-primary hover:bg-primary-deep text-primary-foreground shadow-md shadow-primary/20"
+              className="w-full h-11 bg-brand-action hover:bg-brand-action-hover text-white font-semibold shadow-md active:scale-95 transition-all"
               disabled={loginMutation.isPending}
             >
               {loginMutation.isPending ? "Signing in..." : "Sign In"}
@@ -134,7 +134,7 @@ export function LoginSection({ className, showLogo = false, defaultRole }: Login
           {!defaultRole && (
             <p className="text-center text-sm text-muted-foreground">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="font-medium text-primary hover:underline">Register</Link>
+              <Link href="/register" className="font-medium text-brand-action hover:underline">Register</Link>
             </p>
           )}
         </CardContent>
