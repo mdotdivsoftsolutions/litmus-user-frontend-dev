@@ -84,17 +84,17 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
 
                   {/* Active Indicator Pips */}
                   {selectedCategory === cat.name && (
-                    <div className="absolute top-4 right-4 h-6 w-6 rounded-full bg-brand-primary flex items-center justify-center shadow-lg border-2 border-white">
-                      <div className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                    <div className="absolute top-4 right-4 h-6 w-6 rounded-full bg-brand-action flex items-center justify-center shadow-md border-2 border-white">
+                      <div className="h-1.5 w-1.5 rounded-full bg-white" />
                     </div>
                   )}
                 </>
               );
 
               const buttonClass = cn(
-                "group relative h-[140px] md:h-[180px] w-[110px] shrink-0 md:w-full rounded-2xl overflow-hidden flex flex-col justify-end p-4 transition-all duration-300 border-2 text-left snap-start",
+                "group relative h-[140px] md:h-[180px] w-[110px] shrink-0 md:w-full rounded-2xl overflow-hidden flex flex-col justify-end p-4 transition-all duration-300 border-2 text-left snap-start outline-none focus:outline-none focus-visible:outline-none",
                 selectedCategory === cat.name
-                  ? "border-brand-primary ring-4 ring-brand-primary/10"
+                  ? "border-brand-action shadow-md"
                   : "border-transparent hover:border-slate-200 hover:-translate-y-1"
               );
 

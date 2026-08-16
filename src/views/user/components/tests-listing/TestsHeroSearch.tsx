@@ -55,7 +55,7 @@ export function TestsHeroSearch({ search, setSearch, tests = [], onSearch }: Tes
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-hover:text-[#D32F2F] transition-colors" />
           <Input
             placeholder="Search 1000+ tests..."
-            className="h-10 sm:h-10 pl-12 pr-6 border-none bg-transparent text-slate-800 placeholder:text-slate-300 text-base sm:text-lg focus-visible:ring-0 shadow-none font-medium"
+            className="font-body h-10 sm:h-10 pl-12 pr-6 border-none bg-transparent text-slate-800 placeholder:text-slate-400 text-base focus-visible:ring-0 shadow-none font-normal"
             value={search}
             onChange={handleSearchChange}
             onFocus={() => setShowSuggestions(true)}
@@ -66,7 +66,7 @@ export function TestsHeroSearch({ search, setSearch, tests = [], onSearch }: Tes
         </div>
         <Button
           onClick={handleExploreClick}
-          className="w-full sm:w-auto h-10 sm:h-10 px-6 bg-gradient-to-r from-[#D32F2F] to-[#F06C00] text-white font-bold rounded-2xl text-base shadow-[0_12px_24px_rgba(211,47,47,0.25)] transition-all flex items-center gap-3 group/btn hover:scale-[1.02] active:scale-95"
+          className="w-full sm:w-auto h-11 px-6 bg-gradient-to-r from-[#D32F2F] to-[#F06C00] text-white font-body font-semibold text-base rounded-2xl shadow-[0_12px_24px_rgba(211,47,47,0.25)] transition-all flex items-center gap-3 group/btn hover:scale-[1.02] active:scale-95"
         >
           Explore <ArrowRight className="h-5 w-5 group-hover/btn:translate-x-1 transition-transform" />
         </Button>
@@ -87,15 +87,15 @@ export function TestsHeroSearch({ search, setSearch, tests = [], onSearch }: Tes
                       <Search className="h-4 w-4 text-slate-400 group-hover:text-[#D32F2F]" />
                     </div>
                     <div>
-                      <p className="text-sm font-bold text-slate-800">{test.testName}</p>
+                      <p className="font-heading text-sm font-bold text-slate-800 leading-[1.3]">{test.testName}</p>
                       <div className="flex items-center gap-2 mt-0.5">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#D32F2F]">
+                        <span className="font-data-badge text-xs font-semibold uppercase tracking-wider text-[#D32F2F]">
                           {test.category || "TEST"}
                         </span>
                         {test.turnAroundTime && (
                           <>
                             <span className="w-1 h-1 rounded-full bg-slate-300" />
-                            <span className="text-[10px] font-medium text-slate-500 flex items-center gap-1">
+                            <span className="font-data text-xs font-normal text-slate-500 flex items-center gap-1">
                               <Clock className="h-3 w-3" /> {test.turnAroundTime}
                             </span>
                           </>

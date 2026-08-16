@@ -35,14 +35,16 @@ export function PackagesHero({
       <div className="max-w-7xl mx-auto px-4 relative z-10 w-full">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           <div className="flex-1 text-center lg:text-left space-y-6 py-8 lg:py-0 group">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white shadow-sm border border-slate-100 text-brand-action text-[10px] font-bold uppercase tracking-[0.2em] animate-fade-in">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white shadow-sm border border-slate-100 text-[#D32F2F] text-[10px] font-bold uppercase tracking-[0.2em] animate-fade-in">
               <Shield className="h-4 w-4" /> Curated Diagnostic Bundles
             </div>
 
             <div className="space-y-4">
               <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-[1.3] animate-slide-up">
                 Recommended. <br />
-                <span className="text-gradient-brand">Food Testing Packages</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">
+                  Food Testing Packages
+                </span>
               </h1>
               <p className="font-body text-slate-500 text-base font-normal leading-[1.5] max-w-xl mx-auto lg:mx-0">
                 Simplify your testing journey with ready-to-book packages developed by food safety experts. Whether you&apos;re
