@@ -15,19 +15,20 @@ function ReviewCard({ r }: { r: any }) {
                />
             ))}
          </div>
-         <p className="text-sm text-slate-500 leading-relaxed flex-1 relative z-10">"{r.text}"</p>
+         {/* Review text — Manrope (Body: 16px/14px, Regular, Line-height: 1.5) */}
+         <p className="font-body text-sm sm:text-base text-slate-600 leading-[1.5] flex-1 relative z-10">&ldquo;{r.text}&rdquo;</p>
 
          <div className="mt-8 pt-5 border-t border-slate-100 flex justify-between items-center relative z-10">
             <div className="flex items-center gap-3">
-               <div className="h-10 w-10 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center font-bold text-sm">
+               <div className="h-10 w-10 bg-slate-100 text-slate-700 rounded-full flex items-center justify-center font-body font-bold text-sm">
                   {r.name?.charAt(0) || "U"}
                </div>
                <div>
-                  <p className="text-sm font-bold text-slate-800">{r.name}</p>
-                  <p className="text-xs font-medium text-brand-primary">{r.city}</p>
+                  <p className="font-body text-sm font-bold text-slate-900 leading-[1.3]">{r.name}</p>
+                  <p className="font-data-badge text-xs font-semibold text-brand-primary leading-[1.4]">{r.city}</p>
                </div>
             </div>
-            {r.dateText && <span className="text-xs font-medium text-slate-400 bg-slate-50 px-2.5 py-1 rounded-full">{r.dateText}</span>}
+            {r.dateText && <span className="font-data-caption text-xs font-normal text-slate-400 bg-slate-50 px-2.5 py-1 rounded-full leading-[1.4]">{r.dateText}</span>}
          </div>
       </div>
    );

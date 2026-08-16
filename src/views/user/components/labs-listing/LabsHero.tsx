@@ -68,23 +68,23 @@ export function LabsHero({ search, setSearch, selectedCity, setSelectedCity, lab
       
       <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-2 items-center gap-12">
         <div className="space-y-6 animate-slide-up">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white shadow-sm border border-slate-100 text-[#D32F2F] text-[10px] font-black uppercase tracking-[0.4em]">
+          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white shadow-sm border border-slate-100 text-brand-action text-[10px] font-bold uppercase tracking-[0.2em]">
             <Microscope className="h-4 w-4" /> Accredited Facilities
           </div>
-          <h1 className="text-2xl sm:text-4xl font-semibold text-slate-800 tracking-tight leading-tight">
+          <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-[1.3]">
              Discover our Trusted <br />
-             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">Laboratory Partner</span>
+             <span className="text-gradient-brand">Laboratory Partners</span>
           </h1>
-          <p className="text-slate-500 text-base font-medium max-w-xl leading-relaxed opacity-80">
+          <p className="font-body text-slate-500 text-base font-normal max-w-xl leading-[1.5]">
              Discover our network of trusted laboratory partners certified to national and international standards, including NABL, FSSAI, ISO/IEC 17025, BIS, APEDA, EIC, and other industry-specific accreditations.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 max-w-2xl">
             <div ref={wrapperRef} className="relative flex-1 group z-50">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 group-focus-within:text-[#D32F2F] transition-colors" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-action transition-colors" />
               <Input 
                  placeholder="Search labs or cities..." 
-                 className="pl-10 h-10 rounded-xl text-sm border-slate-100 bg-white shadow-sm focus:border-[#D32F2F]/20 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none transition-all" 
+                 className="font-body pl-10 h-10 rounded-xl text-sm border-slate-100 bg-white shadow-sm focus:border-brand-action/20 focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none transition-all font-normal" 
                  value={search} 
                  onChange={handleSearchChange} 
                  onFocus={() => setShowSuggestions(true)}
@@ -105,14 +105,14 @@ export function LabsHero({ search, setSearch, selectedCity, setSelectedCity, lab
                           className="px-4 py-3 hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors"
                         >
                           <div className="flex items-center gap-3">
-                            <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-[#D32F2F]/10 transition-colors">
-                              <FlaskConical className="h-4 w-4 text-slate-400 group-hover:text-[#D32F2F]" />
+                            <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-brand-action/10 transition-colors">
+                              <FlaskConical className="h-4 w-4 text-slate-400 group-hover:text-brand-action" />
                             </div>
                             <div>
-                              <p className="text-sm font-bold text-slate-800">{lab.name}</p>
+                              <p className="font-heading text-sm font-bold text-slate-800 leading-[1.3]">{lab.name}</p>
                               <div className="flex items-center gap-2 mt-0.5">
-                                <span className="text-[10px] font-medium text-slate-500 flex items-center gap-1">
-                                  <MapPin className="h-3 w-3" /> {lab.city}
+                                <span className="font-data text-xs font-normal text-slate-500 flex items-center gap-1">
+                                  <MapPin className="h-3 w-3 text-brand-action" /> {lab.city}
                                 </span>
                               </div>
                             </div>
@@ -121,7 +121,7 @@ export function LabsHero({ search, setSearch, selectedCity, setSelectedCity, lab
                       ))}
                     </div>
                   ) : (
-                    <div className="p-4 text-center text-sm font-medium text-slate-500">
+                    <div className="font-body p-4 text-center text-sm font-normal text-slate-500">
                       No labs found matching "{search}"
                     </div>
                   )}
@@ -133,10 +133,10 @@ export function LabsHero({ search, setSearch, selectedCity, setSelectedCity, lab
                  <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {cities.map((c) => <SelectItem key={c} value={c} className="text-xs font-semibold uppercase tracking-widest">{c}</SelectItem>)}
+                {cities.map((c) => <SelectItem key={c} value={c} className="font-body text-xs font-semibold uppercase tracking-widest">{c}</SelectItem>)}
               </SelectContent>
             </Select>
-            <Button onClick={handleExploreClick} className="w-full sm:w-auto h-10 px-5 bg-gradient-to-r from-[#D32F2F] to-[#F06C00] text-white font-bold rounded-xl text-sm shadow-md transition-all flex items-center gap-2 group/btn hover:scale-[1.02] active:scale-95">
+            <Button onClick={handleExploreClick} className="w-full sm:w-auto h-10 px-5 bg-brand-action hover:bg-brand-action-hover text-white font-body font-semibold text-sm rounded-xl shadow-md transition-all flex items-center gap-2 group/btn hover:scale-[1.02] active:scale-95">
               Explore <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
             </Button>
           </div>

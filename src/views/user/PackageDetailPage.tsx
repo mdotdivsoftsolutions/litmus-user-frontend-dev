@@ -203,24 +203,24 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
             {/* Test Parameters / What's Tested */}
             <div className="bg-white rounded-xl p-6 md:p-8 border border-slate-100 shadow-sm space-y-6">
               <div>
-                <h3 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                <h3 className="font-heading text-xl font-bold text-slate-900 tracking-tight leading-[1.3] flex items-center gap-2">
                   <FlaskConical className="h-5 w-5 text-brand-action" /> What&apos;s Included inside the Panel?
                 </h3>
-                <p className="text-slate-500 text-xs mt-1 font-medium">Critical testing parameters and analytes analyzed in this package</p>
+                <p className="font-body text-slate-500 text-sm mt-1 font-medium leading-[1.5]">Critical testing parameters and analytes analyzed in this package</p>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
                 {pkg.tests && pkg.tests.length > 0 ? (
                   pkg.tests.map((test: any, i: number) => (
                     <div key={test._id || i} className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl hover:bg-white hover:border-brand-action/30 border border-slate-100 transition-all duration-300 group">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                      <CheckCircle2 className="h-5 w-5 text-brand-action shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                       <div>
-                        <span className="text-sm text-slate-700 font-bold block">{test.testName}</span>
+                        <span className="font-heading text-sm text-slate-800 font-bold block">{test.testName}</span>
                         <div className="mt-1">
                           {test.offerPrice && test.price > test.offerPrice ? (
-                            <span suppressHydrationWarning className="text-[11px] text-slate-400 font-medium line-through mr-2">₹{formatCurrency(test.price)}</span>
+                            <span suppressHydrationWarning className="font-data text-xs text-slate-400 font-normal line-through mr-2">₹{formatCurrency(test.price)}</span>
                           ) : null}
-                          <span suppressHydrationWarning className="text-[11px] text-brand-action font-bold">₹{formatCurrency(test.offerPrice || test.price || 0)}</span>
+                          <span suppressHydrationWarning className="font-data text-xs text-brand-action font-bold">₹{formatCurrency(test.offerPrice || test.price || 0)}</span>
                         </div>
                       </div>
                     </div>
@@ -228,10 +228,10 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
                 ) : (
                   pkg.features?.map((feature: string, i: number) => (
                     <div key={i} className="flex items-start gap-3 p-4 bg-slate-50 rounded-2xl hover:bg-white hover:border-brand-action/30 border border-slate-100 transition-all duration-300 group">
-                      <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                      <CheckCircle2 className="h-5 w-5 text-brand-action shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
                       <div>
-                        <span className="text-sm text-slate-700 font-bold block">{feature}</span>
-                        <span className="text-[11px] text-slate-400 font-medium">Standard analytical testing method</span>
+                        <span className="font-heading text-sm text-slate-800 font-bold block">{feature}</span>
+                        <span className="font-body text-xs text-slate-400 font-normal">Standard analytical testing method</span>
                       </div>
                     </div>
                   ))
@@ -241,34 +241,34 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
 
             {/* General FAQs & Information */}
             <div className="bg-white rounded-xl p-6 md:p-8 border border-slate-100 shadow-sm space-y-6">
-              <h3 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                <HelpCircle className="h-5 w-5 text-slate-700" /> Frequently Asked Questions
+              <h3 className="font-heading text-xl font-bold text-slate-900 tracking-tight leading-[1.3] flex items-center gap-2">
+                <HelpCircle className="h-5 w-5 text-brand-action" /> Frequently Asked Questions
               </h3>
               
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="faq-1" className="border-b border-slate-100 py-1">
-                  <AccordionTrigger className="text-slate-800 font-bold hover:no-underline hover:text-brand-action text-left">
+                  <AccordionTrigger className="font-heading text-slate-800 font-bold hover:no-underline hover:text-brand-action text-left leading-[1.3]">
                     What is the sample size requirement for this package?
                   </AccordionTrigger>
-                  <AccordionContent className="text-slate-500 leading-relaxed text-sm font-medium">
+                  <AccordionContent className="font-body text-slate-600 leading-[1.5] text-sm font-normal">
                     Typically, we require a minimum of 200g to 500g of the packaged food or liquid sample in its original retail package. For custom container samples, please ensure it is tightly sealed in a sterile container.
                   </AccordionContent>
                 </AccordionItem>
                 
                 <AccordionItem value="faq-2" className="border-b border-slate-100 py-1">
-                  <AccordionTrigger className="text-slate-800 font-bold hover:no-underline hover:text-brand-action text-left">
+                  <AccordionTrigger className="font-heading text-slate-800 font-bold hover:no-underline hover:text-brand-action text-left leading-[1.3]">
                     How is the sample collected?
                   </AccordionTrigger>
-                  <AccordionContent className="text-slate-500 leading-relaxed text-sm font-medium">
+                  <AccordionContent className="font-body text-slate-600 leading-[1.5] text-sm font-normal">
                     Once you finalize the booking, our specialized sample collection executives will pick up the sample from your facility in specialized cold-chain insulated bags to maintain temperature integrity during transit.
                   </AccordionContent>
                 </AccordionItem>
 
                 <AccordionItem value="faq-3" className="border-0 py-1">
-                  <AccordionTrigger className="text-slate-800 font-bold hover:no-underline hover:text-brand-action text-left">
+                  <AccordionTrigger className="font-heading text-slate-800 font-bold hover:no-underline hover:text-brand-action text-left leading-[1.3]">
                     Are the reports valid for FSSAI / legal compliance?
                   </AccordionTrigger>
-                  <AccordionContent className="text-slate-500 leading-relaxed text-sm font-medium">
+                  <AccordionContent className="font-body text-slate-600 leading-[1.5] text-sm font-normal">
                     Yes, all testing is conducted in NABL accredited and FSSAI notified laboratories. The reports generated will carry official NABL holograms and QR codes, which are 100% compliant for FSSAI submissions, audits, and certifications.
                   </AccordionContent>
                 </AccordionItem>
@@ -281,21 +281,21 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
             <Card className="border border-slate-100 shadow-sm rounded-xl overflow-hidden bg-white">
               <CardContent className="p-6 md:p-8 space-y-6">
                 <div>
-                  <h3 className="font-semibold text-xl text-slate-800 tracking-tight">{pkg.name}</h3>
-                  <p className="text-xs text-slate-400 mt-1 font-semibold uppercase tracking-wider">{pkg.category} Panel</p>
+                  <h3 className="font-heading font-bold text-xl text-slate-900 tracking-tight leading-[1.3]">{pkg.name}</h3>
+                  <p className="font-data-badge text-xs text-slate-400 mt-1 font-semibold uppercase tracking-wider">{pkg.category} Panel</p>
                 </div>
                 
                 <div className="bg-slate-50 rounded-xl p-4 space-y-3 border border-slate-100/50">
                   <div className="flex items-baseline justify-between">
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Original Price</span>
-                    <span suppressHydrationWarning className="text-sm text-slate-400 line-through font-bold">₹{formatCurrency(pkg.mrp)}</span>
+                    <span className="font-data text-xs text-slate-400 font-medium uppercase tracking-wider">Original Price</span>
+                    <span suppressHydrationWarning className="font-data text-sm text-slate-400 line-through font-normal">₹{formatCurrency(pkg.mrp)}</span>
                   </div>
                   
                   <div className="flex items-baseline justify-between pt-1">
-                    <span className="text-xs text-slate-600 font-bold">Litmus Price</span>
+                    <span className="font-body text-xs text-slate-700 font-semibold">Litmus Price</span>
                     <div className="flex items-center gap-2">
-                      <span suppressHydrationWarning className="text-2xl font-black text-slate-800 tracking-tighter">₹{formatCurrency(pkg.price)}</span>
-                      <span className="bg-emerald-100 text-emerald-600 text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider border border-emerald-200/50">
+                      <span suppressHydrationWarning className="font-data text-3xl font-bold text-slate-900 tracking-tight leading-[1.4]">₹{formatCurrency(pkg.price)}</span>
+                      <span className="font-data-badge bg-emerald-100 text-emerald-700 text-xs font-semibold px-2 py-0.5 rounded-md uppercase tracking-wider border border-emerald-200/50">
                         {discountPct(pkg.price, pkg.mrp)}% Off
                       </span>
                     </div>
@@ -303,19 +303,19 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
                 </div>
 
                 <div className="space-y-3.5">
-                  <div className="flex items-center gap-3 text-xs text-slate-500 font-bold">
+                  <div className="flex items-center gap-3 text-xs text-slate-600 font-medium">
                     <Clock className="h-4 w-4 text-brand-action" />
-                    <span>Reports guaranteed in {pkg.tat}</span>
+                    <span className="font-body">Reports guaranteed in {pkg.tat}</span>
                   </div>
                   
-                  <div className="flex items-center gap-3 text-xs text-slate-500 font-bold">
-                    <Shield className="h-4 w-4 text-emerald-500" />
-                    <span>100% NABL Accredited Laboratory</span>
+                  <div className="flex items-center gap-3 text-xs text-slate-600 font-medium">
+                    <Shield className="h-4 w-4 text-brand-action" />
+                    <span className="font-body">100% NABL Accredited Laboratory</span>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-slate-500 font-bold">
-                    <Lock className="h-4 w-4 text-slate-600" />
-                    <span>Secure Cold Chain Sample Logistics</span>
+                  <div className="flex items-center gap-3 text-xs text-slate-600 font-medium">
+                    <Lock className="h-4 w-4 text-slate-500" />
+                    <span className="font-body">Secure Cold Chain Sample Logistics</span>
                   </div>
                 </div>
 
@@ -324,7 +324,7 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
                     onClick={handleAddToCart}
                     disabled={isInCart || addMutation.isPending}
                     variant="outline"
-                    className="w-full h-12 rounded-xl border-2 border-brand-action text-brand-action hover:bg-brand-action/5 hover:text-brand-action font-extrabold text-sm transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-12 rounded-xl border-2 border-brand-action text-brand-action hover:bg-brand-action/10 font-body font-semibold text-base transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {addMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : isInCart ? <Check className="h-5 w-5" /> : <ShoppingCart className="h-5 w-5" />} 
                     {isInCart ? "In Cart" : "Add to Cart"}
@@ -332,7 +332,7 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
 
                   <Button 
                     onClick={handleBookNow}
-                    className="w-full h-12 rounded-xl bg-gradient-to-r from-brand-card-from to-brand-card-to hover:shadow-lg text-white font-extrabold text-sm transition-all flex items-center justify-center gap-2 group"
+                    className="w-full h-12 rounded-xl bg-brand-action hover:bg-brand-action-hover shadow-md hover:shadow-lg text-white font-body font-semibold text-base transition-all flex items-center justify-center gap-2 group active:scale-95"
                   >
                     Book Panel Now <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                   </Button>

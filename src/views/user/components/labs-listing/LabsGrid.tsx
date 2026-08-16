@@ -88,36 +88,36 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
                       {lab.name.split(" ").map((w: string) => w[0]).slice(0, 2).join("")}
                     </div>
                     <div className="space-y-0.5">
-                      <h3 className="text-lg font-semibold text-slate-800 tracking-tight group-hover:text-brand-primary transition-colors">{lab.name}</h3>
-                      <p className="text-[10px] font-semibold text-slate-400 flex items-center gap-1 uppercase tracking-widest"><MapPin className="h-3 w-3 text-brand-primary" />{lab.city}, India</p>
+                      <h3 className="font-heading text-lg font-bold text-slate-900 tracking-tight leading-[1.3] group-hover:text-brand-action transition-colors">{lab.name}</h3>
+                      <p className="font-data text-xs font-semibold text-slate-400 flex items-center gap-1 uppercase tracking-wider"><MapPin className="h-3 w-3 text-brand-action" />{lab.city}, India</p>
                     </div>
                   </div>
                      <div className="flex flex-col items-end gap-1">
                      <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">
                         <Star className="h-2.5 w-2.5 fill-amber-500 text-amber-500" />
-                        <span className="text-[10px] font-bold text-amber-700">{lab.rating?.toFixed(1) || '0.0'}</span>
+                        <span className="font-data text-xs font-bold text-amber-700">{lab.rating?.toFixed(1) || '0.0'}</span>
                      </div>
-                     <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">{lab.reviewCount || 0} Reviews</p>
+                     <p className="font-data text-[10px] font-semibold text-slate-400 uppercase tracking-wider">{lab.reviewCount || 0} Reviews</p>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 border-y border-slate-50 py-3">
                   <div className="space-y-1">
-                     <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</p>
+                     <p className="font-data text-[10px] font-semibold text-slate-400 uppercase tracking-wider leading-none">Status</p>
                      <div className="flex flex-wrap gap-1 mt-1">
-                        {lab.nabl && <Badge className="bg-slate-900 border-0 text-[8px] px-1 py-0 h-4 tracking-tighter">NABL</Badge>}
-                        {lab.fssai && <Badge className="bg-[#D32F2F] border-0 text-[8px] px-1 py-0 h-4 tracking-tighter">FSSAI</Badge>}
+                        {lab.nabl && <Badge className="font-data-badge bg-slate-900 text-white border-0 text-[10px] px-1.5 py-0 h-4 tracking-tight">NABL</Badge>}
+                        {lab.fssai && <Badge className="font-data-badge bg-brand-action text-white border-0 text-[10px] px-1.5 py-0 h-4 tracking-tight">FSSAI</Badge>}
                      </div>
                   </div>
                    <div className="space-y-1 border-l border-slate-50 pl-3">
-                      <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Starting</p>
-                      <p className="text-xs font-bold text-slate-800 mt-1">₹{lab.priceFrom}</p>
+                      <p className="font-data text-[10px] font-semibold text-slate-400 uppercase tracking-wider leading-none">Starting</p>
+                      <p className="font-data text-sm font-bold text-slate-900 mt-1">₹{lab.priceFrom}</p>
                    </div>
                    <div className="space-y-1 border-l border-slate-50 pl-3">
-                     <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Expertise</p>
+                     <p className="font-data text-[10px] font-semibold text-slate-400 uppercase tracking-wider leading-none">Expertise</p>
                      <div className="flex items-center gap-1 mt-1">
-                        <Activity className="h-2.5 w-2.5 text-emerald-500" />
-                        <span className="text-[9px] font-bold text-slate-600">
+                        <Activity className="h-3 w-3 text-emerald-500" />
+                        <span className="font-body text-xs font-medium text-slate-700">
                           {lab.expertiseArea?.length > 0 ? (
                             <>
                               {lab.expertiseArea[0]} 
@@ -132,9 +132,9 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
                 <div className="flex items-center justify-between">
                    <div className="flex items-center gap-1.5">
                       <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em]">Operational Now</span>
+                      <span className="font-data text-[10px] font-bold text-slate-400 uppercase tracking-widest">Operational Now</span>
                    </div>
-                   <div className="flex items-center justify-center h-8 px-3 rounded-lg group-hover:bg-slate-50 text-slate-600 group-hover:text-[#D32F2F] font-semibold text-[10px] transition-all gap-1.5">
+                   <div className="flex items-center justify-center h-8 px-3 rounded-lg group-hover:bg-brand-action/10 text-slate-600 group-hover:text-brand-action font-body font-semibold text-xs transition-all gap-1.5">
                      Explore Laboratory <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                    </div>
                 </div>
@@ -150,9 +150,9 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
               onClick={onLoadMore}
               disabled={isFetchingNextPage}
               variant="outline" 
-              className="h-10 px-8 rounded-xl border-slate-200 text-slate-500 hover:text-[#D32F2F] hover:border-[#D32F2F]/20 font-semibold text-[10px] tracking-[0.2em] uppercase transition-all flex items-center gap-2 bg-white shadow-sm hover:shadow-md"
+              className="h-11 px-8 rounded-xl border-slate-200 text-slate-700 hover:text-white hover:bg-brand-action hover:border-brand-action font-body font-semibold text-sm transition-all flex items-center gap-2 bg-white shadow-sm hover:shadow-md active:scale-95"
             >
-              {isFetchingNextPage ? "Loading..." : "Load More"} <ArrowRight className="h-3 w-3" />
+              {isFetchingNextPage ? "Loading..." : "Load More"} <ArrowRight className="h-4 w-4" />
             </Button>
          </div>
       )}

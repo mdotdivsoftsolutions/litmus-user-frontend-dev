@@ -186,22 +186,22 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
               ))}
               {testObj.isApplicableToAll && <Badge className="bg-brand-primary text-white border-0 text-xs">All Categories</Badge>}
             </div>
-            <h1 className="text-3xl font-bold text-foreground">{testObj.testName}</h1>
-            {testObj.description && <p className="text-muted-foreground mt-2">{testObj.description}</p>}
+            <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-foreground leading-[1.3]">{testObj.testName}</h1>
+            {testObj.description && <p className="font-body text-base text-muted-foreground mt-2 leading-[1.5]">{testObj.description}</p>}
           </div>
 
           <div className="bg-card border border-border rounded-xl p-5 space-y-4 shadow-sm">
             <div className="grid grid-cols-2 gap-4">
                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Testing Method</p>
-                  <p className="font-medium text-foreground">{testObj.metadata?.method || 'Standard Method'}</p>
+                  <p className="font-body text-xs text-muted-foreground mb-1 font-medium">Testing Method</p>
+                  <p className="font-body font-semibold text-foreground text-sm">{testObj.metadata?.method || 'Standard Method'}</p>
                </div>
                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Test Type</p>
+                  <p className="font-body text-xs text-muted-foreground mb-1 font-medium">Test Type</p>
                   {testObj.metadata?.type ? (
-                    <Badge variant="outline" className="capitalize">{testObj.metadata.type}</Badge>
+                    <Badge variant="outline" className="font-data-badge capitalize text-xs">{testObj.metadata.type}</Badge>
                   ) : (
-                    <span className="font-medium text-foreground">Standard</span>
+                    <span className="font-body font-semibold text-foreground text-sm">Standard</span>
                   )}
                </div>
             </div>
@@ -209,10 +209,10 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
 
           <div className="space-y-4">
             <div>
-              <h2 className="text-xl font-semibold flex items-center gap-2 text-foreground">
+              <h2 className="font-heading text-xl font-bold flex items-center gap-2 text-foreground leading-[1.3]">
                 <FlaskConical className="h-5 w-5 text-brand-action" /> Test Parameters
               </h2>
-              <p className="text-sm text-muted-foreground mt-1">Select the specific parameters you want to test. All are selected by default.</p>
+              <p className="font-body text-sm text-muted-foreground mt-1 leading-[1.5]">Select the specific parameters you want to test. All are selected by default.</p>
             </div>
             
             {parameters.length > 0 ? (
@@ -220,7 +220,7 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
                 {parameters.map((param: any, idx: number) => (
                   <div key={param.name} className={`flex items-center gap-4 p-4 hover:bg-muted/30 transition-colors ${idx !== parameters.length - 1 ? 'border-b border-border' : ''}`}>
                     <Checkbox 
-                      id={`param-${param.name}`}
+                      id={`param-${param.name}`} 
                       checked={selectedParams.includes(param.name)}
                       onCheckedChange={() => toggleParameter(param.name)}
                       className="w-5 h-5 rounded-sm"
@@ -228,20 +228,20 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
                     <div className="flex-1 min-w-0">
                       <label 
                         htmlFor={`param-${param.name}`} 
-                        className="font-medium text-foreground cursor-pointer select-none block"
+                        className="font-body text-sm font-semibold text-foreground cursor-pointer select-none block"
                       >
                         {param.name}
                       </label>
                       <div className="flex gap-4 mt-1 items-center">
                         {param.price && (
-                          <span className="text-xs text-brand-action font-bold bg-brand-action/10 px-2 py-0.5 rounded-full">
+                          <span className="font-data text-xs text-brand-action font-bold bg-brand-action/10 px-2 py-0.5 rounded-full">
                             ₹{param.price}
                           </span>
                         )}
-                        {param.unit && <span className="text-xs text-muted-foreground">Unit: <strong className="font-medium">{param.unit}</strong></span>}
+                        {param.unit && <span className="font-data text-xs text-muted-foreground">Unit: <strong className="font-semibold">{param.unit}</strong></span>}
                         {(param.minLimit || param.maxLimit) && (
-                          <span className="text-xs text-muted-foreground">
-                            Limits: <strong className="font-medium">{param.minLimit || '0'} - {param.maxLimit || 'N/A'}</strong>
+                          <span className="font-data text-xs text-muted-foreground">
+                            Limits: <strong className="font-semibold">{param.minLimit || '0'} - {param.maxLimit || 'N/A'}</strong>
                           </span>
                         )}
                       </div>
@@ -250,7 +250,7 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
                 ))}
               </div>
             ) : (
-              <div className="p-8 text-center bg-muted/10 border border-border border-dashed rounded-xl text-muted-foreground">
+              <div className="font-body p-8 text-center bg-muted/10 border border-border border-dashed rounded-xl text-muted-foreground text-sm">
                 No specific parameters listed for this test.
               </div>
             )}
@@ -262,41 +262,41 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
           <div className="lg:sticky lg:top-28">
             <Card className="border border-border shadow-sm rounded-2xl overflow-hidden">
               <CardContent className="p-6 space-y-5">
-                <h3 className="font-bold text-lg text-foreground">{testObj.testName}</h3>
+                <h3 className="font-heading font-bold text-lg text-foreground leading-[1.3]">{testObj.testName}</h3>
                 
                 <div className="flex flex-col gap-1">
                   <div className="flex items-baseline gap-2">
-                    <span suppressHydrationWarning className="text-4xl font-bold text-brand-action">₹{formatCurrency(price)}</span>
+                    <span suppressHydrationWarning className="font-data text-3xl sm:text-4xl font-bold text-brand-action leading-[1.4]">₹{formatCurrency(price)}</span>
                     {originalPrice > price && (
-                      <span suppressHydrationWarning className="text-sm text-muted-foreground line-through font-medium">₹{formatCurrency(originalPrice)}</span>
+                      <span suppressHydrationWarning className="font-data text-sm text-muted-foreground line-through font-normal">₹{formatCurrency(originalPrice)}</span>
                     )}
                   </div>
                   {discountAmount > 0 && (
-                    <div className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md self-start border border-emerald-100">
+                    <div className="font-data-badge text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md self-start border border-emerald-100">
                       {testObj.discountType === 'PERCENTAGE' ? `${testObj.discountValue}% OFF` : `₹${testObj.discountValue} OFF`} applied
                     </div>
                   )}
                 </div>
                 
-                <p className="text-sm text-muted-foreground font-medium">
+                <p className="font-body text-sm text-muted-foreground font-medium leading-[1.5]">
                   {selectedParams.length} of {parameters.length || 1} parameters selected
                 </p>
 
-                <div className="flex items-center gap-2 text-sm text-litmus-teal bg-litmus-teal/10 p-3 rounded-lg font-medium">
-                  <Clock className="h-5 w-5" />
-                  Reports in {testObj.turnAroundTime || '3-5 working days'}
+                <div className="flex items-center gap-2 text-sm text-brand-action bg-brand-action/10 p-3 rounded-lg font-medium">
+                  <Clock className="h-5 w-5 text-brand-action" />
+                  <span className="font-body">Reports in {testObj.turnAroundTime || '3-5 working days'}</span>
                 </div>
 
                 <div className="flex gap-2">
-                  <Badge className="bg-litmus-teal text-white border-0 hover:bg-litmus-dark/90">NABL</Badge>
-                  <Badge className="bg-litmus-teal text-white border-0 hover:bg-litmus-teal/90">FSSAI</Badge>
+                  <Badge className="font-data-badge bg-brand-action text-white border-0 text-xs">NABL</Badge>
+                  <Badge className="font-data-badge bg-brand-action text-white border-0 text-xs">FSSAI</Badge>
                 </div>
 
                 <div className="space-y-3 pt-2">
                   <Button 
                     onClick={handleAddToCart}
                     disabled={isInCart || addMutation.isPending}
-                    className="w-full bg-brand-action hover:bg-brand-action-hover rounded-lg gap-2 h-12 text-base shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                    className="w-full bg-brand-action hover:bg-brand-action-hover font-body font-semibold text-base text-white rounded-xl gap-2 h-12 shadow-md hover:shadow-lg transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
                     {addMutation.isPending ? <Loader2 className="h-5 w-5 animate-spin" /> : isInCart ? <Check className="h-5 w-5" /> : <ShoppingCart className="h-5 w-5" />} 
                     {isInCart ? "In Cart" : "Add to Cart"}
                   </Button>
@@ -304,7 +304,7 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
                   <Button 
                     onClick={handleBookNow}
                     variant="outline" 
-                    className="w-full bg-white hover:bg-slate-50 text-foreground border border-border h-12 rounded-lg text-base shadow-sm">
+                    className="w-full bg-white hover:bg-brand-action/10 text-slate-800 border-2 border-brand-action font-body font-semibold text-base h-12 rounded-xl shadow-sm transition-all">
                     Book Now
                   </Button>
                 </div>

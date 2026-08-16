@@ -48,9 +48,12 @@ function PastelCategoryCard({
       </div>
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="text-base font-bold leading-snug tracking-tight text-slate-900">{title}</h3>
-        <p className="mt-1 text-xs leading-relaxed text-slate-500">{subtitle}</p>
-        <p className="mt-auto pt-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+        {/* Title — Nunito (H5: 16px, Bold, Line-height: 1.3) */}
+        <h3 className="font-heading text-base font-bold leading-[1.3] tracking-tight text-slate-900 line-clamp-1">{title}</h3>
+        {/* Subtitle — Manrope (14px/12px, Regular, Line-height: 1.5) */}
+        <p className="font-body mt-1 text-xs leading-[1.5] text-slate-500 line-clamp-2">{subtitle}</p>
+        {/* Footnote — Inter (Badges/Data: 12px, Semibold, Line-height: 1.4) */}
+        <p className="font-data-badge mt-auto pt-2 text-xs font-semibold uppercase tracking-wider text-brand-primary">
           {footnote}
         </p>
       </div>

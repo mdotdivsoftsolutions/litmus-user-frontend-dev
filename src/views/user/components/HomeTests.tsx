@@ -115,33 +115,33 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
         )}
       </div>
 
-      {/* Title */}
-      <h3 className="text-[17px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-brand-action transition-colors line-clamp-2 min-h-[46px] mb-3">
+      {/* Title — Nunito (H3: 18-20px, Bold, Line-height: 1.3) */}
+      <h3 className="font-heading text-lg font-bold text-slate-800 tracking-tight leading-[1.3] group-hover:text-brand-action transition-colors line-clamp-2 min-h-[46px] mb-3">
         {name}
       </h3>
 
-      {/* Subtitle & Details */}
-      <div className="flex flex-col gap-1.5">
-        <div className="flex items-center gap-1.5 text-[13px] text-slate-500 font-medium">
-          <span className="text-emerald-600">{itemType === 'PACKAGE' ? 'Package' : 'Test'}</span>
+      {/* Subtitle & Details — Manrope (14px, Medium, Line-height: 1.5) */}
+      <div className="font-body flex flex-col gap-1.5 leading-[1.5]">
+        <div className="flex items-center gap-1.5 text-sm text-slate-500 font-medium">
+          <span className="text-brand-primary font-semibold">{itemType === 'PACKAGE' ? 'Package' : 'Test'}</span>
           <span className="opacity-40">•</span>
           <span>{itemType === 'PACKAGE' ? `Contains ${parametersCount} tests` : `${parametersCount} parameters`}</span>
           <ChevronDown className="h-4 w-4 text-slate-400 ml-0.5" />
         </div>
-        <p className="text-[13px] text-slate-500">
+        <p className="text-xs text-slate-500 font-normal">
           Report within {turnAroundTime}
         </p>
       </div>
 
-      {/* Price & Action */}
+      {/* Price & Action — Inter (Price: 18-20px, Bold, Line-height: 1.4) */}
       <div className="mt-auto pt-6 flex items-end justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span suppressHydrationWarning className="text-xl font-black text-slate-800 tracking-tight">₹{formatCurrency(price)}</span>
+            <span suppressHydrationWarning className="font-data text-xl font-bold text-slate-900 tracking-tight leading-[1.4]">₹{formatCurrency(price)}</span>
             {discount > 0 && (
               <>
-                <span suppressHydrationWarning className="text-xs text-slate-400 line-through font-medium">₹{formatCurrency(mrp)}</span>
-                <span className="text-[11px] font-bold text-emerald-600 tracking-wide">{discount}% off</span>
+                <span suppressHydrationWarning className="font-data text-xs text-slate-400 line-through font-normal">₹{formatCurrency(mrp)}</span>
+                <span className="font-data text-xs font-semibold text-emerald-600 tracking-wide">{discount}% off</span>
               </>
             )}
           </div>

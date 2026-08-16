@@ -71,16 +71,16 @@ export function PackagesHero({ categories, selectedCategory, setSelectedCategory
           
           {/* Left Column: Information Control Center */}
           <div className="flex-1 text-center lg:text-left space-y-6 py-8 lg:py-0 group">
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white shadow-sm border border-slate-100 text-[#D32F2F] text-[10px] font-black uppercase tracking-[0.3em] animate-fade-in">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white shadow-sm border border-slate-100 text-brand-action text-[10px] font-bold uppercase tracking-[0.2em] animate-fade-in">
               <Shield className="h-4 w-4" /> Curated Diagnostic Bundles
             </div>
 
             <div className="space-y-4">
-              <h1 className="text-2xl sm:text-4xl font-semibold text-slate-800 tracking-tight leading-tight animate-slide-up">
+              <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-[1.3] animate-slide-up">
                 Recommended. {" "}
-                 <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">Food Testing Packages</span>
+                 <br /><span className="text-gradient-brand">Food Testing Packages</span>
               </h1>
-              <p className="text-slate-500 text-base lg:text-lg font-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
+              <p className="font-body text-slate-500 text-base font-normal leading-[1.5] max-w-xl mx-auto lg:mx-0">
                 Simplify your testing journey with ready-to-book packages developed by food safety experts. Whether you're launching a new product, meeting regulatory requirements, or conducting routine quality checks, we've got the right testing panel for you.
               </p>
             </div>
@@ -89,10 +89,10 @@ export function PackagesHero({ categories, selectedCategory, setSelectedCategory
             <div ref={wrapperRef} className="relative z-50">
               <div className="flex flex-col sm:flex-row items-center gap-3 bg-white p-2 rounded-3xl shadow-[0_24px_80px_rgba(0,0,0,0.06)] border border-slate-100 max-w-xl mx-auto lg:mx-0 ring-4 ring-slate-400/5 hover:ring-slate-400/10 transition-all">
                 <div className="relative flex-1 w-full pl-4">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-hover:text-[#D32F2F] transition-colors" />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-hover:text-brand-action transition-colors" />
                   <Input
                     placeholder="Search diagnostic packages..."
-                    className="h-10 sm:h-10 pl-12 pr-6 border-none bg-transparent text-slate-800 placeholder:text-slate-300 text-base sm:text-lg focus-visible:ring-0 shadow-none font-medium"
+                    className="font-body h-10 sm:h-10 pl-12 pr-6 border-none bg-transparent text-slate-800 placeholder:text-slate-400 text-base focus-visible:ring-0 shadow-none font-normal"
                     value={search}
                     onChange={handleSearchChange}
                     onFocus={() => setShowSuggestions(true)}
@@ -101,7 +101,7 @@ export function PackagesHero({ categories, selectedCategory, setSelectedCategory
                     }}
                   />
                 </div>
-                <Button onClick={handleExploreClick} className="w-full sm:w-auto h-10 sm:h-10 px-6  bg-gradient-to-r from-[#D32F2F] to-[#F06C00] text-white font-bold rounded-2xl text-base shadow-[0_12px_24px_rgba(211,47,47,0.25)] transition-all flex items-center gap-3 group/btn hover:scale-[1.02] active:scale-95">
+                <Button onClick={handleExploreClick} className="w-full sm:w-auto h-11 px-6 bg-brand-action hover:bg-brand-action-hover text-white font-body font-semibold text-base rounded-2xl shadow-md transition-all flex items-center gap-3 group/btn hover:scale-[1.02] active:scale-95">
                   Explore <ArrowRight className="h-5 w-5 group-hover/btn:translate-x-1 transition-transform" />
                 </Button>
               </div>
@@ -118,17 +118,17 @@ export function PackagesHero({ categories, selectedCategory, setSelectedCategory
                           className="px-4 py-3 hover:bg-slate-50 cursor-pointer flex items-center justify-between group transition-colors"
                         >
                           <div className="flex items-center gap-3">
-                            <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-[#D32F2F]/10 transition-colors">
-                              <Search className="h-4 w-4 text-slate-400 group-hover:text-[#D32F2F]" />
+                            <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-brand-action/10 transition-colors">
+                              <Search className="h-4 w-4 text-slate-400 group-hover:text-brand-action" />
                             </div>
                             <div>
-                              <p className="text-sm font-bold text-slate-800">{pkg.name}</p>
+                              <p className="font-heading text-sm font-bold text-slate-800 leading-[1.3]">{pkg.name}</p>
                               <div className="flex items-center gap-2 mt-0.5">
-                                <span className="text-[10px] font-bold uppercase tracking-wider text-[#D32F2F]">{pkg.category?.name || "PACKAGE"}</span>
+                                <span className="font-data-badge text-xs font-semibold uppercase tracking-wider text-brand-action">{pkg.category?.name || "PACKAGE"}</span>
                                 {pkg.tat && (
                                   <>
                                     <span className="w-1 h-1 rounded-full bg-slate-300" />
-                                    <span className="text-[10px] font-medium text-slate-500 flex items-center gap-1">
+                                    <span className="font-data text-xs font-normal text-slate-500 flex items-center gap-1">
                                       <Clock className="h-3 w-3" /> {pkg.tat}
                                     </span>
                                   </>
