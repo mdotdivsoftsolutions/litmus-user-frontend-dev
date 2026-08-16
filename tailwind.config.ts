@@ -3,7 +3,12 @@ import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -15,8 +20,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Manrope", "system-ui", "sans-serif"],
-        inter: ['Inter', 'sans-serif'],
+        sans: ["var(--font-manrope)", "Manrope", "system-ui", "sans-serif"],
+        heading: ["var(--font-nunito)", "Nunito", "sans-serif"],
+        nunito: ["var(--font-nunito)", "Nunito", "sans-serif"],
+        inter: ["var(--font-inter)", "Inter", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -28,6 +35,8 @@ export default {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
           deep: "hsl(var(--primary-deep))",
+          light: "hsl(var(--primary-light))",
+          tint: "hsl(var(--primary-tint))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -80,7 +89,6 @@ export default {
           emerald: "hsl(var(--litmus-emerald))",
           mint: "hsl(var(--litmus-mint))",
         },
-        /** Consumer marketing — see :root in index.css */
         brand: {
           primary: "var(--brand-primary)",
           "text-from": "var(--brand-text-from)",

@@ -78,21 +78,9 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener('openAuthModal', handleOpenAuth);
   }, []);
 
-  // Handle auto-opening of the modal on first load if not logged in
-  useEffect(() => {
-    const hasSeenModal = sessionStorage.getItem("has-seen-auth-modal");
-    if (!hasSeenModal && !user) {
-      const timer = setTimeout(() => {
-        setIsAuthModalOpen(true);
-        sessionStorage.setItem("has-seen-auth-modal", "true");
-      }, 2000); // 2 second delay for better UX
-      return () => clearTimeout(timer);
-    }
-  }, [user]);
-
   return (
     <CartDrawerProvider>
-      <div className="min-h-screen bg-slate-50 flex flex-col">
+      <div className="min-h-screen bg-background flex flex-col">
         <Header
           scrolled={scrolled}
           city={city}

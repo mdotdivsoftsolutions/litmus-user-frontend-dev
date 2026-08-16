@@ -1,6 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,10 +14,12 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 11%;
 
-    /* Flame red primary */
-    --primary: 11 76% 49%;
+    /* Litmus Brand Primary (Green) */
+    --primary: 136 100% 23%;
     --primary-foreground: 0 0% 100%;
-    --primary-deep: 7 84% 40%;
+    --primary-deep: 136 100% 18%;
+    --primary-light: 136 100% 33%;
+    --primary-tint: 136 60% 95%;
 
     /* Charcoal secondary */
     --secondary: 0 0% 11%;
@@ -29,62 +28,60 @@
     --muted: 30 15% 94%;
     --muted-foreground: 0 0% 42%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 193 40% 94%;
+    --accent-foreground: 193 100% 19%;
 
-    --destructive: 7 84% 40%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
     --border: 30 14% 88%;
     --input: 30 14% 88%;
-    --ring: 215 20.2% 65.1%;
+    --ring: 136 100% 23%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     /* Sidebar — charcoal dark */
     --sidebar-background: 0 0% 11%;
     --sidebar-foreground: 0 0% 60%;
-    --sidebar-primary: 24 91% 53%;
+    --sidebar-primary: 136 100% 23%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 16%;
     --sidebar-accent-foreground: 0 0% 96%;
     --sidebar-border: 0 0% 16%;
-    --sidebar-ring: 24 91% 53%;
-    --sidebar-active: 22 90% 51%;
+    --sidebar-ring: 136 100% 23%;
+    --sidebar-active: 136 100% 28%;
 
-    /* Litmus green — supporting only */
+    /* Litmus green tokens */
     --litmus-dark: 163 69% 17%;
     --litmus-teal: 157 60% 26%;
     --litmus-emerald: 155 52% 37%;
     --litmus-mint: 140 36% 88%;
 
-    /* Flame palette tokens */
+    /* Flame palette tokens (retained for backward compatibility) */
     --flame-deep: 7 84% 40%;
     --flame-red: 11 76% 49%;
     --flame-orange: 22 90% 51%;
     --flame-amber: 36 91% 57%;
     --flame-gold: 43 95% 66%;
-
-    /* Flame tints */
     --flame-red-tint: 24 88% 95%;
     --flame-orange-tint: 28 82% 96%;
     --flame-amber-tint: 45 85% 92%;
 
-    /* Status colors — Litmus brand */
-    --status-pending: 11 76% 49%;
-    --status-pending-bg: 24 88% 95%;
-    --status-approved: 163 69% 17%;
-    --status-approved-bg: 140 36% 88%;
-    --status-rejected: 0 55% 41%;
-    --status-rejected-bg: 0 74% 95%;
-    --status-completed: 157 60% 26%;
-    --status-completed-bg: 150 40% 93%;
+    /* Status colors */
+    --status-pending: 36 91% 57%;
+    --status-pending-bg: 45 85% 94%;
+    --status-approved: 136 100% 23%;
+    --status-approved-bg: 136 60% 95%;
+    --status-rejected: 0 72% 51%;
+    --status-rejected-bg: 0 75% 96%;
+    --status-completed: 193 100% 19%;
+    --status-completed-bg: 193 40% 94%;
     --status-inprogress: 36 91% 57%;
-    --status-inprogress-bg: 45 85% 92%;
+    --status-inprogress-bg: 45 85% 94%;
 
     /* Chart colors */
-    --chart-1: 11 76% 49%;
-    --chart-2: 22 90% 51%;
+    --chart-1: 136 100% 23%;
+    --chart-2: 193 100% 19%;
     --chart-3: 36 91% 57%;
     --chart-4: 43 95% 66%;
     --chart-5: 155 52% 37%;
@@ -98,7 +95,7 @@
     --brand-card-from: #004B60;
     --brand-card-to: #006b88;
     --brand-card-deep: #002e3b;
-    /* RGB tuples for shadows (space-separated) */
+    /* RGB tuples for shadows */
     --brand-primary-rgb: 0 117 31;
     --brand-card-rgb: 0 75 96;
     --brand-action: #004B60;
@@ -112,44 +109,40 @@
     --card-foreground: 0 0% 96%;
     --popover: 0 0% 12%;
     --popover-foreground: 0 0% 96%;
-    --primary: 11 76% 49%;
+    --primary: 136 80% 35%;
     --primary-foreground: 0 0% 100%;
-    --primary-deep: 7 84% 40%;
+    --primary-deep: 136 80% 25%;
     --secondary: 0 0% 24%;
     --secondary-foreground: 0 0% 96%;
     --muted: 0 0% 16%;
     --muted-foreground: 0 0% 60%;
-    --accent: 22 90% 51%;
+    --accent: 193 60% 20%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 62% 30%;
+    --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 20%;
     --input: 0 0% 20%;
-    --ring: 11 76% 49%;
+    --ring: 136 80% 35%;
     --sidebar-background: 0 0% 8%;
     --sidebar-foreground: 0 0% 60%;
-    --sidebar-primary: 22 90% 51%;
+    --sidebar-primary: 136 80% 35%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 16%;
     --sidebar-accent-foreground: 0 0% 96%;
     --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 22 90% 51%;
-    --sidebar-active: 22 90% 51%;
+    --sidebar-ring: 136 80% 35%;
+    --sidebar-active: 136 80% 40%;
 
-    --brand-text-from: #00a82d;
-    --brand-text-to: #00751F;
-    --brand-primary: #00751F;
-    --brand-card-from: #004B60;
-    --brand-card-to: #006b88;
-    --brand-card-deep: #002e3b;
-    --brand-primary-rgb: 0 117 31;
-    --brand-card-rgb: 0 75 96;
-    --brand-action: #004B60;
-    --brand-action-hover: #002e3b;
+    --brand-text-from: #00c836;
+    --brand-text-to: #009628;
+    --brand-primary: #009628;
+    --brand-card-from: #003645;
+    --brand-card-to: #004f65;
+    --brand-card-deep: #001f27;
+    --brand-action: #006b88;
+    --brand-action-hover: #004B60;
   }
 }
-
-
 
 @layer base {
   * {
@@ -158,21 +151,28 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
-  /* New requirement: Nunito for all headings */
+  /* Heading typography uses Nunito font variable */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-nunito;
+    font-family: var(--font-nunito), 'Nunito', sans-serif;
   }
 }
 
 @layer utilities {
   .font-nunito {
-    font-family: 'Nunito', sans-serif;
+    font-family: var(--font-nunito), 'Nunito', sans-serif;
   }
-  /** Blue horizontal gradient for display text */
+  .font-manrope {
+    font-family: var(--font-manrope), 'Manrope', sans-serif;
+  }
+  .font-inter {
+    font-family: var(--font-inter), 'Inter', sans-serif;
+  }
+  
+  /** Blue/Teal horizontal gradient for display text */
   .text-gradient-brand {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-[#006b88] to-[#004B60];
   }
-  /** Same orange gradient as a fill (top bars, pill backgrounds) */
+  /** Green gradient as a fill (top bars, pill backgrounds) */
   .bg-gradient-brand {
     background-image: linear-gradient(
       to bottom,
@@ -197,7 +197,7 @@
     );
   }
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-[hsl(var(--flame-amber))] to-[hsl(var(--flame-gold))];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-[#00a82d] to-[#00751F];
   }
   .scrollbar-hide {
     -ms-overflow-style: none;
@@ -208,22 +208,20 @@
   }
 }
 
-/* nice button color bg-gradient-to-b from-[#3dd9cf] to-[#20b2aa]  */
-
 @layer base {
-  /* Custom Scrollbar for the entire project */
+  /* Custom smooth scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: hsl(var(--muted-foreground) / 0.3);
-    border-radius: 10px;
+    background-color: hsl(var(--muted-foreground) / 0.25);
+    border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background-color: hsl(var(--muted-foreground) / 0.5);
+    background-color: hsl(var(--muted-foreground) / 0.45);
   }
 }

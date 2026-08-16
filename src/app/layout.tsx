@@ -1,19 +1,93 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { Manrope, Nunito, Inter } from "next/font/google";
 import Providers from "./providers";
 import "./globals.css";
 
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const nunito = Nunito({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-nunito",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+export const viewport: Viewport = {
+  themeColor: "#00751F",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
-  title: "Litmus - Food Testing Lab Services",
-  description: "Book food testing services from certified NABL laboratories. Comprehensive food analysis, quality testing, and compliance reports.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://litmustest.in"),
+  title: {
+    default: "Litmus | Certified Food Testing & NABL Laboratory Services",
+    template: "%s | Litmus Food Testing",
+  },
+  description:
+    "Book certified food testing services from accredited NABL laboratories. Fast turnaround, comprehensive nutritional analysis, safety certifications, and expert consultations.",
+  keywords: [
+    "food testing",
+    "NABL accredited lab",
+    "nutritional analysis",
+    "FSSAI compliance",
+    "food safety testing",
+    "microbiology testing",
+    "chemical food analysis",
+    "shelf life study",
+  ],
+  authors: [{ name: "Litmus Food Analytics" }],
+  creator: "Litmus Food Analytics",
+  publisher: "Litmus",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   openGraph: {
-    title: "Litmus - Food Testing Lab Services",
-    description: "Book food testing services from certified NABL laboratories.",
+    title: "Litmus - NABL Certified Food Testing Labs",
+    description:
+      "Find certified laboratories for food quality testing, nutritional profiling, pesticide residue analysis, and FSSAI compliance.",
     type: "website",
+    locale: "en_IN",
+    siteName: "Litmus",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Litmus Food Testing Labs",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@Litmus",
-    title: "Litmus - Food Testing Lab Services",
+    title: "Litmus - NABL Certified Food Testing Labs",
+    description:
+      "Certified laboratory food testing, quick turnaround, and regulatory compliance reports.",
+    creator: "@LitmusTest",
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
 };
 
@@ -23,11 +97,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>
-        <Providers>
-          {children}
-        </Providers>
+    <html
+      lang="en"
+      className={`${manrope.variable} ${nunito.variable} ${inter.variable}`}
+      suppressHydrationWarning
+    >
+      <body
+        className="font-sans antialiased bg-background text-foreground selection:bg-brand-primary selection:text-white"
+        suppressHydrationWarning
+      >
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

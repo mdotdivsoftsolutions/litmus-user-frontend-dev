@@ -5,7 +5,7 @@ import NotFound from "@/views/NotFound";
 
 export default function NotFoundPage() { 
   return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+    <Suspense fallback={null}>
       <NotFound />
     </Suspense>
   );

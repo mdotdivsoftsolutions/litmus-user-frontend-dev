@@ -1,26 +1,91 @@
 "use client";
 
-import { useLocation } from "@/lib/router-compat";
-import { useEffect } from "react";
+import Link from "next/link";
+import { Home, Search, FlaskConical, Package, Building2, Headphones, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const NotFound = () => {
-  const location = useLocation();
-
-  useEffect(() => {
-    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
-  }, [location.pathname]);
-
+export default function NotFound() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-muted-foreground">Oops! Page not found</p>
-        <a href="/" className="text-primary underline hover:text-primary/90">
-          Return to Home
-        </a>
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-background">
+      <div className="max-w-xl w-full text-center space-y-8">
+        {/* Visual Badge */}
+        <div className="relative mx-auto flex items-center justify-center">
+          <span className="text-8xl sm:text-9xl font-extrabold font-nunito tracking-tighter text-muted/60 select-none">
+            404
+          </span>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="rounded-2xl bg-gradient-to-r from-brand-card-from to-brand-card-to px-6 py-2 shadow-lg">
+              <span className="text-sm font-semibold tracking-wide uppercase text-white">
+                Page Not Found
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Messaging */}
+        <div className="space-y-3">
+          <h1 className="text-2xl sm:text-3xl font-bold font-nunito text-foreground">
+            Looking for Food Testing Services?
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
+            The page you requested could not be found or may have been moved. Try searching or explore our certified lab tests below.
+          </p>
+        </div>
+
+        {/* Quick Route Pills */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+          <Link
+            href="/tests"
+            className="flex flex-col items-center gap-2 p-3.5 rounded-2xl bg-card border border-border hover:border-brand-primary/40 hover:shadow-md transition-all group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary group-hover:scale-110 transition-transform">
+              <FlaskConical className="h-5 w-5" />
+            </div>
+            <span className="text-xs font-semibold text-foreground">Food Tests</span>
+          </Link>
+
+          <Link
+            href="/packages"
+            className="flex flex-col items-center gap-2 p-3.5 rounded-2xl bg-card border border-border hover:border-brand-action/40 hover:shadow-md transition-all group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-brand-action/10 flex items-center justify-center text-brand-action group-hover:scale-110 transition-transform">
+              <Package className="h-5 w-5" />
+            </div>
+            <span className="text-xs font-semibold text-foreground">Packages</span>
+          </Link>
+
+          <Link
+            href="/labs"
+            className="flex flex-col items-center gap-2 p-3.5 rounded-2xl bg-card border border-border hover:border-brand-primary/40 hover:shadow-md transition-all group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary group-hover:scale-110 transition-transform">
+              <Building2 className="h-5 w-5" />
+            </div>
+            <span className="text-xs font-semibold text-foreground">NABL Labs</span>
+          </Link>
+
+          <Link
+            href="/support"
+            className="flex flex-col items-center gap-2 p-3.5 rounded-2xl bg-card border border-border hover:border-brand-action/40 hover:shadow-md transition-all group"
+          >
+            <div className="h-10 w-10 rounded-xl bg-brand-action/10 flex items-center justify-center text-brand-action group-hover:scale-110 transition-transform">
+              <Headphones className="h-5 w-5" />
+            </div>
+            <span className="text-xs font-semibold text-foreground">Help Center</span>
+          </Link>
+        </div>
+
+        {/* Primary Action Button */}
+        <div className="pt-4 flex justify-center">
+          <Button asChild className="gap-2 bg-brand-action hover:bg-brand-action-hover text-white rounded-full px-7 h-12 shadow-md">
+            <Link href="/home">
+              <Home className="h-4 w-4" />
+              Return to Homepage
+              <ArrowRight className="h-4 w-4 ml-1" />
+            </Link>
+          </Button>
+        </div>
       </div>
     </div>
   );
-};
-
-export default NotFound;
+}
