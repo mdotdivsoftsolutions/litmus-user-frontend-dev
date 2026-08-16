@@ -41,7 +41,7 @@ function PastelCategoryCard({
         <img
           src={image || FALLBACK_IMAGE}
           alt=""
-          className="h-24 w-24 object-contain transition-transform duration-500 group-hover:scale-110 sm:h-28 sm:w-28"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 "
           onError={(e) => {
             (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE;
           }}

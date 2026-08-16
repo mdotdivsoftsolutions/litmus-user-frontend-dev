@@ -70,8 +70,6 @@ export default function HomePage({
       {/* ═══════════ TESTS BY FOOD CATEGORY ═══════════ */}
       <SpecialityCarousel initialCategories={initialCategories} />
 
-      <ConsultancyServices initialCategories={initialCategories} />
-
       {/* ═══════════ HOW WE WORK ═══════════ */}
       <HowToBookProcess className="bg-white" />
 
