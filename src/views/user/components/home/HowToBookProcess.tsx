@@ -108,7 +108,7 @@ export function HowToBookProcess({ className }: { className?: string }) {
                         <div className="grid grid-cols-7 gap-3 lg:gap-5">
                             {processSteps.map((step) => {
                                 return (
-                                    <div key={step.number} className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
+                                    <div suppressHydrationWarning key={step.number} className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
                                         {/* Icon circle */}
                                         <div className={`relative z-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 group-hover:scale-110 ${step.bgClass} ${step.shadowClass} overflow-hidden`}>
                                             <img src={step.image} alt={step.title} className="w-full h-full object-cover " />
@@ -139,7 +139,7 @@ export function HowToBookProcess({ className }: { className?: string }) {
                 <div className="md:hidden space-y-6">
                     {processSteps.map((step) => {
                         return (
-                            <div key={step.number} className="flex gap-4 group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
+                            <div suppressHydrationWarning key={step.number} className="flex gap-4 group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
                                 {/* Icon */}
                                 <div className={`flex-shrink-0 flex h-14 w-14 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 ${step.bgClass} overflow-hidden`}>
                                     <img src={step.image} alt={step.title} className="w-full h-full object-cover " />

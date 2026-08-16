@@ -76,7 +76,7 @@ export function LoginSection({ className, showLogo = false, defaultRole }: Login
         <h2 className="text-xl font-bold text-foreground">Welcome back</h2>
         <p className="text-sm text-muted-foreground">Sign in to your account</p>
         {!defaultRole && (
-          <Tabs value={role} onValueChange={setRole} className="w-full mt-4">
+          <Tabs value={role} onValueChange={(v) => setRole(v as "user" | "admin" | "lab")} className="w-full mt-4">
             <TabsList className="w-full bg-muted/50 p-1">
               <TabsTrigger value="user" className="flex-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground transition-all">User</TabsTrigger>
               <TabsTrigger value="admin" className="flex-1 data-[state=active]:bg-secondary data-[state=active]:text-secondary-foreground transition-all">Admin</TabsTrigger>

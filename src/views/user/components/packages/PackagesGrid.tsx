@@ -26,7 +26,7 @@ export function PackagesGrid({ packages, search, isLoading, selectedCategory, ha
       <div className="grid md:grid-cols-4 lg:grid-cols-4 gap-5">
         {isLoading ? (
            Array.from({ length: 6 }).map((_, i) => (
-             <div key={i} data-aos="fade-up" data-aos-delay={(i % 6) * 100} className="bg-white rounded-[1rem] p-5 md:p-6 border-2 border-slate-50 flex flex-col gap-5 w-full">
+             <div suppressHydrationWarning key={i} data-aos="fade-up" data-aos-delay={(i % 6) * 100} className="bg-white rounded-[1rem] p-5 md:p-6 border-2 border-slate-50 flex flex-col gap-5 w-full">
                <Skeleton className="h-6 w-1/3 rounded-full" />
                <Skeleton className="h-8 w-3/4" />
                <Skeleton className="h-10 w-full" />
@@ -35,7 +35,7 @@ export function PackagesGrid({ packages, search, isLoading, selectedCategory, ha
              </div>
            ))
         ) : filteredPackages.map((pkg: any, i: number) => (
-          <div key={pkg._id} data-aos="fade-up" data-aos-delay={(i % 12) * 50} className="w-full h-full">
+          <div suppressHydrationWarning key={pkg._id} data-aos="fade-up" data-aos-delay={(i % 12) * 50} className="w-full h-full">
             <TestCard t={pkg} className="m-0 w-full shrink h-full" />
           </div>
         ))}

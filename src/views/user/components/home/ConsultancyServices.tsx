@@ -18,24 +18,24 @@ function ConsultancyCard({ service, index }: { service: any; index: number }) {
   const delay = index * 100;
 
   return (
-    <div className="relative bg-white p-4 w-[270px] h-full flex flex-col justify-center items-center" data-aos="fade-up" data-aos-delay={delay}>
+    <div suppressHydrationWarning className="relative bg-white p-4 w-[270px] h-full flex flex-col justify-center items-center" data-aos="fade-up" data-aos-delay={delay}>
       <div className="border-2 w-full h-full p-5 text-center gap-1 items-center justify-center flex flex-col">
         <div className="flex items-end relative text-9xl select-none z-0">
-          <h1 className="font-serif font-bold text-slate-200 mr-12" data-aos="zoom-in" data-aos-delay={delay + 100}>{service.letter || "A"}</h1>
+          <h1 suppressHydrationWarning className="font-serif font-bold text-slate-200 mr-12" data-aos="zoom-in" data-aos-delay={delay + 100}>{service.letter || "A"}</h1>
 
-          <div className="absolute -right-10 bottom-0" data-aos="fade-left" data-aos-delay={delay + 200}>
+          <div suppressHydrationWarning className="absolute -right-10 bottom-0" data-aos="fade-left" data-aos-delay={delay + 200}>
             <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
           </div>
         </div>
 
-        <h4 className="text-xl font-extrabold text-slate-800 mb-2 px-2 leading-tight" data-aos="fade-up" data-aos-delay={delay + 100}>
+        <h4 suppressHydrationWarning className="text-xl font-extrabold text-slate-800 mb-2 px-2 leading-tight" data-aos="fade-up" data-aos-delay={delay + 100}>
           {service.title}
         </h4>
-        <p className="text-sm text-center text-slate-500  px-2 line-clamp-3" data-aos="fade-up" data-aos-delay={delay + 200}>
+        <p suppressHydrationWarning className="text-sm text-center text-slate-500  px-2 line-clamp-3" data-aos="fade-up" data-aos-delay={delay + 200}>
           {service.desc}
         </p>
 
-        <button className="flex items-center pt-4 justify-center gap-2 text-xs font-semibold text-slate-700 hover:text-slate-900 group-hover:gap-3 transition-all" data-aos="fade-up" data-aos-delay={delay + 300}>
+        <button suppressHydrationWarning className="flex items-center pt-4 justify-center gap-2 text-xs font-semibold text-slate-700 hover:text-slate-900 group-hover:gap-3 transition-all" data-aos="fade-up" data-aos-delay={delay + 300}>
           <span className={`flex items-center justify-center w-6 h-6 rounded-full text-white ${service.bgColor}`}>
             <ArrowRight className="w-3 h-3" />
           </span>
@@ -59,10 +59,10 @@ export function ConsultancyServices() {
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h3 className="text-xl font-bold text-slate-900" data-aos="fade-right">Consultancy Services</h3>
-            <p className="text-sm text-slate-500 mt-1" data-aos="fade-right" data-aos-delay="100">Expert guidance for your industry needs</p>
+            <h3 suppressHydrationWarning className="text-xl font-bold text-slate-900" data-aos="fade-right">Consultancy Services</h3>
+            <p suppressHydrationWarning className="text-sm text-slate-500 mt-1" data-aos="fade-right" data-aos-delay="100">Expert guidance for your industry needs</p>
           </div>
-          <div className="flex gap-2" data-aos="fade-left">
+          <div suppressHydrationWarning className="flex gap-2" data-aos="fade-left">
             <button className="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center shadow-md hover:bg-slate-700 transition">
               <ArrowRight className="w-4 h-4 rotate-180" />
             </button>

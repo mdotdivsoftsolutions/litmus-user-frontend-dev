@@ -125,17 +125,17 @@ export default function TestsListingPage() {
     <div className="animate-fade-in bg-slate-50 min-h-screen">
 
       {/* 1. PANORAMIC HERO */}
-      <div data-aos="fade-up">
+      <div suppressHydrationWarning data-aos="fade-up">
         <TestsHero search={search} setSearch={setSearch} tests={testsData} onSearch={handleSearch} />
       </div>
 
       {/* 2. STATS STRIP */}
-      <div data-aos="fade-up" data-aos-delay="100">
+      <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="100">
         <TestsStatsStrip /> 
       </div>
 
       {/* 3. CATEGORY STRIP — always at top for filtering */}
-      <div data-aos="fade-up" data-aos-delay="150">
+      <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="150">
         <CategoryStrip
           selectedCategory={activeCategoryName}
           setSelectedCategory={handleCategoryChange}
@@ -162,12 +162,12 @@ export default function TestsListingPage() {
       </div>
 
       {/* TRUST & ORDERING SECTION (Customized for Litmus) */}
-      <div data-aos="fade-up">
+      <div suppressHydrationWarning data-aos="fade-up">
         <TrustAndOrdering />
       </div>
 
       {/* PROMO BANNER CAROUSEL (From Home Page) */}
-      <div data-aos="fade-up">
+      <div suppressHydrationWarning data-aos="fade-up">
         <PromoBanner className="py-12 bg-slate-50 md:py-20" />
       </div>
 

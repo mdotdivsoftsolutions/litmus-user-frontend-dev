@@ -37,7 +37,7 @@ export default function LoginPage({ role }: LoginPageProps) {
 
         {/* Image fills remaining space */}
         <div className="relative flex-1 mx-6 mb-6 rounded-2xl overflow-hidden shadow-sm">
-          <img src={loginLabImg} alt="Food testing laboratory" className="absolute inset-0 w-full h-full object-cover" />
+          <img src={typeof loginLabImg === "string" ? loginLabImg : (loginLabImg as any)?.src || ""} alt="Food testing laboratory" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
       </div>

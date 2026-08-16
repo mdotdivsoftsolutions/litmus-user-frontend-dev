@@ -46,7 +46,7 @@ export const WhyLitmusTests = ({ theme = "dark" }: WhyLitmusTestsProps) => {
       {/* Background Image with Cinematic Overlay */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img 
-          src={excellenceImg} 
+          src={typeof excellenceImg === "string" ? excellenceImg : (excellenceImg as any)?.src || ""} 
           alt="Clinical Excellence" 
           className={cn(
             "w-full h-full object-cover scale-110 blur-[2px] transition-opacity duration-1000",
