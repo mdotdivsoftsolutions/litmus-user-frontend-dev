@@ -174,7 +174,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
                         <p className="text-white/80 font-medium text-base sm:text-lg mb-6 lg:mb-8 max-w-xl leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
                           {slide.description}
                         </p>
-                        <div className="inline-block bg-brand-primary/90 backdrop-blur-md shadow-lg rounded-lg px-4 py-2 w-fit border border-brand-primary">
+                        <div className="inline-block bg-brand-action/90 backdrop-blur-md shadow-lg rounded-lg px-4 py-2 w-fit border border-brand-action">
                           <p className="text-xs font-bold text-white uppercase tracking-wider">{slide.offer}</p>
                         </div>
                       </div>
@@ -218,7 +218,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
                     placeholder="Search for checkups..."
                     inputClassName="relative placeholder:text-slate-400 z-10 w-full rounded-full border-none bg-white/95 hover:bg-white py-3.5 pl-5 pr-12 text-sm text-slate-800 outline-none shadow-inner transition-colors"
                   >
-                    <button type="submit" className="absolute right-4 top-1/2 z-20 -translate-y-1/2 text-brand-primary">
+                    <button type="submit" className="absolute right-4 top-1/2 z-20 -translate-y-1/2 text-brand-action hover:text-brand-action-hover transition-colors">
                       <Search className="h-5 w-5" strokeWidth={2.5} aria-hidden />
                     </button>
                   </SearchAutocomplete>
@@ -227,23 +227,23 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
                 <div className="flex shrink-0 items-center gap-3">
                   <Link
                     href="/tests"
-                    className="flex items-center justify-center gap-2 rounded-full bg-white border-2 border-brand-primary px-6 py-3.5 text-xs font-bold text-slate-800 shadow-sm transition hover:bg-brand-primary/10 whitespace-nowrap group"
+                    className="flex items-center justify-center gap-2 rounded-full bg-white border-2 border-brand-action px-6 py-3.5 text-xs font-bold text-slate-800 shadow-sm transition hover:bg-brand-action/10 hover:border-brand-action whitespace-nowrap group"
                   >
-                    <Microscope className="h-4 w-4 text-brand-primary group-hover:scale-110 transition-transform" /> Book a Lab Test
+                    <Microscope className="h-4 w-4 text-brand-action group-hover:scale-110 transition-transform" /> Book a Lab Test
                   </Link>
                   <ConsultationBookingModal serviceName="General Consultation" source="Home Hero">
                     <button
                       type="button"
-                      className="flex items-center justify-center gap-2 rounded-full bg-brand-action px-6 py-4 text-xs font-bold text-white shadow-sm transition hover:bg-brand-action-hover whitespace-nowrap group"
+                      className="flex items-center justify-center gap-2 rounded-full bg-brand-action px-6 py-4 text-xs font-bold text-white shadow-md transition hover:bg-brand-action-hover hover:shadow-lg whitespace-nowrap group"
                     >
                       <Ticket className="h-4 w-4 group-hover:scale-110 transition-transform" /> Free Consultation
                     </button>
                   </ConsultationBookingModal>
                   <Link
                     href="/packages"
-                    className="flex items-center justify-center gap-2 rounded-full bg-white border-2 border-brand-primary px-6 py-3.5 text-xs font-bold text-slate-800 shadow-sm transition hover:bg-brand-primary/10 whitespace-nowrap group"
+                    className="flex items-center justify-center gap-2 rounded-full bg-white border-2 border-brand-action px-6 py-3.5 text-xs font-bold text-slate-800 shadow-sm transition hover:bg-brand-action/10 hover:border-brand-action whitespace-nowrap group"
                   >
-                    <Package className="h-4 w-4 text-brand-primary group-hover:scale-110 transition-transform" /> Health Packages
+                    <Package className="h-4 w-4 text-brand-action group-hover:scale-110 transition-transform" /> Health Packages
                   </Link>
                 </div>
               </div>
@@ -269,7 +269,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
                 placeholder="Search for checkups..."
                 inputClassName="relative placeholder:text-slate-400 z-10 w-full rounded-full border-none bg-slate-50/50 hover:bg-slate-50 py-3.5 pl-5 pr-12 text-sm text-slate-800 outline-none ring-0 focus:ring-0 h-[48px] transition-colors"
               >
-                <button type="submit" className="absolute right-4 top-1/2 z-20 -translate-y-1/2 text-brand-primary">
+                <button type="submit" className="absolute right-4 top-1/2 z-20 -translate-y-1/2 text-brand-action hover:text-brand-action-hover">
                   <Search className="h-4 w-4" strokeWidth={2.5} aria-hidden />
                 </button>
               </SearchAutocomplete>
@@ -278,7 +278,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
             <div className="flex shrink-0 w-full sm:w-auto overflow-x-auto gap-2 pb-1 sm:pb-0 scrollbar-hide">
               <Link
                 href="/tests"
-                className="inline-flex items-center justify-center gap-1.5 rounded-full bg-white border-2 border-brand-primary px-5 py-3 text-xs font-bold text-brand-primary shadow-sm transition hover:bg-brand-primary/10 whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-1.5 rounded-full bg-white border-2 border-brand-action px-5 py-3 text-xs font-bold text-brand-action shadow-sm transition hover:bg-brand-action/10 whitespace-nowrap"
               >
                 Book test
                 <Microscope className="h-4 w-4" />
@@ -286,7 +286,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
               <ConsultationBookingModal serviceName="General Consultation" source="Home Hero">
                 <button
                   type="button"
-                  className="inline-flex items-center justify-center gap-1.5 rounded-full bg-brand-action px-5 py-3 text-xs font-bold text-white shadow-sm transition hover:bg-brand-action-hover whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-full bg-brand-action px-5 py-3 text-xs font-bold text-white shadow-md transition hover:bg-brand-action-hover whitespace-nowrap"
                 >
                   Book free consultation
                   <Ticket className="h-4 w-4" />
@@ -294,7 +294,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
               </ConsultationBookingModal>
               <Link
                 href="/packages"
-                className="inline-flex items-center justify-center gap-1.5 rounded-full bg-white border-2 border-brand-primary px-5 py-3 text-xs font-bold text-brand-primary shadow-sm transition hover:bg-brand-primary/10 whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-1.5 rounded-full bg-white border-2 border-brand-action px-5 py-3 text-xs font-bold text-brand-action shadow-sm transition hover:bg-brand-action/10 whitespace-nowrap"
               >
                 book a package
                 <Package className="h-4 w-4" />

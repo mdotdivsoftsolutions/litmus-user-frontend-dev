@@ -188,7 +188,7 @@ export function ConsultationBookingModal({ children, serviceName = "Advisory Con
                  </div>
 
                  <div className="pt-2">
-                   <Button disabled={consultationMutation.isPending} type="submit" className="w-full h-11 bg-[#D32F2F] hover:bg-[#b71c1c] text-white font-semibold rounded-xl text-sm shadow-sm transition-all duration-300">
+                   <Button disabled={consultationMutation.isPending} type="submit" className="w-full h-11 bg-brand-action hover:bg-brand-action-hover text-white font-semibold rounded-xl text-sm shadow-md transition-all duration-300 active:scale-95">
                       {consultationMutation.isPending ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...</> : "Confirm Booking Request"}
                    </Button>
                    <p className="text-center text-[10px] text-muted-foreground mt-3 font-medium">

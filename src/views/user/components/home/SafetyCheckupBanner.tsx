@@ -8,33 +8,33 @@ import { ConsultationBookingModal } from "../consultation/ConsultationBookingMod
 const slides = [
    {
       badge: "FoSTaC Certified",
-      badgeColor: "text-[#004e64]",
+      badgeColor: "text-brand-action font-bold",
       descInline: "Empower your workforce with FSSAI-approved FoSTaC training programs.",
-      title: <>Train Your Team. <span className="text-[#F06C00]">Strengthen Food Safety.</span></>,
+      title: <>Train Your Team. <span className="text-gradient-brand">Strengthen Food Safety.</span></>,
       titleText: "Train Your Team. Strengthen Food Safety.",
       img: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1000&auto=format&fit=crop",
    },
    {
       badge: "Professional Audits",
-      badgeColor: "text-[#004e64]",
+      badgeColor: "text-brand-action font-bold",
       descInline: "Identify gaps, reduce risks, and prepare confidently for customer through professional third-party audits.",
-      title: <>Independent Audits. <span className="text-[#F06C00]">Actionable Insights.</span></>,
+      title: <>Independent Audits. <span className="text-gradient-brand">Actionable Insights.</span></>,
       titleText: "Independent Audits. Actionable Insights.",
       img: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=1000&auto=format&fit=crop",
    },
    {
       badge: "Regulatory Compliance",
-      badgeColor: "text-[#004e64]",
+      badgeColor: "text-brand-action font-bold",
       descInline: "Ensure your packaging materials meet regulatory requirements and food contact safety standards.",
-      title: <>Safe Packaging Starts <span className="text-[#F06C00]">with Compliance.</span></>,
+      title: <>Safe Packaging Starts <span className="text-gradient-brand">with Compliance.</span></>,
       titleText: "Safe Packaging Starts with Compliance.",
       img: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000&auto=format&fit=crop",
    },
    {
       badge: "Expert Assistance",
-      badgeColor: "text-[#004e64]",
+      badgeColor: "text-brand-action font-bold",
       descInline: "Take experts help to develop innovative, compliant, and consumer-focused food products tailored to your business goals.",
-      title: <>Transform Ideas into <span className="text-[#F06C00]">Market-Ready Products.</span></>,
+      title: <>Transform Ideas into <span className="text-gradient-brand">Market-Ready Products.</span></>,
       titleText: "Transform Ideas into Market-Ready Products.",
       img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1000&auto=format&fit=crop",
    },
@@ -58,13 +58,13 @@ export function SafetyCheckupBanner() {
             {/* Arrows Outside */}
             <button
                onClick={prev}
-               className="absolute left-0 md:left-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all shadow-sm"
+               className="absolute left-0 md:left-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
             >
                <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
             </button>
             <button
                onClick={next}
-               className="absolute right-0 md:right-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all shadow-sm"
+               className="absolute right-0 md:right-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
             >
                <ChevronRight className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
             </button>
@@ -87,7 +87,7 @@ export function SafetyCheckupBanner() {
                                  <span className={s.badgeColor}>{s.badge}</span> {s.descInline}
                               </p>
                               <ConsultationBookingModal serviceName={s.titleText} source="Home Banner">
-                                 <button type="button" className="self-start h-10 px-8 bg-gradient-brand text-white text-sm font-bold rounded-xl shadow-sm transition-colors">
+                                 <button type="button" className="self-start h-10 px-8 bg-brand-action hover:bg-brand-action-hover text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 active:scale-95">
                                     Book Now
                                  </button>
                               </ConsultationBookingModal>

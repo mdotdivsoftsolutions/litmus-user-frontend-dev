@@ -141,7 +141,7 @@ export function Header({
               >
                 <ShoppingCart className="h-4.5 w-4.5 text-foreground group-hover/cart:text-brand-primary transition-colors" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-gradient-brand text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                  <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-action text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
                     {cartCount}
                   </span>
                 )}
@@ -272,7 +272,7 @@ export function Header({
           <div className="px-4 py-5 border-t border-border mb-14">
             <button
               onClick={() => { setMobileMenuOpen(false); onLoginClick(); }}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-brand text-white text-sm font-semibold shadow-sm hover:opacity-90 transition-opacity"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-brand-action text-white text-sm font-bold shadow-md hover:bg-brand-action-hover transition-all active:scale-95"
             >
               <LogIn className="h-4 w-4" />
               Login / Sign Up

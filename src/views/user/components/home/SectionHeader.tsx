@@ -47,7 +47,7 @@ export function SectionHeader({
         {action && (
           <Link
             href={action.href}
-            className="group flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full border border-blue-100 bg-blue-50 px-6 py-3 text-xs font-semibold text-brand-card-from shadow-sm transition-all hover:bg-white hover:shadow-md hover:border-blue-200"
+            className="group flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-full border border-brand-action bg-brand-action px-6 py-3 text-xs font-bold text-white shadow-sm transition-all hover:bg-brand-action-hover hover:shadow-md hover:scale-[1.02]"
           >
             {action.label}
             <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

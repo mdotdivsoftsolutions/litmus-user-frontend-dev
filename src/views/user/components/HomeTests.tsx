@@ -152,10 +152,10 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
           onClick={handleAddToCart}
           disabled={isInCart || addMutation.isPending}
           className={cn(
-            "inline-flex items-center justify-center h-10 px-6 rounded-lg font-bold text-[12px] uppercase tracking-wider transition-all border-2 shrink-0",
+            "inline-flex items-center justify-center h-10 px-6 rounded-xl font-bold text-[12px] uppercase tracking-wider transition-all border shrink-0",
             isInCart
-              ? "bg-slate-50 text-slate-400 border-slate-100 cursor-not-allowed"
-              : "text-brand-action border-border-brand-action bg-brand-action text-white"
+              ? "bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed"
+              : "bg-brand-action text-white border-brand-action hover:bg-brand-action-hover shadow-sm hover:shadow-md active:scale-95"
           )}
         >
           {addMutation.isPending ? "Adding" : (isInCart ? "Added" : "Book")}
