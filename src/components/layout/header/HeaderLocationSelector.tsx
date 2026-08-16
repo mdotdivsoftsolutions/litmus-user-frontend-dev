@@ -2,22 +2,13 @@
 
 import { MapPin, ChevronDown, Loader2, Navigation, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { FALLBACK_CITIES, useUserLocation } from "@/components/location/LocationContext";
+import { useUserLocation } from "@/components/location/LocationContext";
 import { toast } from "sonner";
-import { useQuery } from "@tanstack/react-query";
-import { settingsApi } from "@/lib/api/settings";
 
 export function HeaderLocationSelector() {
-  const { city, setCity, permission, isDetecting, detectLocation } = useUserLocation();
-  const { data } = useQuery({
-    queryKey: ["publicPlatformSettings"],
-    queryFn: settingsApi.getPublicSettings,
-  });
-
-  const extraCities = data?.data?.pickupCities || [];
-  const cities = Array.from(new Set([...FALLBACK_CITIES, ...extraCities, city].filter(Boolean)));
+  const { city, permission, isDetecting, detectLocation } = useUserLocation();
   const label = city || "Set location";
 
   const handleDetect = async () => {
@@ -26,9 +17,7 @@ export function HeaderLocationSelector() {
       toast.success("Location updated");
       return;
     }
-    if (permission === "denied" || !ok) {
-      toast.error("Location is blocked. Allow it in the browser address bar, then tap Detect again — or pick a city below.");
-    }
+    toast.error("Could not detect location. Allow it in the browser address bar, then tap Detect again.");
   };
 
   return (
@@ -59,6 +48,16 @@ export function HeaderLocationSelector() {
           {isDetecting ? "Detecting location..." : "Detect my location"}
         </button>
 
+        {city ? (
+          <p className="px-2 pb-2 text-[11px] text-muted-foreground">
+            Using GPS: <span className="font-semibold text-foreground">{city}</span>
+          </p>
+        ) : (
+          <p className="px-2 pb-2 text-[11px] text-muted-foreground">
+            Location is detected from your device. No city list.
+          </p>
+        )}
+
         {permission === "denied" && (
           <div className="mx-2 mb-2 mt-1 flex items-start gap-2 rounded-md bg-amber-50 border border-amber-100 p-2">
             <ShieldAlert className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
@@ -67,17 +66,6 @@ export function HeaderLocationSelector() {
             </p>
           </div>
         )}
-
-        <DropdownMenuSeparator />
-        {cities.map((c) => (
-          <DropdownMenuItem
-            key={c}
-            onClick={() => setCity(c)}
-            className={cn(c === city && "bg-muted font-medium")}
-          >
-            {c}
-          </DropdownMenuItem>
-        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

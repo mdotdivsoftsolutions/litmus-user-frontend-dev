@@ -76,13 +76,13 @@ export default function OrdersPage() {
               Track progress, view lab assignment, and open reports — search by order ID or test name.
             </p>
          </div>
-         <div className="relative w-full md:w-64 bg-white">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+         <div className="relative w-full md:w-64">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
             <Input 
               placeholder="Search ID or Test..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-10 pl-9 rounded-lg bg-white" 
+              className="h-10 pl-9 rounded-lg bg-transparent border-border shadow-none" 
             />
          </div>
       </div>

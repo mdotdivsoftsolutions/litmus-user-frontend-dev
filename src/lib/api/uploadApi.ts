@@ -12,4 +12,12 @@ export const uploadApi = {
     });
     return response.data;
   },
+
+  downloadFile: async (url: string, name: string) => {
+    const response = await apiClient.get('/upload/download', {
+      params: { url, name },
+      responseType: 'blob',
+    });
+    return response.data as Blob;
+  },
 };

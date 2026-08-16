@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { User, FileText, Settings, Loader2, ClipboardList } from "lucide-react";
+import { User, FileText, Settings, Loader2 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/auth";
 import { uploadApi } from "@/lib/api/uploadApi";
@@ -11,7 +11,6 @@ import { ProfileSidebar } from "./components/profile/ProfileSidebar";
 import { ProfileInfoTab } from "./components/profile/ProfileInfoTab";
 import { ProfileDocumentsTab } from "./components/profile/ProfileDocumentsTab";
 import { ProfileSettingsTab } from "./components/profile/ProfileSettingsTab";
-import { ProfileOrdersTab } from "./components/profile/ProfileOrdersTab";
 
 export default function ConsumerProfilePage() {
   const router = useRouter();
@@ -60,7 +59,7 @@ export default function ConsumerProfilePage() {
     onError: (err: any) => toast.error(err.response?.data?.message || "Failed to update profile"),
   });
 
-  const { mutate: changePassword, isPending: isChangingPassword } = useMutation({
+  const { mutateAsync: changePassword, isPending: isChangingPassword } = useMutation({
     mutationFn: authApi.changePassword,
     onSuccess: () => toast.success("Password changed successfully"),
     onError: (err: any) => toast.error(err.response?.data?.message || "Failed to change password"),
@@ -179,7 +178,6 @@ export default function ConsumerProfilePage() {
   const tabs = [
     { id: "info", label: "Profile Information", icon: User },
     { id: "documents", label: "Business Documents", icon: FileText },
-    { id: "orders", label: "Order History", icon: ClipboardList },
     { id: "settings", label: "Account Settings", icon: Settings },
   ];
 
@@ -217,7 +215,6 @@ export default function ConsumerProfilePage() {
             handleFileUpload={handleFileUpload}
           />
         )}
-        {activeTab === "orders" && <ProfileOrdersTab />}
         {activeTab === "settings" && (
           <ProfileSettingsTab
             notifications={notifications}

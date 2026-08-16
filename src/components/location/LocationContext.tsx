@@ -5,8 +5,6 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 const STORAGE_KEY = "litmus_user_location";
 const ASKED_KEY = "litmus_location_asked";
 
-export const FALLBACK_CITIES = ["Chennai", "Mumbai", "New Delhi", "Bangalore", "Hyderabad", "Kolkata"];
-
 export type LocationPermission = "prompt" | "granted" | "denied" | "unavailable";
 export type LocationSource = "gps" | "manual" | null;
 

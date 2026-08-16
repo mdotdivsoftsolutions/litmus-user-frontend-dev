@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
-import { Download, FileText, ChevronRight, Loader2 } from "lucide-react";
+import { Download, FileText, ChevronRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { bookingApi } from "@/lib/api/booking";
 import { isPaymentSuccessful, formatBookingStatus } from "@/lib/payment-status";
@@ -12,6 +12,7 @@ import { OrderTrackingTimeline } from "./components/order-detail/OrderTrackingTi
 import { OrderInfoCards } from "./components/order-detail/OrderInfoCards";
 import { OrderSampleBreakdown } from "./components/order-detail/OrderSampleBreakdown";
 import { OrderCourierTracking } from "./components/order-detail/OrderCourierTracking";
+import { OrderDetailSkeleton } from "./components/order-detail/OrderDetailSkeleton";
 
 const statusToStep: Record<string, number> = {
   PENDING: 0,
@@ -35,12 +36,7 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
   const apiBooking = data?.data;
 
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <p className="text-muted-foreground font-medium">Loading booking details...</p>
-      </div>
-    );
+    return <OrderDetailSkeleton />;
   }
 
   if (!apiBooking) {

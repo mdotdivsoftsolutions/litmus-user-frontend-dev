@@ -22,6 +22,8 @@ import {
   Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { uploadApi } from "@/lib/api/uploadApi";
+import { toast } from "sonner";
 
 interface ProfileDocumentsTabProps {
   documents?: any[];
@@ -46,21 +48,19 @@ function isPdfDoc(doc: any) {
 }
 
 async function downloadDocument(url: string, name: string) {
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("download failed");
-    const blob = await res.blob();
-    const href = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = href;
-    a.download = name || "document";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(href);
-  } catch {
-    window.open(url, "_blank", "noopener,noreferrer");
+  const blob = await uploadApi.downloadFile(url, name);
+  if (blob.type === "application/json") {
+    throw new Error("Download failed");
   }
+  const href = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = href;
+  a.download = name || "document";
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(href), 1000);
 }
 
 export function ProfileDocumentsTab({
@@ -77,6 +77,19 @@ export function ProfileDocumentsTab({
   const [previewDoc, setPreviewDoc] = useState<any | null>(null);
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [editName, setEditName] = useState("");
+  const [downloadingUrl, setDownloadingUrl] = useState<string | null>(null);
+
+  const handleDownload = async (url: string, name: string) => {
+    if (!url || downloadingUrl) return;
+    setDownloadingUrl(url);
+    try {
+      await downloadDocument(url, name);
+    } catch {
+      toast.error("Download failed. Try again.");
+    } finally {
+      setDownloadingUrl(null);
+    }
+  };
 
   const openEdit = (idx: number, doc: any) => {
     setEditIndex(idx);
@@ -161,9 +174,10 @@ export function ProfileDocumentsTab({
                 size="icon"
                 className="h-8 w-8 text-muted-foreground hover:text-brand-action"
                 title="Download"
-                onClick={() => downloadDocument(doc.url, doc.name)}
+                disabled={downloadingUrl === doc.url}
+                onClick={() => handleDownload(doc.url, doc.name)}
               >
-                <Download className="h-4 w-4" />
+                {downloadingUrl === doc.url ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
               </Button>
               <Button
                 type="button"
@@ -217,9 +231,11 @@ export function ProfileDocumentsTab({
             </Button>
             <Button
               className="bg-brand-action hover:bg-brand-action-hover text-white"
-              onClick={() => previewDoc && downloadDocument(previewDoc.url, previewDoc.name)}
+              disabled={!previewDoc?.url || downloadingUrl === previewDoc?.url}
+              onClick={() => previewDoc && handleDownload(previewDoc.url, previewDoc.name)}
             >
-              <Download className="h-4 w-4" /> Download
+              {downloadingUrl === previewDoc?.url ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              Download
             </Button>
           </div>
         </DialogContent>
