@@ -15,7 +15,7 @@ export default function NewBookingPage() {
   const state = useNewBookingState();
 
   return (
-    <div className="bg-[#f8fafc] min-h-screen pb-20 animate-fade-in pt-24 md:pt-28">
+    <div className="bg-[#f8fafc] min-h-screen pb-20 animate-fade-in pt-16 md:pt-20">
       <BookingWizardStepsHeader step={state.step} />
 
       <div className="max-w-7xl mx-auto px-4 pt-3">

@@ -23,4 +23,9 @@ export const bookingApi = {
     const response = await apiClient.patch(`/booking/${id}/courier-tracking`, data);
     return response.data;
   },
+
+  downloadReport: async (id: string) => {
+    const response = await apiClient.get(`/booking/${id}/report`, { responseType: "blob" });
+    return response.data as Blob;
+  },
 };

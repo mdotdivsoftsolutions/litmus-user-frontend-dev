@@ -28,7 +28,7 @@ interface BookingWizardStepsHeaderProps {
 export function BookingWizardStepsHeader({ step }: BookingWizardStepsHeaderProps) {
   return (
     <div className="max-w-7xl mx-auto px-4">
-      <div className="flex items-start justify-start py-4 sm:py-6 overflow-x-auto scrollbar-hide">
+      <div className="flex items-start justify-start pt-2 pb-3 sm:pt-3 sm:pb-4 overflow-x-auto scrollbar-hide">
         <div className="flex items-center gap-2 sm:gap-4 min-w-max">
           {wizardSteps.map((s, i) => (
             <div key={i} className="flex items-center">
