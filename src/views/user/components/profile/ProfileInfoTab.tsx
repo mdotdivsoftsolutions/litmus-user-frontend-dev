@@ -57,7 +57,7 @@ export function ProfileInfoTab({ formData, handleInputChange, onSave, isUpdating
       </div>
 
       <div className="flex justify-end border-t border-border pt-4">
-        <Button disabled={isUpdating} onClick={onSave} className="bg-primary hover:bg-primary-deep text-primary-foreground rounded-lg h-10 px-6">
+        <Button disabled={isUpdating} onClick={onSave} className="bg-brand-action hover:bg-brand-action-hover text-white rounded-lg h-10 px-6">
           {isUpdating ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
           Save Changes
         </Button>

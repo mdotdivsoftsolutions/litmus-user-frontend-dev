@@ -98,7 +98,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
 
-        <FooterSearchLinks />
+        {!pathname.startsWith("/profile") && <FooterSearchLinks />}
 
         <MainFooter />
 

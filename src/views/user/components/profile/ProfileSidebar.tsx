@@ -22,8 +22,8 @@ export function ProfileSidebar({ user, tabs, activeTab, setActiveTab, onLogout }
   return (
     <div className="w-full md:w-64 shrink-0 space-y-4">
       <div className="bg-card rounded-xl p-5 border border-border shadow-sm flex flex-col items-center text-center">
-        <Avatar className="h-20 w-20 ring-2 ring-primary/20 mb-3">
-          <AvatarFallback className="bg-primary text-primary-foreground text-xl font-bold">
+        <Avatar className="h-20 w-20 ring-2 ring-brand-action/20 mb-3">
+          <AvatarFallback className="bg-brand-action text-white text-xl font-bold">
             {user.firstName?.charAt(0) || "U"}{user.lastName?.charAt(0) || ""}
           </AvatarFallback>
         </Avatar>
@@ -49,7 +49,7 @@ export function ProfileSidebar({ user, tabs, activeTab, setActiveTab, onLogout }
             className={cn(
               "flex-1 md:flex-none flex items-center justify-center md:justify-start gap-3 p-3.5 text-sm font-medium transition-colors border-b-2 md:border-b-0 md:border-l-4",
               activeTab === tab.id
-                ? "bg-primary/5 text-primary border-primary"
+                ? "bg-brand-action/5 text-brand-action border-brand-action"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground border-transparent"
             )}
           >

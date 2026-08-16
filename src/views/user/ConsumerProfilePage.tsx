@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { User, FileText, Settings, Loader2 } from "lucide-react";
+import { User, FileText, Settings, Loader2, ClipboardList } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/auth";
 import { uploadApi } from "@/lib/api/uploadApi";
@@ -11,6 +11,7 @@ import { ProfileSidebar } from "./components/profile/ProfileSidebar";
 import { ProfileInfoTab } from "./components/profile/ProfileInfoTab";
 import { ProfileDocumentsTab } from "./components/profile/ProfileDocumentsTab";
 import { ProfileSettingsTab } from "./components/profile/ProfileSettingsTab";
+import { ProfileOrdersTab } from "./components/profile/ProfileOrdersTab";
 
 export default function ConsumerProfilePage() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function ConsumerProfilePage() {
   const [activeTab, setActiveTab] = useState("info");
   const [notifications, setNotifications] = useState({ email: true, whatsapp: true, promo: false });
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const replaceIndexRef = useRef<number | null>(null);
 
   const { data: userResponse, isLoading } = useQuery({
     queryKey: ["user"],
@@ -64,6 +66,23 @@ export default function ConsumerProfilePage() {
     onError: (err: any) => toast.error(err.response?.data?.message || "Failed to change password"),
   });
 
+  const toPlainDocs = (docs: any[] = []) =>
+    docs.map((d) => ({
+      name: d.name,
+      url: d.url,
+      docType: d.docType || "Document",
+      status: d.status || "Pending",
+      size: d.size,
+    }));
+
+  const { mutate: persistDocuments, isPending: isSavingDocs } = useMutation({
+    mutationFn: (documents: any[]) => authApi.updateProfile({ documents }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+    onError: (err: any) => toast.error(err.response?.data?.message || "Failed to update documents"),
+  });
+
   const { mutate: uploadDocument, isPending: isUploading } = useMutation({
     mutationFn: async (file: File) => {
       const res = await uploadApi.uploadFile(file);
@@ -74,23 +93,62 @@ export default function ConsumerProfilePage() {
         status: "Pending",
         size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
       };
-      const updatedDocs = [...(userResponse?.data?.documents || []), doc];
+      const current = toPlainDocs(userResponse?.data?.documents || []);
+      const replaceAt = replaceIndexRef.current;
+      const updatedDocs =
+        replaceAt !== null && replaceAt >= 0
+          ? current.map((item, i) => (i === replaceAt ? { ...item, ...doc, status: item.status || "Pending" } : item))
+          : [...current, doc];
+      replaceIndexRef.current = null;
       await authApi.updateProfile({ documents: updatedDocs });
-      return doc;
+      return { replaced: replaceAt !== null && replaceAt >= 0 };
     },
-    onSuccess: () => {
-      toast.success("Document uploaded successfully");
+    onSuccess: (result) => {
+      toast.success(result.replaced ? "Document replaced" : "Document uploaded successfully");
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
-    onError: (err: any) => toast.error(err.response?.data?.message || "Failed to upload document"),
+    onError: (err: any) => {
+      replaceIndexRef.current = null;
+      toast.error(err.response?.data?.message || "Failed to upload document");
+    },
   });
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) uploadDocument(e.target.files[0]);
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (file) uploadDocument(file);
+  };
+
+  const handleReplaceClick = (index: number) => {
+    replaceIndexRef.current = index;
+    fileInputRef.current?.click();
+  };
+
+  const handleDeleteDocument = (index: number) => {
+    const current = toPlainDocs(userResponse?.data?.documents || []);
+    persistDocuments(current.filter((_, i) => i !== index), {
+      onSuccess: () => {
+        toast.success("Document removed");
+        queryClient.invalidateQueries({ queryKey: ["user"] });
+      },
+    });
+  };
+
+  const handleRenameDocument = (index: number, name: string) => {
+    const current = toPlainDocs(userResponse?.data?.documents || []);
+    persistDocuments(
+      current.map((item, i) => (i === index ? { ...item, name } : item)),
+      {
+        onSuccess: () => {
+          toast.success("Document name updated");
+          queryClient.invalidateQueries({ queryKey: ["user"] });
+        },
+      }
+    );
   };
 
   const handleToggleNotification = (id: string, value: boolean) => {
-    const newNotifs = { ...notifications, [id]: value };
+    const newNotifs = { ...notifications, [id]: value, promo: false };
     setNotifications(newNotifs);
     updateProfile({ notifications: newNotifs } as any);
   };
@@ -121,13 +179,14 @@ export default function ConsumerProfilePage() {
   const tabs = [
     { id: "info", label: "Profile Information", icon: User },
     { id: "documents", label: "Business Documents", icon: FileText },
+    { id: "orders", label: "Order History", icon: ClipboardList },
     { id: "settings", label: "Account Settings", icon: Settings },
   ];
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <Loader2 className="h-8 w-8 animate-spin text-brand-action" />
       </div>
     );
   }
@@ -135,10 +194,10 @@ export default function ConsumerProfilePage() {
   const u = userResponse?.data || {};
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 md:pb-20 animate-fade-in flex flex-col md:flex-row gap-6">
+    <div className="max-w-7xl mx-auto px-4 pt-3 pb-16 md:pb-20 animate-fade-in flex flex-col md:flex-row gap-6">
       <ProfileSidebar user={u} tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout} />
 
-      <div className="flex-1">
+      <div className="flex-1 min-w-0">
         {activeTab === "info" && (
           <ProfileInfoTab formData={formData} handleInputChange={handleInputChange} onSave={handleSave} isUpdating={isUpdating} />
         )}
@@ -146,11 +205,19 @@ export default function ConsumerProfilePage() {
           <ProfileDocumentsTab
             documents={u.documents}
             isUploading={isUploading}
-            onUploadClick={() => fileInputRef.current?.click()}
+            isSaving={isSavingDocs}
+            onUploadClick={() => {
+              replaceIndexRef.current = null;
+              fileInputRef.current?.click();
+            }}
+            onReplaceClick={handleReplaceClick}
+            onDelete={handleDeleteDocument}
+            onRename={handleRenameDocument}
             fileInputRef={fileInputRef}
             handleFileUpload={handleFileUpload}
           />
         )}
+        {activeTab === "orders" && <ProfileOrdersTab />}
         {activeTab === "settings" && (
           <ProfileSettingsTab
             notifications={notifications}

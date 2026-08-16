@@ -31,7 +31,6 @@ export function ProfileSettingsTab({
   const notificationOptions = [
     { id: "email", title: "Email Notifications", desc: "Receive updates via email" },
     { id: "whatsapp", title: "WhatsApp Alerts", desc: "Instant messages for critical updates" },
-    { id: "promo", title: "Promotional Offers", desc: "Receive discounts and premium details" },
   ];
 
   return (
@@ -81,7 +80,7 @@ export function ProfileSettingsTab({
                   <Button
                     disabled={isChangingPassword || !passwordData.currentPassword || !passwordData.newPassword}
                     onClick={handlePasswordSubmit}
-                    className="bg-primary hover:bg-primary-deep text-primary-foreground rounded-lg h-9 px-6 text-xs"
+                    className="bg-brand-action hover:bg-brand-action-hover text-white rounded-lg h-9 px-6 text-xs"
                   >
                     {isChangingPassword ? <Loader2 className="h-3 w-3 animate-spin mr-2" /> : null}
                     Update Password
@@ -109,7 +108,7 @@ export function ProfileSettingsTab({
                     <p className="text-sm font-semibold text-foreground">{pref.title}</p>
                     <p className="text-xs text-muted-foreground">{pref.desc}</p>
                   </div>
-                  <div className={cn("w-9 h-5 rounded-full p-0.5 transition-colors duration-200", isActive ? "bg-primary" : "bg-muted-foreground/30")}>
+                  <div className={cn("w-9 h-5 rounded-full p-0.5 transition-colors duration-200", isActive ? "bg-brand-action" : "bg-muted-foreground/30")}>
                     <div className={cn("h-4 w-4 bg-white rounded-full shadow-sm transition-transform duration-200", isActive ? "translate-x-4" : "translate-x-0")} />
                   </div>
                 </div>
