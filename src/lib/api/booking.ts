@@ -6,8 +6,14 @@ export const bookingApi = {
     return response.data;
   },
   
-  getMyBookings: async () => {
-    const response = await apiClient.get('/booking/my');
+  getMyBookings: async (params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    status?: string;
+    reportsOnly?: boolean;
+  }) => {
+    const response = await apiClient.get("/booking/my", { params });
     return response.data;
   },
 

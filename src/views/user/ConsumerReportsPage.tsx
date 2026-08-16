@@ -14,6 +14,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useDebounce } from "@/hooks/use-debounce";
+import { ListPagination } from "@/components/common/ListPagination";
+import { ReportListSkeleton } from "./components/list-skeletons";
+
+const PAGE_SIZE = 10;
 
 function isImageFile(url: string) {
   return /\.(jpe?g|png|gif|webp)$/i.test(url);
@@ -25,39 +30,43 @@ function isPdfFile(url: string, type?: string) {
 
 export default function ConsumerReportsPage() {
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const debouncedSearch = useDebounce(search, 350);
   const [preview, setPreview] = useState<{ title: string; blobUrl: string; type: string; sourceUrl: string } | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["myBookings"],
-    queryFn: bookingApi.getMyBookings,
+  const { data, isPending } = useQuery({
+    queryKey: ["myReports", page, PAGE_SIZE, debouncedSearch],
+    queryFn: () =>
+      bookingApi.getMyBookings({
+        page,
+        limit: PAGE_SIZE,
+        search: debouncedSearch || undefined,
+        reportsOnly: true,
+      }),
+    staleTime: 60_000,
+    refetchOnWindowFocus: false,
   });
 
   const bookings = data?.data || [];
+  const pages = data?.pages || 1;
+  const currentPage = data?.page || page;
 
-  const apiReports = bookings
-    .filter((b: any) => b.reportFiles?.length > 0)
-    .flatMap((b: any) => {
-      return (
-        b.items?.map((item: any) => ({
-          id: `${b._id}-${item._id || item.testId?._id || Math.random().toString()}`,
-          bookingId: b._id,
-          testName: item.testId?.testName || item.packageId?.name || item.samples?.[0]?.productName || "Custom Testing",
-          lab: b.labId?.labName || "Litmus Partner Lab",
-          date: new Date(b.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
-          status: b.status === "COMPLETED" || b.status === "Completed" ? "Verified" : "Pending",
-          product: item.samples?.[0]?.productName || item.testId?.testName || "Custom",
-          reportUrl: b.reportFiles?.[0],
-        })) || []
-      );
-    });
-
-  const filtered = apiReports.filter(
-    (r: any) =>
-      !search ||
-      r.testName.toLowerCase().includes(search.toLowerCase()) ||
-      r.product.toLowerCase().includes(search.toLowerCase())
-  );
+  const reports = bookings.map((b: any) => {
+    const item = b.items?.[0];
+    const extra = Math.max((b.items?.length || 1) - 1, 0);
+    const testName = item?.testId?.testName || item?.packageId?.name || item?.samples?.[0]?.productName || "Custom Testing";
+    return {
+      id: b._id,
+      bookingId: b._id,
+      testName: extra > 0 ? `${testName} + ${extra} more` : testName,
+      lab: b.labId?.labName || "Litmus Partner Lab",
+      date: new Date(b.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+      status: b.status === "COMPLETED" || b.status === "Completed" ? "Verified" : "Pending",
+      product: item?.samples?.[0]?.productName || item?.testId?.testName || "Custom",
+      reportUrl: b.reportFiles?.[0],
+    };
+  });
 
   const fetchReportBlob = async (bookingId: string) => {
     const blob = await bookingApi.downloadReport(bookingId);
@@ -65,8 +74,7 @@ export default function ConsumerReportsPage() {
     return blob;
   };
 
-  const handlePreview = async (r: any) => {
-    if (!r.bookingId) return;
+  const handlePreview = async (r: (typeof reports)[number]) => {
     setBusyId(`preview-${r.id}`);
     try {
       const blob = await fetchReportBlob(r.bookingId);
@@ -79,8 +87,7 @@ export default function ConsumerReportsPage() {
     }
   };
 
-  const handleDownload = async (r: any) => {
-    if (!r.bookingId) return;
+  const handleDownload = async (r: (typeof reports)[number]) => {
     setBusyId(`download-${r.id}`);
     try {
       const blob = await fetchReportBlob(r.bookingId);
@@ -116,88 +123,88 @@ export default function ConsumerReportsPage() {
           <Input
             placeholder="Search reports or products..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
             className="h-10 pl-9 rounded-lg bg-transparent border-border shadow-none"
           />
         </div>
       </div>
 
-      <div className="grid gap-3">
-        {isLoading ? (
-          <div className="text-center py-16 bg-slate-50/50 rounded-xl border border-border">
-            <Loader2 className="h-8 w-8 animate-spin text-brand-action mx-auto mb-4" />
-            <p className="text-muted-foreground text-sm">Loading your reports...</p>
-          </div>
-        ) : (
-          <>
-            {filtered.map((r: any) => (
-              <div
-                key={r.id}
-                className="bg-card rounded-xl border border-border shadow-sm p-4 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center hover:border-accent transition-colors"
-              >
-                <div className="flex-1 min-w-0 w-full flex flex-col md:flex-row gap-4 md:items-center">
-                  <div className="shrink-0 flex items-center justify-center h-10 w-10 bg-brand-action/10 rounded-lg text-brand-action">
-                    <FileText className="h-5 w-5" />
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-base font-semibold text-foreground truncate">{r.testName}</h3>
-                      <div
-                        className={cn(
-                          "px-2 py-0.5 rounded text-[10px] font-bold uppercase flex items-center gap-1",
-                          r.status === "Verified" ? "bg-brand-action/10 text-brand-action" : "bg-flame-amber-tint/50 text-accent"
-                        )}
-                      >
-                        {r.status === "Verified" ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
-                        {r.status}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="flex items-center gap-1 truncate">
-                        <span className="font-medium text-foreground">Product:</span> {r.product}
-                      </span>
-                      <span className="flex items-center gap-1 truncate border-l border-border pl-3">
-                        <Calendar className="h-3.5 w-3.5" /> {r.date}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="shrink-0 w-48 text-xs text-muted-foreground hidden lg:block">{r.lab}</div>
+      {isPending ? (
+        <ReportListSkeleton />
+      ) : (
+        <div className="grid gap-3">
+          {reports.map((r) => (
+            <div
+              key={r.id}
+              className="bg-card rounded-xl border border-border shadow-sm p-4 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center hover:border-accent transition-colors"
+            >
+              <div className="flex-1 min-w-0 w-full flex flex-col md:flex-row gap-4 md:items-center">
+                <div className="shrink-0 flex items-center justify-center h-10 w-10 bg-brand-action/10 rounded-lg text-brand-action">
+                  <FileText className="h-5 w-5" />
                 </div>
 
-                <div className="shrink-0 flex items-center gap-2 w-full md:w-auto border-t md:border-t-0 border-border pt-3 md:pt-0">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 md:flex-none h-8 rounded-lg gap-1.5 text-xs text-foreground"
-                    disabled={!r.bookingId || busyId === `preview-${r.id}`}
-                    onClick={() => handlePreview(r)}
-                  >
-                    {busyId === `preview-${r.id}` ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Eye className="h-3.5 w-3.5" />}
-                    Preview
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="flex-1 md:flex-none h-8 rounded-lg gap-1.5 text-xs bg-brand-action hover:bg-brand-action-hover text-white"
-                    disabled={!r.bookingId || busyId === `download-${r.id}`}
-                    onClick={() => handleDownload(r)}
-                  >
-                    {busyId === `download-${r.id}` ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
-                    Download
-                  </Button>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <h3 className="text-base font-semibold text-foreground truncate">{r.testName}</h3>
+                    <div
+                      className={cn(
+                        "px-2 py-0.5 rounded text-[10px] font-bold uppercase flex items-center gap-1",
+                        r.status === "Verified" ? "bg-brand-action/10 text-brand-action" : "bg-flame-amber-tint/50 text-accent"
+                      )}
+                    >
+                      {r.status === "Verified" ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
+                      {r.status}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1 truncate">
+                      <span className="font-medium text-foreground">Product:</span> {r.product}
+                    </span>
+                    <span className="flex items-center gap-1 truncate border-l border-border pl-3">
+                      <Calendar className="h-3.5 w-3.5" /> {r.date}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
 
-            {filtered.length === 0 && (
-              <div className="text-center py-16 bg-slate-50/50 rounded-xl border border-border">
-                <p className="text-muted-foreground text-sm">No reports found matching your criteria.</p>
+                <div className="shrink-0 w-48 text-xs text-muted-foreground hidden lg:block">{r.lab}</div>
               </div>
-            )}
-          </>
-        )}
-      </div>
+
+              <div className="shrink-0 flex items-center gap-2 w-full md:w-auto border-t md:border-t-0 border-border pt-3 md:pt-0">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 md:flex-none h-8 rounded-lg gap-1.5 text-xs text-foreground"
+                  disabled={busyId === `preview-${r.id}`}
+                  onClick={() => handlePreview(r)}
+                >
+                  {busyId === `preview-${r.id}` ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Eye className="h-3.5 w-3.5" />}
+                  Preview
+                </Button>
+                <Button
+                  size="sm"
+                  className="flex-1 md:flex-none h-8 rounded-lg gap-1.5 text-xs bg-brand-action hover:bg-brand-action-hover text-white"
+                  disabled={busyId === `download-${r.id}`}
+                  onClick={() => handleDownload(r)}
+                >
+                  {busyId === `download-${r.id}` ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+                  Download
+                </Button>
+              </div>
+            </div>
+          ))}
+
+          {reports.length === 0 && (
+            <div className="text-center py-16 bg-slate-50/50 rounded-xl border border-border">
+              <p className="text-muted-foreground text-sm">No reports found matching your criteria.</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      <ListPagination page={currentPage} pages={pages} onPageChange={setPage} />
 
       <Dialog open={!!preview} onOpenChange={(open) => !open && closePreview()}>
         <DialogContent className="max-w-3xl">
