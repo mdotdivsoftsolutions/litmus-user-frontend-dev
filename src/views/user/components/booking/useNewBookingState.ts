@@ -23,6 +23,8 @@ export function useNewBookingState() {
   // Payment-specific state
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
+  // Store the booking ID created at step 4 so retries reuse the same booking
+  const [createdBookingId, setCreatedBookingId] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
   const testId = searchParams?.get("testId") || null;
@@ -404,76 +406,9 @@ export function useNewBookingState() {
         setIsPaymentProcessing(false);
         return;
       }
-
-      // ── Step 2: Create Razorpay order (amount comes from server, not frontend) ──
-      let orderData;
-      try {
-        const orderRes = await paymentApi.createOrder(bookingId);
-        if (!orderRes.success) {
-          throw new Error("Failed to create payment order");
-        }
-        orderData = orderRes.data;
-      } catch (err: any) {
-        setPaymentError(err?.response?.data?.message || "Could not initiate payment. Please try again.");
-        setIsPaymentProcessing(false);
-        return;
-      }
-
-      // ── Step 3: Open Razorpay Checkout modal ───────────────────────────────
-      const user = userResponse?.data;
-      await openRazorpayCheckout({
-        orderId: orderData.orderId,
-        amount: orderData.amount,
-        currency: orderData.currency,
-        keyId: orderData.keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "",
-        bookingId,
-        prefill: {
-          name: user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "",
-          email: user?.email || "",
-          contact: user?.phone || "",
-        },
-        onSuccess: async ({ razorpay_order_id, razorpay_payment_id, razorpay_signature }) => {
-          // ── Step 4: Verify signature on backend ─────────────────────────
-          try {
-            const verifyRes = await paymentApi.verifyPayment({
-              razorpay_order_id,
-              razorpay_payment_id,
-              razorpay_signature,
-              bookingId,
-            });
-
-            if (!verifyRes.success) {
-              throw new Error("Payment verification failed");
-            }
-
-            // ── Step 5: All good — clear cart and go to confirmation ─────
-            setOrderId(bookingId);
-            setStep(5);
-            setIsPaymentProcessing(false);
-
-            try {
-              await cartApi.clearCart();
-              queryClient.invalidateQueries({ queryKey: ["cart"] });
-            } catch (e) {
-              console.error("Failed to clear cart:", e);
-            }
-          } catch (err: any) {
-            setPaymentError(
-              err?.response?.data?.message ||
-              "Payment was received but verification failed. Please contact support with your booking ID."
-            );
-            setIsPaymentProcessing(false);
-          }
-        },
-        onFailure: ({ description }) => {
-          setPaymentError(description || "Payment failed. Please try again or use a different payment method.");
-          setIsPaymentProcessing(false);
-        },
-        onDismiss: () => {
-          setPaymentError("Payment was cancelled. Your booking is saved — you can retry payment.");
-          setIsPaymentProcessing(false);
-        },
-      });
+      // Store so retries reuse the same booking
+      setCreatedBookingId(bookingId);
+      await initiateRazorpayPayment(bookingId);
     },
     onError: (err: any) => {
       setPaymentError(err.response?.data?.message || "Failed to create booking. Please try again.");
@@ -481,11 +416,85 @@ export function useNewBookingState() {
     },
   });
 
+  // ─── Extracted payment flow ─── called with bookingId (new OR existing on retry)
+  const initiateRazorpayPayment = async (bookingId: string) => {
+    // Step 2: Create Razorpay order — amount read from DB, can't be tampered
+    let orderData;
+    try {
+      const orderRes = await paymentApi.createOrder(bookingId);
+      if (!orderRes.success) throw new Error("Failed to create payment order");
+      orderData = orderRes.data;
+    } catch (err: any) {
+      setPaymentError(err?.response?.data?.message || "Could not initiate payment. Please try again.");
+      setIsPaymentProcessing(false);
+      return;
+    }
+
+    // Step 3: Open Razorpay Checkout modal
+    const user = userResponse?.data;
+    await openRazorpayCheckout({
+      orderId: orderData.orderId,
+      amount: orderData.amount,
+      currency: orderData.currency,
+      keyId: orderData.keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "",
+      bookingId,
+      prefill: {
+        name: user ? `${user.firstName || ""} ${user.lastName || ""}`.trim() : "",
+        email: user?.email || "",
+        contact: user?.phone || "",
+      },
+      onSuccess: async ({ razorpay_order_id, razorpay_payment_id, razorpay_signature }) => {
+        // Step 4: Verify signature on backend
+        try {
+          const verifyRes = await paymentApi.verifyPayment({
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature,
+            bookingId,
+          });
+          if (!verifyRes.success) throw new Error("Payment verification failed");
+
+          // Step 5: All good — clear cart and go to confirmation
+          setOrderId(bookingId);
+          setCreatedBookingId(null); // reset for next booking
+          setStep(5);
+          setIsPaymentProcessing(false);
+          try {
+            await cartApi.clearCart();
+            queryClient.invalidateQueries({ queryKey: ["cart"] });
+          } catch (e) {
+            console.error("Failed to clear cart:", e);
+          }
+        } catch (err: any) {
+          setPaymentError(
+            err?.response?.data?.message ||
+            "Payment was received but verification failed. Please contact support with your booking ID: " + bookingId
+          );
+          setIsPaymentProcessing(false);
+        }
+      },
+      onFailure: ({ description }) => {
+        setPaymentError(description || "Payment failed. Please try again or use a different payment method.");
+        setIsPaymentProcessing(false);
+      },
+      onDismiss: () => {
+        // Booking is saved — user can click Pay Now again and we reuse same booking
+        setPaymentError("Payment was cancelled. Click 'Pay Now' again to retry — no new booking will be created.");
+        setIsPaymentProcessing(false);
+      },
+    });
+  };
+
   const handleNext = () => {
     if (step === 4) {
-      // Clear any previous payment errors
       setPaymentError(null);
       setIsPaymentProcessing(true);
+
+      // ── If booking was already created (user cancelled/retrying), skip creation ──
+      if (createdBookingId) {
+        initiateRazorpayPayment(createdBookingId);
+        return;
+      }
 
       const payload = {
         labId: selectedLab,
@@ -512,13 +521,18 @@ export function useNewBookingState() {
           paymentMethod: "RAZORPAY",
         },
       };
-      // createBooking onSuccess handles payment → verification → step 5
       createBooking(payload as any);
     } else if (step < 5) setStep(step + 1);
   };
 
   const handleBack = () => {
-    if (step > 0 && step < 5) setStep(step - 1);
+    if (step > 0 && step < 5) {
+      // If going back from step 4, clear the created booking ID
+      // (user will be changing details, so we need a fresh booking on next Pay Now)
+      if (step === 4) setCreatedBookingId(null);
+      setPaymentError(null);
+      setStep(step - 1);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
