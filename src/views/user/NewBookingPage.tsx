@@ -15,7 +15,7 @@ export default function NewBookingPage() {
   const state = useNewBookingState();
 
   return (
-    <div className="bg-[#f8fafc] min-h-screen pb-20 animate-fade-in mt-20 md:mt-24">
+    <div className="bg-[#f8fafc] min-h-screen pb-20 animate-fade-in pt-24 md:pt-28">
       <BookingWizardStepsHeader step={state.step} />
 
       <div className="max-w-7xl mx-auto px-4 pt-3">
@@ -64,10 +64,13 @@ export default function NewBookingPage() {
               <BookingStep3Collection
                 formData={state.formData}
                 handleInputChange={state.handleInputChange}
+                setCollectionMethod={state.setCollectionMethod}
                 minDateString={state.minDateString}
                 isAvailabilityLoading={state.isAvailabilityLoading}
                 dateError={state.dateError}
                 timeError={state.timeError}
+                pickupCities={state.pickupCities}
+                isPickupCovered={state.isPickupCovered}
               />
             )}
 

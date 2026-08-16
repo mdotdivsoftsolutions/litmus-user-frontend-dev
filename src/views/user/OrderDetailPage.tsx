@@ -11,6 +11,7 @@ import { isPaymentSuccessful, formatBookingStatus } from "@/lib/payment-status";
 import { OrderTrackingTimeline } from "./components/order-detail/OrderTrackingTimeline";
 import { OrderInfoCards } from "./components/order-detail/OrderInfoCards";
 import { OrderSampleBreakdown } from "./components/order-detail/OrderSampleBreakdown";
+import { OrderCourierTracking } from "./components/order-detail/OrderCourierTracking";
 
 const statusToStep: Record<string, number> = {
   PENDING: 0,
@@ -83,7 +84,7 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
           <span className="text-foreground font-mono font-medium break-all">{apiBooking._id}</span>
         </nav>
 
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-border pb-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-5">
           <div className="min-w-0">
             <h1 className="text-2xl font-bold text-foreground leading-tight">{mainProduct}</h1>
             <p className="text-sm text-muted-foreground mt-0.5">
@@ -92,9 +93,9 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
           </div>
           <StatusBadge status={formatBookingStatus(apiBooking.status)} />
         </div>
-      </div>
 
-      <OrderTrackingTimeline currentStep={currentStep} />
+        <OrderTrackingTimeline currentStep={currentStep} />
+      </div>
 
       <OrderInfoCards
         mainProduct={mainProduct}
@@ -103,6 +104,12 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
         labCity={apiBooking.labId?.location?.city}
         totalAmount={apiBooking.totalAmount}
         paymentStatus={apiBooking.paymentStatus}
+      />
+
+      <OrderCourierTracking
+        bookingId={apiBooking._id}
+        collectionMethod={apiBooking.collectionMethod || apiBooking.metadata?.collectionMethod}
+        courierDetails={apiBooking.courierDetails}
       />
 
       <OrderSampleBreakdown items={apiBooking.items} />

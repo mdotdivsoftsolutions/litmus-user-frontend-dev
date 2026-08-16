@@ -11,10 +11,14 @@ import { bookingApi } from "@/lib/api/booking";
 import { authApi } from "@/lib/api/auth";
 import { paymentApi } from "@/lib/api/payment";
 import { openRazorpayCheckout } from "@/lib/razorpay";
-import { CartLine, SampleDetail, BookingFormData } from "./booking-types";
+import { CartLine, SampleDetail, BookingFormData, CollectionMethod } from "./booking-types";
+import { settingsApi } from "@/lib/api/settings";
+import { isCityCovered } from "@/lib/pickup-coverage";
+import { useUserLocation } from "@/components/location/LocationContext";
 
 export function useNewBookingState() {
   const queryClient = useQueryClient();
+  const { city: detectedCity } = useUserLocation();
   const [step, setStep] = useState(0);
   const [items, setItems] = useState<CartLine[]>([]);
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -48,6 +52,12 @@ export function useNewBookingState() {
     queryFn: () => cartApi.getCart(),
     enabled: !testId && !packageId,
   });
+
+  const { data: settingsResponse } = useQuery({
+    queryKey: ["publicPlatformSettings"],
+    queryFn: settingsApi.getPublicSettings,
+  });
+  const pickupCities: string[] = settingsResponse?.data?.pickupCities || ["Chennai"];
 
   const { data: labsResponse, isLoading: isLabsLoading } = useQuery({
     queryKey: ["publicLabs"],
@@ -213,6 +223,7 @@ export function useNewBookingState() {
     city: "",
     state: "",
     pincode: "",
+    collectionMethod: "",
     pickupDate: "",
     pickupTime: "",
   });
@@ -226,12 +237,17 @@ export function useNewBookingState() {
         email: prev.email || u.email || "",
         phone: prev.phone || u.phone || "",
         address: prev.address || (u.address?.street ? u.address.street : ""),
-        city: prev.city || (u.address?.city ? u.address.city : ""),
+        city: prev.city || (u.address?.city ? u.address.city : "") || detectedCity,
         state: prev.state || (u.address?.state ? u.address.state : ""),
         pincode: prev.pincode || (u.address?.pincode ? u.address.pincode : ""),
       }));
+    } else if (detectedCity) {
+      setFormData((prev) => ({
+        ...prev,
+        city: prev.city || detectedCity,
+      }));
     }
-  }, [userResponse]);
+  }, [userResponse, detectedCity]);
 
   const minDateString = useMemo(() => {
     const tomorrow = new Date();
@@ -287,17 +303,23 @@ export function useNewBookingState() {
     return null;
   }, [formData.pickupTime, selectedLabProfile]);
 
+  const isPickupCovered = isCityCovered(formData.city, pickupCities);
+
   const isStep3Valid = !!(
     formData.name &&
     formData.phone &&
     formData.address &&
     formData.city &&
     formData.pincode &&
-    formData.pickupDate &&
-    formData.pickupTime &&
-    !dateError &&
-    !timeError &&
-    !isAvailabilityLoading
+    formData.collectionMethod &&
+    (formData.collectionMethod === "COURIER" ||
+      (formData.collectionMethod === "PICKUP" &&
+        isPickupCovered &&
+        formData.pickupDate &&
+        formData.pickupTime &&
+        !dateError &&
+        !timeError &&
+        !isAvailabilityLoading))
   );
 
   const calculateItemPrice = (item: CartLine) => {
@@ -518,6 +540,7 @@ export function useNewBookingState() {
         totalAmount: total,
         metadata: {
           collectionDetails: formData,
+          collectionMethod: formData.collectionMethod,
           paymentMethod: "RAZORPAY",
         },
       };
@@ -536,7 +559,25 @@ export function useNewBookingState() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setFormData((prev) => {
+      const next = { ...prev, [name]: value };
+      if (name === "city" && next.collectionMethod === "PICKUP" && !isCityCovered(value, pickupCities)) {
+        next.collectionMethod = "";
+        next.pickupDate = "";
+        next.pickupTime = "";
+      }
+      return next;
+    });
+  };
+
+  const setCollectionMethod = (method: CollectionMethod) => {
+    setFormData((prev) => ({
+      ...prev,
+      collectionMethod: method,
+      pickupDate: method === "COURIER" ? "" : prev.pickupDate,
+      pickupTime: method === "COURIER" ? "" : prev.pickupTime,
+    }));
   };
 
   useEffect(() => {
@@ -559,6 +600,9 @@ export function useNewBookingState() {
     orderId,
     formData,
     handleInputChange,
+    setCollectionMethod,
+    pickupCities,
+    isPickupCovered,
     minDateString,
     isAvailabilityLoading,
     dateError,

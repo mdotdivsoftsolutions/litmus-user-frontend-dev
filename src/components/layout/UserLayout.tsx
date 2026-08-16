@@ -13,13 +13,13 @@ import { MainFooter } from "./footer/MainFooter";
 import { FloatingSupportChat } from "./FloatingSupportChat";
 import { MobileTabNavigation } from "./MobileTabNavigation";
 import { FooterSearchLinks } from "./footer/FooterSearchLinks";
+import { LocationProvider } from "@/components/location/LocationContext";
 
 export function UserLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
   const [scrolled, setScrolled] = useState(false);
-  const [city, setCity] = useState("Chennai");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -79,12 +79,11 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
+    <LocationProvider>
     <CartDrawerProvider>
       <div className="min-h-screen bg-background flex flex-col">
         <Header
           scrolled={scrolled}
-          city={city}
-          setCity={setCity}
           cartCount={cartCount}
           showSearch={showSearch}
           setShowSearch={setShowSearch}
@@ -113,5 +112,6 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
         />
       </div>
     </CartDrawerProvider>
+    </LocationProvider>
   );
 }

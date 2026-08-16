@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Input } from "@/components/ui/input";
-import { MapPin, Download, Search, FlaskConical, ChevronRight, Loader2 } from "lucide-react";
+import { MapPin, Download, Search, FlaskConical, ChevronRight, Loader2, Truck } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -49,6 +49,8 @@ export default function OrdersPage() {
       status: b.status.charAt(0) + b.status.slice(1).toLowerCase(),
       amount: b.totalAmount || b.items?.reduce((acc: number, item: any) => acc + item.price, 0) || 0,
       reportUrl: b.reportFiles?.[0],
+      isCourier: (b.collectionMethod || b.metadata?.collectionMethod) === "COURIER",
+      hasTracking: Boolean(b.courierDetails?.trackingId),
     };
   });
 

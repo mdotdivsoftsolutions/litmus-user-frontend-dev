@@ -13,8 +13,6 @@ import { HeaderMobileDrawer } from "./HeaderMobileDrawer";
 
 interface HeaderProps {
   scrolled: boolean;
-  city: string;
-  setCity: (city: string) => void;
   cartCount: number;
   showSearch: boolean;
   setShowSearch: (show: boolean) => void;
@@ -27,8 +25,6 @@ interface HeaderProps {
 
 export function Header({
   scrolled,
-  city,
-  setCity,
   cartCount,
   showSearch,
   mobileMenuOpen,
@@ -52,7 +48,7 @@ export function Header({
               <img src="/logo.png" alt="Litmus Food Analytics" className="h-9 sm:h-10 object-contain" />
             </Link>
 
-            <HeaderLocationSelector city={city} setCity={setCity} />
+            <HeaderLocationSelector />
 
             <div className="hidden lg:flex flex-1 max-w-md mx-4 relative">
               <SearchAutocomplete

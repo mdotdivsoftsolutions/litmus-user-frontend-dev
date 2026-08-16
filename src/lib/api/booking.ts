@@ -14,5 +14,13 @@ export const bookingApi = {
   getBookingById: async (id: string) => {
     const response = await apiClient.get(`/booking/${id}`);
     return response.data;
-  }
+  },
+
+  updateCourierTracking: async (
+    id: string,
+    data: { trackingId: string; courierName?: string; notes?: string }
+  ) => {
+    const response = await apiClient.patch(`/booking/${id}/courier-tracking`, data);
+    return response.data;
+  },
 };

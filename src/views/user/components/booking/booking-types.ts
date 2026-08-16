@@ -19,6 +19,8 @@ export type CartLine = {
   testObj?: any;
 };
 
+export type CollectionMethod = "" | "PICKUP" | "COURIER";
+
 export type BookingFormData = {
   name: string;
   email: string;
@@ -27,6 +29,7 @@ export type BookingFormData = {
   city: string;
   state: string;
   pincode: string;
+  collectionMethod: CollectionMethod;
   pickupDate: string;
   pickupTime: string;
 };

@@ -1,18 +1,36 @@
 "use client";
 
-import { MapPin, ChevronDown } from "lucide-react";
+import { MapPin, ChevronDown, Loader2, Navigation, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { FALLBACK_CITIES, useUserLocation } from "@/components/location/LocationContext";
+import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { settingsApi } from "@/lib/api/settings";
 
-const cities = ["Chennai", "Mumbai", "New Delhi", "Bangalore", "Hyderabad", "Kolkata"];
+export function HeaderLocationSelector() {
+  const { city, setCity, permission, isDetecting, detectLocation } = useUserLocation();
+  const { data } = useQuery({
+    queryKey: ["publicPlatformSettings"],
+    queryFn: settingsApi.getPublicSettings,
+  });
 
-interface HeaderLocationSelectorProps {
-  city: string;
-  setCity: (city: string) => void;
-}
+  const extraCities = data?.data?.pickupCities || [];
+  const cities = Array.from(new Set([...FALLBACK_CITIES, ...extraCities, city].filter(Boolean)));
+  const label = city || "Set location";
 
-export function HeaderLocationSelector({ city, setCity }: HeaderLocationSelectorProps) {
+  const handleDetect = async () => {
+    const ok = await detectLocation();
+    if (ok) {
+      toast.success("Location updated");
+      return;
+    }
+    if (permission === "denied" || !ok) {
+      toast.error("Location is blocked. Allow it in the browser address bar, then tap Detect again — or pick a city below.");
+    }
+  };
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -20,13 +38,37 @@ export function HeaderLocationSelector({ city, setCity }: HeaderLocationSelector
           <MapPin className="h-3.5 w-3.5 text-brand-action" />
           <div className="text-left hidden sm:block">
             <span className="block text-[10px] text-muted-foreground leading-none">MY LOCATION</span>
-            <span className="block text-sm font-semibold text-foreground leading-tight">{city}</span>
+            <span className={cn("block text-sm font-semibold leading-tight", city ? "text-foreground" : "text-brand-action")}>
+              {isDetecting ? "Detecting..." : label}
+            </span>
           </div>
-          <span className="sm:hidden text-sm font-semibold text-foreground">{city}</span>
+          <span className={cn("sm:hidden text-sm font-semibold", city ? "text-foreground" : "text-brand-action")}>
+            {isDetecting ? "..." : label}
+          </span>
           <ChevronDown className="h-3 w-3 text-muted-foreground" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start">
+      <DropdownMenuContent align="start" className="w-64">
+        <button
+          type="button"
+          onClick={handleDetect}
+          disabled={isDetecting}
+          className="flex w-full items-center gap-2 px-2 py-2 text-sm font-semibold text-brand-action hover:bg-muted rounded-sm"
+        >
+          {isDetecting ? <Loader2 className="h-4 w-4 animate-spin" /> : <Navigation className="h-4 w-4" />}
+          {isDetecting ? "Detecting location..." : "Detect my location"}
+        </button>
+
+        {permission === "denied" && (
+          <div className="mx-2 mb-2 mt-1 flex items-start gap-2 rounded-md bg-amber-50 border border-amber-100 p-2">
+            <ShieldAlert className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+            <p className="text-[11px] leading-snug text-amber-800">
+              Browser blocked location. Click the lock icon in the address bar, allow location, then tap Detect again.
+            </p>
+          </div>
+        )}
+
+        <DropdownMenuSeparator />
         {cities.map((c) => (
           <DropdownMenuItem
             key={c}

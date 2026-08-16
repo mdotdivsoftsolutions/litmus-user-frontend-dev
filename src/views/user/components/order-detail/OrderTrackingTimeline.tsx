@@ -11,45 +11,51 @@ interface OrderTrackingTimelineProps {
 
 export function OrderTrackingTimeline({ currentStep }: OrderTrackingTimelineProps) {
   const lastIndex = timelineSteps.length - 1;
+  const clampedStep = Math.max(0, Math.min(currentStep, lastIndex));
 
   return (
-    <div className="bg-card rounded-xl p-5 sm:p-6 border border-border shadow-sm overflow-hidden">
-      <div className="relative">
-        <div className="absolute left-4 right-4 top-[16px] h-1 bg-muted rounded-full" />
-        <div
-          className="absolute left-4 top-[16px] h-1 bg-primary rounded-full transition-all duration-500"
-          style={{
-            width: `calc((100% - 2rem) * ${Math.max(0, Math.min(currentStep, lastIndex)) / lastIndex})`,
-          }}
-        />
+    <div className="w-full">
+      <div className="flex items-start">
+        {timelineSteps.map((label, i) => {
+          const isDone = i < clampedStep;
+          const isCurrent = i === clampedStep;
+          const isReached = isDone || isCurrent;
+          const isLast = i === lastIndex;
 
-        <div className="relative z-10 flex items-start justify-between">
-          {timelineSteps.map((step, i) => {
-            const isCompleted = i <= currentStep;
-            return (
-              <div key={step} className="flex w-16 sm:w-24 flex-col items-center">
+          return (
+            <div key={label} className={cn("flex items-start min-w-0", !isLast && "flex-1")}>
+              <div className="flex flex-col items-center w-[4.25rem] sm:w-[5.5rem] shrink-0">
                 <div
                   className={cn(
-                    "h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold transition-all shadow-sm border-2 shrink-0",
-                    isCompleted
-                      ? "bg-primary border-primary text-primary-foreground"
-                      : "bg-card border-muted text-muted-foreground"
+                    "h-8 w-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 border-2",
+                    isReached
+                      ? "bg-primary border-primary text-white"
+                      : "bg-white border-slate-200 text-slate-400"
                   )}
                 >
-                  {isCompleted ? <Check className="h-4 w-4" /> : i + 1}
+                  {isReached ? <Check className="h-3.5 w-3.5" strokeWidth={2.5} /> : i + 1}
                 </div>
                 <span
                   className={cn(
-                    "text-[10px] sm:text-xs mt-2 text-center font-semibold leading-tight",
-                    isCompleted ? "text-foreground" : "text-muted-foreground"
+                    "mt-2 text-[10px] sm:text-xs font-semibold text-center leading-tight",
+                    isCurrent ? "text-slate-900" : isDone ? "text-slate-600" : "text-slate-400"
                   )}
                 >
-                  {step}
+                  {label}
                 </span>
               </div>
-            );
-          })}
-        </div>
+
+              {!isLast && (
+                <div className="flex-1 h-[2px] mt-[15px] mx-1 sm:mx-2 rounded-full bg-slate-200 overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all duration-300"
+                    style={{ width: isDone ? "100%" : "0%" }}
+                  />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
