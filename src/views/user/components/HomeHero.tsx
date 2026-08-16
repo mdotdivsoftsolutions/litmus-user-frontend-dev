@@ -88,13 +88,13 @@ export function HomeHero({ searchQuery }: HomeHeroProps) {
                     <div className="flex flex-col relative z-10 max-w-7xl mx-auto w-full px-4">
                       <div className="lg:w-1/2 max-w-2xl flex flex-col justify-center">
                         <div className="inline-flex items-center gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 mb-4 lg:mb-6 w-max">
-                          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                          <span className="h-2 w-2 rounded-full bg-emerald-500" />
                           <span className="text-xs font-medium text-white/90">{slide.badge}</span>
                         </div>
-                        <h1 className="text-4xl sm:text-[48px] font-extrabold text-white mb-4 lg:mb-6 tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
+                        <h1 className="text-4xl sm:text-[48px] font-extrabold text-white mb-4 lg:mb-6 tracking-tight leading-[1.1]">
                           {slide.title}
                         </h1>
-                        <p className="text-white/80 font-medium text-base sm:text-lg mb-6 lg:mb-8 max-w-xl leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+                        <p className="text-white/80 font-medium text-base sm:text-lg mb-6 lg:mb-8 max-w-xl leading-relaxed">
                           {slide.description}
                         </p>
                         <div className="inline-block bg-brand-action/90 backdrop-blur-md shadow-lg rounded-lg px-4 py-2 w-fit border border-brand-action">

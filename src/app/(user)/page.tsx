@@ -16,19 +16,26 @@ export const metadata: Metadata = {
 
 export const revalidate = 60; // Enable ISR (revalidate every 60s)
 
+const withTimeout = <T,>(promise: Promise<T>, ms = 2500): Promise<T | null> => {
+  return Promise.race([
+    promise,
+    new Promise<null>((resolve) => setTimeout(() => resolve(null), ms)),
+  ]).catch(() => null);
+};
+
 export default async function Page() {
-  // Fetch home page data concurrently on the server (SSR)
+  // Fetch home page data concurrently on the server (SSR) with timeout guard
   const [packagesRes, categoriesRes, labsRes, reviewsRes] = await Promise.allSettled([
-    packageApi.getAllPackages().catch(() => null),
-    categoryApi.getCategories().catch(() => null),
-    labApi.getLabsPublic({ isTrusted: true }).catch(() => null),
-    reviewApi.getPublicReviews().catch(() => null),
+    withTimeout(packageApi.getAllPackages()),
+    withTimeout(categoryApi.getCategories()),
+    withTimeout(labApi.getLabsPublic({ isTrusted: true })),
+    withTimeout(reviewApi.getPublicReviews()),
   ]);
 
-  const initialPackages = packagesRes.status === "fulfilled" && packagesRes.value ? packagesRes.value : null;
-  const initialCategories = categoriesRes.status === "fulfilled" && categoriesRes.value ? categoriesRes.value : null;
-  const initialLabs = labsRes.status === "fulfilled" && labsRes.value ? labsRes.value : null;
-  const initialReviews = reviewsRes.status === "fulfilled" && reviewsRes.value ? reviewsRes.value : null;
+  const initialPackages = packagesRes.status === "fulfilled" ? packagesRes.value : null;
+  const initialCategories = categoriesRes.status === "fulfilled" ? categoriesRes.value : null;
+  const initialLabs = labsRes.status === "fulfilled" ? labsRes.value : null;
+  const initialReviews = reviewsRes.status === "fulfilled" ? reviewsRes.value : null;
 
   return (
     <HomePage
