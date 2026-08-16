@@ -9,6 +9,7 @@ import { packageApi } from "@/lib/api/package";
 import { labApi } from "@/lib/api/lab";
 import { bookingApi } from "@/lib/api/booking";
 import { authApi } from "@/lib/api/auth";
+import { cartApi } from "@/lib/api/cart";
 
 export interface SampleDetail {
   id: string;
@@ -29,6 +30,52 @@ export interface CartLine {
   fixedPrice?: number;
   availableParameters?: any[];
   testObj?: any;
+}
+
+function mapCartItemsToLines(cartItems: any[]): CartLine[] {
+  return (cartItems || []).map((cartItem: any) => {
+    const isTest = cartItem.itemType === "TEST";
+    const source = isTest ? cartItem.testId : cartItem.packageId;
+    const name = isTest ? source?.testName : source?.name;
+
+    let availableParameters: { name: string; price?: number }[] = [];
+    let selectedParameters: string[] = [];
+
+    if (isTest) {
+      availableParameters = source?.metadata?.parameters || [];
+      selectedParameters =
+        cartItem.parameters?.length > 0
+          ? cartItem.parameters
+          : availableParameters.map((p) => p.name);
+    } else {
+      const pkgTests = source?.tests?.map((t: any) => t.testName).filter(Boolean);
+      const pkgFeats = source?.features?.filter(Boolean);
+      const names = (pkgTests?.length ? pkgTests : pkgFeats) || ["General Evaluation"];
+      availableParameters = names.map((tid: string) => ({ name: tid, price: 0 }));
+      selectedParameters = names;
+    }
+
+    const initialSample: SampleDetail = {
+      id: Math.random().toString(36).substring(2, 9),
+      productName: name || "",
+      quantity: "",
+      batchNumber: "",
+      sku: "",
+      specifics: "",
+      selectedParameters,
+    };
+
+    return {
+      id: cartItem._id,
+      product: name || "Unknown Item",
+      category: isTest ? "Test Panel" : "Package Panel",
+      samples: [initialSample],
+      basePrice: 500,
+      fixedPrice: cartItem.price || source?.price || 0,
+      availableParameters,
+      testObj: source,
+    };
+  });
 }
 
 export function useBookingWizard() {
@@ -75,6 +122,12 @@ export function useBookingWizard() {
     queryKey: ["packageForBooking", packageId],
     queryFn: () => packageApi.getPackage(packageId!),
     enabled: !!packageId,
+  });
+
+  const { data: cartResponse, isLoading: isCartLoading, isFetched: isCartFetched } = useQuery({
+    queryKey: ["cart"],
+    queryFn: () => cartApi.getCart(),
+    enabled: !testId && !packageId,
   });
 
   const { data: labsResponse } = useQuery({
@@ -156,8 +209,14 @@ export function useBookingWizard() {
         testObj: pkg,
       }]);
       setDataLoaded(true);
+      return;
     }
-  }, [testId, packageId, testResponse, packageResponse, dataLoaded, testParams]);
+
+    if (!testId && !packageId && isCartFetched) {
+      setItems(mapCartItemsToLines(cartResponse?.data?.items || []));
+      setDataLoaded(true);
+    }
+  }, [testId, packageId, testResponse, packageResponse, cartResponse, isCartFetched, dataLoaded, testParams]);
 
   const calculateItemPrice = (item: CartLine) => {
     if (item.testObj && item.availableParameters && item.availableParameters.length > 0 && item.category === 'Test Panel') {
@@ -267,6 +326,8 @@ export function useBookingWizard() {
     setStep,
     items,
     setItems,
+    dataLoaded,
+    isCartLoading,
     selectedLab,
     setSelectedLab,
     paymentMethod,
@@ -282,7 +343,7 @@ export function useBookingWizard() {
     canProceedSampleDetails,
     isStep3Valid,
     selectedLabProfile,
-    eligibleLabs: labsResponse?.data || [],
+    eligibleLabs: Array.isArray(labsResponse?.data) ? labsResponse.data : [],
     isCreatingBooking: createBookingMutation.isPending,
     createdBooking,
     handleNext,

@@ -58,7 +58,10 @@ export function OrderSampleBreakdown({ items }: OrderSampleBreakdownProps) {
                       Parameters to Test
                     </span>
                     <div className="flex flex-wrap gap-1.5">
-                      {sample.selectedParameters?.map((param: string, pIdx: number) => (
+                      {(sample.selectedParameters?.length
+                        ? sample.selectedParameters
+                        : sample.selectedTests || []
+                      ).map((param: string, pIdx: number) => (
                         <span key={pIdx} className="text-[10px] bg-white border border-border px-2 py-0.5 rounded-full font-medium text-slate-700">
                           {param}
                         </span>

@@ -7,6 +7,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { Download, FileText, ChevronRight, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { bookingApi } from "@/lib/api/booking";
+import { isPaymentSuccessful, formatBookingStatus } from "@/lib/payment-status";
 import { OrderTrackingTimeline } from "./components/order-detail/OrderTrackingTimeline";
 import { OrderInfoCards } from "./components/order-detail/OrderInfoCards";
 import { OrderSampleBreakdown } from "./components/order-detail/OrderSampleBreakdown";
@@ -17,6 +18,7 @@ const statusToStep: Record<string, number> = {
   IN_PROGRESS: 3,
   COMPLETED: 4,
   REJECTED: -1,
+  CANCELLED: -1,
 };
 
 export default function OrderDetailPage({ id: propId }: { id?: string }) {
@@ -51,8 +53,9 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
     );
   }
 
-  const currentStep =
-    apiBooking.paymentStatus === "COMPLETED" ? Math.max(statusToStep[apiBooking.status] ?? 0, 1) : 0;
+  const currentStep = isPaymentSuccessful(apiBooking.paymentStatus)
+    ? Math.max(statusToStep[apiBooking.status] ?? 0, 1)
+    : 0;
 
   let totalSamples = 0;
   const products = new Set<string>();
@@ -70,24 +73,24 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
       : "Custom Testing";
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 md:pb-20 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 pt-24 md:pt-28 pb-16 md:pb-20 space-y-6">
       <div>
         <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
           <Link href="/orders" className="hover:text-foreground transition-colors">
             Orders
           </Link>
           <ChevronRight className="h-3.5 w-3.5" />
-          <span className="text-foreground font-mono font-medium">{apiBooking._id}</span>
+          <span className="text-foreground font-mono font-medium break-all">{apiBooking._id}</span>
         </nav>
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-border pb-4">
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">{mainProduct}</h1>
+          <div className="min-w-0">
+            <h1 className="text-2xl font-bold text-foreground leading-tight">{mainProduct}</h1>
             <p className="text-sm text-muted-foreground mt-0.5">
               Placed on {new Date(apiBooking.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
             </p>
           </div>
-          <StatusBadge status={apiBooking.status.charAt(0) + apiBooking.status.slice(1).toLowerCase()} />
+          <StatusBadge status={formatBookingStatus(apiBooking.status)} />
         </div>
       </div>
 
