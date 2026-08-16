@@ -4,6 +4,7 @@ import { Clock, Plus, ArrowRight, Search } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/lib/utils";
 import { CategoryStrip } from "./CategoryStrip";
 import { SectionHeader } from "../home/SectionHeader";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -100,8 +101,8 @@ export const MostBookedTests = ({
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="flex items-baseline justify-end gap-2 text-slate-400 line-through text-xs font-medium">₹{t.mrp?.toLocaleString()}</div>
-                    <div className="font-black text-slate-800 text-2xl tracking-tighter">₹{t.price?.toLocaleString()}</div>
+                    <div suppressHydrationWarning className="flex items-baseline justify-end gap-2 text-slate-400 line-through text-xs font-medium">₹{formatCurrency(t.mrp)}</div>
+                    <div suppressHydrationWarning className="font-black text-slate-800 text-2xl tracking-tighter">₹{formatCurrency(t.price)}</div>
                     <span className="bg-emerald-50 text-emerald-600 text-[10px] font-black px-2 py-0.5 rounded-md mt-1 inline-block uppercase tracking-widest border border-emerald-100">{discountPct(t.price, t.mrp)}% Off</span>
                   </div>
                 </Link>

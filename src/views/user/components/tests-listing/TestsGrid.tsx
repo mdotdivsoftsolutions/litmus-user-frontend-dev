@@ -4,9 +4,7 @@ import { ArrowDown } from "lucide-react";
 import type { MouseEvent } from "react";
 import { SectionHeader } from "../home/SectionHeader";
 import { TestCard } from "../HomeTests";
-import type { products } from "@/lib/placeholder-data";
-
-type Product = (typeof products)[number];
+import type { Product } from "@/lib/placeholder-data";
 
 interface TestsGridProps {
   products: Product[];

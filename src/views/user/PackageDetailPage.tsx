@@ -28,6 +28,7 @@ import { packageApi } from "@/lib/api/package";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCartDrawer } from "@/components/cart/CartDrawerContext";
 import { cartApi } from "@/lib/api/cart";
+import { formatCurrency } from "@/lib/utils";
 import { authApi } from "@/lib/api/auth";
 import { toast } from "sonner";
 import { WHATSAPP_URL } from "@/lib/constants";
@@ -217,9 +218,9 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
                         <span className="text-sm text-slate-700 font-bold block">{test.testName}</span>
                         <div className="mt-1">
                           {test.offerPrice && test.price > test.offerPrice ? (
-                            <span className="text-[11px] text-slate-400 font-medium line-through mr-2">₹{test.price.toLocaleString()}</span>
+                            <span suppressHydrationWarning className="text-[11px] text-slate-400 font-medium line-through mr-2">₹{formatCurrency(test.price)}</span>
                           ) : null}
-                          <span className="text-[11px] text-brand-action font-bold">₹{(test.offerPrice || test.price || 0).toLocaleString()}</span>
+                          <span suppressHydrationWarning className="text-[11px] text-brand-action font-bold">₹{formatCurrency(test.offerPrice || test.price || 0)}</span>
                         </div>
                       </div>
                     </div>
@@ -287,13 +288,13 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
                 <div className="bg-slate-50 rounded-xl p-4 space-y-3 border border-slate-100/50">
                   <div className="flex items-baseline justify-between">
                     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Original Price</span>
-                    <span className="text-sm text-slate-400 line-through font-bold">₹{pkg.mrp.toLocaleString()}</span>
+                    <span suppressHydrationWarning className="text-sm text-slate-400 line-through font-bold">₹{formatCurrency(pkg.mrp)}</span>
                   </div>
                   
                   <div className="flex items-baseline justify-between pt-1">
                     <span className="text-xs text-slate-600 font-bold">Litmus Price</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-2xl font-black text-slate-800 tracking-tighter">₹{pkg.price.toLocaleString()}</span>
+                      <span suppressHydrationWarning className="text-2xl font-black text-slate-800 tracking-tighter">₹{formatCurrency(pkg.price)}</span>
                       <span className="bg-emerald-100 text-emerald-600 text-[9px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider border border-emerald-200/50">
                         {discountPct(pkg.price, pkg.mrp)}% Off
                       </span>

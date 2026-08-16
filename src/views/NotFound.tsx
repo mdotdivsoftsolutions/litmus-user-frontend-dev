@@ -14,7 +14,7 @@ export default function NotFound() {
             404
           </span>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="rounded-2xl bg-gradient-to-r from-brand-card-from to-brand-card-to px-6 py-2 shadow-lg">
+            <div className="rounded-full bg-gradient-to-r from-brand-card-from to-brand-card-to px-6 py-2 shadow-lg">
               <span className="text-sm font-semibold tracking-wide uppercase text-white">
                 Page Not Found
               </span>

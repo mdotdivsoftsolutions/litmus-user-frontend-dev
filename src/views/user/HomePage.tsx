@@ -14,7 +14,19 @@ import { HowToBookProcess } from "./components/home/HowToBookProcess";
 import { SafetyCheckupBanner } from "./components/home/SafetyCheckupBanner";
 import { FooterSEO } from "@/components/layout/footer/FooterSEO";
 
-export default function HomePage() {
+interface HomePageProps {
+  initialPackages?: any;
+  initialCategories?: any;
+  initialLabs?: any;
+  initialReviews?: any;
+}
+
+export default function HomePage({
+  initialPackages,
+  initialCategories,
+  initialLabs,
+  initialReviews,
+}: HomePageProps = {}) {
   const [activeTab, setActiveTab] = useState("tests");
   const [cartItems, setCartItems] = useState<Record<string, number>>({});
   const [searchQuery, setSearchQuery] = useState("");
@@ -49,24 +61,25 @@ export default function HomePage() {
         cartItems={cartItems}
         addToCart={addToCart}
         removeFromCart={removeFromCart}
+        initialPackages={initialPackages}
       />
 
       {/* ═══════════ POPULAR PACKAGES ═══════════ */}
       <PromoBanner className="pb-12 md:pb-16" />
 
       {/* ═══════════ TESTS BY FOOD CATEGORY ═══════════ */}
-      <SpecialityCarousel />
+      <SpecialityCarousel initialCategories={initialCategories} />
 
-      <ConsultancyServices />
+      <ConsultancyServices initialCategories={initialCategories} />
 
       {/* ═══════════ HOW WE WORK ═══════════ */}
       <HowToBookProcess className="bg-white" />
 
       {/* ═══════════ TRUSTED PARTNER LABORATORIES ═══════════ */}
-      <PartnerLabs />
+      <PartnerLabs initialLabs={initialLabs} />
 
       {/* ═══════════ CUSTOMER REVIEWS ═══════════ */}
-      <CustomerReviews />
+      <CustomerReviews initialReviews={initialReviews} />
 
       {/* ═══════════ SAFETY CHECKUP BANNER ═══════════ */}
       <SafetyCheckupBanner />

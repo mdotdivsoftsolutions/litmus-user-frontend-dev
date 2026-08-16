@@ -2,18 +2,14 @@
 
 import { type MouseEvent, useRef } from "react";
 import Link from "next/link";
-import { products } from "@/lib/placeholder-data";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import { SectionHeader } from "./home/SectionHeader";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { packageApi } from "@/lib/api/package";
 import { cartApi } from "@/lib/api/cart";
-import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { useCartDrawer } from "@/components/cart/CartDrawerContext";
-
-type Product = (typeof products)[number];
+import type { Product } from "@/lib/placeholder-data";
 
 export type TestItemType = {
   _id?: string;
@@ -141,10 +137,10 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
       <div className="mt-auto pt-6 flex items-end justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <span className="text-xl font-black text-slate-800 tracking-tight">₹{price?.toLocaleString()}</span>
+            <span suppressHydrationWarning className="text-xl font-black text-slate-800 tracking-tight">₹{formatCurrency(price)}</span>
             {discount > 0 && (
               <>
-                <span className="text-xs text-slate-400 line-through font-medium">₹{mrp?.toLocaleString()}</span>
+                <span suppressHydrationWarning className="text-xs text-slate-400 line-through font-medium">₹{formatCurrency(mrp)}</span>
                 <span className="text-[11px] font-bold text-emerald-600 tracking-wide">{discount}% off</span>
               </>
             )}
@@ -175,9 +171,10 @@ export type HomeTestsProps = {
   cartItems: Record<string, number>;
   addToCart: (id: string, e: MouseEvent<HTMLButtonElement>) => void;
   removeFromCart: (id: string, e: MouseEvent<HTMLButtonElement>) => void;
+  initialPackages?: any;
 };
 
-export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsProps) => {
+export const HomeTests = ({ cartItems, addToCart, removeFromCart, initialPackages }: HomeTestsProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -190,13 +187,11 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
     }
   };
 
-  const { data: popularPackagesData, isLoading } = useQuery({
-    queryKey: ['popularPackages'],
-    queryFn: () => packageApi.getAllPackages()
-  });
+  const popularPackages = Array.isArray(initialPackages?.data) 
+    ? initialPackages.data 
+    : (Array.isArray(initialPackages) ? initialPackages : (initialPackages?.data?.data || []));
 
-  const popularPackages = popularPackagesData?.data || [];
-  // Take first 5 for UI, ideally should have isPopular param
+  // Take first 5 for UI
   const displayPackages = popularPackages.slice(0, 5);
 
   return (
@@ -236,34 +231,9 @@ export const HomeTests = ({ cartItems, addToCart, removeFromCart }: HomeTestsPro
 
           <div className="relative">
             <div ref={scrollRef} className="flex overflow-x-auto scrollbar-hide pb-5 pt-2 -mx-2 scroll-smooth">
-              {isLoading ? (
-                Array.from({ length: 5 }).map((_, i) => (
-                  <div key={i} className="m-2 flex w-[280px] shrink-0 flex-col overflow-hidden rounded-[1.25rem] border border-brand-card-from/10 bg-white">
-                    <div className="h-[120px] bg-slate-100 rounded-b-[1.25rem] p-5 flex flex-col justify-end">
-                      <Skeleton className="h-6 w-3/4 mb-2" />
-                      <Skeleton className="h-8 w-1/3" />
-                    </div>
-                    <div className="flex-1 p-5 flex flex-col bg-gradient-to-b from-[#f4fafc] to-white">
-                      <div className="mb-6 flex items-center justify-between">
-                        <div className="w-1/2">
-                          <Skeleton className="h-4 w-3/4 mb-2" />
-                          <Skeleton className="h-3 w-1/2" />
-                        </div>
-                        <div className="w-1/2 pl-4 border-l border-slate-100">
-                          <Skeleton className="h-3 w-1/2 mb-2" />
-                          <Skeleton className="h-4 w-3/4" />
-                        </div>
-                      </div>
-                      <div className="mt-auto flex items-center gap-3">
-                        <Skeleton className="h-11 flex-1 rounded-xl" />
-                        <Skeleton className="h-11 flex-1 rounded-xl" />
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : displayPackages.length > 0 ? (
+              {displayPackages.length > 0 ? (
                 displayPackages.map((t: TestItemType, index: number) => (
-                  <div suppressHydrationWarning key={`popular-pkg-${t._id}`} data-aos="fade-up" data-aos-delay={index * 100}>
+                  <div suppressHydrationWarning key={`popular-pkg-${t._id || index}`} data-aos="fade-up" data-aos-delay={index * 100}>
                     <TestCard t={t} cartItems={cartItems} addToCart={addToCart} removeFromCart={removeFromCart} />
                   </div>
                 ))

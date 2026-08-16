@@ -1,9 +1,6 @@
 "use client";
 
 import { ArrowRight } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { categoryApi } from "@/lib/api/category";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const COLORS = [
   { color: "text-blue-500", bgColor: "bg-blue-500" },
@@ -46,13 +43,10 @@ function ConsultancyCard({ service, index }: { service: any; index: number }) {
   );
 }
 
-export function ConsultancyServices() {
-  const { data: response, isLoading } = useQuery({
-    queryKey: ['categories'],
-    queryFn: categoryApi.getCategories
-  });
-
-  const categories = response?.data?.data || [];
+export function ConsultancyServices({ initialCategories }: { initialCategories?: any }) {
+  const categories = Array.isArray(initialCategories?.data) 
+    ? initialCategories.data 
+    : (Array.isArray(initialCategories) ? initialCategories : (initialCategories?.data?.data || []));
 
   return (
     <section className="relative  bg-slate-100 flex min-h-full flex-col justify-center overflow-hidden py-12 md:py-16">
@@ -73,13 +67,7 @@ export function ConsultancyServices() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4  justify-items-start">
-          {isLoading ? (
-            Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="relative bg-white p-5 w-[280px] h-[350px] flex flex-col justify-center items-center">
-                <Skeleton className="w-full h-full" />
-              </div>
-            ))
-          ) : categories.length > 0 ? (
+          {categories.length > 0 ? (
             categories.slice(0, 4).map((cat: any, idx: number) => {
               const service = {
                 letter: cat.name ? cat.name.charAt(0).toUpperCase() : "A",
@@ -89,7 +77,7 @@ export function ConsultancyServices() {
                 color: COLORS[idx % COLORS.length].color,
                 bgColor: COLORS[idx % COLORS.length].bgColor,
               };
-              return <ConsultancyCard key={cat._id} service={service} index={idx} />;
+              return <ConsultancyCard key={cat._id || idx} service={service} index={idx} />;
             })
           ) : (
             <div className="col-span-full py-8 text-center text-slate-500">

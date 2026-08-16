@@ -29,9 +29,9 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export default function TestsListingPage() {
-  const [searchParams] = useSearchParams();
-  const initialCategory = searchParams.get("category") || "";
-  const initialSearch = searchParams.get("search") || "";
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams?.get("category") || "";
+  const initialSearch = searchParams?.get("search") || "";
   const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || "All");
   const [selectedType, setSelectedType] = useState("");
@@ -40,10 +40,7 @@ export default function TestsListingPage() {
 
   const { data: catRes, isLoading: catLoading } = useQuery({
     queryKey: ['categories'],
-    queryFn: async () => {
-      const res = await categoryApi.getCategories();
-      return res.data;
-    }
+    queryFn: () => categoryApi.getCategories(),
   });
 
   const rawData = catRes?.data?.data || catRes?.data || catRes || [];

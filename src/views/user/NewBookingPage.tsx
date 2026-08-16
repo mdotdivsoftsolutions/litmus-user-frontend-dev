@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -77,16 +78,16 @@ const wizardSteps = [
 
 export default function NewBookingPage() {
   const queryClient = useQueryClient();
-  const location = useLocation();
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [items, setItems] = useState<CartLine[]>([]);
   
   const [dataLoaded, setDataLoaded] = useState(false);
 
-  const [searchParams] = useSearchParams();
-  const testId = searchParams.get("testId");
-  const testParams = searchParams.get("params")?.split(",") || [];
-  const packageId = searchParams.get("packageId");
+  const searchParams = useSearchParams();
+  const testId = searchParams?.get("testId") || null;
+  const testParams = searchParams?.get("params")?.split(",") || [];
+  const packageId = searchParams?.get("packageId") || null;
 
   const { data: testResponse, isLoading: isTestLoading } = useQuery({
     queryKey: ["test", testId],
@@ -345,7 +346,6 @@ export default function NewBookingPage() {
       }));
     }
   }, [userResponse]);
-  const navigate = useNavigate();
 
   const selectedLabProfile = useMemo(() => {
     if (selectedLab === 'admin' || !selectedLab) return null;
@@ -1048,8 +1048,8 @@ export default function NewBookingPage() {
                     <Card className="rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden h-fit"><div className="bg-slate-50 border-b border-slate-200 p-4"><h4 className="font-bold text-slate-900 text-sm uppercase tracking-wide">Final Billing</h4></div><CardContent className="p-0"><div className="divide-y divide-slate-100 p-5 space-y-3">{items.map((item) => (<div key={item.id} className="flex justify-between items-start"><div><p className="font-bold text-slate-900 text-sm">{item.product} Panel</p><p className="text-[10px] font-bold text-slate-400 uppercase">{item.samples.reduce((acc, s) => acc + s.selectedParameters.length, 0)} Tests</p></div><p className="font-bold text-slate-900 text-sm">₹{calculateItemPrice(item).toLocaleString()}</p></div>))}</div><div className="p-5 bg-slate-50 border-t border-slate-200 space-y-2"><div className="flex justify-between text-xs font-medium"><span className="text-slate-500">Subtotal</span><span className="text-slate-900">₹{subtotal.toLocaleString()}</span></div><div className="flex justify-between text-xs font-medium"><span className="text-slate-500">GST (18%)</span><span className="text-slate-900">₹{gst.toLocaleString()}</span></div><div className="flex justify-between border-t border-slate-200 pt-3 mt-1"><span className="font-bold text-slate-900">Total Paid</span><span className="font-bold text-brand-action text-xl tracking-tight">₹{total.toLocaleString()}</span></div></div></CardContent></Card>
                  </div>
                  <div className="flex flex-col sm:flex-row items-center gap-4 justify-center py-6">
-                    <Button onClick={() => navigate("/orders")} className="w-full sm:w-auto h-12 px-10 rounded-lg bg-brand-action hover:bg-brand-action-hover text-white font-bold">Track My Order</Button>
-                    <Button variant="outline" onClick={() => navigate("/home")} className="w-full sm:w-auto h-12 px-10 rounded-lg font-bold text-slate-600 border-slate-200 hover:bg-slate-50">Return to Home</Button>
+                    <Button onClick={() => router.push("/orders")} className="w-full sm:w-auto h-12 px-10 rounded-lg bg-brand-action hover:bg-brand-action-hover text-white font-bold">Track My Order</Button>
+                    <Button variant="outline" onClick={() => router.push("/home")} className="w-full sm:w-auto h-12 px-10 rounded-lg font-bold text-slate-600 border-slate-200 hover:bg-slate-50">Return to Home</Button>
                  </div>
               </div>
             )}

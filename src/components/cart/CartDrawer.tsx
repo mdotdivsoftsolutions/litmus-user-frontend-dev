@@ -16,6 +16,7 @@ import { ShoppingCart, Shield, Tag, ChevronRight, Trash2, ArrowRight, Loader2 } 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { cartApi } from "@/lib/api/cart";
 import { authApi } from "@/lib/api/auth";
+import { formatCurrency } from "@/lib/utils";
 
 interface CartDrawerProps {
   children: React.ReactNode;
@@ -130,8 +131,8 @@ export function CartDrawer({ children }: CartDrawerProps) {
 
                       <div className="flex items-center justify-between pt-2 border-t border-slate-50">
                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-bold text-slate-800 tracking-tight">₹{item.price.toLocaleString()}</span>
-                            {item.mrp > item.price && <span className="text-xs text-slate-300 line-through">₹{item.mrp.toLocaleString()}</span>}
+                            <span suppressHydrationWarning className="text-sm font-bold text-slate-800 tracking-tight">₹{formatCurrency(item.price)}</span>
+                            {item.mrp > item.price && <span suppressHydrationWarning className="text-xs text-slate-300 line-through">₹{formatCurrency(item.mrp)}</span>}
                          </div>
                          {item.mrp > item.price && (
                            <div className="text-emerald-500 text-[10px] font-bold uppercase tracking-tight">
@@ -153,15 +154,15 @@ export function CartDrawer({ children }: CartDrawerProps) {
             <div className="space-y-2 text-sm font-medium">
                <div className="flex justify-between items-center text-slate-400">
                   <span className="text-xs uppercase tracking-widest font-semibold">Subtotal</span>
-                  <span className="font-semibold text-slate-600">₹{subtotal.toLocaleString()}</span>
+                  <span suppressHydrationWarning className="font-semibold text-slate-600">₹{formatCurrency(subtotal)}</span>
                </div>
                <div className="flex justify-between items-center text-slate-400">
                   <span className="text-xs uppercase tracking-widest font-semibold">GST (18%)</span>
-                  <span className="font-semibold text-slate-600">₹{gst.toLocaleString()}</span>
+                  <span suppressHydrationWarning className="font-semibold text-slate-600">₹{formatCurrency(gst)}</span>
                </div>
                <div className="flex justify-between items-center pt-2 text-base font-semibold text-slate-800 border-t border-slate-50 mt-2">
                   <span>To Pay</span>
-                  <span className="text-brand-primary">₹{total.toLocaleString()}</span>
+                  <span suppressHydrationWarning className="text-brand-primary">₹{formatCurrency(total)}</span>
                </div>
             </div>
 

@@ -13,9 +13,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { testApi } from "@/lib/api/test";
 import { cartApi } from "@/lib/api/cart";
 import { authApi } from "@/lib/api/auth";
+import { formatCurrency } from "@/lib/utils";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { WHATSAPP_URL } from "@/lib/constants";
+import { useEffect, useState } from "react";
 
 export default function TestDetailPage({ id: propId }: { id?: string }) {
   const params = useParams();
@@ -264,9 +266,9 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
                 
                 <div className="flex flex-col gap-1">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-brand-action">₹{price.toLocaleString()}</span>
+                    <span suppressHydrationWarning className="text-4xl font-bold text-brand-action">₹{formatCurrency(price)}</span>
                     {originalPrice > price && (
-                      <span className="text-sm text-muted-foreground line-through font-medium">₹{originalPrice.toLocaleString()}</span>
+                      <span suppressHydrationWarning className="text-sm text-muted-foreground line-through font-medium">₹{formatCurrency(originalPrice)}</span>
                     )}
                   </div>
                   {discountAmount > 0 && (

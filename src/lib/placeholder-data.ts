@@ -32,6 +32,8 @@ export const products = [
   { id: "10", name: "Green Tea", category: "Beverages", testCount: 5, status: "Active" },
 ];
 
+export type Product = (typeof products)[number];
+
 export const tests = [
   { id: "1", name: "Fat Content Analysis", method: "IS:1479", type: "Chemical", parameters: 3, parametersList: ["Total fat", "Saturated fat", "Trans fat (% w/w)"], usedIn: 5 },
   { id: "2", name: "Total Plate Count", method: "IS:5402", type: "Microbiological", parameters: 1, parametersList: ["Colony forming units per gram (CFU/g)"], usedIn: 12 },
