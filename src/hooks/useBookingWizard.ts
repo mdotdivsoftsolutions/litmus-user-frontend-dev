@@ -73,7 +73,7 @@ export function useBookingWizard() {
 
   const { data: packageResponse } = useQuery({
     queryKey: ["packageForBooking", packageId],
-    queryFn: () => packageApi.getPackageById(packageId!),
+    queryFn: () => packageApi.getPackage(packageId!),
     enabled: !!packageId,
   });
 

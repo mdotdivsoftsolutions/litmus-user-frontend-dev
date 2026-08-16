@@ -6,12 +6,27 @@ export const labApi = {
     return response.data;
   },
   
+  getLabs: async (params?: { lat?: number; lng?: number; location?: string, isTrusted?: boolean, search?: string, page?: number, limit?: number }) => {
+    const response = await apiClient.get('/labs', { params });
+    return response.data;
+  },
+  
   getLabByIdPublic: async (id: string) => {
     const response = await apiClient.get(`/labs/${id}`);
     return response.data;
   },
 
+  getLabById: async (id: string) => {
+    const response = await apiClient.get(`/labs/${id}`);
+    return response.data;
+  },
+
   getLabAvailability: async (id: string, date: string) => {
+    const response = await apiClient.get(`/labs/${id}/availability`, { params: { date } });
+    return response.data;
+  },
+
+  getLabSlots: async (id: string, date: string) => {
     const response = await apiClient.get(`/labs/${id}/availability`, { params: { date } });
     return response.data;
   },

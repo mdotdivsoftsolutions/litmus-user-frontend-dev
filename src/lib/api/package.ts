@@ -11,6 +11,11 @@ export const packageApi = {
     return response.data;
   },
 
+  getPackageById: async (id: string) => {
+    const response = await apiClient.get(`/packages/${id}`);
+    return response.data;
+  },
+
   createPackage: async (data: any) => {
     const response = await apiClient.post('/packages', data);
     return response.data;

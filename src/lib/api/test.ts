@@ -6,6 +6,11 @@ export const testApi = {
     return response.data;
   },
   
+  getPopularTests: async (limit?: number) => {
+    const response = await apiClient.get('/tests', { params: { isPopular: true, ...(limit ? { limit } : {}) } });
+    return response.data;
+  },
+
   getTestById: async (id: string) => {
     const response = await apiClient.get(`/tests/${id}`);
     return response.data;
