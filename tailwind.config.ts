@@ -21,8 +21,10 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-manrope)", "Manrope", "system-ui", "sans-serif"],
+        body: ["var(--font-manrope)", "Manrope", "system-ui", "sans-serif"],
         heading: ["var(--font-nunito)", "Nunito", "sans-serif"],
         nunito: ["var(--font-nunito)", "Nunito", "sans-serif"],
+        data: ["var(--font-inter)", "Inter", "sans-serif"],
         inter: ["var(--font-inter)", "Inter", "sans-serif"],
       },
       colors: {

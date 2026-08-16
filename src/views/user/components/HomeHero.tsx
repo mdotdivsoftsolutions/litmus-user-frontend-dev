@@ -171,7 +171,7 @@ export function HomeHero({ searchQuery, setSearchQuery }: HomeHeroProps) {
                         <h1 className="text-4xl sm:text-[48px] font-extrabold text-white mb-4 lg:mb-6 tracking-tight leading-[1.1] animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
                           {slide.title}
                         </h1>
-                        <p className="text-white/80 font-medium text-base sm:text-lg font-inter mb-6 lg:mb-8 max-w-xl leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+                        <p className="text-white/80 font-medium text-base sm:text-lg mb-6 lg:mb-8 max-w-xl leading-relaxed animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
                           {slide.description}
                         </p>
                         <div className="inline-block bg-brand-primary/90 backdrop-blur-md shadow-lg rounded-lg px-4 py-2 w-fit border border-brand-primary">

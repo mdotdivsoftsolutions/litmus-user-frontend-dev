@@ -574,7 +574,7 @@ export default function NewBookingPage() {
   };
 
   return (
-    <div className="bg-[#f8fafc] min-h-screen pb-20 animate-fade-in font-inter mt-20 md:mt-24">
+    <div className="bg-[#f8fafc] min-h-screen pb-20 animate-fade-in mt-20 md:mt-24">
       {/* ===== STEP INDICATOR ===== */}
       <div className="">
         <div className="max-w-7xl mx-auto px-4">
