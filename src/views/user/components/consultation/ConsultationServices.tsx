@@ -2,6 +2,7 @@
 
 import { Shield, Target, Bookmark, Activity, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { SectionHeader } from "../home/SectionHeader";
 
 const services = [
   {
@@ -49,14 +50,17 @@ const services = [
 export function ConsultationServices() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-24">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-8">
-          <div className="space-y-6">
-             <div className="inline-flex items-center gap-2 text-[#D32F2F] text-[10px] font-black uppercase tracking-[0.4em]">Global Standards</div>
-             <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-800 lg:text-3xl">
-               Certifications For <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">Every Dimension.</span>
-             </h2>
-          </div>
-      </div>
+      <SectionHeader
+        title={
+          <>
+            Certifications For{" "}
+            <span className="text-gradient-brand">Every Dimension.</span>
+          </>
+        }
+        subtitle="Our partner labs hold verified accreditations across NABL, FSSAI, BIS, APEDA, and more."
+        badge="Global Standards"
+        className="mb-10"
+      />
 
       <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
          {services.map((service, idx) => (

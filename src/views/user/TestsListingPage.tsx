@@ -122,7 +122,7 @@ export default function TestsListingPage() {
     <div className="animate-fade-in bg-slate-50 min-h-screen">
 
       {/* 1. PANORAMIC HERO */}
-      <div suppressHydrationWarning data-aos="fade-up">
+      <div suppressHydrationWarning className="relative z-20" data-aos="fade-up">
         <TestsHero search={search} setSearch={setSearch} tests={testsData} onSearch={handleSearch} />
       </div>
 

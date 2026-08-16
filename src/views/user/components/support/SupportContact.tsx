@@ -17,7 +17,7 @@ export function SupportContact() {
                   <div className="space-y-4">
                     <div className="inline-flex items-center gap-2 text-white/40 text-[9px] font-black uppercase tracking-[0.4em]">Connect Directly</div>
                     <h1 className="text-2xl sm:text-4xl font-semibold text-white tracking-tight leading-tight">
-                     How Can We Help <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">You Today?</span>
+                     How Can We Help <span className="text-gradient-brand">You Today?</span>
                   </h1>
                   <p className="text-slate-400 text-base font-medium max-w-xl mx-auto lg:mx-0 leading-relaxed opacity-80">
                      Questions? Need help with your order? Looking for technical guidance? Our experienced support team is here to ensure your testing process is smooth, transparent, and efficient.
@@ -80,7 +80,7 @@ export function SupportContact() {
                              className="h-12 bg-white/5 border-white/10 text-white rounded-xl px-5 focus:bg-white/10 focus:border-white/20 transition-all placeholder:text-slate-500 text-sm" 
                            />
                         </div>
-                        <Button className="w-full h-12 rounded-xl bg-gradient-to-r from-[#D32F2F] to-[#feba50] text-white font-semibold text-xs active:scale-95 transition-all">
+                        <Button className="w-full h-12 rounded-xl bg-gradient-to-r from-[#006b88] to-[#004B60] hover:opacity-90 text-white font-semibold text-xs active:scale-95 transition-all">
                           Submit Brief <ChevronRight className="ml-2 h-4 w-4" />
                         </Button>
                      </div>

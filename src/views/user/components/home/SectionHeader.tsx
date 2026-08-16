@@ -1,13 +1,14 @@
 "use client";
 
 import { ReactNode } from "react";
+import React from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
   title: ReactNode;
-  subtitle?: string;
+  subtitle?: React.ReactNode;
   badge?: string;
   action?: {
     label: string;

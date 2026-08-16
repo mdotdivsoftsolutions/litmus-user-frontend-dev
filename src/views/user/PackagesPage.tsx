@@ -52,7 +52,7 @@ export default function PackagesPage() {
   return (
     <div className="animate-fade-in bg-white min-h-screen">
       {/* 1. VIBRANT PANORAMIC HERO */}
-      <div suppressHydrationWarning data-aos="fade-up">
+      <div suppressHydrationWarning className="relative z-20" data-aos="fade-up">
         <PackagesHero
           categories={heroCategories}
           selectedCategory={selectedCategory}

@@ -56,7 +56,7 @@ export function PackagesCTA() {
               size="lg" 
               className="h-12 px-6 bg-white text-slate-900 hover:bg-slate-50 font-body font-semibold text-sm rounded-xl flex items-center gap-3 transition-all hover:scale-[1.02] shadow-md border-0 active:scale-95"
             >
-              <MessageCircle className="h-4 w-4 text-emerald-600" /> Book via WhatsApp
+              <MessageCircle className="h-4 w-4 text-brand-action" /> Book via WhatsApp
             </Button>
           </div>
         </div>

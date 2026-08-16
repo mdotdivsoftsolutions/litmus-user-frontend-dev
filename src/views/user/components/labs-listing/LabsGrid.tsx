@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Search, Star, MapPin, ArrowRight, Activity } from "lucide-react";
 import { laboratories } from "@/lib/placeholder-data";
+import { SectionHeader } from "../home/SectionHeader";
 
 interface LabItem {
   id: string;
@@ -36,6 +37,18 @@ interface LabsGridProps {
 export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, hasMore, onLoadMore, isFetchingNextPage }: LabsGridProps) {
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
+      <SectionHeader
+        title={
+          <>
+            Accredited{" "}
+            <span className="text-gradient-brand">
+              Laboratories
+            </span>
+          </>
+        }
+        subtitle="Clinically certified labs with verified NABL & FSSAI accreditations across India."
+        className="mb-8"
+      />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
         {isLoading ? (
           Array.from({ length: 4 }).map((_, i) => (
@@ -80,16 +93,16 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
           ))
         ) : filtered.map((lab, i) => (
           <Link suppressHydrationWarning key={lab.id} href={`/labs/${lab.id}`} data-aos="fade-up" data-aos-delay={(i % 10) * 50} className="block group decoration-transparent">
-            <Card className="h-full border-1 border-slate-50 shadow-sm group-hover:border-brand-primary/10 group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.05)] transition-all duration-500 rounded-[1rem] overflow-hidden bg-white">
+            <Card className="h-full border border-slate-100 shadow-sm hover:border-[#D32F2F]/20 hover:shadow-xl transition-all duration-300 rounded-[1rem] overflow-hidden bg-white">
               <CardContent className="p-4 space-y-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-slate-50 border border-slate-100 text-brand-primary flex items-center justify-center font-bold text-sm shrink-0 shadow-sm transition-transform group-hover:-rotate-6">
+                    <div className="h-10 w-10 rounded-xl bg-red-50/70 border border-red-100/60 text-[#D32F2F] flex items-center justify-center font-bold text-sm shrink-0 shadow-sm transition-transform group-hover:-rotate-6">
                       {lab.name.split(" ").map((w: string) => w[0]).slice(0, 2).join("")}
                     </div>
                     <div className="space-y-0.5">
-                      <h3 className="font-heading text-lg font-bold text-slate-900 tracking-tight leading-[1.3] group-hover:text-brand-action transition-colors">{lab.name}</h3>
-                      <p className="font-data text-xs font-semibold text-slate-400 flex items-center gap-1 uppercase tracking-wider"><MapPin className="h-3 w-3 text-brand-action" />{lab.city}, India</p>
+                      <h3 className="font-heading text-lg font-bold text-slate-900 tracking-tight leading-[1.3] group-hover:text-[#D32F2F] transition-colors">{lab.name}</h3>
+                      <p className="font-data text-xs font-semibold text-slate-400 flex items-center gap-1 uppercase tracking-wider"><MapPin className="h-3 w-3 text-[#D32F2F]" />{lab.city}, India</p>
                     </div>
                   </div>
                      <div className="flex flex-col items-end gap-1">
@@ -106,7 +119,7 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
                      <p className="font-data text-[10px] font-semibold text-slate-400 uppercase tracking-wider leading-none">Status</p>
                      <div className="flex flex-wrap gap-1 mt-1">
                         {lab.nabl && <Badge className="font-data-badge bg-slate-900 text-white border-0 text-[10px] px-1.5 py-0 h-4 tracking-tight">NABL</Badge>}
-                        {lab.fssai && <Badge className="font-data-badge bg-brand-action text-white border-0 text-[10px] px-1.5 py-0 h-4 tracking-tight">FSSAI</Badge>}
+                        {lab.fssai && <Badge className="font-data-badge bg-[#D32F2F] text-white border-0 text-[10px] px-1.5 py-0 h-4 tracking-tight">FSSAI</Badge>}
                      </div>
                   </div>
                    <div className="space-y-1 border-l border-slate-50 pl-3">
@@ -116,7 +129,7 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
                    <div className="space-y-1 border-l border-slate-50 pl-3">
                      <p className="font-data text-[10px] font-semibold text-slate-400 uppercase tracking-wider leading-none">Expertise</p>
                      <div className="flex items-center gap-1 mt-1">
-                        <Activity className="h-3 w-3 text-emerald-500" />
+                        <Activity className="h-3 w-3 text-brand-action" />
                         <span className="font-body text-xs font-medium text-slate-700">
                           {lab.expertiseArea?.length > 0 ? (
                             <>
@@ -131,10 +144,10 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
 
                 <div className="flex items-center justify-between">
                    <div className="flex items-center gap-1.5">
-                      <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-brand-action animate-pulse" />
                       <span className="font-data text-[10px] font-bold text-slate-400 uppercase tracking-widest">Operational Now</span>
                    </div>
-                   <div className="flex items-center justify-center h-8 px-3 rounded-lg group-hover:bg-brand-action/10 text-slate-600 group-hover:text-brand-action font-body font-semibold text-xs transition-all gap-1.5">
+                   <div className="flex items-center justify-center h-8 px-3 rounded-lg group-hover:bg-red-50 text-slate-600 group-hover:text-[#D32F2F] font-body font-semibold text-xs transition-all gap-1.5">
                      Explore Laboratory <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                    </div>
                 </div>
@@ -150,7 +163,7 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
               onClick={onLoadMore}
               disabled={isFetchingNextPage}
               variant="outline" 
-              className="h-11 px-8 rounded-xl border-slate-200 text-slate-700 hover:text-white hover:bg-brand-action hover:border-brand-action font-body font-semibold text-sm transition-all flex items-center gap-2 bg-white shadow-sm hover:shadow-md active:scale-95"
+              className="h-11 px-8 rounded-xl border-slate-200 text-slate-700 hover:text-white hover:bg-gradient-to-r hover:from-[#D32F2F] hover:to-[#F06C00] hover:border-transparent font-body font-semibold text-sm transition-all flex items-center gap-2 bg-white shadow-sm hover:shadow-md active:scale-95"
             >
               {isFetchingNextPage ? "Loading..." : "Load More"} <ArrowRight className="h-4 w-4" />
             </Button>

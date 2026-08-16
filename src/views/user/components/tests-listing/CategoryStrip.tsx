@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SectionHeader } from "../home/SectionHeader";
 
 interface CategoryStripProps {
   selectedCategory: string;
@@ -35,17 +36,18 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
     <div className="w-full pt-6 pb-2 md:pt-20 md:pb-14">
       <div className="max-w-7xl mx-auto px-4">
         {isPackages && (
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-8">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 text-brand-primary text-[10px] font-black uppercase tracking-[0.4em]">Expert Packages</div>
-              <h2 className="text-2xl font-bold leading-tight tracking-tight text-slate-800 lg:text-3xl">
-                Check Specific <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-action">Food</span> Packages.
-              </h2>
-              <p className="mt-4 text-md font-medium text-slate-500 max-w-xl leading-relaxed">
-                Here are some of our most frequently selected packages. If you don’t see what you need, <Link href="/contact" className="text-brand-primary hover:underline font-bold">reach out</Link> for a custom solution.
-              </p>
-            </div>
-          </div>
+          <SectionHeader
+            title={
+              <>
+                Browse by{" "}
+                <span className="text-gradient-brand">
+                  Category
+                </span>
+              </>
+            }
+            subtitle={<>Here are our most frequently selected packages. If you don't see what you need, <Link href="/contact" className="text-brand-primary hover:underline font-bold">reach out</Link> for a custom solution.</>}
+            className="mb-10"
+          />
         )}
 
         <div className="flex flex-col gap-6">
