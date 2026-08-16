@@ -25,7 +25,7 @@ export function PackagesHero({
   onSearch,
 }: PackagesHeroProps) {
   return (
-    <div className="relative bg-white py-16 md:py-24 flex flex-col justify-center border-b border-white">
+    <div className="relative bg-white pt-20 md:pt-28 pb-8 md:pb-10 flex flex-col justify-center border-b border-slate-100/60">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[60%] h-full bg-slate-50/50 skew-x-[-12deg] translate-x-1/4 pointer-events-none border-l border-slate-100" />
         <div className="absolute -top-[10%] -left-[5%] w-[600px] h-[600px] bg-red-50/40 rounded-full blur-[140px] pointer-events-none" />
