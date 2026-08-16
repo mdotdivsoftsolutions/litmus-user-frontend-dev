@@ -1,26 +1,29 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, FlaskConical, Package, Layers } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { searchApi } from "@/lib/api/search";
+import { cn } from "@/lib/utils";
 
 interface SearchAutocompleteProps {
   placeholder?: string;
   className?: string;
   inputClassName?: string;
   hideIcon?: boolean;
+  dropdownPosition?: "top" | "bottom";
   children?: React.ReactNode;
 }
 
-export function SearchAutocomplete({ 
-  placeholder = "Search for tests, products...", 
-  className = "", 
+export function SearchAutocomplete({
+  placeholder = "Search for tests, products...",
+  className = "",
   inputClassName = "",
   hideIcon = false,
-  children
+  dropdownPosition = "bottom",
+  children,
 }: SearchAutocompleteProps) {
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
@@ -28,11 +31,8 @@ export function SearchAutocomplete({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Debounce the query
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedQuery(query);
-    }, 300);
+    const timer = setTimeout(() => setDebouncedQuery(query), 300);
     return () => clearTimeout(timer);
   }, [query]);
 
@@ -45,7 +45,6 @@ export function SearchAutocomplete({
 
   const suggestions = data?.data || [];
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -66,25 +65,26 @@ export function SearchAutocomplete({
   const handleSelect = (item: any) => {
     setIsOpen(false);
     setQuery("");
-    
-    // Navigate based on type
-    if (item.type === 'test') router.push(`/tests/${item.id}`);
-    else if (item.type === 'package') router.push(`/packages/${item.id}`);
-    else if (item.type === 'category') router.push(`/tests?category=${encodeURIComponent(item.name)}`);
-    else router.push(`/tests?search=${encodeURIComponent(item.name)}`); // fallback
+
+    if (item.type === "test") router.push(`/tests/${item.id}`);
+    else if (item.type === "package") router.push(`/packages/${item.id}`);
+    else if (item.type === "category") router.push(`/tests?category=${encodeURIComponent(item.name)}`);
+    else router.push(`/tests?search=${encodeURIComponent(item.name)}`);
   };
 
-
+  const getItemIcon = (type: string) => {
+    if (type === "test") return <FlaskConical className="h-4 w-4 text-brand-action" />;
+    if (type === "package") return <Package className="h-4 w-4 text-emerald-600" />;
+    return <Layers className="h-4 w-4 text-blue-600" />;
+  };
 
   return (
     <div ref={wrapperRef} className={`relative flex-1 ${className}`}>
-      {!hideIcon && (
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
-      )}
+      {!hideIcon && <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />}
       <Input
         type="text"
         placeholder={placeholder}
-        className={`${!hideIcon ? 'pl-9' : ''} ${inputClassName}`}
+        className={`${!hideIcon ? "pl-9" : ""} ${inputClassName}`}
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);
@@ -94,33 +94,40 @@ export function SearchAutocomplete({
         onKeyDown={handleKeyDown}
       />
       {children}
-      
-      {/* Dropdown Menu */}
+
       {isOpen && query.length > 1 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden z-50">
+        <div
+          className={cn(
+            "absolute left-0 right-0 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50 animate-in fade-in duration-200",
+            dropdownPosition === "top" ? "bottom-full mb-3" : "top-full mt-2"
+          )}
+        >
           {isLoading ? (
             <div className="p-4 flex items-center justify-center text-slate-500">
               <Loader2 className="h-5 w-5 animate-spin mr-2" />
-              <span className="text-sm">Searching...</span>
+              <span className="text-sm font-medium">Searching...</span>
             </div>
           ) : suggestions.length > 0 ? (
-            <ul className="max-h-[300px] overflow-y-auto py-2">
+            <ul className="max-h-[280px] overflow-y-auto py-2 divide-y divide-slate-50">
               {suggestions.map((item: any, idx: number) => (
                 <li key={`${item.type}-${item.id}-${idx}`}>
                   <button
                     onClick={() => handleSelect(item)}
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex flex-col gap-0.5 transition-colors"
+                    className="w-full text-left px-4 py-3 hover:bg-slate-50 flex items-center gap-3 transition-colors"
                   >
-                    <div className="text-sm font-medium text-slate-800">{item.name}</div>
-                    <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">{item.type}</div>
+                    <div className="h-8 w-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
+                      {getItemIcon(item.type)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold text-slate-800 truncate">{item.name}</div>
+                      <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">{item.type}</div>
+                    </div>
                   </button>
                 </li>
               ))}
             </ul>
           ) : (
-            <div className="p-4 text-center text-sm text-slate-500">
-              No results found for "{query}"
-            </div>
+            <div className="p-4 text-center text-sm font-medium text-slate-500">No results found for &quot;{query}&quot;</div>
           )}
         </div>
       )}

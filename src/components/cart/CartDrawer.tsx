@@ -1,22 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
 import { useCartDrawer } from "./CartDrawerContext";
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetHeader, 
-  SheetTitle, 
-  SheetTrigger 
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ShoppingCart, Shield, Tag, ChevronRight, Trash2, ArrowRight, Loader2 } from "lucide-react";
+import { ShoppingCart, Loader2 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { cartApi } from "@/lib/api/cart";
 import { authApi } from "@/lib/api/auth";
-import { formatCurrency } from "@/lib/utils";
+import { CartDrawerItem } from "./CartDrawerItem";
+import { CartDrawerFooter } from "./CartDrawerFooter";
+import { CartDrawerEmpty } from "./CartDrawerEmpty";
 
 interface CartDrawerProps {
   children: React.ReactNode;
@@ -27,41 +20,35 @@ export function CartDrawer({ children }: CartDrawerProps) {
   const queryClient = useQueryClient();
 
   const { data: cartResponse, isLoading } = useQuery({
-    queryKey: ['cart'],
+    queryKey: ["cart"],
     queryFn: () => cartApi.getCart(),
   });
 
-  const { data: userResponse } = useQuery({ 
-    queryKey: ["userProfile"], 
-    queryFn: authApi.getMe, 
-    retry: false 
+  const { data: userResponse } = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: authApi.getMe,
+    retry: false,
   });
   const user = userResponse?.data;
 
   const cartItems = cartResponse?.data?.items || [];
-
   const subtotal = cartItems.reduce((a: number, b: any) => a + b.price, 0);
   const totalMrp = cartItems.reduce((a: number, b: any) => a + b.mrp, 0);
-  const discount = totalMrp - subtotal;
   const gst = Math.round(subtotal * 0.18);
   const total = subtotal + gst;
 
   const removeMutation = useMutation({
     mutationFn: (id: string) => cartApi.removeFromCart(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['cart'] });
-    }
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
   });
-
-  const removeItem = (id: string) => {
-    removeMutation.mutate(id);
-  };
 
   const handleCheckoutClick = (e: React.MouseEvent) => {
     if (!user) {
       e.preventDefault();
       setIsOpen(false);
-      window.dispatchEvent(new Event('openAuthModal'));
+      window.dispatchEvent(new Event("openAuthModal"));
     } else {
       setIsOpen(false);
     }
@@ -69,9 +56,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
-        {children}
-      </SheetTrigger>
+      <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent className="w-full sm:max-w-md p-0 rounded-none border-none flex flex-col h-full bg-slate-50">
         <SheetHeader className="p-5 bg-white border-b border-slate-100 shrink-0">
           <div className="flex items-center gap-4">
@@ -79,8 +64,12 @@ export function CartDrawer({ children }: CartDrawerProps) {
               <ShoppingCart className="h-5.5 w-5.5 text-slate-400" />
             </div>
             <div>
-              <SheetTitle className="text-lg font-semibold text-slate-800 tracking-tight">Access Your Selection</SheetTitle>
-              <p className="text-[11px] font-medium text-slate-400 uppercase tracking-[0.15em]">{cartItems.length} Analytical Items Listed</p>
+              <SheetTitle className="text-lg font-semibold text-slate-800 tracking-tight">
+                Access Your Selection
+              </SheetTitle>
+              <p className="text-[11px] font-medium text-slate-400 uppercase tracking-[0.15em]">
+                {cartItems.length} Analytical Items Listed
+              </p>
             </div>
           </div>
         </SheetHeader>
@@ -91,90 +80,29 @@ export function CartDrawer({ children }: CartDrawerProps) {
               <Loader2 className="h-8 w-8 animate-spin text-brand-primary" />
             </div>
           ) : cartItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-[60vh] p-8 text-center space-y-4">
-              <div className="h-20 w-20 rounded-3xl bg-slate-100 flex items-center justify-center opacity-50">
-                <ShoppingCart className="h-8 w-8 text-slate-300" />
-              </div>
-              <div className="space-y-1">
-                <p className="text-base font-semibold text-slate-800">Your cart is empty</p>
-                <p className="text-xs text-slate-400 max-w-[200px] mx-auto leading-relaxed">Discover our premium testing packages to start your food safety journey.</p>
-              </div>
-              <Button onClick={() => setIsOpen(false)} asChild className="h-10 px-6 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xs rounded-lg">
-                <Link href="/packages">Browse Packages</Link>
-              </Button>
-            </div>
+            <CartDrawerEmpty onClose={() => setIsOpen(false)} />
           ) : (
             <div className="px-6 space-y-2 py-4">
               {cartItems.map((item: any) => (
-                <div key={item._id} className="group bg-white rounded-xl p-5 border border-slate-100 transition-all duration-300 relative overflow-hidden">
-                   <div className="relative z-10 flex flex-col gap-3">
-                      <div className="flex justify-between items-start">
-                         <div className="space-y-0.5">
-                            <h4 className="font-semibold text-slate-800 tracking-tight leading-tight">
-                              {item.itemType === 'TEST' ? item.testId?.testName : item.packageId?.name} 
-                              {item.itemType === 'PACKAGE' ? ' Panel' : ''}
-                            </h4>
-                            <p className="text-[11px] font-medium text-slate-400 uppercase tracking-widest">
-                              {item.itemType === 'TEST' 
-                                ? `${item.parameters?.length || 0} Parameters` 
-                                : 'Comprehensive Package'}
-                            </p>
-                         </div>
-                         <button 
-                            onClick={() => removeItem(item._id)} 
-                            disabled={removeMutation.isPending}
-                            className="text-slate-300 hover:text-brand-primary transition-colors p-1 disabled:opacity-50"
-                         >
-                            {removeMutation.isPending && removeMutation.variables === item._id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Trash2 className="h-4 w-4" />}
-                         </button>
-                      </div>
-
-                      <div className="flex items-center justify-between pt-2 border-t border-slate-50">
-                         <div className="flex items-center gap-2">
-                            <span suppressHydrationWarning className="text-sm font-bold text-slate-800 tracking-tight">₹{formatCurrency(item.price)}</span>
-                            {item.mrp > item.price && <span suppressHydrationWarning className="text-xs text-slate-300 line-through">₹{formatCurrency(item.mrp)}</span>}
-                         </div>
-                         {item.mrp > item.price && (
-                           <div className="text-emerald-500 text-[10px] font-bold uppercase tracking-tight">
-                             {Math.round(((item.mrp - item.price) / item.mrp) * 100)}% Off
-                           </div>
-                         )}
-                      </div>
-                   </div>
-                </div>
+                <CartDrawerItem
+                  key={item._id}
+                  item={item}
+                  onRemove={(id) => removeMutation.mutate(id)}
+                  isRemoving={removeMutation.isPending && removeMutation.variables === item._id}
+                />
               ))}
-
-
             </div>
           )}
         </ScrollArea>
 
         {cartItems.length > 0 && (
-          <div className="p-6 bg-white border-t border-slate-100 space-y-5 shrink-0">
-            <div className="space-y-2 text-sm font-medium">
-               <div className="flex justify-between items-center text-slate-400">
-                  <span className="text-xs uppercase tracking-widest font-semibold">Subtotal</span>
-                  <span suppressHydrationWarning className="font-semibold text-slate-600">₹{formatCurrency(subtotal)}</span>
-               </div>
-               <div className="flex justify-between items-center text-slate-400">
-                  <span className="text-xs uppercase tracking-widest font-semibold">GST (18%)</span>
-                  <span suppressHydrationWarning className="font-semibold text-slate-600">₹{formatCurrency(gst)}</span>
-               </div>
-               <div className="flex justify-between items-center pt-2 text-base font-semibold text-slate-800 border-t border-slate-50 mt-2">
-                  <span>To Pay</span>
-                  <span suppressHydrationWarning className="text-brand-primary">₹{formatCurrency(total)}</span>
-               </div>
-            </div>
-
-            <div className="flex items-center gap-3">
-               <Button asChild onClick={() => setIsOpen(false)} variant="outline" className="flex-1 h-11 border-slate-200 text-slate-500 hover:text-slate-800 font-semibold uppercase text-[10px] tracking-widest rounded-lg flex items-center justify-center gap-2 transition-all">
-                  <Link href="/">Explore</Link>
-               </Button>
-               <Button asChild onClick={handleCheckoutClick} className="flex-[2] h-11 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xs rounded-lg transition-all flex items-center justify-center gap-2">
-                  <Link href="/bookings/new">Checkout <ArrowRight className="h-4 w-4" /></Link>
-               </Button>
-            </div>
-          </div>
+          <CartDrawerFooter
+            subtotal={subtotal}
+            gst={gst}
+            total={total}
+            onClose={() => setIsOpen(false)}
+            onCheckout={handleCheckoutClick}
+          />
         )}
       </SheetContent>
     </Sheet>

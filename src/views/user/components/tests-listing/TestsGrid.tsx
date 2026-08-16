@@ -2,9 +2,9 @@
 
 import { ArrowDown } from "lucide-react";
 import type { MouseEvent } from "react";
-import { SectionHeader } from "../home/SectionHeader";
-import { TestCard } from "../HomeTests";
+import { TestCard } from "../TestCard";
 import type { Product } from "@/lib/placeholder-data";
+import { SectionHeader } from "../home/SectionHeader";
 
 interface TestsGridProps {
   products: Product[];

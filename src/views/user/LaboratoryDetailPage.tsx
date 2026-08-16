@@ -68,14 +68,14 @@ export default function LaboratoryDetailPage() {
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6">
               <Table>
-                <TableHeader><TableRow><TableHead>Category</TableHead><TableHead>Test Name</TableHead><TableHead>Price</TableHead><TableHead>TAT</TableHead></TableRow></TableHeader>
+                <TableHeader><TableRow><TableHead>Type</TableHead><TableHead>Test Name</TableHead><TableHead>Price</TableHead><TableHead>Last Updated</TableHead></TableRow></TableHeader>
                 <TableBody>
                   {labPricing.map((p) => (
                     <TableRow key={p.testName}>
-                      <TableCell className="font-medium">{p.category}</TableCell>
+                      <TableCell className="font-medium">{p.type}</TableCell>
                       <TableCell>{p.testName}</TableCell>
                       <TableCell>₹{p.price.toLocaleString()}</TableCell>
-                      <TableCell>{p.tat}</TableCell>
+                      <TableCell>{p.lastUpdated}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

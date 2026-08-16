@@ -1,10 +1,9 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { TestCard } from "../HomeTests";
+import { TestCard } from "../TestCard";
 
 interface PackagesGridProps {
   packages: any[];

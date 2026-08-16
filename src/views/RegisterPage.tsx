@@ -5,15 +5,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { FlaskConical, CheckCircle2, Upload, Eye, EyeOff } from "lucide-react";
+import { FlaskConical, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { authApi } from "@/lib/api/auth";
+import { RegisterBrandPanel } from "./register/RegisterBrandPanel";
+import { RegisterBusinessInfoStep } from "./register/RegisterBusinessInfoStep";
+import { RegisterFssaiStep } from "./register/RegisterFssaiStep";
+import { RegisterPasswordStep } from "./register/RegisterPasswordStep";
+import { RegisterOtpStep } from "./register/RegisterOtpStep";
 
 const stepLabels = ["Business Info", "FSSAI & GST", "Set Password", "OTP Verification"];
 
@@ -22,7 +23,6 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
-  // Form State
   const [formData, setFormData] = useState({
     businessName: "",
     ownerName: "",
@@ -38,7 +38,7 @@ export default function RegisterPage() {
     gstNumber: "",
     password: "",
     confirmPassword: "",
-    otp: ""
+    otp: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,11 +49,11 @@ export default function RegisterPage() {
     mutationFn: authApi.sendOtp,
     onSuccess: () => {
       toast.success("OTP sent to your email!");
-      setStep(3); // jump to OTP
+      setStep(3);
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Failed to send OTP");
-    }
+    },
   });
 
   const registerMutation = useMutation({
@@ -64,7 +64,7 @@ export default function RegisterPage() {
     },
     onError: (error: any) => {
       toast.error(error.response?.data?.message || "Registration failed");
-    }
+    },
   });
 
   const handleNext = () => {
@@ -81,8 +81,7 @@ export default function RegisterPage() {
         toast.error("Passwords do not match or are empty");
         return;
       }
-      // Trigger OTP
-      sendOtpMutation.mutate({ email: formData.email, type: "REGISTER" });
+      sendOtpMutation.mutate({ email: formData.email });
     }
   };
 
@@ -91,8 +90,6 @@ export default function RegisterPage() {
       toast.error("Please enter a valid 6-digit OTP");
       return;
     }
-    
-    // Split ownerName into first and last
     const nameParts = formData.ownerName.trim().split(" ");
     const firstName = nameParts[0] || "";
     const lastName = nameParts.slice(1).join(" ") || "";
@@ -103,42 +100,15 @@ export default function RegisterPage() {
       email: formData.email,
       phone: formData.phone,
       password: formData.password,
-      role: "USER",
+      role: "USER" as any,
+      otp: formData.otp,
     });
   };
 
   return (
     <div className="flex min-h-screen">
-      {/* Left Panel */}
-      <div className="hidden lg:flex lg:w-5/12 items-center justify-center bg-gradient-to-br from-[#002e3b] via-[#004B60] to-[#00751F] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-brand-primary rounded-full blur-[120px]" />
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-brand-action rounded-full blur-[120px]" />
-        </div>
-        <div className="relative z-10 px-12 text-center max-w-md">
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <FlaskConical className="h-12 w-12 text-white" />
-            <div className="text-left">
-              <h1 className="text-3xl font-bold text-white tracking-tight">LITMUS</h1>
-              <p className="text-xs tracking-[0.2em] text-white/70">FOOD ANALYTICS</p>
-            </div>
-          </div>
-          <h2 className="text-2xl font-semibold text-white mb-4">Create Your Account</h2>
-          <p className="text-white/80 text-sm leading-relaxed">
-            Join thousands of food businesses ensuring FSSAI compliance through accredited laboratory testing.
-          </p>
-          <div className="mt-10 space-y-3 text-left text-white/90 text-sm">
-            {["500+ FSSAI-aligned tests", "NABL accredited laboratories", "Transparent pricing & reports"].map((t) => (
-              <div key={t} className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                <span>{t}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <RegisterBrandPanel />
 
-      {/* Right Panel */}
       <div className="flex flex-1 items-center justify-center bg-background px-6 py-8">
         <Card className="w-full max-w-lg shadow-lg border border-border">
           <CardHeader className="items-center pb-2">
@@ -147,120 +117,74 @@ export default function RegisterPage() {
               <span className="text-xl font-bold text-foreground">LITMUS</span>
             </Link>
             <h2 className="text-xl font-bold text-foreground">Register Your Business</h2>
-            {/* Step indicator */}
             <div className="flex w-full items-center justify-between mt-4">
               {stepLabels.map((label, i) => (
                 <div key={i} className="flex flex-1 items-center">
                   <div className="flex flex-col items-center gap-1">
-                    <div className={cn(
-                      "flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors",
-                      i < step ? "bg-primary text-primary-foreground" : i === step ? "bg-brand-action text-white" : "bg-muted text-muted-foreground"
-                    )}>
+                    <div
+                      className={cn(
+                        "flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-colors",
+                        i < step
+                          ? "bg-primary text-primary-foreground"
+                          : i === step
+                            ? "bg-brand-action text-white"
+                            : "bg-muted text-muted-foreground"
+                      )}
+                    >
                       {i < step ? <CheckCircle2 className="h-4 w-4" /> : i + 1}
                     </div>
                     <span className="text-[11px] text-muted-foreground hidden sm:block">{label}</span>
                   </div>
-                  {i < stepLabels.length - 1 && <div className={cn("mx-2 h-0.5 flex-1 rounded-full", i < step ? "bg-primary" : "bg-muted")} />}
+                  {i < stepLabels.length - 1 && (
+                    <div className={cn("mx-2 h-0.5 flex-1 rounded-full", i < step ? "bg-primary" : "bg-muted")} />
+                  )}
                 </div>
               ))}
             </div>
           </CardHeader>
           <CardContent className="space-y-4 pt-4">
-            {step === 0 && (
-              <>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2"><Label className="text-sm font-medium">Business Name</Label><Input name="businessName" value={formData.businessName} onChange={handleChange} placeholder="Kumar Dairy Foods" /></div>
-                  <div className="space-y-2"><Label className="text-sm font-medium">Owner Name</Label><Input name="ownerName" value={formData.ownerName} onChange={handleChange} placeholder="Rajesh Kumar" /></div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2"><Label className="text-sm font-medium">Mobile Number</Label><Input name="phone" value={formData.phone} onChange={handleChange} placeholder="9876543210" /></div>
-                  <div className="space-y-2"><Label className="text-sm font-medium">Email</Label><Input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="you@company.com" /></div>
-                </div>
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium">Business Type</Label>
-                  <Select value={formData.businessType || undefined} onValueChange={(val) => setFormData({...formData, businessType: val})}><SelectTrigger><SelectValue placeholder="Select type" /></SelectTrigger>
-                    <SelectContent>
-                      {["Manufacturer", "Trader", "Importer", "Retailer"].map((t) => <SelectItem key={t} value={t.toLowerCase()}>{t}</SelectItem>)}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2"><Label className="text-sm font-medium">Address</Label><Input name="address" value={formData.address} onChange={handleChange} placeholder="123, Industrial Area" /></div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="space-y-2"><Label className="text-sm font-medium">City</Label><Input name="city" value={formData.city} onChange={handleChange} placeholder="Chennai" /></div>
-                  <div className="space-y-2"><Label className="text-sm font-medium">State</Label><Input name="state" value={formData.state} onChange={handleChange} placeholder="Tamil Nadu" /></div>
-                  <div className="space-y-2"><Label className="text-sm font-medium">PIN Code</Label><Input name="pinCode" value={formData.pinCode} onChange={handleChange} placeholder="600001" /></div>
-                </div>
-              </>
-            )}
-            {step === 1 && (
-              <>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2"><Label className="text-sm font-medium">FSSAI License Number</Label><Input name="fssaiNumber" value={formData.fssaiNumber} onChange={handleChange} placeholder="10012345000123" /></div>
-                  <div className="space-y-2"><Label className="text-sm font-medium">FSSAI Expiry Date</Label><Input type="date" name="fssaiExpiry" value={formData.fssaiExpiry} onChange={handleChange} /></div>
-                </div>
-                <div className="space-y-2"><Label className="text-sm font-medium">GST Number</Label><Input name="gstNumber" value={formData.gstNumber} onChange={handleChange} placeholder="33AABCU9603R1ZM" /></div>
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium">Upload FSSAI Certificate</Label>
-                  <div className="flex items-center justify-center rounded-lg border-2 border-dashed border-border p-6 text-center hover:border-primary transition-colors cursor-pointer bg-muted/30">
-                    <div className="flex flex-col items-center gap-2">
-                      <Upload className="h-6 w-6 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">Drag & drop or click to upload</span>
-                      <span className="text-xs text-muted-foreground/60">PDF, JPG, PNG up to 5MB</span>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
+            {step === 0 && <RegisterBusinessInfoStep formData={formData} handleChange={handleChange} setFormData={setFormData} />}
+            {step === 1 && <RegisterFssaiStep formData={formData} handleChange={handleChange} />}
             {step === 2 && (
-              <>
-                <div className="space-y-2">
-                  <Label className="text-sm font-medium">Password</Label>
-                  <div className="relative">
-                    <Input name="password" value={formData.password} onChange={handleChange} type={showPassword ? "text" : "password"} placeholder="••••••••" className="pr-10" />
-                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                </div>
-                <div className="space-y-2"><Label className="text-sm font-medium">Confirm Password</Label><Input name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} type="password" placeholder="••••••••" /></div>
-                <div className="space-y-1.5">
-                  <div className="flex gap-1">
-                    <div className="h-1.5 flex-1 rounded-full bg-status-rejected" />
-                    <div className="h-1.5 flex-1 rounded-full bg-status-inprogress" />
-                    <div className="h-1.5 flex-1 rounded-full bg-primary" />
-                    <div className="h-1.5 flex-1 rounded-full bg-muted" />
-                  </div>
-                  <p className="text-xs text-muted-foreground">Password strength: Good</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Checkbox id="terms" />
-                  <Label htmlFor="terms" className="text-sm font-normal">I agree to the <Link href="/terms" className="text-primary hover:underline">Terms & Conditions</Link></Label>
-                </div>
-              </>
+              <RegisterPasswordStep
+                formData={formData}
+                handleChange={handleChange}
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
+              />
             )}
-            {step === 3 && (
-              <>
-                <div className="space-y-4 text-center">
-                   <p className="text-sm text-muted-foreground">Enter the 6-digit OTP sent to {formData.email}</p>
-                   <Input name="otp" value={formData.otp} onChange={handleChange} placeholder="123456" className="text-center text-xl tracking-[0.5em]" maxLength={6} />
-                </div>
-              </>
-            )}
+            {step === 3 && <RegisterOtpStep email={formData.email} otp={formData.otp} handleChange={handleChange} />}
+
             <div className="flex gap-3 pt-2">
-              {step > 0 && <Button variant="outline" className="flex-1" onClick={() => setStep(step - 1)}>Back</Button>}
+              {step > 0 && (
+                <Button variant="outline" className="flex-1" onClick={() => setStep(step - 1)}>
+                  Back
+                </Button>
+              )}
               {step < 3 ? (
-                <Button className="flex-1 bg-primary hover:bg-primary-deep" onClick={handleNext} disabled={sendOtpMutation.isPending}>
-                  {sendOtpMutation.isPending ? "Sending OTP..." : "Next"}
+                <Button
+                  className="flex-1 bg-brand-action hover:bg-brand-action-hover text-white"
+                  onClick={handleNext}
+                  disabled={sendOtpMutation.isPending}
+                >
+                  {step === 2 && sendOtpMutation.isPending ? "Sending OTP..." : "Continue"}
                 </Button>
               ) : (
-                <Button className="flex-1 bg-primary hover:bg-primary-deep" onClick={handleRegister} disabled={registerMutation.isPending}>
-                  {registerMutation.isPending ? "Creating Account..." : "Create Account"}
+                <Button
+                  className="flex-1 bg-brand-action hover:bg-brand-action-hover text-white"
+                  onClick={handleRegister}
+                  disabled={registerMutation.isPending}
+                >
+                  {registerMutation.isPending ? "Verifying..." : "Complete Registration"}
                 </Button>
               )}
             </div>
-            <p className="text-center text-sm text-muted-foreground">
+
+            <p className="text-center text-sm text-muted-foreground pt-2">
               Already have an account?{" "}
-              <Link href="/" className="font-medium text-primary hover:underline">Login</Link>
+              <Link href="/login" className="font-medium text-primary hover:underline">
+                Sign In
+              </Link>
             </p>
           </CardContent>
         </Card>
