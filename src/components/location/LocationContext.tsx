@@ -1,12 +1,16 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  LocationPermission,
+  LocationSource,
+  detectUserLocation,
+} from "@/lib/location";
+
+export type { LocationPermission, LocationSource };
 
 const STORAGE_KEY = "litmus_user_location";
 const ASKED_KEY = "litmus_location_asked";
-
-export type LocationPermission = "prompt" | "granted" | "denied" | "unavailable";
-export type LocationSource = "gps" | "manual" | null;
 
 type StoredLocation = {
   city: string;
@@ -40,14 +44,6 @@ function persist(data: StoredLocation) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-async function reverseGeocode(lat: number, lng: number): Promise<string | null> {
-  const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`;
-  const res = await fetch(url);
-  if (!res.ok) return null;
-  const data = await res.json();
-  return data.city || data.locality || data.principalSubdivision || null;
-}
-
 export function LocationProvider({ children }: { children: React.ReactNode }) {
   const [city, setCityState] = useState("");
   const [source, setSource] = useState<LocationSource>(null);
@@ -61,42 +57,26 @@ export function LocationProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const detectLocation = useCallback(async (): Promise<boolean> => {
-    if (!navigator.geolocation) {
-      setPermission("unavailable");
-      return false;
-    }
-
     setIsDetecting(true);
     localStorage.setItem(ASKED_KEY, "1");
 
-    return new Promise((resolve) => {
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          try {
-            setPermission("granted");
-            const detected = await reverseGeocode(pos.coords.latitude, pos.coords.longitude);
-            if (detected) {
-              setCityState(detected);
-              setSource("gps");
-              persist({ city: detected, source: "gps" });
-              resolve(true);
-            } else {
-              resolve(false);
-            }
-          } catch {
-            resolve(false);
-          } finally {
-            setIsDetecting(false);
-          }
-        },
-        (err) => {
-          if (err.code === err.PERMISSION_DENIED) setPermission("denied");
-          setIsDetecting(false);
-          resolve(false);
-        },
-        { enableHighAccuracy: false, timeout: 12000, maximumAge: 300000 }
-      );
-    });
+    try {
+      const result = await detectUserLocation();
+      if (result.success && result.city) {
+        setCityState(result.city);
+        const resolvedSource = result.source || "gps";
+        setSource(resolvedSource);
+        persist({ city: result.city, source: resolvedSource });
+        if (result.permission) setPermission(result.permission);
+        return true;
+      }
+    } catch {
+      /* ignore */
+    } finally {
+      setIsDetecting(false);
+    }
+
+    return false;
   }, []);
 
   useEffect(() => {
