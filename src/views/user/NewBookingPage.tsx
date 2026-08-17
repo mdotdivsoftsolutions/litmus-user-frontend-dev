@@ -71,6 +71,7 @@ export default function NewBookingPage() {
                 timeError={state.timeError}
                 pickupCities={state.pickupCities}
                 isPickupCovered={state.isPickupCovered}
+                enablePickupSlotSelection={state.enablePickupSlotSelection}
               />
             )}
 

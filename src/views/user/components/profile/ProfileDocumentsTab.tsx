@@ -104,11 +104,11 @@ export function ProfileDocumentsTab({
   };
 
   return (
-    <div className="bg-card rounded-xl p-6 border border-border shadow-sm space-y-6">
-      <div className="pb-4 border-b border-border flex justify-between items-end gap-3">
+    <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+      <div className="pb-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-foreground">Business Documents</h2>
-          <p className="text-sm text-muted-foreground">Upload, view, download, and replace certifications.</p>
+          <h2 className="text-base font-bold text-slate-900">Business Documents & Certifications</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">Upload, verify, view, and manage trade licenses & food safety certifications.</p>
         </div>
         <input
           type="file"
@@ -120,22 +120,31 @@ export function ProfileDocumentsTab({
         <Button
           disabled={isUploading}
           onClick={onUploadClick}
-          className="bg-brand-action hover:bg-brand-action-hover text-white rounded-lg h-9 px-4 gap-2 text-sm shrink-0"
+          className="bg-brand-action hover:bg-brand-action-hover text-white rounded-xl h-10 px-4 gap-2 text-xs sm:text-sm font-semibold shrink-0 shadow-xs"
         >
-          {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CloudUpload className="h-4 w-4" />} Upload
+          {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <CloudUpload className="h-4 w-4" />} Upload Document
         </Button>
       </div>
 
       <div className="grid gap-3">
         {(!documents || documents.length === 0) && (
-          <p className="text-sm text-muted-foreground text-center py-6">No documents uploaded yet.</p>
+          <div
+            onClick={onUploadClick}
+            className="border-2 border-dashed border-slate-200 hover:border-brand-action/50 hover:bg-brand-action/5 rounded-2xl p-8 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-2 group"
+          >
+            <div className="h-12 w-12 rounded-xl bg-slate-100 group-hover:bg-brand-action/10 text-slate-400 group-hover:text-brand-action flex items-center justify-center transition-colors">
+              <CloudUpload className="h-6 w-6" />
+            </div>
+            <p className="text-sm font-bold text-slate-800">No documents uploaded yet</p>
+            <p className="text-xs text-slate-500 max-w-sm">Click to upload FSSAI certificates, GST registration, or company licenses (PDF, JPG, PNG up to 10MB).</p>
+          </div>
         )}
         {documents?.map((doc: any, idx: number) => (
           <div
             key={doc._id || doc.url || idx}
-            className="flex items-center gap-3 p-3 rounded-xl border border-border bg-slate-50/50 hover:bg-muted transition-colors"
+            className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-xs transition-all"
           >
-            <div className="h-10 w-10 rounded-lg bg-white border border-border flex items-center justify-center shrink-0 overflow-hidden">
+            <div className="h-11 w-11 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
               {isImageDoc(doc) ? (
                 <img src={doc.url} alt="" className="h-full w-full object-cover" />
               ) : (
@@ -143,18 +152,18 @@ export function ProfileDocumentsTab({
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-foreground truncate">{doc.name}</p>
-              <span className="text-[10px] text-muted-foreground font-mono">
+              <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">{doc.name}</p>
+              <span className="text-[11px] text-muted-foreground">
                 {doc.docType || "Document"} • {doc.size || "Unknown Size"}
               </span>
             </div>
             <div
               className={cn(
-                "px-2 py-1 rounded text-xs font-semibold flex items-center gap-1 shrink-0",
-                doc.status === "Verified" ? "text-litmus-teal bg-litmus-teal/10" : "text-flame-orange bg-flame-orange/10"
+                "px-2.5 py-1 rounded-full text-[11px] font-semibold flex items-center gap-1 shrink-0",
+                doc.status === "Verified" ? "text-emerald-700 bg-emerald-50 border border-emerald-200" : "text-amber-800 bg-amber-50 border border-amber-200"
               )}
             >
-              {doc.status === "Verified" ? <CheckCircle2 className="h-3 w-3" /> : <Clock className="h-3 w-3" />}
+              {doc.status === "Verified" ? <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" /> : <Clock className="h-3.5 w-3.5 text-amber-600" />}
               {doc.status}
             </div>
             <div className="flex items-center gap-0.5 shrink-0">

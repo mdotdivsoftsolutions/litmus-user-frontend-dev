@@ -34,4 +34,9 @@ export const bookingApi = {
     const response = await apiClient.get(`/booking/${id}/report`, { responseType: "blob" });
     return response.data as Blob;
   },
+
+  getBookingInvoice: async (bookingId: string) => {
+    const response = await apiClient.get(`/booking/${bookingId}/invoice`);
+    return response.data;
+  },
 };

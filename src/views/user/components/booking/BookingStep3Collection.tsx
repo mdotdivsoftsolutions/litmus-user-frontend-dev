@@ -17,6 +17,7 @@ interface BookingStep3CollectionProps {
   timeError: string | null;
   pickupCities: string[];
   isPickupCovered: boolean;
+  enablePickupSlotSelection?: boolean;
 }
 
 export function BookingStep3Collection({
@@ -29,6 +30,7 @@ export function BookingStep3Collection({
   timeError,
   pickupCities,
   isPickupCovered,
+  enablePickupSlotSelection = false,
 }: BookingStep3CollectionProps) {
   const coverageLabel = pickupCities.length ? pickupCities.join(", ") : "no cities yet";
 
@@ -161,7 +163,7 @@ export function BookingStep3Collection({
             </div>
           )}
 
-          {formData.collectionMethod === "PICKUP" && (
+          {formData.collectionMethod === "PICKUP" && enablePickupSlotSelection && (
             <div className="space-y-4">
               <h4 className="font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-2 text-sm uppercase tracking-wide">
                 <CalendarIcon className="h-4 w-4 text-brand-action" /> Preferred Schedule
@@ -192,6 +194,20 @@ export function BookingStep3Collection({
                   {timeError && <p className="text-xs text-red-500 font-bold mt-1">{timeError}</p>}
                 </div>
               </div>
+            </div>
+          )}
+
+          {formData.collectionMethod === "PICKUP" && !enablePickupSlotSelection && (
+            <div className="rounded-lg border border-blue-100 bg-blue-50/70 p-4 text-sm text-slate-700 space-y-1.5">
+              <p className="font-bold text-slate-900 flex items-center gap-2">
+                <CalendarIcon className="h-4 w-4 text-brand-action" /> Sample Collection
+              </p>
+              <p className="font-semibold text-slate-800">
+                Sample will be collected within 24 - 48 hours.
+              </p>
+              <p className="text-xs text-slate-600">
+                Our collection agent will coordinate promptly with you to collect your samples from the specified address.
+              </p>
             </div>
           )}
         </CardContent>

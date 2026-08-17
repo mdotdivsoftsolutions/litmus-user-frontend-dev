@@ -108,14 +108,17 @@ export default function OrdersPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 pt-24 md:pt-28 pb-16 md:pb-20 space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Order History</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+            Order History
+          </h1>
+          <p className="text-sm text-muted-foreground mt-0.5">
             Track progress, view lab assignment, and open reports — search by order ID or test name.
           </p>
         </div>
-        <div className="relative w-full md:w-64">
+        <div className="relative w-full md:w-64 shrink-0">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <Input
             placeholder="Search ID or Test..."
@@ -124,12 +127,13 @@ export default function OrdersPage() {
               setSearchQuery(e.target.value);
               setPage(1);
             }}
-            className="h-10 pl-9 rounded-lg bg-transparent border-border shadow-none"
+            className="h-10 pl-9 rounded-xl bg-white border-slate-200 shadow-sm"
           />
         </div>
       </div>
 
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide border-b border-border">
+      {/* Filter Tabs */}
+      <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-hide">
         {tabs.map((tab) => (
           <button
             key={tab}
@@ -138,10 +142,10 @@ export default function OrdersPage() {
               setPage(1);
             }}
             className={cn(
-              "shrink-0 px-4 py-2 text-sm font-semibold transition-colors border-b-2",
+              "shrink-0 px-4 py-2 text-xs sm:text-sm font-semibold rounded-full transition-all",
               activeTab === tab
-                ? "border-brand-action text-brand-action"
-                : "border-transparent text-muted-foreground hover:text-foreground"
+                ? "bg-brand-action text-white shadow-sm"
+                : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900"
             )}
           >
             {tab}
@@ -157,69 +161,76 @@ export default function OrdersPage() {
             <Link
               href={`/orders/${b.originalId}`}
               key={b.originalId}
-              className="block bg-card rounded-xl border border-border shadow-sm hover:border-accent transition-colors p-4 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center"
+              className="block bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-brand-action/30 hover:shadow-md transition-all p-4 sm:p-5"
             >
-              <div className="flex-1 min-w-0 w-full flex flex-col md:flex-row gap-4 md:items-center">
-                <div className="shrink-0 space-y-1 w-24">
-                  <p className="text-xs font-mono font-medium text-muted-foreground">{b.id}</p>
-                  <p className="text-xs text-muted-foreground">{b.date}</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  {/* Icon */}
+                  <div className="shrink-0 h-11 w-11 rounded-xl bg-brand-action/10 flex items-center justify-center">
+                    <FlaskConical className="h-5 w-5 text-brand-action" />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h3 className="text-sm font-bold text-slate-900 truncate">{b.product}</h3>
+                      <StatusBadge status={b.status} />
+                    </div>
+                    <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                      <span className="font-mono font-medium text-slate-500">{b.id}</span>
+                      <span className="flex items-center gap-1">
+                        <FlaskConical className="h-3 w-3" /> {b.testsCount} Tests
+                      </span>
+                      <span className="flex items-center gap-1 truncate hidden sm:flex">
+                        <MapPin className="h-3 w-3" /> {b.lab}
+                      </span>
+                    </div>
+                    {b.isCourier && (
+                      <p className={cn("mt-1.5 text-[11px] font-semibold", b.hasTracking ? "text-emerald-700" : "text-amber-700")}>
+                        {b.hasTracking ? "✓ Courier tracking submitted" : "⚠ Add courier tracking ID"}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-semibold text-foreground truncate">{b.product}</h3>
-                  <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <FlaskConical className="h-3.5 w-3.5" /> {b.testsCount} Tests
-                    </span>
-                    <span className="flex items-center gap-1 truncate">
-                      <MapPin className="h-3.5 w-3.5" /> {b.lab}
-                    </span>
+                <div className="flex items-center gap-4 justify-between w-full sm:w-auto shrink-0 border-t sm:border-t-0 border-slate-100 pt-3 sm:pt-0">
+                  <div className="text-left sm:text-right">
+                    <p className="text-xs text-muted-foreground">{b.date}</p>
+                    <p className="font-bold text-slate-900 text-base">₹{b.amount.toLocaleString()}</p>
                   </div>
-                  {b.isCourier && (
-                    <p className={cn("mt-1.5 text-[11px] font-semibold", b.hasTracking ? "text-emerald-700" : "text-brand-action")}>
-                      {b.hasTracking ? "Courier tracking submitted" : "Add courier tracking ID"}
-                    </p>
+
+                  {b.reportUrl ? (
+                    <Button
+                      size="sm"
+                      onClick={(e) => handleDownloadReport(e, b.originalId, b.product)}
+                      disabled={downloadingId === b.originalId}
+                      className="bg-brand-action hover:bg-brand-action-hover text-white h-9 rounded-xl gap-1.5 text-xs font-semibold px-4"
+                    >
+                      {downloadingId === b.originalId ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Download className="h-3.5 w-3.5" />
+                      )}
+                      Report
+                    </Button>
+                  ) : b.isCourier && !b.hasTracking ? (
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1.5 rounded-full">
+                      <Truck className="h-3.5 w-3.5" /> Add Tracking
+                    </span>
+                  ) : (
+                    <ChevronRight className="h-5 w-5 text-slate-400" />
                   )}
                 </div>
-
-                <div className="shrink-0 w-32">
-                  <StatusBadge status={b.status} />
-                </div>
-              </div>
-
-              <div className="shrink-0 flex items-center justify-between w-full md:w-auto md:gap-6 border-t md:border-t-0 border-border pt-3 md:pt-0">
-                <span className="font-bold text-foreground text-lg w-20 md:text-right">₹{b.amount.toLocaleString()}</span>
-
-                {b.reportUrl ? (
-                  <Button
-                    size="sm"
-                    onClick={(e) => handleDownloadReport(e, b.originalId, b.product)}
-                    disabled={downloadingId === b.originalId}
-                    className="bg-brand-action hover:bg-brand-action-hover text-white h-8 rounded-lg gap-1.5 text-xs"
-                  >
-                    {downloadingId === b.originalId ? (
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                    ) : (
-                      <Download className="h-3.5 w-3.5" />
-                    )}
-                    Report
-                  </Button>
-                ) : b.status === "Completed" ? (
-                  <ChevronRight className="h-5 w-5 text-muted-foreground hidden md:block" />
-                ) : b.isCourier && !b.hasTracking ? (
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-action">
-                    <Truck className="h-3.5 w-3.5" /> Tracking
-                  </span>
-                ) : (
-                  <ChevronRight className="h-5 w-5 text-muted-foreground hidden md:block" />
-                )}
               </div>
             </Link>
           ))}
 
           {formattedBookings.length === 0 && (
-            <div className="text-center py-16 bg-slate-50/50 rounded-xl border border-border">
-              <p className="text-muted-foreground text-sm">No orders found matching your criteria.</p>
+            <div className="text-center py-20 bg-white rounded-2xl border border-slate-200 shadow-sm">
+              <div className="h-14 w-14 rounded-2xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-4">
+                <Search className="h-6 w-6" />
+              </div>
+              <p className="text-sm font-bold text-slate-800">No orders found</p>
+              <p className="text-xs text-muted-foreground mt-1">Try adjusting your search or filter criteria.</p>
             </div>
           )}
         </div>

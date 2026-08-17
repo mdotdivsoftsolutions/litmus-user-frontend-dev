@@ -122,35 +122,35 @@ export function ProfileSettingsTab({
   ];
 
   return (
-    <div className="bg-card rounded-xl p-6 border border-border shadow-sm">
-      <div className="mb-6 pb-4 border-b border-border">
-        <h2 className="text-lg font-bold text-foreground">Account Settings</h2>
-        <p className="text-sm text-muted-foreground">Manage your security and preferences.</p>
+    <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+      <div className="pb-4 border-b border-slate-100">
+        <h2 className="text-base font-bold text-slate-900">Account Security & Preferences</h2>
+        <p className="text-xs text-muted-foreground mt-0.5">Manage your credentials, password security, and communication preferences.</p>
       </div>
 
       <div className="space-y-6">
         <div>
-          <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <Lock className="h-4 w-4 text-muted-foreground" /> Security
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+            <Lock className="h-3.5 w-3.5 text-brand-action" /> Password & Authentication
           </h3>
-          <div className="bg-slate-50/50 rounded-xl p-4 border border-border flex flex-col gap-4">
+          <div className="bg-slate-50/70 rounded-2xl p-4 sm:p-5 border border-slate-200 flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-semibold text-foreground">Password</p>
-                <p className="text-xs text-muted-foreground">Change your login password</p>
+                <p className="text-sm font-bold text-slate-900">Account Password</p>
+                <p className="text-xs text-muted-foreground">Change your password to keep your account secure</p>
               </div>
               <Button
                 type="button"
                 onClick={() => (showPasswordForm ? closeForm() : setShowPasswordForm(true))}
                 variant="outline"
-                className="h-9 rounded-lg text-xs"
+                className="h-9 rounded-xl text-xs font-semibold bg-white border-slate-200"
               >
-                {showPasswordForm ? "Cancel" : "Change"}
+                {showPasswordForm ? "Cancel" : "Change Password"}
               </Button>
             </div>
 
             {showPasswordForm && (
-              <form onSubmit={handlePasswordSubmit} className="pt-4 border-t border-border grid gap-4 animate-fade-in">
+              <form onSubmit={handlePasswordSubmit} className="pt-4 border-t border-slate-200 grid gap-4 animate-fade-in">
                 <PasswordField
                   label="Current Password"
                   value={passwordData.currentPassword}
@@ -188,9 +188,9 @@ export function ProfileSettingsTab({
                   <Button
                     type="submit"
                     disabled={isChangingPassword || !canSubmit}
-                    className="bg-brand-action hover:bg-brand-action-hover text-white rounded-lg h-9 px-6 text-xs"
+                    className="bg-brand-action hover:bg-brand-action-hover text-white rounded-xl h-10 px-6 text-xs font-semibold shadow-xs"
                   >
-                    {isChangingPassword ? <Loader2 className="h-3 w-3 animate-spin mr-2" /> : null}
+                    {isChangingPassword ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-2" /> : null}
                     Update Password
                   </Button>
                 </div>
@@ -200,24 +200,24 @@ export function ProfileSettingsTab({
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <Bell className="h-4 w-4 text-muted-foreground" /> Notifications
+          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+            <Bell className="h-3.5 w-3.5 text-brand-action" /> Notifications & Alerts
           </h3>
-          <div className="grid gap-2">
+          <div className="grid gap-2.5">
             {notificationOptions.map((pref) => {
               const isActive = notifications[pref.id as keyof typeof notifications];
               return (
                 <div
                   key={pref.id}
-                  className="flex items-center justify-between p-3 rounded-xl border border-border hover:bg-slate-50/50 cursor-pointer transition-colors"
+                  className="flex items-center justify-between p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-xs cursor-pointer transition-all"
                   onClick={() => onToggleNotification(pref.id, !isActive)}
                 >
                   <div>
-                    <p className="text-sm font-semibold text-foreground">{pref.title}</p>
+                    <p className="text-xs sm:text-sm font-bold text-slate-900">{pref.title}</p>
                     <p className="text-xs text-muted-foreground">{pref.desc}</p>
                   </div>
-                  <div className={cn("w-9 h-5 rounded-full p-0.5 transition-colors duration-200", isActive ? "bg-brand-action" : "bg-muted-foreground/30")}>
-                    <div className={cn("h-4 w-4 bg-white rounded-full shadow-sm transition-transform duration-200", isActive ? "translate-x-4" : "translate-x-0")} />
+                  <div className={cn("w-10 h-6 rounded-full p-0.5 transition-colors duration-200", isActive ? "bg-brand-action" : "bg-slate-200")}>
+                    <div className={cn("h-5 w-5 bg-white rounded-full shadow-sm transition-transform duration-200", isActive ? "translate-x-4" : "translate-x-0")} />
                   </div>
                 </div>
               );

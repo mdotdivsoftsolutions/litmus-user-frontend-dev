@@ -14,12 +14,15 @@ import { OrderTrackingTimeline } from "./components/order-detail/OrderTrackingTi
 import { OrderInfoCards } from "./components/order-detail/OrderInfoCards";
 import { OrderSampleBreakdown } from "./components/order-detail/OrderSampleBreakdown";
 import { OrderCourierTracking } from "./components/order-detail/OrderCourierTracking";
+import { OrderReportInsights } from "./components/order-detail/OrderReportInsights";
 import { OrderDetailSkeleton } from "./components/order-detail/OrderDetailSkeleton";
+import { InvoiceModal } from "@/components/InvoiceModal";
 
 export default function OrderDetailPage({ id: propId }: { id?: string }) {
   const params = useParams();
   const id = propId || (params?.id as string);
   const [downloading, setDownloading] = useState(false);
+  const [isInvoiceOpen, setIsInvoiceOpen] = useState(false);
 
   const { data, isLoading } = useQuery({
     queryKey: ["booking", id],
@@ -101,7 +104,18 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
               Placed on {new Date(apiBooking.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
             </p>
           </div>
-          <StatusBadge status={formatBookingStatus(apiBooking.status)} />
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsInvoiceOpen(true)}
+              className="h-9 px-3 text-xs font-semibold border-emerald-200 text-emerald-800 hover:bg-emerald-50 bg-white gap-1.5 shadow-2xs"
+            >
+              <FileText className="h-4 w-4 text-emerald-600" />
+              GST Invoice
+            </Button>
+            <StatusBadge status={formatBookingStatus(apiBooking.status)} />
+          </div>
         </div>
 
         <OrderTrackingTimeline currentStep={currentStep} />
@@ -126,27 +140,42 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
       <OrderSampleBreakdown items={apiBooking.items} />
 
       {reportAvailable && (
-        <div className="bg-litmus-mint/20 border border-litmus-teal/30 rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="h-12 w-12 bg-white rounded-full flex items-center justify-center shrink-0 text-brand-action shadow-sm border border-brand-action/20">
-              <FileText className="h-6 w-6" />
+        <>
+          <OrderReportInsights 
+            reportSummary={apiBooking.reportSummary} 
+            onDownloadReport={handleDownloadReport} 
+            isDownloading={downloading} 
+          />
+
+          <div className="bg-litmus-mint/20 border border-litmus-teal/30 rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 bg-white rounded-full flex items-center justify-center shrink-0 text-brand-action shadow-sm border border-brand-action/20">
+                <FileText className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-slate-900">Official Report Document Ready</h3>
+                <p className="text-sm text-brand-action font-medium">Your certified laboratory test certificate is available for download.</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-base font-bold text-slate-900">Report Ready</h3>
-              <p className="text-sm text-brand-action font-medium">Your certified report is available for download.</p>
-            </div>
+            <Button
+              type="button"
+              onClick={handleDownloadReport}
+              disabled={downloading}
+              className="w-full sm:w-auto h-10 px-6 bg-brand-action hover:bg-brand-action-hover text-white rounded-lg gap-2 text-sm shadow-sm"
+            >
+              {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+              Download PDF
+            </Button>
           </div>
-          <Button
-            type="button"
-            onClick={handleDownloadReport}
-            disabled={downloading}
-            className="w-full sm:w-auto h-10 px-6 bg-brand-action hover:bg-brand-action-hover text-white rounded-lg gap-2 text-sm shadow-sm"
-          >
-            {downloading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-            Download PDF
-          </Button>
-        </div>
+        </>
       )}
+
+      {/* GST Tax Invoice Modal */}
+      <InvoiceModal
+        bookingId={apiBooking._id}
+        open={isInvoiceOpen}
+        onOpenChange={setIsInvoiceOpen}
+      />
     </div>
   );
 }

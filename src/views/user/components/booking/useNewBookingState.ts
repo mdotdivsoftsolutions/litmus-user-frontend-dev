@@ -58,6 +58,7 @@ export function useNewBookingState() {
     queryFn: settingsApi.getPublicSettings,
   });
   const pickupCities: string[] = settingsResponse?.data?.pickupCities || ["Chennai"];
+  const enablePickupSlotSelection: boolean = settingsResponse?.data?.enablePickupSlotSelection ?? false;
 
   const { data: labsResponse, isLoading: isLabsLoading } = useQuery({
     queryKey: ["publicLabs"],
@@ -315,11 +316,12 @@ export function useNewBookingState() {
     (formData.collectionMethod === "COURIER" ||
       (formData.collectionMethod === "PICKUP" &&
         isPickupCovered &&
-        formData.pickupDate &&
-        formData.pickupTime &&
-        !dateError &&
-        !timeError &&
-        !isAvailabilityLoading))
+        (!enablePickupSlotSelection ||
+          (formData.pickupDate &&
+            formData.pickupTime &&
+            !dateError &&
+            !timeError &&
+            !isAvailabilityLoading))))
   );
 
   const calculateItemPrice = (item: CartLine) => {
@@ -603,6 +605,7 @@ export function useNewBookingState() {
     setCollectionMethod,
     pickupCities,
     isPickupCovered,
+    enablePickupSlotSelection,
     minDateString,
     isAvailabilityLoading,
     dateError,
