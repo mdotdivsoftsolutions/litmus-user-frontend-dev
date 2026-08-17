@@ -63,7 +63,12 @@ export function Header({
             <div className="flex-1 lg:hidden" />
 
             <div className="flex items-center gap-0.5">
-              <Button variant="ghost" size="icon" className="h-9 w-9 hidden sm:flex group/phone hover:bg-transparent" asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-9 w-9 hidden sm:flex group/phone hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none outline-none"
+                asChild
+              >
                 <a href="#">
                   <Phone className="h-4 w-4 text-foreground group-hover/phone:text-brand-primary" />
                 </a>
@@ -73,7 +78,7 @@ export function Header({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="pr-2 h-9 w-9 relative hover:bg-transparent active:bg-transparent focus:bg-transparent group/cart transition-all duration-300 hidden sm:flex"
+                  className="pr-2 h-9 w-9 relative hover:bg-transparent active:bg-transparent focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none outline-none group/cart transition-all duration-300 hidden sm:flex"
                 >
                   <ShoppingCart className="h-4.5 w-4.5 text-foreground group-hover/cart:text-brand-primary transition-colors" />
                   {cartCount > 0 && (

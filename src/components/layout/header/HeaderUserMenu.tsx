@@ -26,7 +26,12 @@ export function HeaderUserMenu({ user, onLoginClick, onLogoutClick }: HeaderUser
 
   if (!user) {
     return (
-      <Button variant="ghost" size="icon" className="h-9 w-9 hidden sm:flex hover:bg-transparent" onClick={onLoginClick}>
+      <Button
+        variant="ghost"
+        size="icon"
+        className="h-9 w-9 hidden sm:flex hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none outline-none"
+        onClick={onLoginClick}
+      >
         <Avatar className="h-7 w-7">
           <AvatarFallback className="bg-muted text-muted-foreground">
             <User className="h-4 w-4" />
@@ -39,7 +44,11 @@ export function HeaderUserMenu({ user, onLoginClick, onLogoutClick }: HeaderUser
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-9 w-9 hidden sm:flex hover:bg-transparent">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-9 w-9 hidden sm:flex hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none outline-none"
+        >
           <Avatar className="h-7 w-7">
             <AvatarFallback className="bg-transparent text-slate-800 border border-slate-200 text-xs font-bold">
               {getInitials()}

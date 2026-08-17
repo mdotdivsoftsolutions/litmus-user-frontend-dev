@@ -69,7 +69,11 @@ export function HeaderLocationSelector() {
   return (
     <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="gap-1.5 text-xs hover:bg-slate-100/80 px-2.5 ml-1 rounded-full border border-slate-200/60 bg-white/70 shadow-2xs">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-1.5 text-xs hover:bg-slate-100/80 px-2.5 ml-1 rounded-full border border-slate-200/60 bg-white/70 shadow-2xs focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none outline-none"
+        >
           <MapPin className="h-3.5 w-3.5 text-brand-action shrink-0" />
           <div className="text-left hidden sm:block">
             <span className="block text-[9px] uppercase tracking-wider font-semibold text-muted-foreground leading-none">MY LOCATION</span>
