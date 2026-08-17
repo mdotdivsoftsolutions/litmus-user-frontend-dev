@@ -86,7 +86,7 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20 animate-fade-in mt-24">
+    <div className="min-h-screen bg-slate-50/50 pb-20 animate-fade-in mt-28">
       <div className="z-30">
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
           <nav className="flex items-center gap-1.5 text-sm text-slate-500 font-medium">
@@ -103,7 +103,7 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 mt-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 mt-5">
         <div className="grid gap-8 lg:grid-cols-12 items-start">
           <div className="lg:col-span-8 space-y-8">
             <PackageDetailHeader pkg={pkg} />
