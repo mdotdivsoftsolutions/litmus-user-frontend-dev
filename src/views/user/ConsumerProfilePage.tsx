@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { User, FileText, Settings, Loader2 } from "lucide-react";
+import { User, FileText, Settings } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/auth";
 import { uploadApi } from "@/lib/api/uploadApi";
@@ -11,6 +12,71 @@ import { ProfileSidebar } from "./components/profile/ProfileSidebar";
 import { ProfileInfoTab } from "./components/profile/ProfileInfoTab";
 import { ProfileDocumentsTab } from "./components/profile/ProfileDocumentsTab";
 import { ProfileSettingsTab } from "./components/profile/ProfileSettingsTab";
+
+function ProfileSkeleton() {
+  return (
+    <div className="max-w-7xl mx-auto px-4 pt-3 pb-16 md:pb-20 flex flex-col md:flex-row gap-6 animate-pulse">
+      {/* Sidebar Skeleton */}
+      <div className="w-full md:w-64 shrink-0 space-y-4">
+        <div className="bg-card rounded-xl p-5 border border-border shadow-xs flex flex-col items-center text-center space-y-3">
+          <Skeleton className="h-20 w-20 rounded-full" />
+          <Skeleton className="h-5 w-36 rounded-md" />
+          <Skeleton className="h-3.5 w-20 rounded-md" />
+        </div>
+
+        <div className="bg-card rounded-xl border border-border shadow-xs overflow-hidden p-2 space-y-1.5">
+          <Skeleton className="h-10 w-full rounded-lg" />
+          <Skeleton className="h-10 w-full rounded-lg" />
+          <Skeleton className="h-10 w-full rounded-lg" />
+          <div className="pt-2 border-t border-border mt-2">
+            <Skeleton className="h-10 w-full rounded-lg" />
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content Area Skeleton */}
+      <div className="flex-1 min-w-0">
+        <div className="bg-card rounded-xl p-6 border border-border shadow-xs space-y-6">
+          <div className="pb-4 border-b border-border space-y-2">
+            <Skeleton className="h-6 w-44 rounded-md" />
+            <Skeleton className="h-4 w-72 rounded-md" />
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <Skeleton className="h-3.5 w-20 rounded-sm" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-3.5 w-20 rounded-sm" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-3.5 w-24 rounded-sm" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-3.5 w-28 rounded-sm" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-3.5 w-28 rounded-sm" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+            <div className="space-y-2 sm:col-span-2">
+              <Skeleton className="h-3.5 w-36 rounded-sm" />
+              <Skeleton className="h-10 w-full rounded-lg" />
+            </div>
+          </div>
+
+          <div className="flex justify-end border-t border-border pt-4">
+            <Skeleton className="h-10 w-32 rounded-lg" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ConsumerProfilePage() {
   const router = useRouter();
@@ -182,11 +248,7 @@ export default function ConsumerProfilePage() {
   ];
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="h-8 w-8 animate-spin text-brand-action" />
-      </div>
-    );
+    return <ProfileSkeleton />;
   }
 
   const u = userResponse?.data || {};

@@ -17,6 +17,12 @@ export interface LoginInput {
 
 export interface SendOtpInput {
   email: string;
+  phone?: string;
+}
+
+export interface CheckAvailabilityInput {
+  email?: string;
+  phone?: string;
 }
 
 export interface ForgotPasswordInput {
@@ -30,6 +36,11 @@ export interface ResetPasswordInput {
 }
 
 export const authApi = {
+  checkAvailability: async (data: CheckAvailabilityInput) => {
+    const response = await apiClient.post('/auth/check-availability', data);
+    return response.data;
+  },
+
   sendOtp: async (data: SendOtpInput) => {
     const response = await apiClient.post('/auth/send-otp', data);
     return response.data;

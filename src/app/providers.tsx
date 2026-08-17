@@ -24,6 +24,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     }, 1000);
 
     const lenis = new Lenis();
+    if (typeof window !== "undefined") {
+      (window as any).__lenis = lenis;
+    }
+
     function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -32,6 +36,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     return () => {
       clearTimeout(aosTimeout);
       lenis.destroy();
+      if (typeof window !== "undefined") {
+        delete (window as any).__lenis;
+      }
     };
   }, []);
 

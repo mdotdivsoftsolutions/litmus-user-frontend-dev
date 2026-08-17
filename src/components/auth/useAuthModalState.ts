@@ -89,7 +89,7 @@ export function useAuthModalState(isOpen: boolean, onClose: () => void) {
 
   const handleRegisterSubmit = (data: { name: string; email: string; phone: string; pass: string }) => {
     setRegData(data);
-    sendOtpMutation.mutate({ email: data.email });
+    sendOtpMutation.mutate({ email: data.email.trim(), phone: data.phone.trim() });
   };
 
   const handleVerifyOtp = (e: React.FormEvent) => {

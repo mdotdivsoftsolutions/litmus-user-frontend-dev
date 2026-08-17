@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Upload } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { authApi } from "@/lib/api/auth";
 
@@ -89,7 +90,28 @@ export default function UserProfilePage() {
   };
 
   if (isLoading) {
-    return <div className="p-8 text-center text-muted-foreground animate-pulse">Loading profile...</div>;
+    return (
+      <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6 animate-pulse">
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-16 w-16 rounded-full" />
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-40 rounded-md" />
+            <Skeleton className="h-4 w-56 rounded-md" />
+          </div>
+        </div>
+        <div className="bg-card rounded-xl p-6 border border-border space-y-6 shadow-xs">
+          <Skeleton className="h-6 w-32 rounded-md" />
+          <div className="grid md:grid-cols-2 gap-4">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div key={i} className="space-y-2">
+                <Skeleton className="h-3.5 w-24 rounded-sm" />
+                <Skeleton className="h-10 w-full rounded-lg" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const initials = `${formData.firstName?.[0] || ""}${formData.lastName?.[0] || ""}`.toUpperCase() || "U";

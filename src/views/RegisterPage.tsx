@@ -45,6 +45,16 @@ export default function RegisterPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const checkAvailabilityMutation = useMutation({
+    mutationFn: authApi.checkAvailability,
+    onSuccess: () => {
+      setStep(1);
+    },
+    onError: (error: any) => {
+      toast.error(error.response?.data?.message || "Email or Mobile number is already registered");
+    },
+  });
+
   const sendOtpMutation = useMutation({
     mutationFn: authApi.sendOtp,
     onSuccess: () => {
@@ -73,7 +83,20 @@ export default function RegisterPage() {
         toast.error("Please fill in all required fields");
         return;
       }
-      setStep(1);
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email.trim())) {
+        toast.error("Please enter a valid email address");
+        return;
+      }
+      const phoneDigits = formData.phone.replace(/[^0-9]/g, "");
+      if (phoneDigits.length < 10 || phoneDigits.length > 15) {
+        toast.error("Please enter a valid 10-digit mobile number");
+        return;
+      }
+      checkAvailabilityMutation.mutate({
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+      });
     } else if (step === 1) {
       setStep(2);
     } else if (step === 2) {
@@ -81,7 +104,14 @@ export default function RegisterPage() {
         toast.error("Passwords do not match or are empty");
         return;
       }
-      sendOtpMutation.mutate({ email: formData.email });
+      if (formData.password.length < 6) {
+        toast.error("Password must be at least 6 characters");
+        return;
+      }
+      sendOtpMutation.mutate({
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+      });
     }
   };
 
@@ -165,9 +195,13 @@ export default function RegisterPage() {
                 <Button
                   className="flex-1 bg-brand-action hover:bg-brand-action-hover text-white"
                   onClick={handleNext}
-                  disabled={sendOtpMutation.isPending}
+                  disabled={checkAvailabilityMutation.isPending || sendOtpMutation.isPending}
                 >
-                  {step === 2 && sendOtpMutation.isPending ? "Sending OTP..." : "Continue"}
+                  {checkAvailabilityMutation.isPending
+                    ? "Checking details..."
+                    : step === 2 && sendOtpMutation.isPending
+                    ? "Sending OTP..."
+                    : "Continue"}
                 </Button>
               ) : (
                 <Button
