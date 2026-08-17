@@ -1,6 +1,7 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { FlaskConical, Tag, Layers } from "lucide-react";
 
 interface TestDetailHeaderProps {
   testObj: any;
@@ -8,43 +9,67 @@ interface TestDetailHeaderProps {
 
 export function TestDetailHeader({ testObj }: TestDetailHeaderProps) {
   return (
-    <div className="space-y-6">
-      <div>
-        <div className="flex gap-2 my-3">
-          {testObj.applicableCategories?.map((c: any) => (
-            <Badge key={c._id} className="bg-brand-primary text-white border-0 text-xs">
-              {c.name}
-            </Badge>
-          ))}
-          {testObj.isApplicableToAll && (
-            <Badge className="bg-brand-primary text-white border-0 text-xs">All Categories</Badge>
-          )}
-        </div>
-        <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-foreground leading-[1.3]">
-          {testObj.testName}
-        </h1>
-        {testObj.description && (
-          <p className="font-body text-base text-muted-foreground mt-2 leading-[1.5]">{testObj.description}</p>
+    <div className="space-y-4">
+      {/* Category Badges */}
+      <div className="flex flex-wrap gap-2">
+        {testObj.applicableCategories?.map((c: any) => (
+          <Badge
+            key={c._id}
+            className="bg-brand-action/10 text-brand-action border border-brand-action/25 text-xs font-semibold px-2.5 py-0.5 rounded-full"
+          >
+            <Tag className="h-3 w-3 mr-1" />
+            {c.name}
+          </Badge>
+        ))}
+        {testObj.isApplicableToAll && (
+          <Badge className="bg-brand-action/10 text-brand-action border border-brand-action/25 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+            <Layers className="h-3 w-3 mr-1" />
+            All Categories
+          </Badge>
         )}
       </div>
 
-      <div className="bg-card border border-border rounded-xl p-5 space-y-4 shadow-sm">
+      {/* Title block */}
+      <div className="border border-border rounded-2xl bg-card px-5 py-4 shadow-sm">
+        <h1 className="font-heading text-xl sm:text-2xl font-extrabold text-foreground leading-tight tracking-tight">
+          {testObj.testName}
+        </h1>
+        {testObj.description && (
+          <p className="font-body text-sm text-muted-foreground mt-1.5 leading-relaxed">
+            {testObj.description}
+          </p>
+        )}
+      </div>
+
+      {/* Metadata card — visible teal background */}
+      <div className="rounded-2xl border border-brand-action bg-brand-action/10 px-5 py-4">
         <div className="grid grid-cols-2 gap-4">
-          <div>
-            <p className="font-body text-xs text-muted-foreground mb-1 font-medium">Testing Method</p>
-            <p className="font-body font-semibold text-foreground text-sm">
-              {testObj.metadata?.method || "Standard Method"}
-            </p>
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 h-8 w-8 rounded-lg bg-white/30 flex items-center justify-center shrink-0">
+              <FlaskConical className="h-4 w-4 text-brand-action" />
+            </div>
+            <div>
+              <p className="font-body text-[10px] text-brand-action font-bold uppercase tracking-widest mb-1">
+                Testing Method
+              </p>
+              <p className="font-body font-bold text-foreground text-sm">
+                {testObj.metadata?.method || "Standard Method"}
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="font-body text-xs text-muted-foreground mb-1 font-medium">Test Type</p>
-            {testObj.metadata?.type ? (
-              <Badge variant="outline" className="font-data-badge capitalize text-xs">
-                {testObj.metadata.type}
-              </Badge>
-            ) : (
-              <span className="font-body font-semibold text-foreground text-sm">Standard</span>
-            )}
+
+          <div className="flex items-start gap-3">
+            <div className="mt-0.5 h-8 w-8 rounded-lg bg-white/30 flex items-center justify-center shrink-0">
+              <Layers className="h-4 w-4 text-brand-action" />
+            </div>
+            <div>
+              <p className="font-body text-[10px] text-brand-action font-bold uppercase tracking-widest mb-1">
+                Test Type
+              </p>
+              <p className="font-body font-bold text-foreground text-sm capitalize">
+                {testObj.metadata?.type || "Standard"}
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -121,7 +121,7 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
   const price = Math.max(0, originalPrice - discountAmount);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 md:pb-20 space-y-6 animate-fade-in">
+    <div className="max-w-7xl mx-auto px-4 pt-20 md:pt-28  pb-16 md:pb-20 space-y-5 animate-fade-in">
       <nav className="flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/tests" className="hover:text-foreground">Tests</Link>
         <ChevronRight className="h-3.5 w-3.5" />
