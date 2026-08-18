@@ -12,7 +12,7 @@ export function FloatingSupportChat() {
 
   // Fetch logged-in user data if authenticated
   const { data: userData } = useQuery({
-    queryKey: ["currentUser"],
+    queryKey: ["userProfile"],
     queryFn: authApi.getMe,
     retry: false,
     staleTime: 5 * 60 * 1000,
