@@ -32,7 +32,11 @@ export function GuestAuthForm({ onSubmit, onCancel, isSubmitting = false }: Gues
   };
 
   return (
-    <div className="absolute inset-0 p-4 sm:p-5 bg-white text-slate-900 flex flex-col overflow-y-auto z-10">
+    <div
+      data-lenis-prevent="true"
+      onWheel={(e) => e.stopPropagation()}
+      className="absolute inset-0 p-4 sm:p-5 bg-white text-slate-900 flex flex-col overflow-y-auto overscroll-contain z-10"
+    >
       <div className="flex-1 flex flex-col justify-center min-h-max py-1">
         <div className="flex items-center gap-3 mb-4">
           <div className="h-9 w-9 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700 shrink-0">

@@ -76,14 +76,19 @@ export function SupportChatWindow({
 
   return (
     <div
+      data-lenis-prevent="true"
+      onWheel={(e) => e.stopPropagation()}
       className={cn(
-        "fixed bottom-24 right-4 sm:right-8 w-[calc(100vw-32px)] sm:w-[360px] h-[520px] max-h-[80vh] transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) transform origin-bottom-right z-50",
+        "fixed bottom-24 right-4 sm:right-8 w-[calc(100vw-32px)] sm:w-[360px] h-[520px] max-h-[80vh] transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) transform origin-bottom-right z-50 overscroll-contain",
         isOpen
           ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
           : "opacity-0 scale-90 translate-y-12 pointer-events-none"
       )}
     >
-      <Card className="rounded-3xl border border-slate-200 bg-white/95 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col h-full">
+      <Card
+        data-lenis-prevent="true"
+        className="rounded-3xl border border-slate-200 bg-white/95 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col h-full overscroll-contain"
+      >
         {/* Header */}
         <CardHeader className="bg-white p-4 border-b border-slate-100 shrink-0 relative">
           <div className="flex items-center justify-between">

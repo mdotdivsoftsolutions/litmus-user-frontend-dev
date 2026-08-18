@@ -262,6 +262,8 @@ export function LiveChatView({
       {/* Messages Feed */}
       <div
         ref={scrollRef}
+        data-lenis-prevent="true"
+        onWheel={(e) => e.stopPropagation()}
         className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 space-y-3.5 scrollbar-thin scrollbar-thumb-slate-200 hover:scrollbar-thumb-slate-300"
         style={{ touchAction: "pan-y" }}
       >
