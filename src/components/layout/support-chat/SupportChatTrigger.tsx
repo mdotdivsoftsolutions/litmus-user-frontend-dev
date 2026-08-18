@@ -20,8 +20,8 @@ export function SupportChatTrigger({
     <div className="relative group">
       {!isOpen && (
         <>
-          <div className="absolute inset-0 bg-slate-900 rounded-full animate-ping opacity-25 scale-125 pointer-events-none" />
-          <div className="absolute -inset-1 bg-slate-900 rounded-full blur-md opacity-20 group-hover:opacity-40 transition-opacity" />
+          <div className="absolute inset-0 bg-brand-action rounded-full animate-ping opacity-25 scale-125 pointer-events-none" />
+          <div className="absolute -inset-1 bg-brand-action rounded-full blur-md opacity-30 group-hover:opacity-50 transition-opacity" />
         </>
       )}
 
@@ -30,17 +30,17 @@ export function SupportChatTrigger({
         type="button"
         onClick={onToggle}
         className={cn(
-          "h-14 w-14 rounded-full shadow-lg flex items-center justify-center transition-all duration-500 hover:scale-105 active:scale-95 relative border-0 overflow-hidden",
+          "h-14 w-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 relative border border-white/20 overflow-hidden cursor-pointer",
           isOpen
-            ? "bg-slate-100 text-slate-600 hover:bg-slate-200"
-            : "bg-slate-900 text-white"
+            ? "bg-brand-action hover:bg-brand-action-hover text-white ring-4 ring-brand-action/25"
+            : "bg-brand-action hover:bg-brand-action-hover text-white shadow-brand-action/30"
         )}
         aria-label="Toggle Live Support Chat"
       >
-        <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute inset-0 bg-white/15 opacity-0 group-hover:opacity-100 transition-opacity" />
 
         {isOpen ? (
-          <X className="h-6 w-6 text-white" />
+          <X className="h-6 w-6 text-white stroke-[2.5]" />
         ) : (
           <div className="relative flex items-center justify-center">
             {hasOnlineAgents ? (
@@ -51,8 +51,8 @@ export function SupportChatTrigger({
             {/* Live Indicator Dot */}
             <div
               className={cn(
-                "absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-slate-900",
-                hasOnlineAgents ? "bg-emerald-400 animate-pulse" : "bg-white"
+                "absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-white",
+                hasOnlineAgents ? "bg-emerald-400 animate-pulse" : "bg-white/90"
               )}
             />
           </div>

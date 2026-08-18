@@ -53,7 +53,7 @@ export function GuestAuthForm({ onSubmit, onCancel, isSubmitting = false }: Gues
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Rahul Sharma"
-                className="pl-9 h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-slate-400 text-xs"
+                className="pl-9 h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-brand-action text-xs"
                 required
               />
             </div>
@@ -68,7 +68,7 @@ export function GuestAuthForm({ onSubmit, onCancel, isSubmitting = false }: Gues
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="e.g. 9876543210"
                 type="tel"
-                className="pl-9 h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-slate-400 text-xs"
+                className="pl-9 h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-brand-action text-xs"
                 required
               />
             </div>
@@ -83,7 +83,7 @@ export function GuestAuthForm({ onSubmit, onCancel, isSubmitting = false }: Gues
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="e.g. rahul@company.com"
                 type="email"
-                className="pl-9 h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-slate-400 text-xs"
+                className="pl-9 h-9 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 rounded-xl focus-visible:ring-brand-action text-xs"
               />
             </div>
           </div>
@@ -102,7 +102,7 @@ export function GuestAuthForm({ onSubmit, onCancel, isSubmitting = false }: Gues
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="flex-[2] h-9 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-md shadow-slate-900/10 border-0 flex items-center justify-center gap-1.5"
+              className="flex-[2] h-9 rounded-xl bg-brand-action hover:bg-brand-action-hover text-white font-bold text-xs shadow-md shadow-brand-action/20 border-0 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
             >
               <span>Start Live Chat</span>
               <ArrowRight className="h-3 w-3" />

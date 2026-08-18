@@ -28,13 +28,16 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       (window as any).__lenis = lenis;
     }
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
+
     return () => {
       clearTimeout(aosTimeout);
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       if (typeof window !== "undefined") {
         delete (window as any).__lenis;

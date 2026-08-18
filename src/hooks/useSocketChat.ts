@@ -368,6 +368,7 @@ export function useSocketChat(currentUser?: any) {
       if (!socket || !sessionId) return;
       socket.emit("rate_session", { sessionId, score, feedback }, (res: any) => {
         setShowRatingPrompt(false);
+        setChatStatus("BOT");
       });
     },
     [socket, sessionId]

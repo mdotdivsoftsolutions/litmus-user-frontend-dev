@@ -88,7 +88,7 @@ export function SupportChatWindow({
         <CardHeader className="bg-white p-4 border-b border-slate-100 shrink-0 relative">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-700 shadow-sm border border-slate-200">
+              <div className="h-10 w-10 rounded-2xl bg-brand-action/10 flex items-center justify-center text-brand-action shadow-2xs border border-brand-action/20">
                 <Sparkles className="h-5 w-5" />
               </div>
               <div>
@@ -130,7 +130,7 @@ export function SupportChatWindow({
               className={cn(
                 "flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all",
                 activeTab === "bot" && !showGuestForm
-                  ? "bg-white text-slate-900 shadow-sm border border-slate-200/50"
+                  ? "bg-white text-brand-action shadow-sm border border-slate-200/50"
                   : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
               )}
             >
@@ -150,7 +150,7 @@ export function SupportChatWindow({
               className={cn(
                 "flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all relative",
                 activeTab === "live" || showGuestForm
-                  ? "bg-white text-slate-900 shadow-sm border border-slate-200/50"
+                  ? "bg-white text-brand-action shadow-sm border border-slate-200/50"
                   : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
               )}
             >

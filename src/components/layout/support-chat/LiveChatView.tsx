@@ -184,13 +184,13 @@ export function LiveChatView({
               type="button"
               variant="ghost"
               onClick={onBackToBot}
-              className="flex-1 h-10 rounded-xl text-slate-400 hover:text-white text-xs font-semibold"
+              className="flex-1 h-10 rounded-xl text-slate-500 hover:text-slate-800 text-xs font-semibold"
             >
               Skip
             </Button>
             <Button
               type="submit"
-              className="flex-1 h-10 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-lg shadow-slate-900/10 border-0"
+              className="flex-1 h-10 rounded-xl bg-brand-action hover:bg-brand-action-hover text-white text-xs font-bold shadow-lg shadow-brand-action/20 border-0"
             >
               Submit Feedback
             </Button>
@@ -202,34 +202,34 @@ export function LiveChatView({
 
   // ── 3. ACTIVE LIVE CHAT STREAM ────────────────────────────────────────────
   return (
-    <div className="flex flex-col flex-1 h-full min-h-0 w-full bg-white text-slate-900">
+    <div className="flex flex-col flex-1 h-full min-h-0 w-full bg-white text-slate-900 overflow-hidden">
       {/* Live Specialist Header */}
-      <div className="px-4 py-2.5 bg-emerald-50/80 border-b border-emerald-100/50 flex items-center justify-between text-xs">
+      <div className="px-4 py-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs shrink-0">
         <div className="flex items-center gap-2.5">
           <div className="relative">
-            <div className="h-6 w-6 rounded-lg bg-white border border-emerald-200 flex items-center justify-center text-emerald-500 shadow-sm">
+            <div className="h-6 w-6 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-brand-action shadow-2xs">
               <Headphones className="h-3.5 w-3.5" />
             </div>
             <div className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-500 animate-pulse border border-white" />
           </div>
           <div>
-            <span className="text-emerald-700 font-bold text-xs">{assignedAgentName}</span>
-            <p className="text-[10px] text-emerald-600/80 font-medium">Diagnostic Support Specialist</p>
+            <span className="text-slate-900 font-bold text-xs">{assignedAgentName}</span>
+            <p className="text-[10px] text-slate-500 font-medium">Diagnostic Support Specialist</p>
           </div>
         </div>
 
         <button
           type="button"
           onClick={onBackToBot}
-          className="text-[10px] text-slate-500 hover:text-slate-800 font-semibold px-2 py-1 rounded-md hover:bg-slate-100 transition-colors"
+          className="text-[10px] text-slate-600 hover:text-brand-action font-bold px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 transition-colors shadow-2xs"
         >
-          View Bot
+          AI Assistant Mode
         </button>
       </div>
 
       {/* Mid-Chat Agent Disconnect Alert with 1-Click Requeue */}
       {agentDisconnectedAlert && (
-        <div className="px-4 py-2.5 bg-amber-50 border-b border-amber-100 flex items-center justify-between text-xs text-amber-800">
+        <div className="px-4 py-2.5 bg-amber-50 border-b border-amber-100 flex items-center justify-between text-xs text-amber-800 shrink-0">
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 text-amber-500 shrink-0" />
             <span className="text-[11px] font-medium">Specialist temporarily disconnected.</span>
@@ -237,7 +237,7 @@ export function LiveChatView({
           <button
             type="button"
             onClick={onRequeue}
-            className="flex items-center gap-1 px-2 py-1 rounded bg-white hover:bg-amber-100/50 text-amber-600 font-bold text-[10px] border border-amber-200 shadow-sm"
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white hover:bg-amber-100/50 text-amber-700 font-bold text-[10px] border border-amber-200 shadow-2xs"
           >
             <RefreshCw className="h-3 w-3" />
             <span>Re-queue</span>
@@ -245,8 +245,26 @@ export function LiveChatView({
         </div>
       )}
 
+      {/* Chat Ended / Resolved Notification Banner */}
+      {chatStatus === "RESOLVED" && (
+        <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between text-xs text-slate-700 shrink-0">
+          <span className="text-[11px] font-medium text-slate-600">This live session has ended.</span>
+          <button
+            type="button"
+            onClick={onBackToBot}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-brand-action hover:bg-brand-action-hover text-white font-bold text-[10px] shadow-2xs transition-colors"
+          >
+            <span>Continue with AI</span>
+          </button>
+        </div>
+      )}
+
       {/* Messages Feed */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-200">
+      <div
+        ref={scrollRef}
+        className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 space-y-3.5 scrollbar-thin scrollbar-thumb-slate-200 hover:scrollbar-thumb-slate-300"
+        style={{ touchAction: "pan-y" }}
+      >
         {messages.map((msg, index) => {
           const isUser = msg.senderType === "USER";
           const isAgent = msg.senderType === "AGENT";
@@ -255,7 +273,7 @@ export function LiveChatView({
           if (isSystem) {
             return (
               <div key={index} className="flex justify-center my-2">
-                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 bg-white border border-slate-200 shadow-sm px-3 py-1 rounded-full">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 bg-slate-50 border border-slate-200 shadow-2xs px-3 py-1 rounded-full text-center">
                   {msg.text}
                 </span>
               </div>
@@ -267,8 +285,8 @@ export function LiveChatView({
               <div className={cn("flex items-center gap-1.5 px-1", isUser ? "flex-row-reverse" : "flex-row")}>
                 <div
                   className={cn(
-                    "h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold shadow-sm",
-                    isUser ? "bg-slate-200 text-slate-700" : "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                    "h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold shadow-2xs",
+                    isUser ? "bg-brand-action/15 text-brand-action font-bold" : "bg-slate-100 text-slate-700 border border-slate-200"
                   )}
                 >
                   {isUser ? <User className="h-3 w-3" /> : <Headphones className="h-3 w-3" />}
@@ -281,9 +299,9 @@ export function LiveChatView({
               {/* Bubble */}
               <div
                 className={cn(
-                  "p-3 rounded-2xl text-xs font-medium leading-relaxed max-w-[85%] shadow-sm whitespace-pre-wrap border",
+                  "p-3 rounded-2xl text-xs font-medium leading-relaxed max-w-[85%] shadow-2xs whitespace-pre-wrap border",
                   isUser
-                    ? "bg-slate-900 text-white rounded-tr-xs border-slate-900"
+                    ? "bg-brand-action text-white rounded-tr-xs border-brand-action"
                     : "bg-slate-50 text-slate-800 rounded-tl-xs border-slate-200"
                 )}
               >
@@ -294,7 +312,7 @@ export function LiveChatView({
               {isUser && (
                 <div className="flex items-center gap-1 px-1 text-[9px] text-slate-400 font-semibold">
                   <span>{msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}</span>
-                  {msg.status === "delivered" && <CheckCheck className="h-3 w-3 text-slate-900" />}
+                  {msg.status === "delivered" && <CheckCheck className="h-3 w-3 text-brand-action" />}
                 </div>
               )}
             </div>
@@ -303,11 +321,11 @@ export function LiveChatView({
 
         {/* Real-time Agent Typing Indicator */}
         {isAgentTyping && (
-          <div className="flex items-center gap-2 text-xs text-emerald-600 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 w-fit">
+          <div className="flex items-center gap-2 text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl border border-slate-200 w-fit">
             <div className="flex gap-1 items-center">
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]" />
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]" />
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce" />
+              <div className="h-1.5 w-1.5 rounded-full bg-brand-action animate-bounce [animation-delay:-0.3s]" />
+              <div className="h-1.5 w-1.5 rounded-full bg-brand-action animate-bounce [animation-delay:-0.15s]" />
+              <div className="h-1.5 w-1.5 rounded-full bg-brand-action animate-bounce" />
             </div>
             <span className="text-[11px] font-medium">{assignedAgentName} is typing...</span>
           </div>
@@ -315,20 +333,20 @@ export function LiveChatView({
       </div>
 
       {/* Input Bar */}
-      <div className="p-3.5 bg-white border-t border-slate-100">
+      <div className="p-3 bg-white border-t border-slate-100 shrink-0">
         <form onSubmit={handleSend} className="flex items-center gap-2">
           <div className="flex-1 relative">
             <Input
               value={inputText}
               onChange={handleInputChange}
-              placeholder="Type your message to specialist..."
-              className="w-full h-11 rounded-xl bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm focus-visible:ring-emerald-500 focus-visible:border-emerald-500 pr-4 shadow-inner"
+              placeholder={chatStatus === "RESOLVED" ? "Type to start a new inquiry..." : "Type your message to specialist..."}
+              className="w-full h-10 rounded-xl bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm focus-visible:ring-brand-action focus-visible:border-brand-action pr-4 shadow-inner"
             />
           </div>
           <Button
             type="submit"
             disabled={!inputText.trim()}
-            className="h-11 w-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/10 border-0 p-0 flex items-center justify-center shrink-0 disabled:opacity-40 transition-colors"
+            className="h-10 w-10 rounded-xl bg-brand-action hover:bg-brand-action-hover text-white shadow-md shadow-brand-action/20 border-0 p-0 flex items-center justify-center shrink-0 disabled:opacity-40 transition-all cursor-pointer"
           >
             <Send className="h-4 w-4" />
           </Button>
