@@ -32,6 +32,7 @@ export function FloatingSupportChat() {
     sendBotQuery,
     sendLiveMessage,
     requestLiveSupport,
+    cancelLiveSupport,
     emitTyping,
     submitRating,
     requeueChat,
@@ -59,6 +60,7 @@ export function FloatingSupportChat() {
         onSendBotMessage={sendBotQuery}
         onSendLiveMessage={sendLiveMessage}
         onRequestLiveSupport={requestLiveSupport}
+        onCancelLiveSupport={cancelLiveSupport}
         onEmitTyping={emitTyping}
         onRequeue={requeueChat}
         onSubmitRating={submitRating}

@@ -24,6 +24,7 @@ export function BotChatView({
 }: BotChatViewProps) {
   const [inputText, setInputText] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -50,12 +51,12 @@ export function BotChatView({
   };
 
   return (
-    <div className="flex flex-col h-full bg-slate-950/95 text-slate-100">
+    <div className="flex flex-col flex-1 h-full min-h-0 w-full bg-white text-slate-900">
       {/* Bot Mode Banner */}
-      <div className="px-4 py-2.5 bg-cyan-950/40 border-b border-cyan-800/30 flex items-center justify-between text-xs">
-        <div className="flex items-center gap-2">
-          <div className="h-2 w-2 rounded-full bg-cyan-400 animate-pulse" />
-          <span className="text-cyan-200 font-semibold tracking-wide text-[11px]">
+      <div className="px-3 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-2 overflow-hidden">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <div className="h-2 w-2 rounded-full bg-slate-900 animate-pulse shrink-0" />
+          <span className="text-slate-900 font-bold tracking-wide text-[10px] sm:text-[11px] truncate">
             AI Diagnostic Knowledge Assistant
           </span>
         </div>
@@ -63,16 +64,16 @@ export function BotChatView({
           <button
             type="button"
             onClick={onRequestLiveSupport}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 font-bold text-[10px] tracking-wider border border-cyan-500/30 transition-all hover:scale-105 active:scale-95"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white hover:bg-slate-50 text-slate-900 font-bold text-[10px] tracking-wider border border-slate-200 transition-all hover:scale-105 active:scale-95 shadow-sm shrink-0 whitespace-nowrap"
           >
-            <Headphones className="h-3 w-3 text-cyan-400" />
+            <Headphones className="h-3 w-3 text-slate-900 shrink-0" />
             <span>Talk to Specialist</span>
           </button>
         )}
       </div>
 
       {/* Messages Stream */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-800">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-200">
         {messages.map((msg, index) => {
           const isUser = msg.senderType === "USER";
           const isBot = msg.senderType === "BOT";
@@ -81,7 +82,7 @@ export function BotChatView({
           if (isSystem) {
             return (
               <div key={index} className="flex justify-center my-2">
-                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 bg-slate-900/90 border border-slate-800 px-3 py-1 rounded-full">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 bg-white border border-slate-200 shadow-sm px-3 py-1 rounded-full">
                   {msg.text}
                 </span>
               </div>
@@ -93,13 +94,13 @@ export function BotChatView({
               <div className={cn("flex items-center gap-1.5 px-1", isUser ? "flex-row-reverse" : "flex-row")}>
                 <div
                   className={cn(
-                    "h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold shadow-xs",
-                    isUser ? "bg-slate-800 text-cyan-400" : "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30"
+                    "h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold shadow-sm",
+                    isUser ? "bg-slate-200 text-slate-700" : "bg-slate-100 text-slate-700 border border-slate-200"
                   )}
                 >
                   {isUser ? <User className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
                 </div>
-                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
                   {isUser ? "You" : msg.senderName || "Litmus Assistant"}
                 </span>
               </div>
@@ -107,10 +108,10 @@ export function BotChatView({
               {/* Message Bubble */}
               <div
                 className={cn(
-                  "p-3.5 rounded-2xl text-xs sm:text-sm font-medium leading-relaxed max-w-[85%] shadow-md whitespace-pre-wrap",
+                  "p-3 text-xs font-medium leading-relaxed max-w-[85%] whitespace-pre-wrap shadow-sm border",
                   isUser
-                    ? "bg-gradient-to-br from-cyan-600 to-blue-700 text-white rounded-tr-xs border border-cyan-500/30"
-                    : "bg-slate-900/90 text-slate-200 rounded-tl-xs border border-slate-800"
+                    ? "bg-slate-900 text-white rounded-l-2xl rounded-tr-xs rounded-br-2xl border-slate-900"
+                    : "bg-slate-50 text-slate-800 rounded-tl-xs border-slate-200"
                 )}
               >
                 {msg.text}
@@ -125,10 +126,10 @@ export function BotChatView({
                       type="button"
                       onClick={() => handleChipClick(suggestion)}
                       className={cn(
-                        "text-[11px] font-semibold px-3 py-1.5 rounded-xl border transition-all text-left flex items-center gap-1.5 shadow-xs hover:scale-[1.02] active:scale-95",
-                        suggestion.action === "request_live_support"
-                          ? "bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border-cyan-500/40 text-cyan-300 hover:border-cyan-400"
-                          : "bg-slate-800/80 border-slate-700/80 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-slate-600"
+                        "px-3 py-1.5 rounded-full text-[10px] font-semibold border transition-all hover:scale-105 active:scale-95 whitespace-nowrap shadow-xs",
+                        index === 0
+                          ? "bg-slate-100 border-slate-200 text-slate-700 hover:bg-slate-200"
+                          : "bg-white border-slate-200 text-slate-600 hover:bg-slate-50"
                       )}
                     >
                       <span>{suggestion.label}</span>
@@ -142,11 +143,11 @@ export function BotChatView({
         })}
 
         {isSubmitting && (
-          <div className="flex items-center gap-2 text-xs text-slate-400 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800 w-fit">
-            <div className="flex gap-1 items-center">
-              <div className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:-0.3s]" />
-              <div className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-bounce [animation-delay:-0.15s]" />
-              <div className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-bounce" />
+          <div className="flex items-center gap-2 text-xs text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-200 w-fit">
+            <div className="flex gap-1.5 p-3.5 bg-slate-50 rounded-r-2xl rounded-tl-xs rounded-bl-2xl border border-slate-200 max-w-fit shadow-sm">
+              <div className="h-1.5 w-1.5 rounded-full bg-slate-900 animate-bounce [animation-delay:-0.3s]" />
+              <div className="h-1.5 w-1.5 rounded-full bg-slate-900 animate-bounce [animation-delay:-0.15s]" />
+              <div className="h-1.5 w-1.5 rounded-full bg-slate-900 animate-bounce" />
             </div>
             <span className="text-[11px]">Analyzing diagnostic requirements...</span>
           </div>
@@ -154,21 +155,22 @@ export function BotChatView({
       </div>
 
       {/* Input Area */}
-      <div className="p-3.5 bg-slate-900/90 border-t border-slate-800/80 backdrop-blur-xl">
+      <div className="p-3.5 bg-white border-t border-slate-100">
         <form onSubmit={handleSend} className="flex items-center gap-2">
           <div className="flex-1 relative">
             <Input
+              ref={inputRef}
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
-              placeholder="Ask about food testing, TAT, pricing, NABL..."
-              className="w-full h-11 rounded-xl bg-slate-950/80 border-slate-800 text-white placeholder:text-slate-500 text-xs sm:text-sm focus-visible:ring-cyan-500 focus-visible:border-cyan-500 pr-10 shadow-inner"
+              placeholder="Ask anything about lab tests..."
+              className="w-full h-11 rounded-xl bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm focus-visible:ring-slate-400 focus-visible:border-slate-400 pr-10 shadow-inner"
             />
-            <Sparkles className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-cyan-400/40 pointer-events-none" />
+            <Sparkles className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
           </div>
           <Button
             type="submit"
-            disabled={!inputText.trim() || isSubmitting}
-            className="h-11 w-11 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white shadow-lg shadow-cyan-500/20 border-0 p-0 flex items-center justify-center shrink-0 disabled:opacity-40"
+            disabled={!inputText.trim()}
+            className="h-11 w-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/10 border-0 p-0 flex items-center justify-center shrink-0 disabled:opacity-40 transition-colors"
           >
             <Send className="h-4 w-4" />
           </Button>

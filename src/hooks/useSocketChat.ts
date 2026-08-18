@@ -168,19 +168,27 @@ export function useSocketChat(currentUser?: any) {
 
     // ── Incoming Messages ──────────────────────────────────────────────────
     newSocket.on("receive_message", (msg: ChatMessageItem) => {
+      // Sanitize SYSTEM messages on the client side to hide employee names
+      let sanitizedMsg = { ...msg };
+      if (sanitizedMsg.senderType === "SYSTEM" && sanitizedMsg.text) {
+        if (sanitizedMsg.text.toLowerCase().includes("forwarded to specialist")) {
+          sanitizedMsg.text = "Conversation forwarded to Litmus Specialist.";
+        }
+      }
+
       setMessages((prev) => {
         // Deduplicate
         const exists = prev.some(
           (m) =>
-            (m._id && msg._id && m._id === msg._id) ||
-            (m.clientMessageId && msg.clientMessageId && m.clientMessageId === msg.clientMessageId)
+            (m._id && sanitizedMsg._id && m._id === sanitizedMsg._id) ||
+            (m.clientMessageId && sanitizedMsg.clientMessageId && m.clientMessageId === sanitizedMsg.clientMessageId)
         );
         if (exists) {
           return prev.map((m) =>
-            m.clientMessageId === msg.clientMessageId ? { ...msg, status: "delivered" } : m
+            m.clientMessageId === sanitizedMsg.clientMessageId ? { ...sanitizedMsg, status: "delivered" } : m
           );
         }
-        return [...prev, { ...msg, status: "delivered" }];
+        return [...prev, { ...sanitizedMsg, status: "delivered" }];
       });
     });
 
@@ -192,7 +200,7 @@ export function useSocketChat(currentUser?: any) {
 
     newSocket.on("chat_connected", (data: any) => {
       setChatStatus("ACTIVE");
-      setAssignedAgentName(data.agentName || "Litmus Specialist");
+      setAssignedAgentName("Litmus Specialist");
       setAgentDisconnectedAlert(false);
     });
 
@@ -376,6 +384,14 @@ export function useSocketChat(currentUser?: any) {
     });
   }, [socket, sessionId]);
 
+  // ── Cancel Live Support Request ───────────────────────────────────────────
+  const cancelLiveSupport = useCallback(() => {
+    if (!socket || !sessionId) return;
+    socket.emit("close_chat", { sessionId }, () => {
+      setChatStatus("BOT");
+    });
+  }, [socket, sessionId]);
+
   return {
     socket,
     isConnected,
@@ -395,6 +411,7 @@ export function useSocketChat(currentUser?: any) {
     sendBotQuery,
     sendLiveMessage,
     requestLiveSupport,
+    cancelLiveSupport,
     emitTyping,
     submitRating,
     requeueChat,

@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { ChatMessageItem } from "@/hooks/useSocketChat";
 
 interface LiveChatViewProps {
-  chatStatus: "QUEUED" | "ACTIVE" | "RESOLVED" | "MISSED";
+  chatStatus: "BOT" | "QUEUED" | "ACTIVE" | "RESOLVED" | "MISSED";
   messages: ChatMessageItem[];
   assignedAgentName?: string;
   isAgentTyping?: boolean;
@@ -19,6 +19,7 @@ interface LiveChatViewProps {
   onRequeue: () => void;
   onSubmitRating: (score: number, feedback?: string) => void;
   onBackToBot: () => void;
+  onCancelRequest?: () => void;
 }
 
 export function LiveChatView({
@@ -33,12 +34,32 @@ export function LiveChatView({
   onRequeue,
   onSubmitRating,
   onBackToBot,
+  onCancelRequest,
 }: LiveChatViewProps) {
   const [inputText, setInputText] = useState("");
   const [ratingScore, setRatingScore] = useState(5);
   const [ratingFeedback, setRatingFeedback] = useState("");
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
+  const [queueSecondsElapsed, setQueueSecondsElapsed] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatStatus === "QUEUED") {
+      const timer = setInterval(() => {
+        setQueueSecondsElapsed((prev) => prev + 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    } else {
+      setQueueSecondsElapsed(0);
+    }
+  }, [chatStatus]);
+
+  useEffect(() => {
+    if (chatStatus === "QUEUED" && queueSecondsElapsed >= 300) {
+      if (onCancelRequest) onCancelRequest();
+      else onBackToBot();
+    }
+  }, [chatStatus, queueSecondsElapsed, onCancelRequest, onBackToBot]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -67,39 +88,54 @@ export function LiveChatView({
 
   // ── 1. QUEUE STATE ────────────────────────────────────────────────────────
   if (chatStatus === "QUEUED") {
+    const cycle = Math.floor(queueSecondsElapsed / 60);
+    const secondsInCycle = queueSecondsElapsed % 60;
+    const progressPercent = (secondsInCycle / 60) * 100;
+    const isBusy = cycle > 0;
+
     return (
-      <div className="flex flex-col items-center justify-center h-full p-6 text-center bg-slate-950 text-white">
+      <div className="flex flex-col items-center justify-center h-full p-6 text-center bg-white text-slate-900">
         <div className="relative mb-6">
-          <div className="h-20 w-20 rounded-3xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+          <div className="h-20 w-20 rounded-3xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-700">
             <Headphones className="h-10 w-10 animate-pulse" />
           </div>
-          <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-emerald-500 border-2 border-slate-950 flex items-center justify-center">
+          <div className="absolute -bottom-1 -right-1 h-6 w-6 rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center shadow-sm">
             <Clock className="h-3.5 w-3.5 text-white" />
           </div>
         </div>
 
-        <h3 className="text-base font-bold text-white mb-1.5">Connecting to a Live Specialist</h3>
-        <p className="text-xs text-slate-400 max-w-[260px] leading-relaxed mb-6">
-          Your request has been dispatched to our diagnostic desk. An available specialist will accept shortly.
+        <h3 className="text-base font-bold text-slate-900 mb-1.5">
+          {isBusy ? "Specialists are busy" : "Connecting to a Live Specialist"}
+        </h3>
+        <p className="text-xs text-slate-500 max-w-[260px] leading-relaxed mb-6">
+          {isBusy
+            ? "All our specialists are currently assisting other clients. Please wait another minute, or you can switch back to the AI Assistant."
+            : "Your request has been dispatched to our diagnostic desk. An available specialist will accept shortly."}
         </p>
 
-        <div className="w-full bg-slate-900/80 rounded-2xl p-4 border border-slate-800 mb-6 space-y-2">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-300">
-            <span>Estimated wait time</span>
-            <span className="text-cyan-400">&lt; 1 minute</span>
+        <div className="w-full bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-6 space-y-2 shadow-sm">
+          <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
+            <span>{isBusy ? `Wait time extended (${cycle}/5)` : "Estimated wait time"}</span>
+            <span className="text-slate-900">&lt; 1 minute</span>
           </div>
-          <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-cyan-400 to-blue-500 animate-[pulse_1.5s_infinite] w-3/4 rounded-full" />
+          <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-slate-900 rounded-full transition-all duration-1000 ease-linear"
+              style={{ width: `${progressPercent}%` }}
+            />
           </div>
         </div>
 
         <Button
           type="button"
           variant="outline"
-          onClick={onBackToBot}
-          className="h-10 px-4 rounded-xl border-slate-800 hover:bg-slate-900 text-slate-300 text-xs font-semibold flex items-center gap-2"
+          onClick={() => {
+            if (onCancelRequest) onCancelRequest();
+            else onBackToBot();
+          }}
+          className="h-10 px-4 rounded-xl border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-semibold flex items-center gap-2 shadow-sm"
         >
-          <Bot className="h-3.5 w-3.5 text-cyan-400" />
+          <Bot className="h-4 w-4 text-slate-900" />
           <span>Switch back to Automated Assistant</span>
         </Button>
       </div>
@@ -109,13 +145,13 @@ export function LiveChatView({
   // ── 2. RATING MODAL (Post-Resolution) ──────────────────────────────────────
   if (showRatingPrompt && !isRatingSubmitted) {
     return (
-      <div className="flex flex-col items-center justify-center h-full p-6 text-center bg-slate-950 text-white">
-        <div className="h-16 w-16 rounded-3xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-          <Star className="h-8 w-8 fill-amber-400" />
+      <div className="flex flex-col items-center justify-center h-full p-6 text-center bg-white text-slate-900">
+        <div className="h-16 w-16 rounded-3xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-500 mb-4 shadow-sm">
+          <Star className="h-8 w-8 fill-amber-500" />
         </div>
 
-        <h3 className="text-base font-bold text-white mb-1">How was your live consultation?</h3>
-        <p className="text-xs text-slate-400 mb-5">Your feedback helps us maintain our diagnostic support standards.</p>
+        <h3 className="text-base font-bold text-slate-900 mb-1">How was your live consultation?</h3>
+        <p className="text-xs text-slate-500 mb-5">Your feedback helps us maintain our diagnostic support standards.</p>
 
         <form onSubmit={handleRatingSubmit} className="w-full space-y-4">
           <div className="flex items-center justify-center gap-2">
@@ -124,12 +160,12 @@ export function LiveChatView({
                 key={star}
                 type="button"
                 onClick={() => setRatingScore(star)}
-                className="p-1 text-slate-600 hover:text-amber-400 transition-colors"
+                className="p-1 text-slate-300 hover:text-amber-500 transition-colors"
               >
                 <Star
                   className={cn(
                     "h-7 w-7 transition-all",
-                    star <= ratingScore ? "text-amber-400 fill-amber-400 scale-110" : "text-slate-700"
+                    star <= ratingScore ? "text-amber-500 fill-amber-500 scale-110 drop-shadow-sm" : "text-slate-200"
                   )}
                 />
               </button>
@@ -140,7 +176,7 @@ export function LiveChatView({
             value={ratingFeedback}
             onChange={(e) => setRatingFeedback(e.target.value)}
             placeholder="Additional comments (optional)..."
-            className="h-11 rounded-xl bg-slate-900 border-slate-800 text-white placeholder:text-slate-500 text-xs"
+            className="h-11 rounded-xl bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs shadow-inner"
           />
 
           <div className="flex items-center gap-2 pt-2">
@@ -154,7 +190,7 @@ export function LiveChatView({
             </Button>
             <Button
               type="submit"
-              className="flex-1 h-10 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-bold shadow-lg shadow-cyan-500/20 border-0"
+              className="flex-1 h-10 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold shadow-lg shadow-slate-900/10 border-0"
             >
               Submit Feedback
             </Button>
@@ -166,26 +202,26 @@ export function LiveChatView({
 
   // ── 3. ACTIVE LIVE CHAT STREAM ────────────────────────────────────────────
   return (
-    <div className="flex flex-col h-full bg-slate-950/95 text-slate-100">
+    <div className="flex flex-col flex-1 h-full min-h-0 w-full bg-white text-slate-900">
       {/* Live Specialist Header */}
-      <div className="px-4 py-2.5 bg-emerald-950/40 border-b border-emerald-800/30 flex items-center justify-between text-xs">
+      <div className="px-4 py-2.5 bg-emerald-50/80 border-b border-emerald-100/50 flex items-center justify-between text-xs">
         <div className="flex items-center gap-2.5">
           <div className="relative">
-            <div className="h-6 w-6 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400">
+            <div className="h-6 w-6 rounded-lg bg-white border border-emerald-200 flex items-center justify-center text-emerald-500 shadow-sm">
               <Headphones className="h-3.5 w-3.5" />
             </div>
-            <div className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-400 animate-pulse border border-slate-950" />
+            <div className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-500 animate-pulse border border-white" />
           </div>
           <div>
-            <span className="text-emerald-300 font-bold text-xs">{assignedAgentName}</span>
-            <p className="text-[10px] text-emerald-400/80 font-medium">Diagnostic Support Specialist</p>
+            <span className="text-emerald-700 font-bold text-xs">{assignedAgentName}</span>
+            <p className="text-[10px] text-emerald-600/80 font-medium">Diagnostic Support Specialist</p>
           </div>
         </div>
 
         <button
           type="button"
           onClick={onBackToBot}
-          className="text-[10px] text-slate-400 hover:text-slate-200 font-semibold px-2 py-1 rounded-md hover:bg-slate-900 transition-colors"
+          className="text-[10px] text-slate-500 hover:text-slate-800 font-semibold px-2 py-1 rounded-md hover:bg-slate-100 transition-colors"
         >
           View Bot
         </button>
@@ -193,15 +229,15 @@ export function LiveChatView({
 
       {/* Mid-Chat Agent Disconnect Alert with 1-Click Requeue */}
       {agentDisconnectedAlert && (
-        <div className="px-4 py-2.5 bg-amber-950/80 border-b border-amber-800/50 flex items-center justify-between text-xs text-amber-200">
+        <div className="px-4 py-2.5 bg-amber-50 border-b border-amber-100 flex items-center justify-between text-xs text-amber-800">
           <div className="flex items-center gap-2">
-            <AlertCircle className="h-4 w-4 text-amber-400 shrink-0" />
-            <span className="text-[11px]">Specialist temporarily disconnected.</span>
+            <AlertCircle className="h-4 w-4 text-amber-500 shrink-0" />
+            <span className="text-[11px] font-medium">Specialist temporarily disconnected.</span>
           </div>
           <button
             type="button"
             onClick={onRequeue}
-            className="flex items-center gap-1 px-2 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[10px] border border-amber-500/40"
+            className="flex items-center gap-1 px-2 py-1 rounded bg-white hover:bg-amber-100/50 text-amber-600 font-bold text-[10px] border border-amber-200 shadow-sm"
           >
             <RefreshCw className="h-3 w-3" />
             <span>Re-queue</span>
@@ -210,7 +246,7 @@ export function LiveChatView({
       )}
 
       {/* Messages Feed */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-800">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-4 scrollbar-thin scrollbar-thumb-slate-200">
         {messages.map((msg, index) => {
           const isUser = msg.senderType === "USER";
           const isAgent = msg.senderType === "AGENT";
@@ -219,7 +255,7 @@ export function LiveChatView({
           if (isSystem) {
             return (
               <div key={index} className="flex justify-center my-2">
-                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 bg-slate-900/90 border border-slate-800 px-3 py-1 rounded-full">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-slate-500 bg-white border border-slate-200 shadow-sm px-3 py-1 rounded-full">
                   {msg.text}
                 </span>
               </div>
@@ -231,13 +267,13 @@ export function LiveChatView({
               <div className={cn("flex items-center gap-1.5 px-1", isUser ? "flex-row-reverse" : "flex-row")}>
                 <div
                   className={cn(
-                    "h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold shadow-xs",
-                    isUser ? "bg-slate-800 text-cyan-400" : "bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
+                    "h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold shadow-sm",
+                    isUser ? "bg-slate-200 text-slate-700" : "bg-emerald-50 text-emerald-600 border border-emerald-200"
                   )}
                 >
                   {isUser ? <User className="h-3 w-3" /> : <Headphones className="h-3 w-3" />}
                 </div>
-                <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
                   {isUser ? "You" : assignedAgentName}
                 </span>
               </div>
@@ -245,10 +281,10 @@ export function LiveChatView({
               {/* Bubble */}
               <div
                 className={cn(
-                  "p-3.5 rounded-2xl text-xs sm:text-sm font-medium leading-relaxed max-w-[85%] shadow-md whitespace-pre-wrap",
+                  "p-3 rounded-2xl text-xs font-medium leading-relaxed max-w-[85%] shadow-sm whitespace-pre-wrap border",
                   isUser
-                    ? "bg-gradient-to-br from-cyan-600 to-blue-700 text-white rounded-tr-xs border border-cyan-500/30"
-                    : "bg-slate-900 text-slate-200 rounded-tl-xs border border-slate-800"
+                    ? "bg-slate-900 text-white rounded-tr-xs border-slate-900"
+                    : "bg-slate-50 text-slate-800 rounded-tl-xs border-slate-200"
                 )}
               >
                 {msg.text}
@@ -256,9 +292,9 @@ export function LiveChatView({
 
               {/* Status footer for user messages */}
               {isUser && (
-                <div className="flex items-center gap-1 px-1 text-[9px] text-slate-500 font-semibold">
+                <div className="flex items-center gap-1 px-1 text-[9px] text-slate-400 font-semibold">
                   <span>{msg.createdAt ? new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}</span>
-                  {msg.status === "delivered" && <CheckCheck className="h-3 w-3 text-cyan-400" />}
+                  {msg.status === "delivered" && <CheckCheck className="h-3 w-3 text-slate-900" />}
                 </div>
               )}
             </div>
@@ -267,11 +303,11 @@ export function LiveChatView({
 
         {/* Real-time Agent Typing Indicator */}
         {isAgentTyping && (
-          <div className="flex items-center gap-2 text-xs text-emerald-400 bg-emerald-950/40 p-2.5 rounded-xl border border-emerald-800/30 w-fit">
+          <div className="flex items-center gap-2 text-xs text-emerald-600 bg-emerald-50 p-2.5 rounded-xl border border-emerald-200 w-fit">
             <div className="flex gap-1 items-center">
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:-0.3s]" />
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-bounce [animation-delay:-0.15s]" />
-              <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-bounce" />
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.3s]" />
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce [animation-delay:-0.15s]" />
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-bounce" />
             </div>
             <span className="text-[11px] font-medium">{assignedAgentName} is typing...</span>
           </div>
@@ -279,20 +315,20 @@ export function LiveChatView({
       </div>
 
       {/* Input Bar */}
-      <div className="p-3.5 bg-slate-900/90 border-t border-slate-800/80 backdrop-blur-xl">
+      <div className="p-3.5 bg-white border-t border-slate-100">
         <form onSubmit={handleSend} className="flex items-center gap-2">
           <div className="flex-1 relative">
             <Input
               value={inputText}
               onChange={handleInputChange}
               placeholder="Type your message to specialist..."
-              className="w-full h-11 rounded-xl bg-slate-950/80 border-slate-800 text-white placeholder:text-slate-500 text-xs sm:text-sm focus-visible:ring-emerald-500 focus-visible:border-emerald-500 pr-4 shadow-inner"
+              className="w-full h-11 rounded-xl bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm focus-visible:ring-emerald-500 focus-visible:border-emerald-500 pr-4 shadow-inner"
             />
           </div>
           <Button
             type="submit"
             disabled={!inputText.trim()}
-            className="h-11 w-11 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white shadow-lg shadow-emerald-500/20 border-0 p-0 flex items-center justify-center shrink-0 disabled:opacity-40"
+            className="h-11 w-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/10 border-0 p-0 flex items-center justify-center shrink-0 disabled:opacity-40 transition-colors"
           >
             <Send className="h-4 w-4" />
           </Button>
