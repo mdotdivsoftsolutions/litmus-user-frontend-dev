@@ -83,12 +83,20 @@ export default function ConsumerProfilePage() {
     lastName: "",
     email: "",
     phone: "",
+    alternatePhone: "",
     businessName: "",
+    industryCategory: "General Food & Beverage",
+    customerSegment: "INDIVIDUAL",
     fssaiNo: "",
-    street: "",
-    city: "",
-    state: "",
-    pincode: "",
+    gstNumber: "",
+    billingStreet: "",
+    billingCity: "",
+    billingState: "",
+    billingPincode: "",
+    shippingStreet: "",
+    shippingCity: "",
+    shippingState: "",
+    shippingPincode: "",
   });
 
   useEffect(() => {
@@ -99,12 +107,20 @@ export default function ConsumerProfilePage() {
         lastName: u.lastName || "",
         email: u.email || "",
         phone: u.phone || "",
-        businessName: u.companyName || "",
+        alternatePhone: u.alternatePhone || "",
+        businessName: u.companyName || u.metadata?.businessName || "",
+        industryCategory: u.industryCategory || "General Food & Beverage",
+        customerSegment: u.customerSegment || "INDIVIDUAL",
         fssaiNo: u.fssaiNumber || "",
-        street: u.address?.street || "",
-        city: u.address?.city || "",
-        state: u.address?.state || "",
-        pincode: u.address?.pincode || "",
+        gstNumber: u.gstNumber || u.metadata?.gstNumber || "",
+        billingStreet: u.billingAddress?.street || u.address?.street || "",
+        billingCity: u.billingAddress?.city || u.address?.city || "",
+        billingState: u.billingAddress?.state || u.address?.state || "",
+        billingPincode: u.billingAddress?.pincode || u.address?.pincode || u.address?.pinCode || "",
+        shippingStreet: u.shippingAddress?.street || "",
+        shippingCity: u.shippingAddress?.city || "",
+        shippingState: u.shippingAddress?.state || "",
+        shippingPincode: u.shippingAddress?.pincode || "",
       });
       if (u.notifications) setNotifications(u.notifications);
       else if (u.metadata?.notifications) setNotifications(u.metadata.notifications);
@@ -220,34 +236,41 @@ export default function ConsumerProfilePage() {
   const handleSave = () => {
     const u = userResponse?.data || {};
 
-    // Build payload with only changed fields to avoid triggering
-    // duplicate-phone validation when the user didn't touch the phone field
-    const payload: Record<string, any> = {};
+    const payload: Record<string, any> = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      companyName: formData.businessName,
+      industryCategory: formData.industryCategory,
+      customerSegment: formData.customerSegment,
+      fssaiNumber: formData.fssaiNo,
+      gstNumber: formData.gstNumber,
+      billingAddress: {
+        street: formData.billingStreet,
+        city: formData.billingCity,
+        state: formData.billingState,
+        pincode: formData.billingPincode,
+        country: "India",
+      },
+      shippingAddress: {
+        street: formData.shippingStreet,
+        city: formData.shippingCity,
+        state: formData.shippingState,
+        pincode: formData.shippingPincode,
+        country: "India",
+      },
+      address: {
+        street: formData.billingStreet,
+        city: formData.billingCity,
+        state: formData.billingState,
+        pincode: formData.billingPincode,
+      },
+    };
 
-    if (formData.firstName !== (u.firstName || "")) payload.firstName = formData.firstName;
-    if (formData.lastName !== (u.lastName || "")) payload.lastName = formData.lastName;
-    if (formData.phone !== (u.phone || "")) payload.phone = formData.phone;
-    if (formData.businessName !== (u.companyName || "")) payload.companyName = formData.businessName;
-    if (formData.fssaiNo !== (u.fssaiNumber || "")) payload.fssaiNumber = formData.fssaiNo;
-
-    // Address: only send if any address field changed
-    const addrChanged =
-      formData.street !== (u.address?.street || "") ||
-      formData.city !== (u.address?.city || "") ||
-      formData.state !== (u.address?.state || "") ||
-      formData.pincode !== (u.address?.pincode || "");
-
-    if (addrChanged) {
-      payload.address = {
-        street: formData.street,
-        city: formData.city,
-        state: formData.state,
-        pincode: formData.pincode,
-      };
+    if (formData.phone && formData.phone !== (u.phone || "")) {
+      payload.phone = formData.phone;
     }
-
-    if (Object.keys(payload).length === 0) {
-      return; // Nothing changed — skip the API call entirely
+    if (formData.alternatePhone !== (u.alternatePhone || "")) {
+      payload.alternatePhone = formData.alternatePhone;
     }
 
     updateProfile(payload as any);
