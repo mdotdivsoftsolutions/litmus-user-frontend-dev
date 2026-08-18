@@ -38,17 +38,17 @@ export default function UserProfilePage() {
     if (userResponse?.data) {
       const user = userResponse.data;
       setFormData({
-        businessName: user.metadata?.businessName || "",
+        businessName: user.companyName || user.metadata?.businessName || "",
         firstName: user.firstName || "",
         lastName: user.lastName || "",
         phone: user.phone || "",
         email: user.email || "",
-        street: user.address?.street || "",
-        city: user.address?.city || "",
-        state: user.address?.state || "",
-        pinCode: user.address?.pinCode || "",
+        street: user.billingAddress?.street || user.address?.street || "",
+        city: user.billingAddress?.city || user.address?.city || "",
+        state: user.billingAddress?.state || user.address?.state || "",
+        pinCode: user.billingAddress?.pincode || user.address?.pinCode || "",
         fssaiNumber: user.fssaiNumber || "",
-        gstNumber: user.metadata?.gstNumber || ""
+        gstNumber: user.gstNumber || user.metadata?.gstNumber || ""
       });
     }
   }, [userResponse]);
@@ -73,13 +73,22 @@ export default function UserProfilePage() {
       firstName: formData.firstName,
       lastName: formData.lastName,
       phone: formData.phone,
+      companyName: formData.businessName,
+      fssaiNumber: formData.fssaiNumber,
+      gstNumber: formData.gstNumber,
+      billingAddress: {
+        street: formData.street,
+        city: formData.city,
+        state: formData.state,
+        pincode: formData.pinCode,
+        country: "India",
+      },
       address: {
         street: formData.street,
         city: formData.city,
         state: formData.state,
         pinCode: formData.pinCode
       },
-      fssaiNumber: formData.fssaiNumber,
       metadata: {
         ...(userResponse?.data?.metadata || {}),
         businessName: formData.businessName,
