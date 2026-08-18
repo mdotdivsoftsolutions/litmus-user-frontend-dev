@@ -1,56 +1,67 @@
 "use client";
 
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { authApi } from "@/lib/api/auth";
 import { SupportChatTrigger } from "./support-chat/SupportChatTrigger";
 import { SupportChatWindow } from "./support-chat/SupportChatWindow";
+import { useSocketChat } from "@/hooks/useSocketChat";
 
 export function FloatingSupportChat() {
   const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Clinical assistance active. How can I help you with your diagnostic requirements today?",
-      sender: "bot",
-      time: "10:02 AM",
-    },
-  ]);
 
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!message.trim()) return;
+  // Fetch logged-in user data if authenticated
+  const { data: userData } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: authApi.getMe,
+    retry: false,
+    staleTime: 5 * 60 * 1000,
+  });
 
-    const newUserMsg = {
-      id: Date.now(),
-      text: message,
-      sender: "user",
-      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-    };
-    setMessages((prev) => [...prev, newUserMsg]);
-    setMessage("");
+  const currentUser = userData?.data || userData?.user || null;
 
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: Date.now() + 1,
-          text: "Analyzing query. A certified Litmus pathologist will connect with you within 2 minutes for professional consultation.",
-          sender: "bot",
-          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        },
-      ]);
-    }, 1200);
-  };
+  const {
+    chatStatus,
+    messages,
+    hasOnlineAgents,
+    isAgentTyping,
+    assignedAgentName,
+    agentDisconnectedAlert,
+    showRatingPrompt,
+    unreadCount,
+    sendBotQuery,
+    sendLiveMessage,
+    requestLiveSupport,
+    emitTyping,
+    submitRating,
+    requeueChat,
+  } = useSocketChat(currentUser);
 
   return (
     <div className="fixed bottom-20 right-5 md:bottom-8 md:right-8 z-[100]">
-      <SupportChatTrigger isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
+      <SupportChatTrigger
+        isOpen={isOpen}
+        onToggle={() => setIsOpen(!isOpen)}
+        unreadCount={unreadCount}
+        hasOnlineAgents={hasOnlineAgents}
+      />
       <SupportChatWindow
         isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        chatStatus={chatStatus}
         messages={messages}
-        message={message}
-        setMessage={setMessage}
-        onSend={handleSend}
+        hasOnlineAgents={hasOnlineAgents}
+        isAgentTyping={isAgentTyping}
+        assignedAgentName={assignedAgentName}
+        agentDisconnectedAlert={agentDisconnectedAlert}
+        showRatingPrompt={showRatingPrompt}
+        currentUser={currentUser}
+        onSendBotMessage={sendBotQuery}
+        onSendLiveMessage={sendLiveMessage}
+        onRequestLiveSupport={requestLiveSupport}
+        onEmitTyping={emitTyping}
+        onRequeue={requeueChat}
+        onSubmitRating={submitRating}
       />
     </div>
   );
