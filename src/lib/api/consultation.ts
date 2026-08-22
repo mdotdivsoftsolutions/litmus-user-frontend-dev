@@ -8,6 +8,7 @@ export interface ConsultationData {
   date: string;
   time: string;
   serviceName: string;
+  message?: string;
   source: string;
 }
 
