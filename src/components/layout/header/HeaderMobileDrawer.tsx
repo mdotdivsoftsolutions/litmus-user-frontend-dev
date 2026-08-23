@@ -46,7 +46,7 @@ export function HeaderMobileDrawer({
         )}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-          <img src="/logo.png" alt="Litmus" className="h-8 object-contain" />
+          <img src="/logo.webp" alt="Litmus" className="h-7 w-auto object-contain" />
           <button onClick={onClose} className="p-1.5 rounded-full text-muted-foreground hover:bg-muted transition-colors">
             <X className="h-5 w-5" />
           </button>

@@ -44,8 +44,8 @@ export function Header({
           )}
         >
           <div className="max-w-7xl mx-auto flex items-center h-16 px-4 gap-3">
-            <Link href="/" className="flex items-center shrink-0">
-              <img src="/logo.png" alt="Litmus Food Analytics" className="h-9 sm:h-10 object-contain" />
+            <Link href="/" className="flex items-center shrink-0 py-1">
+              <img src="/logo.webp" alt="Litmus Food Analytics" className="h-8 sm:h-9 w-auto object-contain" />
             </Link>
 
             <HeaderLocationSelector />

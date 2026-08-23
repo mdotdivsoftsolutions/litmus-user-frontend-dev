@@ -54,7 +54,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
           {state.step !== "reset-success" && (
             <div className="flex flex-col items-center mb-7">
-              <img src="/logo.png" alt="Litmus" className="h-10 object-contain mb-5" />
+              <img src="/logo.webp" alt="Litmus" className="h-9 w-auto object-contain mb-5" />
               <p className="text-slate-500 text-[14px] text-center">{subtitles[state.step]}</p>
             </div>
           )}
