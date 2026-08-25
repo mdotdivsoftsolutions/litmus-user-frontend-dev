@@ -72,6 +72,12 @@ export default function NewBookingPage() {
                 pickupCities={state.pickupCities}
                 isPickupCovered={state.isPickupCovered}
                 enablePickupSlotSelection={state.enablePickupSlotSelection}
+                savedProfileAddress={state.savedProfileAddress}
+                hasSavedAddress={state.hasSavedAddress}
+                isUsingSavedAddress={state.isUsingSavedAddress}
+                handleToggleUseSavedAddress={state.handleToggleUseSavedAddress}
+                saveAddressToProfile={state.saveAddressToProfile}
+                setSaveAddressToProfile={state.setSaveAddressToProfile}
               />
             )}
 

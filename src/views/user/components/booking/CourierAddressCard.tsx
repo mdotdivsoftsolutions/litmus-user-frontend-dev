@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Building2, Copy, Check, MapPin, Phone, Mail, Clock, AlertTriangle } from "lucide-react";
+import { Building2, Copy, Check, MapPin, Phone, Mail, Clock, AlertTriangle, ChevronRight } from "lucide-react";
 import { LITMUS_COURIER_ADDRESS } from "@/constants/config";
 import { settingsApi } from "@/lib/api/settings";
 import { Button } from "@/components/ui/button";
@@ -154,16 +154,38 @@ export function CourierAddressCard({ className, orderId, compact = false }: Cour
 
       {/* Guidelines Box */}
       {!compact && (
-        <div className="rounded-lg bg-amber-50/90 border border-amber-200/80 p-3 text-xs text-amber-900 space-y-1">
-          <p className="font-bold flex items-center gap-1.5 text-amber-950">
-            <AlertTriangle className="h-3.5 w-3.5 text-amber-600 shrink-0" />
+        <div className="rounded-xl bg-amber-50/90 border border-amber-200/90 p-4 text-xs text-amber-950 space-y-2.5">
+          <p className="font-bold flex items-center gap-1.5 text-amber-950 text-xs">
+            <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0" />
             Important Sample Packaging Instructions:
           </p>
-          <ul className="list-disc pl-5 space-y-0.5 text-[11px] font-medium text-amber-900/90 leading-relaxed">
+          <ul className="list-disc pl-5 space-y-1 text-[11px] font-medium text-amber-900 leading-relaxed">
             <li>Pack samples in sterile, leak-proof airtight containers (use gel ice packs for perishable goods).</li>
             <li>Clearly write your <strong>Order ID</strong> on the outer box.</li>
-            <li>Once dispatched via Blue Dart, DTDC, Delhivery, etc., enter your <strong>Tracking AWB number</strong> in the order dashboard.</li>
+            <li>
+              Once dispatched via Blue Dart, DTDC, Delhivery, or any courier partner, submit your <strong>Tracking / AWB Number</strong>:
+            </li>
           </ul>
+
+          {/* Navigation Path Showcase */}
+          <div className="rounded-lg bg-white/95 border border-amber-200/80 p-2.5 shadow-2xs space-y-1.5">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Where to update tracking ID:
+            </p>
+            <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-800 font-medium">
+              <span className="inline-flex items-center gap-1 bg-slate-100/90 text-slate-900 px-2 py-1 rounded-md font-semibold">
+                Go to <strong className="font-bold text-brand-action">Orders</strong>
+              </span>
+              <ChevronRight className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+              <span className="inline-flex items-center gap-1 bg-slate-100/90 text-slate-900 px-2 py-1 rounded-md font-semibold">
+                Select <strong className="font-bold text-brand-action">Booking</strong>
+              </span>
+              <ChevronRight className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+              <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-1 rounded-md font-bold">
+                Enter Tracking / AWB ID
+              </span>
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -15,6 +15,7 @@ import { CartLine, SampleDetail, BookingFormData, CollectionMethod } from "./boo
 import { settingsApi } from "@/lib/api/settings";
 import { isCityCovered } from "@/lib/pickup-coverage";
 import { useUserLocation } from "@/components/location/LocationContext";
+import { toast } from "sonner";
 
 export function useNewBookingState() {
   const queryClient = useQueryClient();
@@ -216,6 +217,26 @@ export function useNewBookingState() {
 
   const { data: userResponse } = useQuery({ queryKey: ["user"], queryFn: authApi.getMe });
 
+  const savedProfileAddress = useMemo(() => {
+    const u = userResponse?.data;
+    if (!u) return null;
+    const street = u.shippingAddress?.street || u.address?.street || u.billingAddress?.street || "";
+    const city = u.shippingAddress?.city || u.address?.city || u.billingAddress?.city || "";
+    const state = u.shippingAddress?.state || u.address?.state || u.billingAddress?.state || "";
+    const pincode =
+      u.shippingAddress?.pincode ||
+      u.address?.pincode ||
+      u.address?.pinCode ||
+      u.billingAddress?.pincode ||
+      "";
+    if (!street && !city && !pincode) return null;
+    return { street, city, state, pincode };
+  }, [userResponse?.data]);
+
+  const hasSavedAddress = !!savedProfileAddress;
+  const [saveAddressToProfile, setSaveAddressToProfile] = useState(false);
+  const [isAddressInitialized, setIsAddressInitialized] = useState(false);
+
   const [formData, setFormData] = useState<BookingFormData>({
     name: "",
     email: "",
@@ -230,25 +251,75 @@ export function useNewBookingState() {
   });
 
   useEffect(() => {
-    if (userResponse?.data) {
+    if (userResponse?.data && !isAddressInitialized) {
       const u = userResponse.data;
+      const street = u.shippingAddress?.street || u.address?.street || u.billingAddress?.street || "";
+      const city = u.shippingAddress?.city || u.address?.city || u.billingAddress?.city || detectedCity || "";
+      const state = u.shippingAddress?.state || u.address?.state || u.billingAddress?.state || "";
+      const pincode =
+        u.shippingAddress?.pincode ||
+        u.address?.pincode ||
+        u.address?.pinCode ||
+        u.billingAddress?.pincode ||
+        "";
+
       setFormData((prev) => ({
         ...prev,
         name: prev.name || `${u.firstName || ""} ${u.lastName || ""}`.trim(),
         email: prev.email || u.email || "",
         phone: prev.phone || u.phone || "",
-        address: prev.address || (u.address?.street ? u.address.street : ""),
-        city: prev.city || (u.address?.city ? u.address.city : "") || detectedCity,
-        state: prev.state || (u.address?.state ? u.address.state : ""),
-        pincode: prev.pincode || (u.address?.pincode ? u.address.pincode : ""),
+        address: prev.address || street,
+        city: prev.city || city,
+        state: prev.state || state,
+        pincode: prev.pincode || pincode,
       }));
-    } else if (detectedCity) {
+
+      // If user did not have a saved address in profile, check save to profile by default
+      if (!street && !city && !pincode) {
+        setSaveAddressToProfile(true);
+      }
+      setIsAddressInitialized(true);
+    } else if (detectedCity && !isAddressInitialized) {
       setFormData((prev) => ({
         ...prev,
         city: prev.city || detectedCity,
       }));
     }
-  }, [userResponse, detectedCity]);
+  }, [userResponse, detectedCity, isAddressInitialized]);
+
+  const isUsingSavedAddress = useMemo(() => {
+    if (!savedProfileAddress) return false;
+    return (
+      (formData.address || "").trim().toLowerCase() === (savedProfileAddress.street || "").trim().toLowerCase() &&
+      (formData.city || "").trim().toLowerCase() === (savedProfileAddress.city || "").trim().toLowerCase() &&
+      (formData.pincode || "").trim().toLowerCase() === (savedProfileAddress.pincode || "").trim().toLowerCase()
+    );
+  }, [formData.address, formData.city, formData.pincode, savedProfileAddress]);
+
+  const handleToggleUseSavedAddress = () => {
+    if (!savedProfileAddress) return;
+    if (isUsingSavedAddress) {
+      // Clear fields to allow entering a different address
+      setFormData((prev) => ({
+        ...prev,
+        address: "",
+        city: detectedCity || "",
+        state: "",
+        pincode: "",
+      }));
+      setSaveAddressToProfile(true);
+    } else {
+      // Restore saved profile address
+      setFormData((prev) => ({
+        ...prev,
+        address: savedProfileAddress.street,
+        city: savedProfileAddress.city,
+        state: savedProfileAddress.state,
+        pincode: savedProfileAddress.pincode,
+      }));
+      setSaveAddressToProfile(false);
+    }
+  };
 
   const minDateString = useMemo(() => {
     const tomorrow = new Date();
@@ -509,7 +580,47 @@ export function useNewBookingState() {
     });
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    if (step === 3) {
+      if (saveAddressToProfile && (formData.address || formData.city || formData.pincode)) {
+        try {
+          await authApi.updateProfile({
+            address: {
+              street: formData.address,
+              city: formData.city,
+              state: formData.state || "",
+              pincode: formData.pincode,
+            },
+            shippingAddress: {
+              street: formData.address,
+              city: formData.city,
+              state: formData.state || "",
+              pincode: formData.pincode,
+              country: "India",
+            },
+            billingAddress: {
+              street: formData.address,
+              city: formData.city,
+              state: formData.state || "",
+              pincode: formData.pincode,
+              country: "India",
+            },
+          });
+          queryClient.invalidateQueries({ queryKey: ["user"] });
+          queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+          if (hasSavedAddress) {
+            toast.success("Profile address updated successfully");
+          } else {
+            toast.success("Address saved to profile successfully");
+          }
+        } catch (err) {
+          console.error("Failed to update profile address:", err);
+        }
+      }
+      setStep(4);
+      return;
+    }
+
     if (step === 4) {
       setPaymentError(null);
       setIsPaymentProcessing(true);
@@ -629,5 +740,11 @@ export function useNewBookingState() {
     paymentError,
     handleNext,
     handleBack,
+    savedProfileAddress,
+    hasSavedAddress,
+    saveAddressToProfile,
+    setSaveAddressToProfile,
+    isUsingSavedAddress,
+    handleToggleUseSavedAddress,
   };
 }
