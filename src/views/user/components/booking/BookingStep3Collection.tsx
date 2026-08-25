@@ -201,7 +201,7 @@ export function BookingStep3Collection({
               <Truck className="h-4 w-4 text-brand-action" /> How should we collect samples?
             </h4>
             <p className="text-sm text-slate-500">
-              Choose pickup only if a Litmus agent can collect from your city. Otherwise send samples by courier.
+              Choose pickup only if an agent can collect from your city. Otherwise send samples by courier.
             </p>
             <div className="grid sm:grid-cols-2 gap-3">
               <button
