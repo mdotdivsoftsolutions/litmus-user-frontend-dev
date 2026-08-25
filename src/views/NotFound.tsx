@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Home, Search, FlaskConical, Package, Building2, Headphones, ArrowRight } from "lucide-react";
+import { Home, Search, FlaskConical, Package, Stethoscope, Headphones, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
@@ -55,13 +55,13 @@ export default function NotFound() {
           </Link>
 
           <Link
-            href="/labs"
+            href="/consultation"
             className="flex flex-col items-center gap-2 p-3.5 rounded-2xl bg-card border border-border hover:border-brand-primary/40 hover:shadow-md transition-all group"
           >
             <div className="h-10 w-10 rounded-xl bg-brand-primary/10 flex items-center justify-center text-brand-primary group-hover:scale-110 transition-transform">
-              <Building2 className="h-5 w-5" />
+              <Stethoscope className="h-5 w-5" />
             </div>
-            <span className="text-xs font-semibold text-foreground">NABL Labs</span>
+            <span className="text-xs font-semibold text-foreground">Consultation</span>
           </Link>
 
           <Link

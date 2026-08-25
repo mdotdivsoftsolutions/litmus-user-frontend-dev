@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, FlaskConical, Package, Building2, Stethoscope, Headphones } from "lucide-react";
+import { Home, FlaskConical, Package, Stethoscope, Headphones } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const headerNavLinks = [
   { label: "Home", href: "/", icon: Home },
   { label: "Tests", href: "/tests", icon: FlaskConical },
   { label: "Packages", href: "/packages", icon: Package },
-  { label: "Labs", href: "/labs", icon: Building2 },
   { label: "Consultation", href: "/consultation", icon: Stethoscope },
   { label: "Support", href: "/support", icon: Headphones },
 ];

@@ -13,7 +13,7 @@ import {
   ChevronDown, 
   ChevronUp, 
   Package, 
-  Building2 
+  Stethoscope 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -129,12 +129,12 @@ export default function GlobalError({
               </Link>
 
               <Link
-                href="/labs"
+                href="/consultation"
                 className="group flex flex-col items-center gap-1.5 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-100 hover:border-emerald-200 transition-all text-center"
               >
-                <Building2 className="h-4 w-4 text-brand-primary group-hover:scale-110 transition-transform" />
+                <Stethoscope className="h-4 w-4 text-brand-primary group-hover:scale-110 transition-transform" />
                 <span className="text-xs font-semibold text-slate-700 group-hover:text-brand-primary">
-                  Partner Labs
+                  Consultation
                 </span>
               </Link>
             </div>
