@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ShieldCheck, ShieldAlert, LogOut, LucideIcon, Mail, Phone, Building2, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, ShieldAlert, LogOut, LucideIcon, Mail, Phone, Building2, CheckCircle2, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
@@ -142,7 +143,14 @@ export function ProfileSidebar({ user, tabs, activeTab, setActiveTab, onLogout }
           );
         })}
 
-        <div className="pt-2 border-t border-slate-100 mt-1">
+        <div className="pt-2 border-t border-slate-100 mt-1 space-y-0.5">
+          <Link
+            href="/help"
+            className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors text-left"
+          >
+            <HelpCircle className="h-4 w-4 shrink-0 text-slate-400" />
+            <span>Help Center</span>
+          </Link>
           <button
             onClick={onLogout}
             className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-rose-600 hover:bg-rose-50 transition-colors text-left"

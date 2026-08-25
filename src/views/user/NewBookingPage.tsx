@@ -88,6 +88,9 @@ export default function NewBookingPage() {
                 paymentError={state.paymentError}
                 isPaymentProcessing={state.isPaymentProcessing}
                 total={state.total}
+                acceptedTerms={state.acceptedTerms}
+                setAcceptedTerms={state.setAcceptedTerms}
+                collectionMethod={state.formData.collectionMethod}
               />
             )}
 
@@ -118,6 +121,7 @@ export default function NewBookingPage() {
             isStep3Valid={state.isStep3Valid}
             isCreatingBooking={state.isCreatingBooking}
             isPaymentProcessing={state.isPaymentProcessing}
+            acceptedTerms={state.acceptedTerms}
             onNext={state.handleNext}
             onBack={state.handleBack}
           />

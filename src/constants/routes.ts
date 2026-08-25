@@ -12,6 +12,7 @@ export const ROUTES = {
   CONTACT: "/contact",
   FAQS: "/faqs",
   SUPPORT: "/support",
+  HELP: "/help",
   PRIVACY: "/privacy",
   TERMS: "/terms",
   NABL: "/nabl",

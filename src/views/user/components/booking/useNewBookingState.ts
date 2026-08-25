@@ -236,6 +236,7 @@ export function useNewBookingState() {
   const hasSavedAddress = !!savedProfileAddress;
   const [saveAddressToProfile, setSaveAddressToProfile] = useState(false);
   const [isAddressInitialized, setIsAddressInitialized] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const [formData, setFormData] = useState<BookingFormData>({
     name: "",
@@ -622,6 +623,10 @@ export function useNewBookingState() {
     }
 
     if (step === 4) {
+      if (!acceptedTerms) {
+        toast.error("Please accept the terms and conditions for sample collection before proceeding to payment.");
+        return;
+      }
       setPaymentError(null);
       setIsPaymentProcessing(true);
 
@@ -746,5 +751,7 @@ export function useNewBookingState() {
     setSaveAddressToProfile,
     isUsingSavedAddress,
     handleToggleUseSavedAddress,
+    acceptedTerms,
+    setAcceptedTerms,
   };
 }

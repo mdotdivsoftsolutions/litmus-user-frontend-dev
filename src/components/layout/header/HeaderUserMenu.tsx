@@ -78,10 +78,13 @@ export function HeaderUserMenu({ user, onLoginClick, onLogoutClick }: HeaderUser
             <DropdownMenuItem asChild>
               <Link href="/reports">Reports</Link>
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/help">Help &amp; Support</Link>
+            </DropdownMenuItem>
           </>
         )}
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onLogoutClick} className="cursor-pointer">
+        <DropdownMenuItem onClick={onLogoutClick} className="cursor-pointer text-rose-600 focus:text-rose-600 focus:bg-rose-50">
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lock as LockIcon, AlertCircle, ShieldCheck, CreditCard, Smartphone, Building2 } from "lucide-react";
 import { CartLine } from "./booking-types";
+import { SampleCollectionTermsCard } from "./SampleCollectionTermsCard";
 
 interface BookingStep4PaymentProps {
   items: CartLine[];
@@ -11,6 +12,9 @@ interface BookingStep4PaymentProps {
   paymentError?: string | null;
   isPaymentProcessing?: boolean;
   total?: number;
+  acceptedTerms: boolean;
+  setAcceptedTerms: (accepted: boolean) => void;
+  collectionMethod?: string;
 }
 
 const PAYMENT_METHODS = [
@@ -25,6 +29,9 @@ export function BookingStep4Payment({
   paymentError,
   isPaymentProcessing,
   total,
+  acceptedTerms,
+  setAcceptedTerms,
+  collectionMethod,
 }: BookingStep4PaymentProps) {
   return (
     <div className="space-y-5 animate-in slide-in-from-right-4 duration-500">
@@ -43,17 +50,6 @@ export function BookingStep4Payment({
             <p className="text-sm font-bold text-red-700">Payment Issue</p>
             <p className="text-sm text-red-600 font-medium mt-0.5">{paymentError}</p>
           </div>
-        </div>
-      )}
-
-      {/* Processing State */}
-      {isPaymentProcessing && (
-        <div className="flex items-center gap-3 rounded-xl bg-blue-50 border border-blue-200 px-4 py-3.5 animate-in fade-in duration-300">
-          <span className="relative flex h-5 w-5 shrink-0">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-5 w-5 bg-blue-500"></span>
-          </span>
-          <p className="text-sm font-bold text-blue-700">Opening secure payment window...</p>
         </div>
       )}
 
@@ -136,6 +132,13 @@ export function BookingStep4Payment({
           </div>
         </CardContent>
       </Card>
+
+      {/* Simple standard inline checkbox */}
+      <SampleCollectionTermsCard
+        accepted={acceptedTerms}
+        onToggle={setAcceptedTerms}
+        collectionMethod={collectionMethod}
+      />
 
       {/* Security trust indicators */}
       <div className="grid grid-cols-3 gap-3">

@@ -19,6 +19,7 @@ interface BookingSidebarSummaryProps {
   isStep3Valid: boolean;
   isCreatingBooking: boolean;
   isPaymentProcessing: boolean;
+  acceptedTerms?: boolean;
   onNext: () => void;
   onBack: () => void;
 }
@@ -36,6 +37,7 @@ export function BookingSidebarSummary({
   isStep3Valid,
   isCreatingBooking,
   isPaymentProcessing,
+  acceptedTerms = false,
   onNext,
   onBack,
 }: BookingSidebarSummaryProps) {
@@ -118,17 +120,24 @@ export function BookingSidebarSummary({
                 </Button>
               )}
               {step === 4 && (
-                <Button
-                  disabled={isCreatingBooking || isPaymentProcessing}
-                  onClick={onNext}
-                  className="w-full bg-slate-900 hover:bg-black text-white rounded-lg h-14 font-bold text-base transition-all disabled:opacity-60"
-                >
-                  {isCreatingBooking
-                    ? "Creating Booking..."
-                    : isPaymentProcessing
-                    ? "Opening Payment..."
-                    : `Pay Now ₹${total.toLocaleString()}`}
-                </Button>
+                <>
+                  <Button
+                    disabled={isCreatingBooking || isPaymentProcessing || !acceptedTerms}
+                    onClick={onNext}
+                    className="w-full bg-slate-900 hover:bg-black text-white rounded-lg h-14 font-bold text-base transition-all disabled:opacity-50"
+                  >
+                    {isCreatingBooking
+                      ? "Creating Booking..."
+                      : isPaymentProcessing
+                      ? "Opening Payment..."
+                      : `Pay Now ₹${total.toLocaleString()}`}
+                  </Button>
+                  {!acceptedTerms && (
+                    <p className="text-[11px] text-center text-amber-700 font-medium px-1 leading-snug">
+                      Please accept the sample collection T&amp;C above to proceed.
+                    </p>
+                  )}
+                </>
               )}
               {step > 0 && (
                 <Button variant="ghost" onClick={onBack} className="w-full h-10 rounded-lg text-slate-400 hover:text-slate-800 font-bold text-sm">
