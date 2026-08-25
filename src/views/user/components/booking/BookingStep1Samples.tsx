@@ -13,6 +13,8 @@ interface BookingStep1SamplesProps {
   onRemoveSample: (itemId: string, sampleId: string) => void;
   onToggleParam: (itemId: string, sampleId: string, paramName: string) => void;
   onUpdateField: (itemId: string, sampleId: string, field: keyof SampleDetail, value: string) => void;
+  onAddCustomParam?: (itemId: string, sampleId: string, customParamName: string) => void;
+  onRemoveCustomParam?: (itemId: string, sampleId: string, paramName: string) => void;
 }
 
 export function BookingStep1Samples({
@@ -22,11 +24,13 @@ export function BookingStep1Samples({
   onRemoveSample,
   onToggleParam,
   onUpdateField,
+  onAddCustomParam,
+  onRemoveCustomParam,
 }: BookingStep1SamplesProps) {
   return (
     <div className="space-y-6 animate-in slide-in-from-right-4 duration-500">
       <div className="space-y-2">
-        <h1 className="text-2xl font-bold text-slate-900">Samples & testing scope</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Samples &amp; testing scope</h1>
         <p className="text-slate-500 text-sm font-medium leading-relaxed max-w-2xl">
           You may not know every catalogue SKU — that&apos;s fine. For each parameter below, spell out which real-world product or sample we should test and what you need from the lab. Specialists use this to assign the correct method before pickup.
         </p>
@@ -62,6 +66,8 @@ export function BookingStep1Samples({
                   onRemoveSample={onRemoveSample}
                   onToggleParam={onToggleParam}
                   onUpdateField={onUpdateField}
+                  onAddCustomParam={onAddCustomParam}
+                  onRemoveCustomParam={onRemoveCustomParam}
                 />
               ))}
 

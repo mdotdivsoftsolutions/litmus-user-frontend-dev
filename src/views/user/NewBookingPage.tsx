@@ -47,6 +47,8 @@ export default function NewBookingPage() {
                 onRemoveSample={state.removeSample}
                 onToggleParam={state.toggleTestForSample}
                 onUpdateField={state.updateSampleField}
+                onAddCustomParam={state.addCustomParamToSample}
+                onRemoveCustomParam={state.removeCustomParamFromSample}
               />
             )}
 

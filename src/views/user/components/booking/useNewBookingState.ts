@@ -141,7 +141,7 @@ export function useNewBookingState() {
       const pkgTests = pkg.tests?.map((t: any) => t.testName);
       const pkgFeats = pkg.features?.map((f: string) => f);
       const testIds = (pkgTests?.length ? pkgTests : pkgFeats) || ["General Evaluation"];
-      const availableParameters = testIds.map((tid: string) => ({ name: tid, price: 0 }));
+      const availableParameters = testIds.map((tid: string) => ({ name: tid, price: 0, isBasePackageTest: true }));
       const initialSample: SampleDetail = {
         id: Math.random().toString(36).substr(2, 9),
         productName: pkg.name,
@@ -187,7 +187,7 @@ export function useNewBookingState() {
 
         const availableParameters = isTest
           ? cartItem.testId?.metadata?.parameters || []
-          : testIds.map((tid: string) => ({ name: tid, price: 0 }));
+          : testIds.map((tid: string) => ({ name: tid, price: 0, isBasePackageTest: true }));
 
         const initialSample: SampleDetail = {
           id: Math.random().toString(36).substr(2, 9),
@@ -472,6 +472,37 @@ export function useNewBookingState() {
     setItems(
       items.map((item) => {
         if (item.id !== itemId) return item;
+        const isPackage = item.category !== "Test Panel";
+        const paramObj = item.availableParameters?.find((p: any) => p.name === paramName);
+        if (isPackage && (paramObj?.isBasePackageTest || !paramObj?.isCustom)) {
+          // Bundled package tests are mandatory and cannot be removed
+          return item;
+        }
+
+        const isCurrentlySelected = item.samples
+          .find((s) => s.id === sampleId)
+          ?.selectedParameters.includes(paramName);
+
+        if (isPackage && paramObj?.isCustom && isCurrentlySelected) {
+          // Unchecking a custom parameter on a package removes it
+          const newSamples = item.samples.map((sample) => {
+            if (sample.id !== sampleId) return sample;
+            return {
+              ...sample,
+              selectedParameters: sample.selectedParameters.filter((p) => p !== paramName),
+            };
+          });
+          const isStillUsed = newSamples.some((s) => s.selectedParameters.includes(paramName));
+          const newAvailable = isStillUsed
+            ? item.availableParameters
+            : item.availableParameters?.filter((p: any) => !(p.isCustom && p.name === paramName));
+          return {
+            ...item,
+            availableParameters: newAvailable,
+            samples: newSamples,
+          };
+        }
+
         const newSamples = item.samples.map((sample) => {
           if (sample.id !== sampleId) return sample;
           const isSelected = sample.selectedParameters.includes(paramName);
@@ -479,6 +510,67 @@ export function useNewBookingState() {
           return { ...sample, selectedParameters: newParams };
         });
         return { ...item, samples: newSamples };
+      })
+    );
+  };
+
+  const addCustomParamToSample = (itemId: string, sampleId: string, customParamName: string) => {
+    const trimmed = customParamName.trim();
+    if (!trimmed) return;
+
+    setItems(
+      items.map((item) => {
+        if (item.id !== itemId) return item;
+
+        const existsInAvailable = item.availableParameters?.some(
+          (p: any) => p.name.toLowerCase() === trimmed.toLowerCase()
+        );
+        const newAvailable = existsInAvailable
+          ? item.availableParameters
+          : [...(item.availableParameters || []), { name: trimmed, price: 0, isCustom: true }];
+
+        const newSamples = item.samples.map((sample) => {
+          if (sample.id !== sampleId) return sample;
+          const alreadySelected = sample.selectedParameters.some(
+            (p) => p.toLowerCase() === trimmed.toLowerCase()
+          );
+          if (alreadySelected) return sample;
+          return {
+            ...sample,
+            selectedParameters: [...sample.selectedParameters, trimmed],
+          };
+        });
+
+        return {
+          ...item,
+          availableParameters: newAvailable,
+          samples: newSamples,
+        };
+      })
+    );
+  };
+
+  const removeCustomParamFromSample = (itemId: string, sampleId: string, paramName: string) => {
+    setItems(
+      items.map((item) => {
+        if (item.id !== itemId) return item;
+        const newSamples = item.samples.map((sample) => {
+          if (sample.id !== sampleId) return sample;
+          return {
+            ...sample,
+            selectedParameters: sample.selectedParameters.filter((p) => p !== paramName),
+          };
+        });
+        const isStillUsed = newSamples.some((s) => s.selectedParameters.includes(paramName));
+        const newAvailable = isStillUsed
+          ? item.availableParameters
+          : item.availableParameters?.filter((p: any) => !(p.isCustom && p.name === paramName));
+
+        return {
+          ...item,
+          availableParameters: newAvailable,
+          samples: newSamples,
+        };
       })
     );
   };
@@ -739,6 +831,8 @@ export function useNewBookingState() {
     addSample,
     removeSample,
     toggleTestForSample,
+    addCustomParamToSample,
+    removeCustomParamFromSample,
     updateSampleField,
     isCreatingBooking,
     isPaymentProcessing,
