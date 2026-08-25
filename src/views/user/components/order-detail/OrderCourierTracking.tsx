@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Truck, CheckCircle2, Pencil, X } from "lucide-react";
 import { toast } from "sonner";
 import { bookingApi } from "@/lib/api/booking";
+import { CourierAddressCard } from "../booking/CourierAddressCard";
 
 interface OrderCourierTrackingProps {
   bookingId: string;
@@ -70,9 +71,9 @@ export function OrderCourierTracking({ bookingId, collectionMethod, courierDetai
             <Truck className="h-5 w-5" />
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-900">Courier tracking</h2>
+            <h2 className="text-base font-bold text-slate-900">Courier Tracking & Dispatch</h2>
             <p className="text-sm text-slate-500 mt-0.5">
-              After you ship the samples, add the AWB / tracking ID here so the lab can confirm receipt.
+              Ship samples to the Litmus intake facility and add the AWB / tracking ID below.
             </p>
           </div>
         </div>
@@ -88,6 +89,8 @@ export function OrderCourierTracking({ bookingId, collectionMethod, courierDetai
           </button>
         )}
       </div>
+
+      <CourierAddressCard orderId={`BKG-${bookingId.substring(bookingId.length - 8).toUpperCase()}`} compact />
 
       {saved && !editing && (
         <div className="space-y-3">

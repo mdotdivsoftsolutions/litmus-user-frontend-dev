@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2 as CheckCircle2Icon, Building2 as BuildingIcon } from "lucide-react";
 import { CartLine } from "./booking-types";
+import { CourierAddressCard } from "./CourierAddressCard";
 
 interface BookingStep5ConfirmationProps {
   orderId: string;
@@ -123,6 +124,10 @@ export function BookingStep5Confirmation({
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="max-w-5xl mx-auto">
+        <CourierAddressCard orderId={`BKG-${orderId.substring(orderId.length - 8).toUpperCase()}`} />
       </div>
 
       <div className="flex flex-col sm:flex-row items-center gap-4 justify-center py-6">

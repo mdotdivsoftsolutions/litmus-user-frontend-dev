@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { User as UserIcon, Home as HomeIcon, Calendar as CalendarIcon, Truck, Bike, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BookingFormData, CollectionMethod } from "./booking-types";
+import { CourierAddressCard } from "./CourierAddressCard";
 
 interface BookingStep3CollectionProps {
   formData: BookingFormData;
@@ -153,14 +154,7 @@ export function BookingStep3Collection({
           </div>
 
           {formData.collectionMethod === "COURIER" && (
-            <div className="rounded-lg border border-blue-100 bg-blue-50/70 px-4 py-3 text-sm text-slate-700 space-y-1.5">
-              <p>
-                After payment, pack the samples and ship them to the lab address we share. No collection slot is required.
-              </p>
-              <p className="font-semibold text-slate-900">
-                Then open this order and add the courier tracking ID, partner name, and any shipping notes so we can confirm the shipment.
-              </p>
-            </div>
+            <CourierAddressCard />
           )}
 
           {formData.collectionMethod === "PICKUP" && enablePickupSlotSelection && (
