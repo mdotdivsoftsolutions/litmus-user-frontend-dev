@@ -155,61 +155,65 @@ export default function TestsListingPage() {
         />
       </div>
 
-      {/* 4. SUB-CATEGORIES STRIP (Dynamically displays when active category has subcategories) */}
-      {selectedCategory !== "All" && activeSubcategories.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 -mt-2 mb-6" data-aos="fade-up">
-          <div className="bg-white rounded-2xl p-3 border border-slate-200/80 shadow-xs flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
-            <span className="text-xs font-black text-slate-400 uppercase tracking-widest px-2 shrink-0">
-              Subcategories:
-            </span>
-            <button
-              onClick={() => setSelectedSubcategory("All")}
-              className={cn(
-                "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer",
-                selectedSubcategory === "All"
-                  ? "bg-brand-primary text-white shadow-sm"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
-              )}
-            >
-              All {activeCategoryName}
-            </button>
-            {activeSubcategories.map((sub: any, idx: number) => {
-              const isSubActive = selectedSubcategory === sub.name;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedSubcategory(sub.name)}
-                  className={cn(
-                    "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5",
-                    isSubActive
-                      ? "bg-brand-primary text-white shadow-sm"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
-                  )}
-                >
-                  <span>{sub.name}</span>
-                </button>
-              );
-            })}
+      {/* 4 & 5. TESTS SECTION (Sticky Subcategories Bar is bounded strictly to this section) */}
+      <section className="relative">
+        {/* SUB-CATEGORIES STRIP (Dynamically displays and sticks under navbar ONLY while scrolling test section) */}
+        {selectedCategory !== "All" && activeSubcategories.length > 0 && (
+          <div className="sticky top-[68px] md:top-[94px] z-30 max-w-7xl mx-auto px-4 -mt-2 mb-6 pointer-events-none">
+            <div className="pointer-events-auto bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 border border-slate-200/90 shadow-md flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden transition-all">
+              <span className="text-xs font-black text-slate-500 uppercase tracking-wider px-2 shrink-0 flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-brand-primary" />
+                Subcategories:
+              </span>
+              <button
+                onClick={() => setSelectedSubcategory("All")}
+                className={cn(
+                  "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer shadow-2xs",
+                  selectedSubcategory === "All"
+                    ? "bg-brand-primary text-white shadow-xs"
+                    : "bg-slate-100/90 text-slate-700 hover:bg-slate-200"
+                )}
+              >
+                All {activeCategoryName}
+              </button>
+              {activeSubcategories.map((sub: any, idx: number) => {
+                const isSubActive = selectedSubcategory === sub.name;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedSubcategory(sub.name)}
+                    className={cn(
+                      "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 shadow-2xs",
+                      isSubActive
+                        ? "bg-brand-primary text-white shadow-xs"
+                        : "bg-slate-100/90 text-slate-700 hover:bg-slate-200"
+                    )}
+                  >
+                    <span>{sub.name}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* 5. MOST BOOKED DIAGNOSTICS */}
-      <div ref={resultsRef} className="scroll-mt-6">
-        <MostBookedTests
-          tests={formattedTests}
-          discountPct={discountPct}
-          selectedCategory={activeCategoryName}
-          setSelectedCategory={handleCategoryChange}
-          categories={categoriesData}
-          iconMap={iconMap}
-          cn={cn}
-          isLoading={testsLoading}
-          hasMore={hasNextPage}
-          onLoadMore={() => fetchNextPage()}
-          isFetchingNextPage={isFetchingNextPage}
-        />
-      </div>
+        {/* 5. MOST BOOKED DIAGNOSTICS */}
+        <div ref={resultsRef} className="scroll-mt-6">
+          <MostBookedTests
+            tests={formattedTests}
+            discountPct={discountPct}
+            selectedCategory={activeCategoryName}
+            setSelectedCategory={handleCategoryChange}
+            categories={categoriesData}
+            iconMap={iconMap}
+            cn={cn}
+            isLoading={testsLoading}
+            hasMore={hasNextPage}
+            onLoadMore={() => fetchNextPage()}
+            isFetchingNextPage={isFetchingNextPage}
+          />
+        </div>
+      </section>
 
       {/* TRUST & ORDERING SECTION (Customized for Litmus) */}
       <div suppressHydrationWarning data-aos="fade-up">
