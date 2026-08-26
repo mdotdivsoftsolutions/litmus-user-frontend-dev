@@ -34,6 +34,7 @@ export default function TestsListingPage() {
   const initialSearch = searchParams?.get("search") || "";
   const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || "All");
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string>("All");
   const [selectedType, setSelectedType] = useState("");
   const [cartItems, setCartItems] = useState<Record<string, number>>({});
   const [visibleItems, setVisibleItems] = useState(12);
@@ -46,21 +47,26 @@ export default function TestsListingPage() {
   const rawData = catRes?.data?.data || catRes?.data || catRes || [];
   const categoriesData = Array.isArray(rawData) ? rawData : [];
 
-  let selectedCategoryId = undefined;
+  let selectedCategoryId: string | undefined = undefined;
   let activeCategoryName = selectedCategory;
 
-  if (selectedCategory !== "All") {
+  const activeCategoryObj = categoriesData.find((c: any) => {
+    if (selectedCategory === "All") return false;
     const isId = /^[0-9a-fA-F]{24}$/.test(selectedCategory);
-    const matchedCategory = categoriesData.find((c: any) => isId ? c._id === selectedCategory : c.name === selectedCategory);
-    
-    if (matchedCategory) {
-      selectedCategoryId = matchedCategory._id;
-      activeCategoryName = matchedCategory.name;
-    } else if (isId) {
-      selectedCategoryId = selectedCategory; // Fallback to use the ID directly if category data hasn't loaded yet
-    }
+    return isId ? c._id === selectedCategory : c.name === selectedCategory;
+  });
+
+  if (activeCategoryObj) {
+    selectedCategoryId = activeCategoryObj._id;
+    activeCategoryName = activeCategoryObj.name;
+  } else if (selectedCategory !== "All" && /^[0-9a-fA-F]{24}$/.test(selectedCategory)) {
+    selectedCategoryId = selectedCategory;
   }
+
+  const activeSubcategories = activeCategoryObj?.subcategories || [];
+
   const debouncedSearch = useDebounce(search, 300);
+  const activeSubcategoryParam = selectedSubcategory !== "All" ? selectedSubcategory : undefined;
 
   const { 
     data: testsRes, 
@@ -69,8 +75,14 @@ export default function TestsListingPage() {
     hasNextPage,
     isFetchingNextPage
   } = useInfiniteQuery({
-    queryKey: ['tests', debouncedSearch, selectedCategoryId],
-    queryFn: ({ pageParam }) => testApi.getTests({ search: debouncedSearch, category: selectedCategoryId, page: pageParam, limit: 10 }),
+    queryKey: ['tests', debouncedSearch, selectedCategoryId, activeSubcategoryParam],
+    queryFn: ({ pageParam }) => testApi.getTests({
+      search: debouncedSearch,
+      category: selectedCategoryId,
+      subcategory: activeSubcategoryParam,
+      page: pageParam,
+      limit: 12
+    }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.page < lastPage.pages ? lastPage.page + 1 : undefined,
   });
@@ -91,6 +103,7 @@ export default function TestsListingPage() {
 
   const handleCategoryChange = (cat: string) => {
     setSelectedCategory(cat);
+    setSelectedSubcategory("All");
     setVisibleItems(12);
   };
 
@@ -106,7 +119,8 @@ export default function TestsListingPage() {
   }); };
 
   const filters = [
-    ...(selectedCategory && selectedCategory !== "All" ? [{ label: selectedCategory, clear: () => setSelectedCategory("All") }] : []),
+    ...(selectedCategory && selectedCategory !== "All" ? [{ label: selectedCategory, clear: () => { setSelectedCategory("All"); setSelectedSubcategory("All"); } }] : []),
+    ...(selectedSubcategory && selectedSubcategory !== "All" ? [{ label: selectedSubcategory, clear: () => setSelectedSubcategory("All") }] : []),
     ...(selectedType ? [{ label: selectedType, clear: () => setSelectedType("") }] : []),
   ];
 
@@ -140,6 +154,45 @@ export default function TestsListingPage() {
           isLoading={catLoading}
         />
       </div>
+
+      {/* 4. SUB-CATEGORIES STRIP (Dynamically displays when active category has subcategories) */}
+      {selectedCategory !== "All" && activeSubcategories.length > 0 && (
+        <div className="max-w-7xl mx-auto px-4 -mt-2 mb-6" data-aos="fade-up">
+          <div className="bg-white rounded-2xl p-3 border border-slate-200/80 shadow-xs flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+            <span className="text-xs font-black text-slate-400 uppercase tracking-widest px-2 shrink-0">
+              Subcategories:
+            </span>
+            <button
+              onClick={() => setSelectedSubcategory("All")}
+              className={cn(
+                "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer",
+                selectedSubcategory === "All"
+                  ? "bg-brand-primary text-white shadow-sm"
+                  : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
+              )}
+            >
+              All {activeCategoryName}
+            </button>
+            {activeSubcategories.map((sub: any, idx: number) => {
+              const isSubActive = selectedSubcategory === sub.name;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedSubcategory(sub.name)}
+                  className={cn(
+                    "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5",
+                    isSubActive
+                      ? "bg-brand-primary text-white shadow-sm"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
+                  )}
+                >
+                  <span>{sub.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* 5. MOST BOOKED DIAGNOSTICS */}
       <div ref={resultsRef} className="scroll-mt-6">
