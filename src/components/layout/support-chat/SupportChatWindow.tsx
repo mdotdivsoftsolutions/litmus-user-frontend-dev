@@ -50,16 +50,27 @@ export function SupportChatWindow({
 }: SupportChatWindowProps) {
   const [activeTab, setActiveTab] = useState<"bot" | "live">("bot");
   const [showGuestForm, setShowGuestForm] = useState(false);
+  const [showConnectConfirm, setShowConnectConfirm] = useState(false);
 
   // Switch to live tab automatically if live chat is queued or active
   useEffect(() => {
     if (chatStatus === "QUEUED" || chatStatus === "ACTIVE") {
       setActiveTab("live");
       setShowGuestForm(false);
+      setShowConnectConfirm(false);
     }
   }, [chatStatus]);
 
-  const handleStartLiveRequest = () => {
+  const handleLiveTabClick = () => {
+    if (chatStatus === "BOT") {
+      setShowConnectConfirm(true);
+    } else {
+      setActiveTab("live");
+    }
+  };
+
+  const handleConfirmConnectLive = () => {
+    setShowConnectConfirm(false);
     if (currentUser) {
       onRequestLiveSupport();
       setActiveTab("live");
@@ -87,7 +98,7 @@ export function SupportChatWindow({
     >
       <Card
         data-lenis-prevent="true"
-        className="rounded-3xl border border-slate-200 bg-white/95 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col h-full overscroll-contain"
+        className="rounded-3xl border border-slate-200 bg-white/95 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col h-full overscroll-contain relative"
       >
         {/* Header */}
         <CardHeader className="bg-white p-4 border-b border-slate-100 shrink-0 relative">
@@ -116,7 +127,7 @@ export function SupportChatWindow({
               <button
                 type="button"
                 onClick={onClose}
-                className="h-8 w-8 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors"
+                className="h-8 w-8 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
                 aria-label="Close chat"
               >
                 <X className="h-4 w-4" />
@@ -130,11 +141,12 @@ export function SupportChatWindow({
               type="button"
               onClick={() => {
                 setShowGuestForm(false);
+                setShowConnectConfirm(false);
                 setActiveTab("bot");
               }}
               className={cn(
-                "flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all",
-                activeTab === "bot" && !showGuestForm
+                "flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer",
+                activeTab === "bot" && !showGuestForm && !showConnectConfirm
                   ? "bg-white text-brand-action shadow-sm border border-slate-200/50"
                   : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
               )}
@@ -145,16 +157,10 @@ export function SupportChatWindow({
 
             <button
               type="button"
-              onClick={() => {
-                if (chatStatus === "BOT") {
-                  handleStartLiveRequest();
-                } else {
-                  setActiveTab("live");
-                }
-              }}
+              onClick={handleLiveTabClick}
               className={cn(
-                "flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all relative",
-                activeTab === "live" || showGuestForm
+                "flex items-center justify-center gap-1.5 py-1.5 rounded-lg text-xs font-bold transition-all relative cursor-pointer",
+                activeTab === "live" || showGuestForm || showConnectConfirm
                   ? "bg-white text-brand-action shadow-sm border border-slate-200/50"
                   : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
               )}
@@ -170,10 +176,54 @@ export function SupportChatWindow({
 
         {/* Content Body */}
         <div className="flex-1 overflow-hidden relative flex flex-col min-h-0">
-          {showGuestForm ? (
+          {showConnectConfirm ? (
+            /* Confirmation Dialog Before Connecting Live Support */
+            <div className="flex flex-col items-center justify-center h-full p-6 text-center bg-white">
+              <div className="relative mb-4">
+                <div className="h-16 w-16 rounded-3xl bg-brand-action/10 border border-brand-action/20 flex items-center justify-center text-brand-action shadow-sm">
+                  <Headphones className="h-8 w-8 animate-pulse" />
+                </div>
+                <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center shadow-xs">
+                  <div className="h-2 w-2 rounded-full bg-white animate-ping" />
+                </div>
+              </div>
+
+              <h3 className="text-base font-bold text-slate-900 mb-1.5">
+                Connect with Live Support?
+              </h3>
+              <p className="text-xs text-slate-500 max-w-[260px] leading-relaxed mb-6">
+                Can we connect you to our live specialist team? A certified diagnostic expert is ready to assist you directly.
+              </p>
+
+              <div className="w-full space-y-2.5">
+                <button
+                  type="button"
+                  onClick={handleConfirmConnectLive}
+                  className="w-full h-10 rounded-xl bg-brand-action hover:bg-brand-action-hover text-white text-xs font-bold transition-all shadow-md shadow-brand-action/20 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Headphones className="h-4 w-4" />
+                  <span>Yes, Connect to Live Team</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowConnectConfirm(false);
+                    setActiveTab("bot");
+                  }}
+                  className="w-full h-10 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-600 text-xs font-semibold transition-all cursor-pointer"
+                >
+                  Stay with AI Assistant
+                </button>
+              </div>
+            </div>
+          ) : showGuestForm ? (
             <GuestAuthForm
               onSubmit={handleGuestSubmit}
-              onCancel={() => setShowGuestForm(false)}
+              onCancel={() => {
+                setShowGuestForm(false);
+                setActiveTab("bot");
+              }}
             />
           ) : activeTab === "live" ? (
             <LiveChatView
@@ -197,7 +247,7 @@ export function SupportChatWindow({
             <BotChatView
               messages={messages}
               onSendMessage={onSendBotMessage}
-              onRequestLiveSupport={handleStartLiveRequest}
+              onRequestLiveSupport={() => setShowConnectConfirm(true)}
               hasOnlineAgents={hasOnlineAgents}
             />
           )}

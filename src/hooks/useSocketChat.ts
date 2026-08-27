@@ -124,7 +124,23 @@ export function useSocketChat(currentUser?: any) {
             setHasOnlineAgents(Boolean(res.hasOnlineAgents));
 
             if (res.transcript && res.transcript.length > 0) {
-              setMessages(res.transcript);
+              const enriched = res.transcript.map((m: any, idx: number) => {
+                if (idx === 0 && m.senderType === "BOT" && (!m.actionSuggestions || m.actionSuggestions.length === 0)) {
+                  return {
+                    ...m,
+                    actionSuggestions: [
+                      { label: "📋 How do I book a test?", action: "ask_faq", payload: "book_test" },
+                      { label: "🔬 What can I test?", action: "ask_faq", payload: "what_can_i_test" },
+                      { label: "⚖️ How much sample is required?", action: "ask_faq", payload: "sample_quantity" },
+                      { label: "📍 Track my sample", action: "ask_faq", payload: "track_sample" },
+                      { label: "⏱️ When will I get my report?", action: "ask_faq", payload: "report_timeline" },
+                      { label: "💬 Talk to Support", action: "request_live_support" },
+                    ],
+                  };
+                }
+                return m;
+              });
+              setMessages(enriched);
             } else {
               // Add initial welcome message if no history
               setMessages([
@@ -139,7 +155,7 @@ export function useSocketChat(currentUser?: any) {
                     { label: "⚖️ How much sample is required?", action: "ask_faq", payload: "sample_quantity" },
                     { label: "📍 Track my sample", action: "ask_faq", payload: "track_sample" },
                     { label: "⏱️ When will I get my report?", action: "ask_faq", payload: "report_timeline" },
-                    { label: "💬 Talk to Support", action: "ask_faq", payload: "talk_to_support" },
+                    { label: "💬 Talk to Support", action: "request_live_support" },
                   ],
                   createdAt: new Date().toISOString(),
                 },
@@ -216,6 +232,11 @@ export function useSocketChat(currentUser?: any) {
       if (data?.showRatingPrompt) {
         setShowRatingPrompt(true);
       }
+    });
+
+    newSocket.on("chat_cancelled", () => {
+      setChatStatus("BOT");
+      setAgentDisconnectedAlert(false);
     });
 
     newSocket.on("agents_online_status", (data: { hasOnline: boolean }) => {
@@ -410,7 +431,7 @@ export function useSocketChat(currentUser?: any) {
   // ── Cancel Live Support Request ───────────────────────────────────────────
   const cancelLiveSupport = useCallback(() => {
     if (!socket || !sessionId) return;
-    socket.emit("close_chat", { sessionId }, () => {
+    socket.emit("cancel_live_support", { sessionId }, () => {
       setChatStatus("BOT");
     });
   }, [socket, sessionId]);

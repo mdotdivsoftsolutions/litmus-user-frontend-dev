@@ -218,13 +218,23 @@ export function LiveChatView({
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onBackToBot}
-          className="text-[10px] text-slate-600 hover:text-brand-action font-bold px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 transition-colors shadow-2xs"
-        >
-          AI Assistant Mode
-        </button>
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={onCancelRequest || onBackToBot}
+            className="text-[10px] text-rose-600 hover:text-rose-700 font-bold px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-colors shadow-2xs cursor-pointer"
+            title="End Live Consultation & Return to AI Assistant"
+          >
+            End Chat
+          </button>
+          <button
+            type="button"
+            onClick={onBackToBot}
+            className="text-[10px] text-slate-600 hover:text-brand-action font-bold px-2 py-1 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 transition-colors shadow-2xs cursor-pointer"
+          >
+            AI Mode
+          </button>
+        </div>
       </div>
 
       {/* Mid-Chat Agent Disconnect Alert with 1-Click Requeue */}

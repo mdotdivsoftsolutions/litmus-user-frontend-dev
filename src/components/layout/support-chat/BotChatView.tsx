@@ -104,17 +104,29 @@ export function BotChatView({
               </div>
 
               {/* Interactive Quick Reply Suggestion Chips */}
-              {isBot && msg.actionSuggestions && msg.actionSuggestions.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 pt-1 pl-1 max-w-[90%]">
-                  {msg.actionSuggestions.map((suggestion, chipIdx) => (
+              {isBot && (
+                <div className="flex flex-wrap gap-1.5 pt-1 pl-1 max-w-[95%]">
+                  {(msg.actionSuggestions && msg.actionSuggestions.length > 0
+                    ? msg.actionSuggestions
+                    : (index === 0 || index === messages.length - 1)
+                      ? [
+                          { label: "📋 How do I book a test?", action: "ask_faq", payload: "book_test" },
+                          { label: "🔬 What can I test?", action: "ask_faq", payload: "what_can_i_test" },
+                          { label: "⚖️ How much sample is required?", action: "ask_faq", payload: "sample_quantity" },
+                          { label: "📍 Track my sample", action: "ask_faq", payload: "track_sample" },
+                          { label: "⏱️ When will I get my report?", action: "ask_faq", payload: "report_timeline" },
+                          { label: "💬 Connect with Live Specialist", action: "request_live_support" },
+                        ]
+                      : []
+                  ).map((suggestion, chipIdx) => (
                     <button
                       key={chipIdx}
                       type="button"
                       onClick={() => handleChipClick(suggestion)}
                       className={cn(
-                        "px-3 py-1.5 rounded-full text-[10px] font-semibold border transition-all hover:scale-105 active:scale-95 whitespace-nowrap shadow-2xs flex items-center gap-1",
-                        index === 0
-                          ? "bg-brand-action/5 border-brand-action/25 text-brand-action hover:bg-brand-action/10 font-bold"
+                        "px-3 py-1.5 rounded-full text-[10px] font-semibold border transition-all hover:scale-105 active:scale-95 whitespace-nowrap shadow-2xs flex items-center gap-1 cursor-pointer",
+                        suggestion.action === "request_live_support"
+                          ? "bg-brand-action/10 border-brand-action/30 text-brand-action hover:bg-brand-action/20 font-bold"
                           : "bg-white border-slate-200 text-slate-700 hover:border-brand-action/30 hover:bg-brand-action/5 hover:text-brand-action"
                       )}
                     >
