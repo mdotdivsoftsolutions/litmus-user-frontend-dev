@@ -136,18 +136,18 @@ export function CourierAddressCard({ className, orderId, compact = false }: Cour
         <div className="space-y-2 bg-white/95 p-3.5 rounded-lg border border-emerald-100/90 shadow-2xs flex flex-col justify-center text-xs">
           <div className="flex items-center gap-2 text-slate-700 font-medium">
             <Phone className="h-3.5 w-3.5 text-brand-action shrink-0" />
-            <span>Facility Phone: </span>
-            <span className="font-bold text-slate-900">{addr.phone}</span>
+            <span className="shrink-0 text-slate-600">Phone:</span>
+            <span className="font-bold text-slate-900 whitespace-nowrap">{addr.phone}</span>
           </div>
           <div className="flex items-center gap-2 text-slate-700 font-medium">
             <Mail className="h-3.5 w-3.5 text-brand-action shrink-0" />
-            <span>Logistics Desk: </span>
-            <span className="font-bold text-slate-900">{addr.email}</span>
+            <span className="shrink-0 text-slate-600">Email:</span>
+            <span className="font-bold text-slate-900 truncate">{addr.email}</span>
           </div>
           <div className="flex items-center gap-2 text-slate-700 font-medium">
             <Clock className="h-3.5 w-3.5 text-brand-action shrink-0" />
-            <span>Receiving Hours: </span>
-            <span className="font-semibold text-slate-800">{addr.workingHours}</span>
+            <span className="shrink-0 text-slate-600">Intake:</span>
+            <span className="font-semibold text-slate-800 whitespace-nowrap">{addr.workingHours}</span>
           </div>
         </div>
       </div>

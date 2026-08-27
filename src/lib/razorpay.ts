@@ -1,3 +1,5 @@
+import { LITMUS_LOGO_BASE64 } from "@/constants/brandLogo";
+
 /**
  * razorpay.ts — Utility to lazily load the Razorpay Checkout SDK and open the payment modal.
  *
@@ -98,8 +100,8 @@ export async function openRazorpayCheckout(options: RazorpayPaymentOptions): Pro
     currency: options.currency,
     order_id: options.orderId,
     name: 'Litmus Labs',
-    description: 'Food Lab Testing Services',
-    image: '/logo.webp', // your logo — shown in modal
+    description: 'Food & Diagnostic Testing Services',
+    image: LITMUS_LOGO_BASE64, // embedded base64 data URI so it loads immediately in Razorpay iframe without 404
     prefill: {
       name: options.prefill?.name || '',
       email: options.prefill?.email || '',
@@ -109,7 +111,7 @@ export async function openRazorpayCheckout(options: RazorpayPaymentOptions): Pro
       bookingId: options.bookingId,
     },
     theme: {
-      color: '#0ea5e9', // Litmus brand color
+      color: '#059669', // Litmus brand action color
     },
     modal: {
       ondismiss: () => {
