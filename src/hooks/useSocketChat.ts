@@ -304,18 +304,25 @@ export function useSocketChat(currentUser?: any) {
       // If session was in BOT status, automatically transition to live queue
       if (chatStatus === "BOT") {
         setChatStatus("QUEUED");
+        const isRegistered = Boolean(currentUser && (currentUser._id || currentUser.id));
         socket.emit("request_live_support", {
           sessionId,
-          guestInfo: currentUser
+          guestInfo: isRegistered
             ? {
-                name: `${currentUser.firstName || ""} ${currentUser.lastName || ""}`.trim(),
+                guestId: guestInfo?.guestId || "",
+                name: `${currentUser.firstName || ""} ${currentUser.lastName || ""}`.trim() || currentUser.email,
                 phone: currentUser.phone,
                 email: currentUser.email,
               }
-            : guestInfo || undefined,
+            : {
+                guestId: guestInfo?.guestId || "",
+                name: guestInfo?.name,
+                phone: guestInfo?.phone,
+                email: guestInfo?.email,
+              },
           initialQuery: text,
-          userId: currentUser?._id || currentUser?.id,
-          userType: currentUser ? "REGISTERED" : "GUEST",
+          userId: isRegistered ? (currentUser._id || currentUser.id) : undefined,
+          userType: isRegistered ? "REGISTERED" : "GUEST",
         });
       }
 
@@ -340,7 +347,7 @@ export function useSocketChat(currentUser?: any) {
         }
       );
     },
-    [socket, sessionId, chatStatus, guestInfo]
+    [socket, sessionId, chatStatus, guestInfo, currentUser]
   );
 
   // ── Request Live Support ──────────────────────────────────────────────────
@@ -348,18 +355,28 @@ export function useSocketChat(currentUser?: any) {
     (info?: { name?: string; phone?: string; email?: string }) => {
       if (!socket || !sessionId) return;
 
-      const customerFullName = currentUser
+      const isRegistered = Boolean(currentUser && (currentUser._id || currentUser.id));
+
+      const customerFullName = isRegistered
         ? `${currentUser.firstName || ""} ${currentUser.lastName || ""}`.trim()
         : undefined;
 
-      const mergedGuestInfo = {
-        name: info?.name || customerFullName || guestInfo?.name,
-        phone: info?.phone || currentUser?.phone || guestInfo?.phone,
-        email: info?.email || currentUser?.email || guestInfo?.email,
-      };
+      const mergedGuestInfo = isRegistered
+        ? {
+            guestId: guestInfo?.guestId || "",
+            name: customerFullName || currentUser?.email || "Registered Client",
+            phone: currentUser?.phone,
+            email: currentUser?.email,
+          }
+        : {
+            guestId: guestInfo?.guestId || "",
+            name: info?.name?.trim() || "Guest User",
+            phone: info?.phone?.trim(),
+            email: info?.email?.trim(),
+          };
 
-      // Update local storage with user contact details
-      if (guestInfo) {
+      // Only save to localStorage if guest info was specifically entered for guest
+      if (!isRegistered && info?.name) {
         const updated = { ...guestInfo, ...mergedGuestInfo };
         setGuestInfo(updated);
         try {
@@ -374,8 +391,8 @@ export function useSocketChat(currentUser?: any) {
         {
           sessionId,
           guestInfo: mergedGuestInfo,
-          userId: currentUser?._id || currentUser?.id,
-          userType: currentUser ? "REGISTERED" : "GUEST",
+          userId: isRegistered ? (currentUser._id || currentUser.id) : undefined,
+          userType: isRegistered ? "REGISTERED" : "GUEST",
         },
         (res: any) => {
           setIsSubmitting(false);

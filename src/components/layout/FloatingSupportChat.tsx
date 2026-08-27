@@ -18,9 +18,8 @@ export function FloatingSupportChat() {
     staleTime: 5 * 60 * 1000,
   });
 
-  const rawUser = userData?.data || userData?.user || null;
-  // Only genuine consumer users (role 'USER') are treated as registered customer accounts in frontend chat
-  const currentUser = rawUser && (rawUser.role === "USER" || !rawUser.role) ? rawUser : null;
+  const rawUser = userData?.data || userData?.user || (userData?._id ? userData : null);
+  const currentUser = rawUser && (rawUser._id || rawUser.id) ? rawUser : null;
 
   const {
     chatStatus,
