@@ -134,11 +134,12 @@ export function useSocketChat(currentUser?: any) {
                   senderName: "Litmus Intelligence",
                   text: "Hello! Welcome to Litmus Diagnostic & Food Testing Assistance. How can we assist you today?",
                   actionSuggestions: [
-                    { label: "🔬 Food Testing Services", action: "ask_faq", payload: "food_testing_overview" },
-                    { label: "🥛 Dairy & Milk Quality", action: "ask_category", payload: "dairy" },
-                    { label: "📦 How to Send Samples", action: "ask_faq", payload: "sample_submission" },
-                    { label: "⏱️ Turnaround Times", action: "ask_faq", payload: "turnaround_time" },
-                    { label: "👨‍🔬 Talk to Live Specialist", action: "request_live_support" },
+                    { label: "📋 How do I book a test?", action: "ask_faq", payload: "book_test" },
+                    { label: "🔬 What can I test?", action: "ask_faq", payload: "what_can_i_test" },
+                    { label: "⚖️ How much sample is required?", action: "ask_faq", payload: "sample_quantity" },
+                    { label: "📍 Track my sample", action: "ask_faq", payload: "track_sample" },
+                    { label: "⏱️ When will I get my report?", action: "ask_faq", payload: "report_timeline" },
+                    { label: "💬 Talk to Support", action: "ask_faq", payload: "talk_to_support" },
                   ],
                   createdAt: new Date().toISOString(),
                 },
@@ -284,8 +285,16 @@ export function useSocketChat(currentUser?: any) {
         setChatStatus("QUEUED");
         socket.emit("request_live_support", {
           sessionId,
-          guestInfo: guestInfo || undefined,
+          guestInfo: currentUser
+            ? {
+                name: `${currentUser.firstName || ""} ${currentUser.lastName || ""}`.trim(),
+                phone: currentUser.phone,
+                email: currentUser.email,
+              }
+            : guestInfo || undefined,
           initialQuery: text,
+          userId: currentUser?._id || currentUser?.id,
+          userType: currentUser ? "REGISTERED" : "GUEST",
         });
       }
 
@@ -318,10 +327,14 @@ export function useSocketChat(currentUser?: any) {
     (info?: { name?: string; phone?: string; email?: string }) => {
       if (!socket || !sessionId) return;
 
+      const customerFullName = currentUser
+        ? `${currentUser.firstName || ""} ${currentUser.lastName || ""}`.trim()
+        : undefined;
+
       const mergedGuestInfo = {
-        name: info?.name || guestInfo?.name,
-        phone: info?.phone || guestInfo?.phone,
-        email: info?.email || guestInfo?.email,
+        name: info?.name || customerFullName || guestInfo?.name,
+        phone: info?.phone || currentUser?.phone || guestInfo?.phone,
+        email: info?.email || currentUser?.email || guestInfo?.email,
       };
 
       // Update local storage with user contact details
@@ -335,14 +348,23 @@ export function useSocketChat(currentUser?: any) {
 
       setIsSubmitting(true);
       setChatStatus("QUEUED");
-      socket.emit("request_live_support", { sessionId, guestInfo: mergedGuestInfo }, (res: any) => {
-        setIsSubmitting(false);
-        if (res?.success) {
-          setChatStatus("QUEUED");
+      socket.emit(
+        "request_live_support",
+        {
+          sessionId,
+          guestInfo: mergedGuestInfo,
+          userId: currentUser?._id || currentUser?.id,
+          userType: currentUser ? "REGISTERED" : "GUEST",
+        },
+        (res: any) => {
+          setIsSubmitting(false);
+          if (res?.success) {
+            setChatStatus("QUEUED");
+          }
         }
-      });
+      );
     },
-    [socket, sessionId, guestInfo]
+    [socket, sessionId, guestInfo, currentUser]
   );
 
   // ── Emit Typing Indicator ─────────────────────────────────────────────────
