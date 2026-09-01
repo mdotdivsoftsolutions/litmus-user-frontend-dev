@@ -18,32 +18,30 @@ interface CategoryStripProps {
 }
 
 function StripCardImage({ src, alt }: { src?: string; alt: string }) {
-  const [imgSrc, setImgSrc] = useState(src || DEFAULT_FALLBACK);
   const [hasError, setHasError] = useState(false);
-
-  if (hasError) {
-    return (
-      <div className="absolute inset-0 bg-slate-800 flex items-center justify-center">
-        <ImageIcon className="h-6 w-6 text-slate-500" />
-      </div>
-    );
-  }
+  const [isLoaded, setIsLoaded] = useState(false);
+  const effectiveSrc = (!hasError && src) ? src : DEFAULT_FALLBACK;
 
   return (
-    <img
-      src={imgSrc}
-      loading="lazy"
-      decoding="async"
-      className="absolute inset-0 w-full h-full object-cover transform-gpu will-change-transform group-hover:scale-105 transition-transform duration-300 ease-out"
-      alt={alt}
-      onError={() => {
-        if (imgSrc !== DEFAULT_FALLBACK) {
-          setImgSrc(DEFAULT_FALLBACK);
-        } else {
-          setHasError(true);
-        }
-      }}
-    />
+    <div className="absolute inset-0 bg-slate-800 overflow-hidden">
+      {!isLoaded && (
+        <div className="absolute inset-0 bg-slate-800 animate-pulse flex items-center justify-center">
+          <ImageIcon className="h-6 w-6 text-slate-600" />
+        </div>
+      )}
+      <img
+        src={effectiveSrc}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setHasError(true)}
+        className={cn(
+          "absolute inset-0 w-full h-full object-cover transform-gpu will-change-transform group-hover:scale-105 transition-all duration-300 ease-out",
+          isLoaded ? "opacity-100" : "opacity-0"
+        )}
+        alt={alt}
+      />
+    </div>
   );
 }
 
