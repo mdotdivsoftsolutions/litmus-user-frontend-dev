@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { SectionHeader } from "./SectionHeader";
 
@@ -29,6 +30,8 @@ function PastelCategoryCard({
   image: string;
   tint: string;
 }) {
+  const [imgSrc, setImgSrc] = useState(image || FALLBACK_IMAGE);
+
   return (
     <Link
       href={href}
@@ -38,11 +41,13 @@ function PastelCategoryCard({
         className={`relative flex h-[120px] items-center justify-center overflow-hidden sm:h-[132px] ${tint}`}
       >
         <img
-          src={image || FALLBACK_IMAGE}
-          alt=""
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 "
-          onError={(e) => {
-            (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE;
+          src={imgSrc}
+          alt={title}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover transform-gpu will-change-transform transition-transform duration-300 ease-out group-hover:scale-105"
+          onError={() => {
+            setImgSrc(FALLBACK_IMAGE);
           }}
         />
       </div>

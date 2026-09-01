@@ -1,27 +1,21 @@
 "use client";
 
-import { useState, useRef, type MouseEvent } from "react";
+import { useState, useRef, useMemo, type MouseEvent } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
-
 import { useSearchParams } from "next/navigation";
 import { Package, Milk, Coffee, Wheat, Flame, Drumstick, Droplets, Cookie } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 import { testApi } from "@/lib/api/test";
 import { categoryApi } from "@/lib/api/category";
-import { Skeleton } from "@/components/ui/skeleton";
 
 // Sub-components
 import { TestsHero } from "./components/tests-listing/TestsHero";
 import { TestsStatsStrip } from "./components/tests-listing/TestsStatsStrip";
 import { MostBookedTests } from "./components/tests-listing/MostBookedTests";
 import { CategoryStrip } from "./components/tests-listing/CategoryStrip";
-import { TestsGrid } from "./components/tests-listing/TestsGrid";
 import { PromoBanner } from "./components/home/PromoBanner";
 import { TrustAndOrdering } from "./components/tests-listing/TrustAndOrdering";
-
-const testTypes = ["Physical", "Chemical", "Microbiological"];
-const categoryPills = ["All", "Dairy", "Beverages", "Grains & Cereals", "Spices", "Meat & Poultry", "Oils & Fats", "Processed Foods", "Snacks"];
 
 const iconMap: Record<string, React.ElementType> = {
   milk: Milk, coffee: Coffee, wheat: Wheat, flame: Flame,
@@ -35,35 +29,43 @@ export default function TestsListingPage() {
   const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || "All");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("All");
-  const [selectedType, setSelectedType] = useState("");
-  const [cartItems, setCartItems] = useState<Record<string, number>>({});
   const [visibleItems, setVisibleItems] = useState(12);
 
   const { data: catRes, isLoading: catLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: () => categoryApi.getCategories(),
+    staleTime: 5 * 60 * 1000,
+    gcTime: 15 * 60 * 1000,
   });
 
-  const rawData = catRes?.data?.data || catRes?.data || catRes || [];
-  const categoriesData = Array.isArray(rawData) ? rawData : [];
+  const categoriesData = useMemo(() => {
+    const rawData = catRes?.data?.data || catRes?.data || catRes || [];
+    return Array.isArray(rawData) ? rawData : [];
+  }, [catRes]);
 
-  let selectedCategoryId: string | undefined = undefined;
-  let activeCategoryName = selectedCategory;
+  const { selectedCategoryId, activeCategoryName, activeSubcategories } = useMemo(() => {
+    let id: string | undefined = undefined;
+    let name = selectedCategory;
 
-  const activeCategoryObj = categoriesData.find((c: any) => {
-    if (selectedCategory === "All") return false;
-    const isId = /^[0-9a-fA-F]{24}$/.test(selectedCategory);
-    return isId ? c._id === selectedCategory : c.name === selectedCategory;
-  });
+    const activeObj = categoriesData.find((c: any) => {
+      if (selectedCategory === "All") return false;
+      const isId = /^[0-9a-fA-F]{24}$/.test(selectedCategory);
+      return isId ? c._id === selectedCategory : c.name === selectedCategory;
+    });
 
-  if (activeCategoryObj) {
-    selectedCategoryId = activeCategoryObj._id;
-    activeCategoryName = activeCategoryObj.name;
-  } else if (selectedCategory !== "All" && /^[0-9a-fA-F]{24}$/.test(selectedCategory)) {
-    selectedCategoryId = selectedCategory;
-  }
+    if (activeObj) {
+      id = activeObj._id;
+      name = activeObj.name;
+    } else if (selectedCategory !== "All" && /^[0-9a-fA-F]{24}$/.test(selectedCategory)) {
+      id = selectedCategory;
+    }
 
-  const activeSubcategories = activeCategoryObj?.subcategories || [];
+    return {
+      selectedCategoryId: id,
+      activeCategoryName: name,
+      activeSubcategories: activeObj?.subcategories || [],
+    };
+  }, [categoriesData, selectedCategory]);
 
   const debouncedSearch = useDebounce(search, 300);
   const activeSubcategoryParam = selectedSubcategory !== "All" ? selectedSubcategory : undefined;
@@ -85,21 +87,23 @@ export default function TestsListingPage() {
     }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.page < lastPage.pages ? lastPage.page + 1 : undefined,
+    staleTime: 30 * 1000,
   });
 
-  const testsData = testsRes?.pages.flatMap(p => p.data || []) || [];
-  const filtered = testsData;
+  const testsData = useMemo(() => {
+    return testsRes?.pages.flatMap(p => p.data || []) || [];
+  }, [testsRes]);
 
-  const formattedTests = filtered.map((t: any) => ({
-    id: t._id,
-    name: t.testName,
-    price: t.offerPrice || t.price,
-    mrp: t.price || t.offerPrice,
-    tat: t.turnAroundTime || "3 days",
-    tests: t.metadata?.parameters?.length || 0,
-  }));
-
-  const hasMore = visibleItems < filtered.length;
+  const formattedTests = useMemo(() => {
+    return testsData.map((t: any) => ({
+      id: t._id,
+      name: t.testName,
+      price: t.offerPrice || t.price,
+      mrp: t.price || t.offerPrice,
+      tat: t.turnAroundTime || "3 days",
+      tests: t.metadata?.parameters?.length || 0,
+    }));
+  }, [testsData]);
 
   const handleCategoryChange = (cat: string) => {
     setSelectedCategory(cat);
@@ -107,22 +111,7 @@ export default function TestsListingPage() {
     setVisibleItems(12);
   };
 
-  const handleSeeMore = () => setVisibleItems(prev => prev + 6);
-
   const discountPct = (price: number, mrp: number) => Math.round(((mrp - price) / mrp) * 100);
-  const addToCart = (id: string, e?: MouseEvent<HTMLButtonElement>) => { e?.preventDefault(); setCartItems(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 })); };
-  const removeFromCart = (id: string, e?: MouseEvent<HTMLButtonElement>) => { e?.preventDefault(); setCartItems(prev => {
-    const next = { ...prev };
-    if (next[id] > 1) next[id]--;
-    else delete next[id];
-    return next;
-  }); };
-
-  const filters = [
-    ...(selectedCategory && selectedCategory !== "All" ? [{ label: selectedCategory, clear: () => { setSelectedCategory("All"); setSelectedSubcategory("All"); } }] : []),
-    ...(selectedSubcategory && selectedSubcategory !== "All" ? [{ label: selectedSubcategory, clear: () => setSelectedSubcategory("All") }] : []),
-    ...(selectedType ? [{ label: selectedType, clear: () => setSelectedType("") }] : []),
-  ];
 
   const resultsRef = useRef<HTMLDivElement>(null);
 
@@ -166,6 +155,7 @@ export default function TestsListingPage() {
                 Subcategories:
               </span>
               <button
+                type="button"
                 onClick={() => setSelectedSubcategory("All")}
                 className={cn(
                   "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer shadow-2xs",
@@ -181,6 +171,7 @@ export default function TestsListingPage() {
                 return (
                   <button
                     key={idx}
+                    type="button"
                     onClick={() => setSelectedSubcategory(sub.name)}
                     className={cn(
                       "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 shadow-2xs",
@@ -215,18 +206,14 @@ export default function TestsListingPage() {
         </div>
       </section>
 
-      {/* TRUST & ORDERING SECTION (Customized for Litmus) */}
+      {/* TRUST & ORDERING SECTION */}
       <div suppressHydrationWarning data-aos="fade-up">
         <TrustAndOrdering />
       </div>
 
-      {/* PROMO BANNER CAROUSEL (From Home Page) */}
+      {/* PROMO BANNER CAROUSEL */}
       <div suppressHydrationWarning data-aos="fade-up">
         <PromoBanner className="py-12 bg-slate-50 md:py-20" />
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Empty state is now handled inside MostBookedTests */}
       </div>
     </div>
   );
