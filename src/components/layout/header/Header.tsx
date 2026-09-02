@@ -44,7 +44,7 @@ export function Header({
           )}
         >
           <div className="max-w-7xl mx-auto flex items-center h-16 px-4 gap-3">
-            <Link href="/" className="flex items-center shrink-0 py-1">
+            <Link href="/" className="flex items-center shrink-0 py-1" aria-label="Litmus Food Analytics Home">
               <img src="/logo.webp" alt="Litmus Food Analytics" className="h-8 sm:h-9 w-auto object-contain" />
             </Link>
 
@@ -66,10 +66,11 @@ export function Header({
               <Button
                 variant="ghost"
                 size="icon"
+                aria-label="Call Customer Support"
                 className="h-9 w-9 hidden sm:flex group/phone hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none outline-none"
                 asChild
               >
-                <a href="#">
+                <a href="tel:+917356924029" aria-label="Call Customer Support at +91 73569 24029">
                   <Phone className="h-4 w-4 text-foreground group-hover/phone:text-brand-primary" />
                 </a>
               </Button>
@@ -78,6 +79,7 @@ export function Header({
                 <Button
                   variant="ghost"
                   size="icon"
+                  aria-label={`Shopping Cart with ${cartCount} items`}
                   className="pr-2 h-9 w-9 relative hover:bg-transparent active:bg-transparent focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 focus:outline-none outline-none group/cart transition-all duration-300 hidden sm:flex"
                 >
                   <ShoppingCart className="h-4.5 w-4.5 text-foreground group-hover/cart:text-brand-primary transition-colors" />
@@ -94,6 +96,8 @@ export function Header({
               <Button
                 variant="ghost"
                 size="icon"
+                aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+                aria-expanded={mobileMenuOpen}
                 className="h-9 w-9 lg:hidden hover:bg-transparent active:bg-transparent focus:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
@@ -101,6 +105,7 @@ export function Header({
               </Button>
             </div>
           </div>
+
 
           {showSearch && (
             <div className="lg:hidden px-4 pb-3 animate-fade-in">

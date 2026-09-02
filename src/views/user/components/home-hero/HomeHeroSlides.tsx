@@ -11,8 +11,9 @@ export const homeHeroSlides = [
     offer: "GET OFFERS UPTO 15% ON YOUR FIRST BOOKING",
     image: heroScientist,
     imageAlt: "Food Safety Specialist",
-    video: "/video/video banner.mp4",
+    video: "https://litmuslabs.sgp1.digitaloceanspaces.com/static-assets/video/video-banner.mp4",
     floatingBadges: [
+
       {
         icon: Shield,
         iconColor: "text-orange-600",

@@ -110,11 +110,12 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
           <img src={iconUrl} alt={name} className="h-full w-full object-cover" />
         ) : (
           <img
-            src="/stock_image/WebApp Stock Images/Gemini_Generated_Image_3gjaol3gjaol3gja.png"
+            src="/stock_image/WebApp Stock Images/Gemini_Generated_Image_3gjaol3gjaol3gja.webp"
             alt="Litmus"
             className="h-full w-full object-cover"
           />
         )}
+
       </div>
 
       <h3 className="font-heading text-lg font-bold text-slate-800 tracking-tight leading-[1.3] group-hover:text-brand-action transition-colors line-clamp-2 min-h-[46px] mb-3">

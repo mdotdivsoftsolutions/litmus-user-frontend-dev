@@ -6,12 +6,20 @@ const securityHeaders = [
     value: "on",
   },
   {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  {
     key: "X-XSS-Protection",
     value: "1; mode=block",
   },
   {
     key: "X-Frame-Options",
     value: "SAMEORIGIN",
+  },
+  {
+    key: "Content-Security-Policy",
+    value: "frame-ancestors 'self';",
   },
   {
     key: "X-Content-Type-Options",
@@ -26,6 +34,7 @@ const securityHeaders = [
     value: "camera=(), microphone=(), geolocation=()",
   },
 ];
+
 
 const nextConfig: NextConfig = {
   // Allow images from any domain (for lab logos, test images, etc.)

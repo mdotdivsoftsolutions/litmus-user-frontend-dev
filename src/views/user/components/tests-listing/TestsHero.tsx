@@ -73,9 +73,11 @@ export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHero
                 loop
                 muted
                 playsInline
+                preload="metadata"
                 className="w-full h-full object-cover"
-                src="/video/video banner.mp4"
+                src="https://litmuslabs.sgp1.digitaloceanspaces.com/static-assets/video/video-banner.mp4"
               />
+
             </div>
           </div>
         </div>

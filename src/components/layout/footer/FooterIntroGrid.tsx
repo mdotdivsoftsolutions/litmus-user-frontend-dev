@@ -48,7 +48,7 @@ export function FooterIntroGrid() {
                     {/* Floating Seal */}
                     <div className="w-8 h-8 opacity-40 group-hover:opacity-100 group-hover:scale-110 group-hover:rotate-[15deg] transition-all duration-500 rounded-full shadow-sm">
                         <img 
-                            src="/images/certification-seal.png" 
+                            src="/images/certification-seal.webp" 
                             alt="Seal" 
                             className="w-full h-full object-contain rounded-full" 
                         />
@@ -83,12 +83,13 @@ export function FooterIntroGrid() {
 
                     <div className="mt-auto pt-8 flex justify-between items-end border-t border-slate-100">
                          <img 
-                             src="/images/certification-seal.png" 
+                             src="/images/certification-seal.webp" 
                              alt="Seal" 
                              className="w-14 h-14 object-contain shadow-md rounded-full p-2 border-4 border-slate-50 rotate-[-10deg]" 
                          />
                     </div>
                 </div>
+
                 
                 <button 
                   onClick={() => setSelectedCert(null)}
