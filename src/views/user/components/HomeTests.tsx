@@ -30,7 +30,7 @@ function PackagesSectionHeader({ rightContent }: { rightContent?: ReactNode }) {
 
 export function HomeTestsSkeleton() {
   return (
-    <section className="pt-8 lg:pt-16 pb-10 md:pb-18 relative overflow-hidden bg-white" aria-busy="true" aria-label="Loading popular packages">
+    <section className="py-12 md:py-16 relative overflow-hidden bg-white" aria-busy="true" aria-label="Loading popular packages">
       <div className="max-w-7xl mx-auto px-4 relative z-10 w-full">
         <PackagesSectionHeader
           rightContent={
@@ -87,8 +87,9 @@ export const HomeTests = ({ initialPackages }: HomeTestsProps) => {
   const displayPackages = popularPackages.slice(0, 5);
 
   return (
-    <section className="pt-8 lg:pt-16 pb-10 md:pb-18 relative overflow-hidden bg-white">
+    <section className="py-12 md:py-16 relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-4 relative z-10 w-full">
+
         <PackagesSectionHeader
           rightContent={
             <div className="hidden md:flex gap-2">

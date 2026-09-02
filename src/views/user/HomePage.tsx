@@ -41,11 +41,12 @@ export default function HomePage() {
       <Suspense fallback={<HomeTestsSkeleton />}>
         <PopularPackages />
       </Suspense>
-      <PromoBanner className="pb-12 md:pb-16" />
+      <PromoBanner />
       <Suspense fallback={null}>
         <CategorySection />
       </Suspense>
       <HowToBookProcess className="bg-white" />
+
       <Suspense fallback={null}>
         <ReviewsSection />
       </Suspense>
