@@ -2,9 +2,10 @@ import { apiClient } from './axios';
 
 // Helper to get or create a session ID for guest users
 const getSessionId = () => {
+  if (typeof window === 'undefined') return '';
   let sessionId = localStorage.getItem('litmus_session_id');
   if (!sessionId) {
-    sessionId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2, 15);
+    sessionId = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `sess_${Math.random().toString(36).substring(2, 15)}_${Date.now()}`;
     localStorage.setItem('litmus_session_id', sessionId);
   }
   return sessionId;
@@ -13,10 +14,14 @@ const getSessionId = () => {
 // Interceptor to attach session ID to every cart request
 apiClient.interceptors.request.use((config) => {
   if (config.url?.includes('/cart')) {
-    config.headers['x-session-id'] = getSessionId();
+    const sid = getSessionId();
+    if (sid) {
+      config.headers['x-session-id'] = sid;
+    }
   }
   return config;
 });
+
 
 export const cartApi = {
   getCart: async () => {

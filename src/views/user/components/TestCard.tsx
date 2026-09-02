@@ -51,8 +51,8 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
     return Math.round(((mrp - price) / mrp) * 100);
   };
 
-  const id = t?._id || p?.id || "unknown";
-  const isTest = t && t.testName !== undefined;
+  const id = t?._id || (t as any)?.id || p?.id || "unknown";
+  const isTest = (t && t.testName !== undefined) || (t && (t as any).itemType === "TEST") || (p && (p as any).itemType === "TEST");
   const itemType = isTest ? "TEST" : "PACKAGE";
 
   const name = t?.testName || t?.name || p?.name || "Food Safety Test";
@@ -89,13 +89,15 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
 
   const handleAddToCart = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (isInCart || addMutation.isPending) return;
+    e.stopPropagation();
+    if (id === "unknown" || isInCart || addMutation.isPending) return;
     addMutation.mutate({
       itemType,
       ...(itemType === "TEST" ? { testId: id } : { packageId: id }),
       parameters: [],
     });
   };
+
 
   return (
     <Link
