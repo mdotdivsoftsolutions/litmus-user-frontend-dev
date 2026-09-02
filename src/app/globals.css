@@ -148,6 +148,13 @@
   * {
     @apply border-border;
   }
+  a, button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  a:focus, a:focus-visible {
+    outline: none !important;
+    box-shadow: none;
+  }
   body {
     @apply bg-background text-foreground font-sans antialiased text-[16px] font-normal leading-[1.5];
   }

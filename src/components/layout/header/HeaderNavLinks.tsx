@@ -29,8 +29,8 @@ export function HeaderNavLinks() {
             key={link.href}
             href={link.href}
             className={cn(
-              "px-3 py-1.5 text-sm font-semibold transition-colors",
-              isActive ? "text-brand-action" : "text-slate-700 hover:text-brand-action"
+              "px-3 py-1.5 text-sm font-semibold transition-colors rounded-lg border-0 outline-none ring-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 select-none",
+              isActive ? "text-brand-action font-bold" : "text-slate-700 hover:text-brand-action"
             )}
           >
             {link.label}
