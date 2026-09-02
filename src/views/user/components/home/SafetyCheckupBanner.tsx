@@ -58,14 +58,18 @@ export function SafetyCheckupBanner() {
             
             {/* Arrows Outside */}
             <button
+               type="button"
                onClick={prev}
-               className="absolute left-0 md:left-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
+               aria-label="Previous safety program slide"
+               className="absolute left-0 md:left-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
             >
                <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
             </button>
             <button
+               type="button"
                onClick={next}
-               className="absolute right-0 md:right-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
+               aria-label="Next safety program slide"
+               className="absolute right-0 md:right-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
             >
                <ChevronRight className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
             </button>
@@ -81,9 +85,9 @@ export function SafetyCheckupBanner() {
                         <div key={i} className="min-w-full h-full flex flex-row">
                            {/* Left Content */}
                            <div className="flex-[1.3] px-8 md:px-12 py-5 flex flex-col justify-center bg-[#F1F3F5]">
-                              <h3 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight leading-snug mb-3">
+                              <h2 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight leading-snug mb-3">
                                  {s.title}
-                              </h3>
+                              </h2>
                               <p className="text-slate-800 text-sm font-semibold mb-5 flex items-center gap-1.5 flex-wrap">
                                  <span className={s.badgeColor}>{s.badge}</span> {s.descInline}
                               </p>
@@ -95,7 +99,7 @@ export function SafetyCheckupBanner() {
                            </div>
                            {/* Right Image */}
                            <div className="flex-[0.7] relative h-full hidden sm:block">
-                              <img src={s.img} className="w-full h-full object-cover" alt="Checkup" />
+                              <img src={s.img} className="w-full h-full object-cover" alt={s.titleText} width={300} height={200} loading="lazy" />
                            </div>
                         </div>
                      ))}
@@ -108,20 +112,25 @@ export function SafetyCheckupBanner() {
                {slides.map((_, i) => {
                   if (i === current) {
                      return (
-                        <div key={i} className="bg-gray-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                        <div key={i} className="bg-gray-700 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full">
                            {current + 1}/{slides.length}
                         </div>
                      );
                   }
                   return (
-                     <div
+                     <button
+                        type="button"
                         key={i}
                         onClick={() => setCurrent(i)}
-                        className="h-1.5 w-1.5 rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer transition-colors"
-                     />
+                        aria-label={`Go to safety program slide ${i + 1}`}
+                        className="h-4 w-4 p-0 flex items-center justify-center border-0 bg-transparent cursor-pointer"
+                     >
+                        <span className="h-2 w-2 rounded-full bg-gray-300 hover:bg-gray-500 transition-colors" />
+                     </button>
                   );
                })}
             </div>
+
             
          </div>
       </section>

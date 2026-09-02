@@ -22,8 +22,8 @@ export function MobileTabNavigation({ cartCount }: MobileTabNavigationProps) {
   ];
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 z-50 bg-card border-t border-border lg:hidden">
-      <div className="flex items-center justify-around h-14">
+    <nav className="fixed bottom-0 inset-x-0 z-50 bg-card border-t border-border lg:hidden" aria-label="Mobile Navigation Bar">
+      <div className="flex items-center justify-around h-16">
         {bottomTabs.map((tab) => {
           const isActive =
             tab.href &&
@@ -32,12 +32,13 @@ export function MobileTabNavigation({ cartCount }: MobileTabNavigationProps) {
               : pathname?.startsWith(tab.href));
 
           const content = (
-            <div className="flex flex-col items-center gap-0.5 py-1 px-3 relative cursor-pointer">
+            <div className="flex flex-col items-center justify-center min-w-[48px] min-h-[48px] gap-0.5 py-1 px-3 relative cursor-pointer">
               <tab.icon
                 className={cn(
                   "h-5 w-5 transition-colors",
                   isActive ? "text-brand-primary" : "text-muted-foreground"
                 )}
+                aria-hidden="true"
               />
               <span
                 className={cn(
@@ -51,7 +52,7 @@ export function MobileTabNavigation({ cartCount }: MobileTabNavigationProps) {
                 <span className="absolute -bottom-0 w-5 h-0.5 rounded-full bg-brand-primary" />
               )}
               {tab.label === "Cart" && cartCount > 0 && (
-                <span className="absolute -top-0.5 right-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-brand-primary text-[8px] font-bold text-white">
+                <span className="absolute 1 right-2 flex h-4 w-4 items-center justify-center rounded-full bg-brand-primary text-[9px] font-bold text-white">
                   {cartCount}
                 </span>
               )}
@@ -61,13 +62,24 @@ export function MobileTabNavigation({ cartCount }: MobileTabNavigationProps) {
           if (tab.label === "Cart") {
             return (
               <CartDrawer key={tab.label}>
-                {content}
+                <button
+                  type="button"
+                  aria-label={`Shopping Cart, ${cartCount} items`}
+                  className="bg-transparent border-0 p-0 flex items-center justify-center"
+                >
+                  {content}
+                </button>
               </CartDrawer>
             );
           }
 
           return (
-            <Link key={tab.label} href={tab.href as string}>
+            <Link
+              key={tab.label}
+              href={tab.href as string}
+              aria-label={tab.label}
+              className="flex items-center justify-center min-w-[48px] min-h-[48px]"
+            >
               {content}
             </Link>
           );
@@ -76,3 +88,4 @@ export function MobileTabNavigation({ cartCount }: MobileTabNavigationProps) {
     </nav>
   );
 }
+

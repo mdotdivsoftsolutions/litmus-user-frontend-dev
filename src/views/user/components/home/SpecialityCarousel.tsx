@@ -36,7 +36,7 @@ function PastelCategoryCard({
   return (
     <Link
       href={href}
-      className="group m-2 flex h-[270px] sm:h-[280px] w-[210px] sm:w-[230px] md:w-[240px] shrink-0 flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:border-brand-action/30 transition-all duration-300"
+      className="group m-2 flex w-[210px] sm:w-[230px] md:w-[240px] shrink-0 flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:border-brand-action/30 transition-all duration-300"
     >
       <div
         className={`relative flex h-[120px] sm:h-[130px] items-center justify-center overflow-hidden shrink-0 ${tint}`}
@@ -44,6 +44,8 @@ function PastelCategoryCard({
         <img
           src={imgSrc}
           alt={title}
+          width={240}
+          height={130}
           loading="lazy"
           decoding="async"
           className="h-full w-full object-cover transform-gpu will-change-transform transition-transform duration-300 ease-out group-hover:scale-105"
@@ -51,22 +53,24 @@ function PastelCategoryCard({
             setImgSrc(FALLBACK_IMAGE);
           }}
         />
+
       </div>
 
-      <div className="flex flex-1 flex-col p-4 min-h-0">
+      <div className="flex flex-col p-4">
         {/* Title — Nunito (H5: 16px, Bold, Line-height: 1.3) */}
         <h3 className="font-heading text-base font-bold leading-[1.3] tracking-tight text-slate-900 line-clamp-1 group-hover:text-brand-action transition-colors">
           {title}
         </h3>
         {/* Subtitle — Manrope (14px/12px, Regular, Line-height: 1.5) */}
-        <p className="font-body mt-1 text-xs leading-[1.5] text-slate-500 line-clamp-2">{subtitle}</p>
+        <p className="font-body mt-1 text-xs leading-[1.5] text-slate-500 line-clamp-2 min-h-[36px]">{subtitle}</p>
         {/* Footnote — Inter (Badges/Data: 12px, Semibold, Line-height: 1.4) */}
-        <p className="font-data-badge mt-auto pt-2 text-[11px] font-bold uppercase tracking-wider text-brand-primary">
+        <p className="font-data-badge mt-2.5 text-[11px] font-bold uppercase tracking-wider text-brand-primary">
           {footnote}
         </p>
       </div>
     </Link>
   );
+
 }
 
 export function SpecialityCarousel({ initialCategories }: { initialCategories?: any }) {

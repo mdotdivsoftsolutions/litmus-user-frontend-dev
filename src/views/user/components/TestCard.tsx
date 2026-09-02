@@ -107,14 +107,18 @@ export const TestCard = ({ p, t, className }: TestCardProps) => {
     >
       <div className="h-14 w-14 rounded-lg bg-slate-50 flex items-center justify-center shrink-0 border border-slate-100 overflow-hidden shadow-sm mb-4">
         {iconUrl ? (
-          <img src={iconUrl} alt={name} className="h-full w-full object-cover" />
+          <img src={iconUrl} alt={name} width={56} height={56} loading="lazy" className="h-full w-full object-cover" />
         ) : (
           <img
             src="/stock_image/WebApp Stock Images/Gemini_Generated_Image_3gjaol3gjaol3gja.webp"
-            alt="Litmus"
+            alt={name || "Litmus"}
+            width={56}
+            height={56}
+            loading="lazy"
             className="h-full w-full object-cover"
           />
         )}
+
 
       </div>
 
