@@ -30,15 +30,28 @@ export function TestDetailHeader({ testObj }: TestDetailHeaderProps) {
       </div>
 
       {/* Title block */}
-      <div className="border border-border rounded-2xl bg-card px-5 py-4 shadow-sm">
-        <h1 className="font-heading text-xl sm:text-2xl font-extrabold text-foreground leading-tight tracking-tight">
-          {testObj.testName}
-        </h1>
-        {testObj.description && (
-          <p className="font-body text-sm text-muted-foreground mt-1.5 leading-relaxed">
-            {testObj.description}
-          </p>
-        )}
+      <div className="border border-border rounded-2xl bg-card px-5 py-4 shadow-sm flex items-start sm:items-center gap-4">
+        <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
+          <img
+            src={testObj.imageUrl || testObj.image || testObj.icon || "/placeholder/litmus_placeholder.webp"}
+            alt={testObj.testName || "Test"}
+            loading="lazy"
+            className="h-full w-full object-cover"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = "/placeholder/litmus_placeholder.webp";
+            }}
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h1 className="font-heading text-xl sm:text-2xl font-extrabold text-foreground leading-tight tracking-tight">
+            {testObj.testName}
+          </h1>
+          {testObj.description && (
+            <p className="font-body text-sm text-muted-foreground mt-1.5 leading-relaxed">
+              {testObj.description}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Metadata card — visible teal background */}

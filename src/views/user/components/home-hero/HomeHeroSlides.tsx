@@ -41,7 +41,7 @@ export const homeHeroSlides = [
       "Explore bundled testing packages tailored for regulatory compliance. Stay FSSAI and NABL ready with our curated testing solutions.",
     badge: "Compliance Ready",
     offer: "FLAT 20% OFF ON COMPREHENSIVE PACKAGES",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
+    image: "/stock_image/home/litmus_home_banner.webp",
     imageAlt: "Food Safety Packages",
     floatingBadges: [
       {

@@ -102,6 +102,7 @@ export default function TestsListingPage() {
       mrp: t.price || t.offerPrice,
       tat: t.turnAroundTime || "3 days",
       tests: t.metadata?.parameters?.length || 0,
+      imageUrl: t.imageUrl || t.image || t.icon || "",
     }));
   }, [testsData]);
 
