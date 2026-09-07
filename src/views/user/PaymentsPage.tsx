@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Download, CreditCard, Clock, FileText, CheckCircle2, AlertTriangle, ExternalLink } from "lucide-react";
 import { bookingApi } from "@/lib/api/booking";
 import { InvoiceModal } from "@/components/InvoiceModal";
+import { exportToCsv } from "@/lib/utils/exportCsv";
 import Link from "next/link";
 
 export default function PaymentsPage() {
@@ -67,6 +68,39 @@ export default function PaymentsPage() {
     { label: "Generated Invoices", value: `${totalInvoices}`, icon: FileText, color: "text-blue-600", bg: "bg-blue-50" },
   ];
 
+  const handleExportStatement = () => {
+    if (!mappedPayments || mappedPayments.length === 0) return;
+
+    const rows = mappedPayments.map((p) => {
+      const gross = p.amount;
+      const basePrice = Math.round((gross / 1.18) * 100) / 100;
+      const gstAmt = Math.round((gross - basePrice) * 100) / 100;
+      return {
+        invoiceNumber: p.invoiceNumber,
+        bookingRef: p.bookingDisplayId,
+        serviceName: p.serviceName,
+        lab: p.lab,
+        date: p.date,
+        basePrice,
+        gstAmt,
+        total: gross,
+        paymentStatus: p.paymentStatus,
+      };
+    });
+
+    exportToCsv("Litmus_Billing_Statement", rows, [
+      { label: "Invoice Number", key: "invoiceNumber" },
+      { label: "Booking Reference", key: "bookingRef" },
+      { label: "Service Name", key: "serviceName" },
+      { label: "Lab Facility", key: "lab" },
+      { label: "Date", key: "date" },
+      { label: "Base Amount (₹)", key: "basePrice" },
+      { label: "GST 18% (₹)", key: "gstAmt" },
+      { label: "Total Amount (₹)", key: "total" },
+      { label: "Payment Status", key: "paymentStatus" },
+    ]);
+  };
+
   return (
     <div className="space-y-6 animate-fade-in max-w-7xl mx-auto px-4 pt-24 md:pt-28 pb-16">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
@@ -76,6 +110,16 @@ export default function PaymentsPage() {
             Access your GST-compliant tax invoices, payment histories, and laboratory billing slips.
           </p>
         </div>
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2 bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:text-slate-900 shadow-2xs h-9"
+          onClick={handleExportStatement}
+          disabled={mappedPayments.length === 0 || isLoading}
+        >
+          <Download className="h-3.5 w-3.5 text-slate-500" />
+          <span>Export Statement</span>
+        </Button>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">

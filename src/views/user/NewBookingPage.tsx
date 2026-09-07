@@ -93,6 +93,7 @@ export default function NewBookingPage() {
                 acceptedTerms={state.acceptedTerms}
                 setAcceptedTerms={state.setAcceptedTerms}
                 collectionMethod={state.formData.collectionMethod}
+                formData={state.formData}
               />
             )}
 

@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Lock as LockIcon, AlertCircle, ShieldCheck, CreditCard, Smartphone, Building2 } from "lucide-react";
-import { CartLine } from "./booking-types";
+import { CartLine, BookingFormData } from "./booking-types";
 import { SampleCollectionTermsCard } from "./SampleCollectionTermsCard";
 
 interface BookingStep4PaymentProps {
@@ -15,6 +15,7 @@ interface BookingStep4PaymentProps {
   acceptedTerms: boolean;
   setAcceptedTerms: (accepted: boolean) => void;
   collectionMethod?: string;
+  formData?: BookingFormData;
 }
 
 const PAYMENT_METHODS = [
@@ -32,7 +33,12 @@ export function BookingStep4Payment({
   acceptedTerms,
   setAcceptedTerms,
   collectionMethod,
+  formData,
 }: BookingStep4PaymentProps) {
+  const itemsSubtotal = items.reduce((sum, item) => sum + calculateItemPrice(item), 0);
+  const gstAmount = Math.round(itemsSubtotal * 0.18);
+  const finalTotal = total !== undefined ? total : (itemsSubtotal + gstAmount);
+
   return (
     <div className="space-y-5 animate-in slide-in-from-right-4 duration-500">
       <div className="space-y-1">
@@ -80,6 +86,26 @@ export function BookingStep4Payment({
             ))}
           </div>
 
+          {/* Tax Breakdown */}
+          <div className="bg-slate-50/80 px-5 py-3.5 border-t border-slate-200 space-y-2 text-xs">
+            <div className="flex justify-between font-medium text-slate-600">
+              <span>Taxable Value (Services Subtotal)</span>
+              <span className="font-semibold text-slate-900">₹{itemsSubtotal.toLocaleString()}</span>
+            </div>
+            <div className="flex justify-between font-medium text-slate-600">
+              <span className="flex items-center gap-1.5">
+                GST (18% — 9% CGST + 9% SGST)
+              </span>
+              <span className="text-emerald-700 font-bold">+ ₹{gstAmount.toLocaleString()}</span>
+            </div>
+            {formData?.gstNumber && (
+              <div className="pt-2 mt-1 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-emerald-800 bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-200/60">
+                <span className="font-semibold">GSTIN on Tax Invoice:</span>
+                <span className="font-mono font-bold tracking-wider">{formData.gstNumber}</span>
+              </div>
+            )}
+          </div>
+
           {/* Razorpay Section */}
           <div className="px-5 py-5 bg-gradient-to-br from-slate-50 to-blue-50 border-t border-slate-200 space-y-4">
             {/* Razorpay Branding */}
@@ -107,12 +133,10 @@ export function BookingStep4Payment({
             </div>
 
             {/* Total to pay */}
-            {total !== undefined && (
-              <div className="flex items-center justify-between pt-1 border-t border-slate-200">
-                <span className="text-sm font-bold text-slate-700">You will be charged</span>
-                <span className="text-xl font-black text-brand-action">₹{total.toLocaleString()}</span>
-              </div>
-            )}
+            <div className="flex items-center justify-between pt-1 border-t border-slate-200">
+              <span className="text-sm font-bold text-slate-700">Total Amount (Incl. 18% GST)</span>
+              <span className="text-xl font-black text-brand-action">₹{finalTotal.toLocaleString()}</span>
+            </div>
           </div>
 
           {/* Security Footer */}

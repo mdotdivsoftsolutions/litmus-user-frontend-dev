@@ -61,20 +61,18 @@ export function BookingSidebarSummary({
                 <span className="text-litmus-teal">Litmus Discount</span>
                 <span className="text-litmus-teal">- ₹{discount.toLocaleString()}</span>
               </div>
-              {step >= 4 && (
-                <div className="flex justify-between text-xs font-bold uppercase tracking-wide pt-2 border-t border-dashed border-slate-200">
-                  <span className="text-slate-400">GST (18%)</span>
-                  <span className="text-slate-800">+ ₹{gst.toLocaleString()}</span>
-                </div>
-              )}
+              <div className="flex justify-between text-xs font-bold uppercase tracking-wide pt-2 border-t border-dashed border-slate-200">
+                <span className="text-slate-400">GST (18%)</span>
+                <span className="text-emerald-700 font-bold">+ ₹{gst.toLocaleString()}</span>
+              </div>
               <div className="pt-4 mt-1 flex flex-col gap-0.5">
                 <div className="flex justify-between items-baseline">
                   <span className="text-slate-900 font-bold text-lg">Total Amount</span>
                   <span className="text-2xl font-bold text-brand-action tracking-tight">
-                    ₹{step >= 4 ? total.toLocaleString() : subtotal.toLocaleString()}
+                    ₹{total.toLocaleString()}
                   </span>
                 </div>
-                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-right">Inc. of all taxes</p>
+                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-right">Inc. of all taxes (18% GST)</p>
               </div>
             </div>
             <div className="pt-3 space-y-2">

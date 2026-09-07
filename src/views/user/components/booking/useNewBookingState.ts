@@ -246,6 +246,7 @@ export function useNewBookingState() {
     city: "",
     state: "",
     pincode: "",
+    gstNumber: "",
     collectionMethod: "",
     pickupDate: "",
     pickupTime: "",
@@ -273,6 +274,7 @@ export function useNewBookingState() {
         city: prev.city || city,
         state: prev.state || state,
         pincode: prev.pincode || pincode,
+        gstNumber: prev.gstNumber || u.gstNumber || u.gstin || "",
       }));
 
       // If user did not have a saved address in profile, check save to profile by default
@@ -698,6 +700,7 @@ export function useNewBookingState() {
               pincode: formData.pincode,
               country: "India",
             },
+            ...(formData.gstNumber ? { gstNumber: formData.gstNumber.trim().toUpperCase() } : {}),
           });
           queryClient.invalidateQueries({ queryKey: ["user"] });
           queryClient.invalidateQueries({ queryKey: ["userProfile"] });

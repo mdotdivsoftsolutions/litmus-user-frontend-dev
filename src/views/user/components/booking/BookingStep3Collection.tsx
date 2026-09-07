@@ -152,7 +152,17 @@ export function BookingStep3Collection({
                   name="city"
                   value={formData.city}
                   onChange={handleInputChange}
-                  placeholder="e.g. Adur, Chennai"
+                  placeholder="e.g. Chennai, Kochi"
+                  className="h-10 bg-slate-50 border-slate-200 rounded-lg text-sm"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">State</Label>
+                <Input
+                  name="state"
+                  value={formData.state}
+                  onChange={handleInputChange}
+                  placeholder="e.g. Tamil Nadu, Kerala"
                   className="h-10 bg-slate-50 border-slate-200 rounded-lg text-sm"
                 />
               </div>
@@ -165,6 +175,30 @@ export function BookingStep3Collection({
                   placeholder="6-digit PIN code"
                   className="h-10 bg-slate-50 border-slate-200 rounded-lg text-sm"
                 />
+              </div>
+              <div className="space-y-1.5 sm:col-span-2 pt-1 border-t border-slate-100">
+                <div className="flex items-center justify-between">
+                  <Label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                    GSTIN / GST Number <span className="text-[10px] font-normal lowercase text-slate-400">(optional)</span>
+                  </Label>
+                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                    For 18% Input Tax Credit (ITC)
+                  </span>
+                </div>
+                <Input
+                  name="gstNumber"
+                  value={formData.gstNumber || ""}
+                  onChange={(e) => {
+                    e.target.value = e.target.value.toUpperCase();
+                    handleInputChange(e);
+                  }}
+                  placeholder="e.g. 33AAAAA0000A1Z5 (15-character GSTIN)"
+                  maxLength={15}
+                  className="h-10 bg-slate-50 border-slate-200 rounded-lg text-sm font-mono uppercase tracking-wider"
+                />
+                <p className="text-[11px] text-slate-400">
+                  Provide your business GSTIN to receive a GST-compliant tax invoice.
+                </p>
               </div>
             </div>
 

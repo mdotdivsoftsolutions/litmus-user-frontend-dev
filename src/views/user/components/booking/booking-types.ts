@@ -29,7 +29,9 @@ export type BookingFormData = {
   city: string;
   state: string;
   pincode: string;
+  gstNumber?: string;
   collectionMethod: CollectionMethod;
   pickupDate: string;
   pickupTime: string;
 };
+
