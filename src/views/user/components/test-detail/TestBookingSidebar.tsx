@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,7 +18,8 @@ interface TestBookingSidebarProps {
   isInCart: boolean;
   isAddingToCart: boolean;
   onAddToCart: () => void;
-  onBookNow: () => void;
+  onBookNow: (e?: React.MouseEvent) => void;
+  bookingHref?: string;
 }
 
 export function TestBookingSidebar({
@@ -31,6 +33,7 @@ export function TestBookingSidebar({
   isAddingToCart,
   onAddToCart,
   onBookNow,
+  bookingHref,
 }: TestBookingSidebarProps) {
   return (
     <div className="lg:col-span-2">
@@ -113,11 +116,16 @@ export function TestBookingSidebar({
               </Button>
 
               <Button
-                onClick={onBookNow}
+                asChild
                 className="w-full bg-transparent hover:bg-brand-action text-brand-action hover:text-white border-2 border-brand-action font-body font-bold text-sm h-12 rounded-xl transition-all duration-200 active:scale-[0.98] gap-2"
               >
-                <Zap className="h-4 w-4" />
-                Book Now
+                <Link
+                  href={bookingHref || "/bookings/new"}
+                  onClick={(e) => onBookNow && onBookNow(e)}
+                >
+                  <Zap className="h-4 w-4" />
+                  Book Now
+                </Link>
               </Button>
             </div>
 

@@ -18,7 +18,11 @@ export function useAuthModalState(isOpen: boolean, onClose: () => void) {
     mutationFn: authApi.login,
     onSuccess: () => {
       toast.success("Welcome back!");
+      if (typeof window !== "undefined") {
+        localStorage.setItem("litmus_auth_active", "1");
+      }
       queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       onClose();
     },
@@ -42,7 +46,11 @@ export function useAuthModalState(isOpen: boolean, onClose: () => void) {
     mutationFn: authApi.register,
     onSuccess: () => {
       toast.success("Account created successfully!");
+      if (typeof window !== "undefined") {
+        localStorage.setItem("litmus_auth_active", "1");
+      }
       queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       onClose();
     },

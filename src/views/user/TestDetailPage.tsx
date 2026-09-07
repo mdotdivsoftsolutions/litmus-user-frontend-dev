@@ -47,17 +47,18 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
     addMutation.mutate({ itemType: "TEST", testId: testObj._id, parameters: selectedParams });
   };
 
-  const handleBookNow = () => {
-    if (!userResponse?.data) {
+  const handleBookNow = (e?: React.MouseEvent) => {
+    const isAuthStored = typeof window !== "undefined" && localStorage.getItem("litmus_auth_active") === "1";
+    if (!userResponse?.data && !isAuthStored) {
+      if (e) e.preventDefault();
       window.dispatchEvent(new Event("openAuthModal"));
       return;
     }
-    if (!testObj) return;
-    const searchParams = new URLSearchParams();
-    searchParams.set("testId", testObj._id);
-    if (selectedParams.length > 0) searchParams.set("params", selectedParams.join(","));
-    router.push(`/bookings/new?${searchParams.toString()}`);
   };
+
+  const bookingHref = testObj
+    ? `/bookings/new?testId=${testObj._id}${selectedParams.length > 0 ? `&params=${selectedParams.join(",")}` : ""}`
+    : "/bookings/new";
 
   useEffect(() => {
     const fetchTest = async () => {
@@ -145,6 +146,7 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
           isAddingToCart={addMutation.isPending}
           onAddToCart={handleAddToCart}
           onBookNow={handleBookNow}
+          bookingHref={bookingHref}
         />
       </div>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Clock, Shield, Lock, ShoppingCart, ArrowRight, MessageCircle, Award, Loader2, Check } from "lucide-react";
@@ -11,7 +12,8 @@ interface PackageBookingSidebarProps {
   isInCart: boolean;
   isAddingToCart: boolean;
   onAddToCart: () => void;
-  onBookNow: () => void;
+  onBookNow: (e?: React.MouseEvent) => void;
+  bookingHref?: string;
 }
 
 export function PackageBookingSidebar({
@@ -20,6 +22,7 @@ export function PackageBookingSidebar({
   isAddingToCart,
   onAddToCart,
   onBookNow,
+  bookingHref,
 }: PackageBookingSidebarProps) {
   const discountPct = (price: number, mrp: number) => {
     if (!mrp || !price) return 0;
@@ -87,10 +90,15 @@ export function PackageBookingSidebar({
             </Button>
 
             <Button
-              onClick={onBookNow}
+              asChild
               className="w-full h-12 rounded-xl bg-brand-action hover:bg-brand-action-hover shadow-md hover:shadow-lg text-white font-body font-semibold text-base transition-all flex items-center justify-center gap-2 group active:scale-95"
             >
-              Book Panel Now <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <Link
+                href={bookingHref || (pkg ? `/bookings/new?packageId=${pkg._id}` : "/bookings/new")}
+                onClick={(e) => onBookNow && onBookNow(e)}
+              >
+                Book Panel Now <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
 
             <a

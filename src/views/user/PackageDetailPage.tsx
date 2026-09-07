@@ -36,14 +36,16 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
 
   const pkg = packageResponse?.data;
 
-  const handleBookNow = () => {
-    if (!userResponse?.data) {
+  const handleBookNow = (e?: React.MouseEvent) => {
+    const isAuthStored = typeof window !== "undefined" && localStorage.getItem("litmus_auth_active") === "1";
+    if (!userResponse?.data && !isAuthStored) {
+      if (e) e.preventDefault();
       window.dispatchEvent(new Event("openAuthModal"));
       return;
     }
-    if (!pkg) return;
-    router.push(`/bookings/new?packageId=${pkg._id}`);
   };
+
+  const bookingHref = pkg ? `/bookings/new?packageId=${pkg._id}` : "/bookings/new";
 
   const addMutation = useMutation({
     mutationFn: (data: any) => cartApi.addToCart(data),
@@ -62,11 +64,16 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50/50 flex flex-col items-center justify-center p-8">
-        <Skeleton className="h-12 w-64 mb-8" />
-        <div className="flex gap-8 w-full max-w-7xl">
-          <Skeleton className="h-[400px] flex-1 rounded-xl" />
-          <Skeleton className="h-[400px] w-[350px] rounded-xl" />
+      <div className="max-w-7xl mx-auto px-4 md:px-6 pt-24 pb-16 space-y-8 animate-pulse">
+        <Skeleton className="h-6 w-48 rounded" />
+        <div className="grid gap-8 lg:grid-cols-12">
+          <div className="lg:col-span-8 space-y-6">
+            <Skeleton className="h-48 w-full rounded-2xl" />
+            <Skeleton className="h-64 w-full rounded-2xl" />
+          </div>
+          <div className="lg:col-span-4">
+            <Skeleton className="h-96 w-full rounded-2xl" />
+          </div>
         </div>
       </div>
     );
@@ -74,13 +81,11 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
 
   if (!pkg) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <AlertCircle className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-slate-800">Package Not Found</h2>
-          <p className="text-slate-500 mt-2">The package you are looking for does not exist.</p>
-          <Button className="mt-6" onClick={() => router.push("/packages")}>Back to Packages</Button>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+        <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+        <h2 className="text-2xl font-bold text-foreground">Package Not Found</h2>
+        <p className="text-muted-foreground mt-2">The requested package could not be found or is inactive.</p>
+        <Button className="mt-6" onClick={() => router.push("/packages")}>Back to Packages</Button>
       </div>
     );
   }
@@ -95,10 +100,12 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
             <span className="text-slate-800 font-bold truncate max-w-[200px] sm:max-w-none">{pkg.name}</span>
           </nav>
           <Button
-            onClick={handleBookNow}
+            asChild
             className="hidden sm:flex h-9 px-5 rounded-lg bg-gradient-to-r from-brand-card-from to-brand-card-to text-white font-bold text-xs shadow-md hover:shadow-lg transition-all"
           >
-            Book Panel Now
+            <Link href={bookingHref} onClick={(e) => handleBookNow(e)}>
+              Book Panel Now
+            </Link>
           </Button>
         </div>
       </div>
@@ -117,6 +124,7 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
             isAddingToCart={addMutation.isPending}
             onAddToCart={handleAddToCart}
             onBookNow={handleBookNow}
+            bookingHref={bookingHref}
           />
         </div>
       </div>

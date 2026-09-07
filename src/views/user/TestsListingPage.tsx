@@ -14,6 +14,7 @@ import { TestsHero } from "./components/tests-listing/TestsHero";
 import { TestsStatsStrip } from "./components/tests-listing/TestsStatsStrip";
 import { MostBookedTests } from "./components/tests-listing/MostBookedTests";
 import { CategoryStrip } from "./components/tests-listing/CategoryStrip";
+import { SubcategoryStrip } from "./components/tests-listing/SubcategoryStrip";
 import { PromoBanner } from "./components/home/PromoBanner";
 import { TrustAndOrdering } from "./components/tests-listing/TrustAndOrdering";
 
@@ -147,46 +148,14 @@ export default function TestsListingPage() {
 
       {/* 4 & 5. TESTS SECTION (Sticky Subcategories Bar is bounded strictly to this section) */}
       <section className="relative">
-        {/* SUB-CATEGORIES STRIP (Dynamically displays and sticks under navbar ONLY while scrolling test section) */}
+        {/* SUB-CATEGORIES STRIP (Dynamically displays and sticks under navbar with arrow scroll controls) */}
         {selectedCategory !== "All" && activeSubcategories.length > 0 && (
-          <div className="sticky top-[68px] md:top-[94px] z-30 max-w-7xl mx-auto px-4 -mt-2 mb-6 pointer-events-none">
-            <div className="pointer-events-auto bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 border border-slate-200/90 shadow-md flex items-center gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden transition-all">
-              <span className="text-xs font-black text-slate-500 uppercase tracking-wider px-2 shrink-0 flex items-center gap-1.5">
-                <span className="h-2 w-2 rounded-full bg-brand-primary" />
-                Subcategories:
-              </span>
-              <button
-                type="button"
-                onClick={() => setSelectedSubcategory("All")}
-                className={cn(
-                  "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer shadow-2xs",
-                  selectedSubcategory === "All"
-                    ? "bg-brand-primary text-white shadow-xs"
-                    : "bg-slate-100/90 text-slate-700 hover:bg-slate-200"
-                )}
-              >
-                All {activeCategoryName}
-              </button>
-              {activeSubcategories.map((sub: any, idx: number) => {
-                const isSubActive = selectedSubcategory === sub.name;
-                return (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setSelectedSubcategory(sub.name)}
-                    className={cn(
-                      "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 shadow-2xs",
-                      isSubActive
-                        ? "bg-brand-primary text-white shadow-xs"
-                        : "bg-slate-100/90 text-slate-700 hover:bg-slate-200"
-                    )}
-                  >
-                    <span>{sub.name}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          <SubcategoryStrip
+            categoryName={activeCategoryName}
+            subcategories={activeSubcategories}
+            selectedSubcategory={selectedSubcategory}
+            onSelectSubcategory={setSelectedSubcategory}
+          />
         )}
 
         {/* 5. MOST BOOKED DIAGNOSTICS */}

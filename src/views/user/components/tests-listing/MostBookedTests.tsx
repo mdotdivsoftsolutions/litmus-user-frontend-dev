@@ -61,7 +61,7 @@ export const MostBookedTests = ({
 }: MostBookedTestsProps) => {
   const router = useRouter();
   const { data: userResponse } = useQuery({
-    queryKey: ["userMe"],
+    queryKey: ["userProfile"],
     queryFn: authApi.getMe,
     retry: false,
     staleTime: 60 * 1000,
@@ -69,12 +69,11 @@ export const MostBookedTests = ({
   const user = userResponse?.data;
 
   const handleBookNow = (testId: string, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!user) {
+    const isAuthStored = typeof window !== "undefined" && localStorage.getItem("litmus_auth_active") === "1";
+    if (!user && !isAuthStored) {
+      e.preventDefault();
+      e.stopPropagation();
       window.dispatchEvent(new Event("openAuthModal"));
-    } else {
-      router.push(`/bookings/new?testId=${testId}`);
     }
   };
 
@@ -173,12 +172,16 @@ export const MostBookedTests = ({
                       <div className="flex flex-col items-start sm:items-end justify-center gap-2 shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 sm:border-l sm:border-slate-100 sm:pl-5 w-full sm:w-auto">
                         {/* Book Now Button on Top */}
                         <Button
-                          type="button"
-                          onClick={(e) => handleBookNow(t.id, e)}
+                          asChild
                           className="bg-brand-action hover:bg-brand-action-hover text-white font-bold text-xs sm:text-sm px-5 h-9 sm:h-10 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 shrink-0 w-full sm:w-auto justify-center"
                         >
-                          <Zap className="h-3.5 w-3.5 fill-current" />
-                          <span>Book Now</span>
+                          <Link
+                            href={`/bookings/new?testId=${t.id}`}
+                            onClick={(e) => handleBookNow(t.id, e)}
+                          >
+                            <Zap className="h-3.5 w-3.5 fill-current" />
+                            <span>Book Now</span>
+                          </Link>
                         </Button>
 
                         {/* Amount in flex at Bottom: Offer value, Real value, Discount */}

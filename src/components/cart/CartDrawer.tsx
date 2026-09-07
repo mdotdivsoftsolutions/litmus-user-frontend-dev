@@ -45,7 +45,8 @@ export function CartDrawer({ children }: CartDrawerProps) {
   });
 
   const handleCheckoutClick = (e: React.MouseEvent) => {
-    if (!user) {
+    const isAuthStored = typeof window !== "undefined" && localStorage.getItem("litmus_auth_active") === "1";
+    if (!user && !isAuthStored) {
       e.preventDefault();
       setIsOpen(false);
       window.dispatchEvent(new Event("openAuthModal"));

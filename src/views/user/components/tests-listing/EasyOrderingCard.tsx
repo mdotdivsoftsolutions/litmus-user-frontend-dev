@@ -1,12 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/auth";
 
 export function EasyOrderingCard() {
-  const router = useRouter();
   const { data: userResponse } = useQuery({ queryKey: ["userProfile"], queryFn: authApi.getMe, retry: false });
   const user = userResponse?.data;
 
@@ -36,19 +35,19 @@ export function EasyOrderingCard() {
             ))}
           </div>
 
-          <button
-            type="button"
-            onClick={() => {
-              if (!user) {
+          <Link
+            href="/bookings/new"
+            onClick={(e) => {
+              const isAuthStored = typeof window !== "undefined" && localStorage.getItem("litmus_auth_active") === "1";
+              if (!user && !isAuthStored) {
+                e.preventDefault();
                 window.dispatchEvent(new Event("openAuthModal"));
-              } else {
-                router.push("/bookings/new");
               }
             }}
-            className="h-14 md:h-16 mt-2 px-10 md:px-14 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xl rounded-xl shadow-lg hover:-translate-y-1 transition-all z-10 relative active:scale-95"
+            className="inline-flex items-center justify-center h-14 md:h-16 mt-2 px-10 md:px-14 bg-brand-action hover:bg-brand-action-hover text-white font-semibold text-xl rounded-xl shadow-lg hover:-translate-y-1 transition-all z-10 relative active:scale-95"
           >
             Order Now
-          </button>
+          </Link>
         </div>
 
         <div className="absolute right-0 bottom-0 w-[60%] lg:w-[65%] h-full z-0 pointer-events-none overflow-hidden rounded-br-[2.5rem]">

@@ -59,6 +59,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
       await authApi.logout();
       queryClient.clear();
       localStorage.removeItem('litmus_session_id');
+      localStorage.removeItem('litmus_auth_active');
       toast.success("Logged out successfully");
       // Force a hard reload to completely reset all React and Query state
       window.location.href = "/";
@@ -66,6 +67,12 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
       toast.error("Failed to logout");
     }
   };
+
+  useEffect(() => {
+    if (user && typeof window !== "undefined") {
+      localStorage.setItem("litmus_auth_active", "1");
+    }
+  }, [user]);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 10);

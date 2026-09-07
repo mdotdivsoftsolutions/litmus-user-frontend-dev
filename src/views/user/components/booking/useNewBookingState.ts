@@ -215,7 +215,7 @@ export function useNewBookingState() {
     }
   }, [cartResponse, isCartLoading, dataLoaded, testId, packageId, testResponse, packageResponse]);
 
-  const { data: userResponse } = useQuery({ queryKey: ["user"], queryFn: authApi.getMe });
+  const { data: userResponse } = useQuery({ queryKey: ["userProfile"], queryFn: authApi.getMe });
 
   const savedProfileAddress = useMemo(() => {
     const u = userResponse?.data;
@@ -718,6 +718,11 @@ export function useNewBookingState() {
     }
 
     if (step === 4) {
+      if (!userResponse?.data) {
+        setIsPaymentProcessing(false);
+        window.dispatchEvent(new Event("openAuthModal"));
+        return;
+      }
       if (!acceptedTerms) {
         toast.error("Please accept the terms and conditions for sample collection before proceeding to payment.");
         return;
