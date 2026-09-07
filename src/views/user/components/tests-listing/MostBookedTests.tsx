@@ -69,10 +69,10 @@ export const MostBookedTests = ({
   const user = userResponse?.data;
 
   const handleBookNow = (testId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     const isAuthStored = typeof window !== "undefined" && localStorage.getItem("litmus_auth_active") === "1";
     if (!user && !isAuthStored) {
       e.preventDefault();
-      e.stopPropagation();
       window.dispatchEvent(new Event("openAuthModal"));
     }
   };
@@ -108,15 +108,13 @@ export const MostBookedTests = ({
                     <div className="h-5 md:h-6 w-3/4 bg-slate-200 rounded-md animate-pulse" />
                     <div className="flex items-center gap-3">
                       <div className="h-6 w-28 bg-brand-primary/10 rounded-full animate-pulse border border-brand-primary/15" />
-                      <div className="h-4 w-24 bg-slate-100 rounded-md animate-pulse" />
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col items-start sm:items-end justify-center gap-2 shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 sm:border-l sm:border-slate-100 sm:pl-5 w-full sm:w-auto">
-                  <div className="h-9 sm:h-10 w-full sm:w-28 rounded-xl bg-slate-200 animate-pulse shrink-0" />
+                <div className="flex flex-col items-start sm:items-end justify-center gap-3 shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 sm:border-l sm:border-slate-100 sm:pl-5 w-full sm:w-auto">
+                  <div className="h-9 sm:h-10 w-28 bg-slate-200 rounded-xl animate-pulse" />
                   <div className="flex items-baseline gap-2">
-                    <div className="h-6 w-16 bg-slate-200 rounded-md animate-pulse" />
-                    <div className="h-4 w-12 bg-slate-100 rounded-md animate-pulse" />
+                    <div className="h-6 w-20 bg-slate-200 rounded-md animate-pulse" />
                     <div className="h-4 w-14 bg-emerald-50 rounded-md animate-pulse" />
                   </div>
                 </div>
@@ -128,13 +126,13 @@ export const MostBookedTests = ({
                 tests.map((t, i) => {
                   const testImg = t.imageUrl || t.image || t.icon || DEFAULT_TEST_IMAGE;
                   return (
-                    <Link
+                    <div
                       suppressHydrationWarning
-                      href={`/tests/${t.id}`}
                       key={t.id}
                       data-aos="fade-up"
                       data-aos-delay={(i % 10) * 50}
-                      className="group bg-white rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs border-2 border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-brand-action/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300"
+                      onClick={() => router.push(`/tests/${t.id}`)}
+                      className="group bg-white rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs border-2 border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-brand-action/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                     >
                       {/* Left: Test Image & Details */}
                       <div className="flex items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
@@ -154,7 +152,13 @@ export const MostBookedTests = ({
                         {/* Info */}
                         <div className="flex-1 min-w-0 space-y-1.5">
                           <h3 className="text-base sm:text-[17px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-brand-action transition-colors truncate">
-                            {t.name}
+                            <Link
+                              href={`/tests/${t.id}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="hover:underline"
+                            >
+                              {t.name}
+                            </Link>
                           </h3>
                           <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
                             <span className="bg-brand-primary/10 text-brand-primary text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider border border-brand-primary/20 shrink-0">
@@ -204,7 +208,7 @@ export const MostBookedTests = ({
                           ) : null}
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   );
                 })
               ) : (
