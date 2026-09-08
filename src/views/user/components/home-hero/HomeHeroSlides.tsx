@@ -1,5 +1,6 @@
 import { Shield, FileText, Package, Microscope } from "lucide-react";
 import heroScientist from "@/assets/banner-hero-1.jpg";
+import hero2 from "@/assets/main banner.webp";
 
 export const homeHeroSlides = [
   {
@@ -41,7 +42,7 @@ export const homeHeroSlides = [
       "Explore bundled testing packages tailored for regulatory compliance. Stay FSSAI and NABL ready with our curated testing solutions.",
     badge: "Compliance Ready",
     offer: "FLAT 20% OFF ON COMPREHENSIVE PACKAGES",
-    image: "/stock_image/home/litmus_home_banner.webp",
+    image: hero2, 
     imageAlt: "Food Safety Packages",
     floatingBadges: [
       {

@@ -6,7 +6,7 @@ import { SectionHeader } from "./SectionHeader";
 
 function ReviewCard({ r }: { r: any }) {
    return (
-      <div className="w-[420px] shrink-0 bg-white p-8 rounded-[1.5rem] border border-slate-100 flex flex-col relative group hover:border-emerald-100 transition-all duration-500">
+      <div className="w-[520px] shrink-0 bg-white p-8 rounded-[1.5rem] border border-slate-100 flex flex-col relative group hover:border-emerald-100 transition-all duration-500">
          <div className="flex items-center gap-1.5 mb-6 relative z-10">
             {[1, 2, 3, 4, 5].map(s => (
                <Star
@@ -16,7 +16,7 @@ function ReviewCard({ r }: { r: any }) {
             ))}
          </div>
          {/* Review text — Manrope (Body: 16px/14px, Regular, Line-height: 1.5) */}
-         <p className="font-body text-sm sm:text-base text-slate-600 leading-[1.5] flex-1 relative z-10">&ldquo;{r.text}&rdquo;</p>
+         <p className="font-body text-sm sm:text-base text-slate-600 leading-[1.5] flex-1 text-justify relative z-10">&ldquo;{r.text}&rdquo;</p>
 
          <div className="mt-8 pt-5 border-t border-slate-100 flex justify-between items-center relative z-10">
             <div className="flex items-center gap-3">

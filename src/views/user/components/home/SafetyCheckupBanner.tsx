@@ -12,7 +12,7 @@ const slides = [
       descInline: "Empower your workforce with FSSAI-approved FoSTaC training programs.",
       title: <>Train Your Team. <span className="text-gradient-brand">Strengthen Food Safety.</span></>,
       titleText: "Train Your Team. Strengthen Food Safety.",
-      img: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=1000&auto=format&fit=crop",
+      img: "/stock_image/home/banner.webp",
    },
    {
       badge: "Professional Audits",
@@ -20,7 +20,7 @@ const slides = [
       descInline: "Identify gaps, reduce risks, and prepare confidently for customer through professional third-party audits.",
       title: <>Independent Audits. <span className="text-gradient-brand">Actionable Insights.</span></>,
       titleText: "Independent Audits. Actionable Insights.",
-      img: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=1000&auto=format&fit=crop",
+      img: "/stock_image/home/banner 2.webp",
    },
    {
       badge: "Regulatory Compliance",
@@ -28,7 +28,7 @@ const slides = [
       descInline: "Ensure your packaging materials meet regulatory requirements and food contact safety standards.",
       title: <>Safe Packaging Starts <span className="text-gradient-brand">with Compliance.</span></>,
       titleText: "Safe Packaging Starts with Compliance.",
-      img: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1000&auto=format&fit=crop",
+      img: "/stock_image/home/banner 3.webp",
    },
    {
       badge: "Expert Assistance",
@@ -36,7 +36,7 @@ const slides = [
       descInline: "Take experts help to develop innovative, compliant, and consumer-focused food products tailored to your business goals.",
       title: <>Transform Ideas into <span className="text-gradient-brand">Market-Ready Products.</span></>,
       titleText: "Transform Ideas into Market-Ready Products.",
-      img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1000&auto=format&fit=crop",
+      img: "/stock_image/home/banner 4.webp",
    },
 ];
 

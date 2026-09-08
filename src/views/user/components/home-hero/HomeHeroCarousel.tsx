@@ -59,11 +59,10 @@ export function HomeHeroCarousel() {
                   src={slide.video}
                 />
               ) : (
-                <div
-                  className="absolute inset-0 w-full h-full bg-cover bg-center z-0"
-                  style={{
-                    backgroundImage: `url(${typeof slide.image === "string" ? slide.image : slide.image.src})`,
-                  }}
+                <img
+                  src={typeof slide.image === "string" ? slide.image : slide.image?.src}
+                  alt={slide.imageAlt || slide.title}
+                  className="absolute inset-0 w-full h-full object-cover z-0"
                 />
               )}
               <div
