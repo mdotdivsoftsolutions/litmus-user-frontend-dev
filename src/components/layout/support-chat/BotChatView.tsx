@@ -147,7 +147,7 @@ export function BotChatView({
               <div className="h-1.5 w-1.5 rounded-full bg-brand-action animate-bounce [animation-delay:-0.15s]" />
               <div className="h-1.5 w-1.5 rounded-full bg-brand-action animate-bounce" />
             </div>
-            <span className="text-[11px]">Analyzing diagnostic requirements...</span>
+            <span className="text-[11px]">Analyzing testing requirements...</span>
           </div>
         )}
       </div>

@@ -68,7 +68,7 @@ export function LabSidebarCard({ lab }: LabSidebarCardProps) {
         <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full translate-x-1/2 -translate-y-1/2 blur-2xl" />
         <p className="text-[10px] font-semibold text-brand-primary uppercase tracking-[0.3em]">Institutional Verification</p>
         <p className="text-xs font-normal text-white leading-normal tracking-wide">
-          Every diagnostic result from this facility is clinical-grade and legally valid for FSSAI audits.
+          Every test result from this facility is NABL-accredited and legally valid for FSSAI audits.
         </p>
         <Link href="/support" className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors uppercase tracking-widest">
           Learn about our standards <ChevronRight className="h-3 w-3" />

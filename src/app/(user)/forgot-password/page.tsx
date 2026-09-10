@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import ForgotPasswordPage from "@/views/ForgotPasswordPage";
 
 export const metadata: Metadata = {
-  title: "Reset Password | Litmus Diagnostics",
+  title: "Reset Password | Litmus",
   description: "Reset your Litmus account password securely via email or SMS verification.",
 };
 

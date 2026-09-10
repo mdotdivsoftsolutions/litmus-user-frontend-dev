@@ -59,7 +59,7 @@ export function PackagesHeroSearch({
         <div className="relative flex-1 w-full pl-4">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-hover:text-[#D32F2F] transition-colors" />
           <Input
-            placeholder="Search diagnostic packages..."
+            placeholder="Search testing packages..."
             className="font-body h-10 sm:h-10 pl-12 pr-6 border-none bg-transparent text-slate-800 placeholder:text-slate-400 text-base focus-visible:ring-0 shadow-none font-normal"
             value={search}
             onChange={handleSearchChange}

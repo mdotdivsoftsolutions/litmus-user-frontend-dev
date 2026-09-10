@@ -72,7 +72,7 @@ export function ConsultancyServices({ initialCategories }: { initialCategories?:
               const service = {
                 letter: cat.name ? cat.name.charAt(0).toUpperCase() : "A",
                 title: cat.name,
-                desc: cat.description || "Explore specialized diagnostic tests for this category.",
+                desc: cat.description || "Explore specialized laboratory tests for this category.",
                 image: IMAGES[idx % IMAGES.length],
                 color: COLORS[idx % COLORS.length].color,
                 bgColor: COLORS[idx % COLORS.length].bgColor,

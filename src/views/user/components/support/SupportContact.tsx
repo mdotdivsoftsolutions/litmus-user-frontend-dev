@@ -32,13 +32,13 @@ export function SupportContact() {
         phone: phoneNumber.trim(),
         email: email.trim() || "support-request@litmus.ai",
         business: "Support Callback",
-        serviceName: "Clinical & Support Callback",
+        serviceName: "Testing & Support Callback",
         source: "User Frontend Support Page",
         date: new Date().toISOString().split("T")[0],
         time: new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" }),
       });
       setIsSubmitted(true);
-      toast.success("Callback request submitted! Our clinical team has been notified.");
+      toast.success("Callback request submitted! Our support team has been notified.");
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Failed to submit request. Please try again.");
     } finally {
@@ -110,7 +110,7 @@ export function SupportContact() {
               <div className="space-y-2 relative z-10">
                 <h4 className="text-xl font-semibold text-white tracking-tight">Request a Callback</h4>
                 <p className="text-slate-400 text-xs font-medium leading-relaxed">
-                  Leave your contact details and a clinical expert will reach out within <span className="text-white font-bold">15 minutes.</span>
+                  Leave your contact details and a testing expert will reach out within <span className="text-white font-bold">15 minutes.</span>
                 </p>
               </div>
 
@@ -121,7 +121,7 @@ export function SupportContact() {
                   </div>
                   <h5 className="text-base font-bold text-white">Callback Request Confirmed</h5>
                   <p className="text-xs text-slate-300">
-                    Thank you, <span className="text-emerald-400 font-semibold">{fullName}</span>. An immediate alert has been sent to our diagnostic specialist team. We will call you at <span className="text-white font-mono">{phoneNumber}</span> shortly.
+                    Thank you, <span className="text-emerald-400 font-semibold">{fullName}</span>. An immediate alert has been sent to our testing specialist team. We will call you at <span className="text-white font-mono">{phoneNumber}</span> shortly.
                   </p>
                   <Button
                     variant="outline"
@@ -182,7 +182,7 @@ export function SupportContact() {
 
               <div className="pt-2 flex items-center justify-center gap-2 opacity-40">
                 <Shield className="h-3 w-3 text-white" />
-                <span className="text-[9px] font-black text-white uppercase tracking-[0.2em]">Secure Clinical Link</span>
+                <span className="text-[9px] font-black text-white uppercase tracking-[0.2em]">Secure Laboratory Link</span>
               </div>
             </div>
           </div>

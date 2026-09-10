@@ -51,7 +51,7 @@ export const FilterNavigation = ({
         <div className="relative flex-1 w-full pl-6">
           <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-6 w-6 text-slate-300 transition-colors group-hover:text-[#D32F2F]" />
           <Input 
-            placeholder="Search our specialized diagnostic catalogue (1000+ tests)..." 
+            placeholder="Search our specialized testing catalogue (1000+ tests)..." 
             className="h-16 pl-14 pr-6 border-none bg-transparent text-slate-800 placeholder:text-slate-300 text-lg focus-visible:ring-0 shadow-none font-medium"
             value={search} 
             onChange={(e) => setSearch(e.target.value)} 
@@ -70,7 +70,7 @@ export const FilterNavigation = ({
               <SheetContent side="right" className="w-full sm:max-w-md bg-white border-l border-slate-100 rounded-l-[3.5rem] p-10">
                 <SheetHeader className="pb-10 pt-4">
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-100 text-[#D32F2F] text-[10px] font-black uppercase tracking-[0.2em] mb-4 w-max">
-                    Diagnostic Hub
+                    Testing Hub
                   </div>
                   <SheetTitle className="text-4xl font-extrabold text-slate-800 tracking-tight">Refine <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#F06C00]">Search</span></SheetTitle>
                   <SheetDescription className="text-slate-400 text-lg font-medium pt-2 uppercase tracking-wide text-xs">Architect your search with specialized precision.</SheetDescription>
@@ -100,9 +100,9 @@ export const FilterNavigation = ({
                    {/* Test Types & Range Selection */}
                    <div className="grid grid-cols-1 gap-8">
                       <div className="space-y-4">
-                        <label className="text-xs font-black text-slate-800 uppercase tracking-[0.25em]">Diagnostic Type</label>
+                        <label className="text-xs font-black text-slate-800 uppercase tracking-[0.25em]">Test Category / Type</label>
                         <Select value={selectedType} onValueChange={setSelectedType}>
-                          <SelectTrigger className="h-14 rounded-2xl border-slate-100 bg-slate-50 text-base font-bold text-slate-700 outline-none focus:ring-2 focus:ring-[#D32F2F]/10"><SelectValue placeholder="All Diagnostic Ranges" /></SelectTrigger>
+                          <SelectTrigger className="h-14 rounded-2xl border-slate-100 bg-slate-50 text-base font-bold text-slate-700 outline-none focus:ring-2 focus:ring-[#D32F2F]/10"><SelectValue placeholder="All Test Ranges" /></SelectTrigger>
                           <SelectContent className="rounded-2xl border-slate-100 overflow-hidden shadow-2xl">
                             {testTypes.map((t) => <SelectItem key={t} value={t} className="font-bold py-3 hover:bg-red-50 focus:bg-red-50 cursor-pointer">{t}</SelectItem>)}
                           </SelectContent>

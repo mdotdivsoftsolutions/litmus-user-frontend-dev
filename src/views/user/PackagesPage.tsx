@@ -16,7 +16,7 @@ export default function PackagesPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [visibleCount, setVisibleCount] = useState(12);
   const router = useRouter();
-  const heroCategories = ["All", "Compliance", "Clinical", "Labeling"];
+  const heroCategories = ["All", "Compliance", "Safety", "Labeling"];
   const resultsRef = useRef<HTMLDivElement>(null);
 
   const { data: catRes, isLoading: catLoading } = useQuery({

@@ -69,13 +69,13 @@ export default function GlobalError({
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50/80 px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-brand-primary">
               <Activity className="h-3.5 w-3.5" />
-              Platform Diagnostics
+              Platform Status
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 font-nunito tracking-tight leading-tight">
               We Encountered a Temporary Interruption
             </h1>
             <p className="text-sm sm:text-base text-slate-500 max-w-md mx-auto leading-relaxed">
-              Our automated diagnostic pipeline intercepted an unexpected state. Your data remains secure and no sample orders were affected.
+              Our automated system pipeline intercepted an unexpected state. Your data remains secure and no sample orders were affected.
             </p>
           </div>
 
@@ -140,13 +140,13 @@ export default function GlobalError({
             </div>
           </div>
 
-          {/* Technical Diagnostics (Collapsible) */}
+          {/* Technical Details (Collapsible) */}
           <div className="pt-2">
             <button
               onClick={() => setShowTechnicalDetails(!showTechnicalDetails)}
               className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-600 transition-colors"
             >
-              <span>Incident Diagnostics</span>
+              <span>Incident Details</span>
               {showTechnicalDetails ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
             </button>
 

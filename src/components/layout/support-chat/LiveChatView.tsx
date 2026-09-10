@@ -110,7 +110,7 @@ export function LiveChatView({
         <p className="text-xs text-slate-500 max-w-[260px] leading-relaxed mb-6">
           {isBusy
             ? "All our specialists are currently assisting other clients. Please wait another minute, or you can switch back to the AI Assistant."
-            : "Your request has been dispatched to our diagnostic desk. An available specialist will accept shortly."}
+            : "Your request has been dispatched to our support desk. An available specialist will accept shortly."}
         </p>
 
         <div className="w-full bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-6 space-y-2 shadow-sm">
@@ -151,7 +151,7 @@ export function LiveChatView({
         </div>
 
         <h3 className="text-base font-bold text-slate-900 mb-1">How was your live consultation?</h3>
-        <p className="text-xs text-slate-500 mb-5">Your feedback helps us maintain our diagnostic support standards.</p>
+        <p className="text-xs text-slate-500 mb-5">Your feedback helps us maintain our laboratory support standards.</p>
 
         <form onSubmit={handleRatingSubmit} className="w-full space-y-4">
           <div className="flex items-center justify-center gap-2">
@@ -214,7 +214,7 @@ export function LiveChatView({
           </div>
           <div>
             <span className="text-slate-900 font-bold text-xs">{assignedAgentName}</span>
-            <p className="text-[10px] text-slate-500 font-medium">Diagnostic Support Specialist</p>
+            <p className="text-[10px] text-slate-500 font-medium">Testing Support Specialist</p>
           </div>
         </div>
 

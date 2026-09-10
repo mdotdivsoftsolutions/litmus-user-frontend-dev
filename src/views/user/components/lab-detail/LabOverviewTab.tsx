@@ -11,11 +11,11 @@ export function LabOverviewTab({ lab }: LabOverviewTabProps) {
     <div className="mt-0 animate-slide-up space-y-10">
       <div className="space-y-6 text-area-professional">
         <h2 className="text-3xl lg:text-2xl font-semibold text-slate-800 tracking-tight leading-tight">
-          Diagnostic <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">Excellence.</span>
+          Testing <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">Excellence.</span>
         </h2>
         <p className="text-slate-500 font-medium leading-relaxed text-lg">
           {lab.overview ||
-            `${lab.labName} stands as a cornerstone of diagnostic excellence in ${lab.location?.city || "India"}. With a legacy of precision testing, we provide critical nutritional and safety analytics to enterprise food brands and producers.`}
+            `${lab.labName} stands as a cornerstone of laboratory testing excellence in ${lab.location?.city || "India"}. With a legacy of precision testing, we provide critical nutritional and safety analytics to enterprise food brands and producers.`}
         </p>
         <div className="grid sm:grid-cols-3 gap-6 pt-6">
           {[
@@ -41,7 +41,7 @@ export function LabOverviewTab({ lab }: LabOverviewTabProps) {
               <div className="space-y-2">
                 <p className="text-lg font-semibold text-slate-800 tracking-tight">FSSAI Protocol Compliance</p>
                 <p className="text-sm text-slate-500 font-medium leading-relaxed">
-                  Our clinical workflows are strictly mapped to FSSAI 2024 revised testing standards.
+                  Our testing workflows are strictly mapped to FSSAI 2024 revised testing standards.
                 </p>
               </div>
             </div>

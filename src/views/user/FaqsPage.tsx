@@ -7,7 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs = [
   {
-    q: "How do I book a diagnostic test?",
+    q: "How do I book a laboratory test?",
     a: "Choose tests or a package, add them to your cart, pick home collection or lab visit, and complete checkout. You will receive an SMS and email with your order ID and next steps.",
   },
   {
@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     q: "How do I prepare my sample?",
-    a: "Follow the instructions in your booking confirmation. Some tests require fasting or sterile containers; our phlebotomy partner will confirm timing when they call to schedule collection.",
+    a: "Follow the instructions in your booking confirmation. Some tests require fasting or sterile containers; our sample collection partner will confirm timing when they call to schedule collection.",
   },
   {
     q: "Where can I download my report?",

@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import NewBookingPage from "@/views/user/NewBookingPage";
 
 export const metadata: Metadata = {
-  title: "Book Diagnostic Tests | Litmus",
+  title: "Book Laboratory Tests | Litmus",
   description: "Schedule sample collection, specify sample metadata, select accredited testing labs, and complete test booking.",
 };
 

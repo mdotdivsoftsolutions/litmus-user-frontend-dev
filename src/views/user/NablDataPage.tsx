@@ -55,7 +55,7 @@ export default function NablDataPage() {
         <h2>5. Data handling &amp; audit trail</h2>
         <p>
           Order metadata, chain-of-custody timestamps, and report download events are stored to support internal quality review and customer support.
-          Aggregated analytics never include free-text clinical notes tied to identifiable individuals in external dashboards.
+          Aggregated analytics never include confidential notes tied to identifiable individuals or proprietary formulations in external dashboards.
         </p>
 
         <h2>6. Updates</h2>

@@ -1,7 +1,7 @@
 const STEPS = [
   { step: "01", title: "Book Online", desc: "Select your food category and specific tests from our intuitive marketplace." },
   { step: "02", title: "Schedule Pickup", desc: "Our trained collection agents will reach you within hours to collect samples safely." },
-  { step: "03", title: "Lab Processing", desc: "Samples are analyzed in NABL-accredited labs using state-of-the-art diagnostic tools." },
+  { step: "03", title: "Lab Processing", desc: "Samples are analyzed in NABL-accredited labs using state-of-the-art testing equipment." },
   { step: "04", title: "Get Digital Report", desc: "Receive your FSSAI-compliant certified digital reports within 3-5 working days." },
 ];
 

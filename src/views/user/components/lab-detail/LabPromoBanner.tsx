@@ -15,7 +15,7 @@ export function LabPromoBanner() {
               <Zap className="h-4 w-4 fill-current" /> Limited Enterprise Offer
             </div>
             <h2 className="text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-tight">
-              Scale Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">Clinical Compliance</span> <br />
+              Scale Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">Quality Compliance</span> <br />
               with Litmus Premium.
             </h2>
             <p className="text-slate-400 text-lg font-medium leading-relaxed max-w-lg">

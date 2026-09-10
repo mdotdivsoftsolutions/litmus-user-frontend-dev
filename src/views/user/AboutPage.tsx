@@ -17,7 +17,7 @@ export default function AboutPage() {
         eyebrow="Company · About Litmus"
         title={
           <>
-            Diagnostics infrastructure{" "}
+            Testing infrastructure{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]">
               for safer food
             </span>

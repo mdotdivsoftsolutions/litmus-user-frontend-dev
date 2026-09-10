@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/dialog";
 
 const EXPERTISE_DATA = [
-  { label: "Diagnostic Center for Dairy in Bangalore", areas: "Dairy farmers, Milk processing plants, Cheese manufacturers, Paneer & Ghee units, Retailers." },
+  { label: "Testing Center for Dairy in Bangalore", areas: "Dairy farmers, Milk processing plants, Cheese manufacturers, Paneer & Ghee units, Retailers." },
   { label: "Food Safety Audit Center in Mumbai", areas: "Restaurants, cloud kitchens, hotels, catering services, and large-scale industrial canteens." },
   { label: "Spices Testing Lab in Guntur", areas: "Masala exporters, whole spice traders, powder manufacturers, and organic spice collectives." },
   { label: "Meat & Poultry Labs in Hyderabad", areas: "Fresh meat retailers, processing units, export houses, and seafood processing plants." },
@@ -21,7 +21,7 @@ export function FooterIntroGrid() {
     <div className="mb-10">
       <h2 className="text-2xl font-bold text-slate-800 mb-4">Litmus Food Analytics - Your Trusted Safety Partner</h2>
       <p className="text-slate-500 text-sm leading-relaxed max-w-5xl mb-8">
-        Litmus brings the accuracy of world-class food diagnostic labs straight to your business. Whether you are a small cafe or a large food manufacturer, every test is delivered with absolute precision. From routine moisture tests to specialized pathogen panels, our mission is to make food safety premium, accessible, and simple. With over <strong>50,000+ tests completed</strong> across India, we are your speed, accuracy, and trust partner.
+        Litmus brings the accuracy of world-class food testing labs straight to your business. Whether you are a small cafe or a large food manufacturer, every test is delivered with absolute precision. From routine moisture tests to specialized pathogen panels, our mission is to make food safety premium, accessible, and simple. With over <strong>50,000+ tests completed</strong> across India, we are your speed, accuracy, and trust partner.
       </p>
       
       {/* Simplified Portrait Certificate Grid */}

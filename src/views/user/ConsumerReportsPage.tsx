@@ -170,7 +170,7 @@ export default function ConsumerReportsPage() {
       {/* Page Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Diagnostic Reports</h1>
+          <h1 className="text-2xl font-bold text-slate-900">Laboratory Test Reports</h1>
           <p className="text-sm text-muted-foreground mt-0.5">View verified test certificates, executive summaries, recommendations, and tips.</p>
         </div>
         <div className="relative w-full md:w-64 shrink-0">

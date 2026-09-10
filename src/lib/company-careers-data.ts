@@ -44,7 +44,7 @@ export const careerOpenings: CareerOpening[] = [
       "Comfort modelling workflows involving payments, scheduling, and document uploads.",
       "Hands-on experience with PostgreSQL or equivalent relational databases.",
     ],
-    niceToHave: ["Healthcare or diagnostics integrations", "OpenTelemetry / Datadog"],
+    niceToHave: ["Laboratory or testing integrations", "OpenTelemetry / Datadog"],
   },
   {
     slug: "mobile-engineer-flutter",
@@ -103,7 +103,7 @@ export const careerOpenings: CareerOpening[] = [
       "Diagnose escalations involving barcode mismatches or delayed manifests.",
     ],
     requirements: [
-      "3+ years coordinating diagnostic logistics between clinicians and labs.",
+      "3+ years coordinating testing logistics between sample collection centres and labs.",
       "Exposure to LIMS tooling plus ERP invoicing nuances.",
       "Comfort facilitating workshops in English with Tamil or Hindi stakeholders.",
     ],
@@ -163,7 +163,7 @@ export const careerOpenings: CareerOpening[] = [
       "Represent Litmus at select conferences emphasizing credibility narratives.",
     ],
     requirements: [
-      "10+ years enterprise SaaS / diagnostics hunting motions.",
+      "10+ years enterprise SaaS / laboratory testing sales motions.",
       "Comfort structuring outcome-linked commercials referencing SLA regimes.",
       "Demonstrated wins navigating centralized procurement desks.",
     ],

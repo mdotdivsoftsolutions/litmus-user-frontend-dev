@@ -47,7 +47,7 @@ export function WhyLitmusVisualColumn({ isDark }: WhyLitmusVisualColumnProps) {
             <div className="flex items-center gap-2.5 mt-2">
               <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse ring-4 ring-emerald-500/20" />
               <span className="text-[11px] font-black text-emerald-400 uppercase tracking-widest">
-                Clinical Validation Clear
+                Quality Validation Clear
               </span>
             </div>
           </div>

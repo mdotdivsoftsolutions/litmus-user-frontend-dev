@@ -59,7 +59,7 @@ export const TestsGrid = ({
             </div>
             <div className="absolute inset-0 bg-slate-50 rounded-2xl scale-0 group-hover:scale-100 transition-transform duration-500 origin-center -z-0" />
           </button>
-          <p className="font-data text-[11px] text-slate-400 font-semibold uppercase tracking-widest">Discover more diagnostic capabilities</p>
+          <p className="font-data text-[11px] text-slate-400 font-semibold uppercase tracking-widest">Discover more testing capabilities</p>
         </div>
       )}
     </div>

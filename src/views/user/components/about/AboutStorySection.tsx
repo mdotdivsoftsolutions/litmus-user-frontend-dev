@@ -9,7 +9,7 @@ export function AboutStorySection() {
           <p>
             Litmus began where many compliance programmes break down —{" "}
             <strong className="text-slate-800 font-semibold">between</strong> the brand owner who needs timely answers and the laboratory
-            whose capacity, scope, and paperwork must stay immaculate. We are not a substitute for clinical judgment or statutory authority;
+            whose capacity, scope, and paperwork must stay immaculate. We are not a substitute for statutory authority or official regulatory inspection;
             we are the operational spine that makes accredited testing easier to buy, schedule, and audit.
           </p>
           <p>

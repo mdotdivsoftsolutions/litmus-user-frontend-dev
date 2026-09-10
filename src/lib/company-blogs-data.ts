@@ -161,7 +161,7 @@ export const blogPosts: BlogPost[] = [
     blocks: [
       {
         type: "p",
-        text: "Enterprise diagnostics procurement rarely stalls on price lists; it stalls when SSO, segregation of duties, and ERP ingestion were afterthoughts. Treat APIs like mini procurements — write acceptance criteria your CIO would defend.",
+        text: "Enterprise testing procurement rarely stalls on price lists; it stalls when SSO, segregation of duties, and ERP ingestion were afterthoughts. Treat APIs like mini procurements — write acceptance criteria your CIO would defend.",
       },
       {
         type: "h2",
@@ -256,11 +256,11 @@ export const blogPosts: BlogPost[] = [
     ],
   },
   {
-    slug: "notifications-that-respect-clinical-tone",
-    title: "Notifications that respect clinical tone (and compliance)",
+    slug: "notifications-that-respect-testing-tone",
+    title: "Notifications that respect precision tone (and compliance)",
     category: "Product & Platform",
     excerpt:
-      "Balancing urgency with non-diagnostic language in SMS, email, and push surfaces.",
+      "Balancing urgency with clear testing language in SMS, email, and push surfaces.",
     author: "Marcus D’Souza",
     date: "Mar 30, 2026",
     readMinutes: 7,
@@ -269,15 +269,15 @@ export const blogPosts: BlogPost[] = [
     blocks: [
       {
         type: "p",
-        text: "Consumers confuse logistics delays with clinical outcomes when wording blurs the two. Messaging stacks should borrow airline-grade clarity — status versus implication.",
+        text: "Consumers confuse logistics delays with test results when wording blurs the two. Messaging stacks should borrow airline-grade clarity — status versus implication.",
       },
       {
         type: "h2",
-        text: "Separate logistics from clinical readiness",
+        text: "Separate logistics from testing readiness",
       },
       {
         type: "p",
-        text: "Separate operational notices (‘phlebotomist delayed’) from clinical readiness (‘report uploaded’) across templates. Never imply interpretation via push character limits.",
+        text: "Separate operational notices (‘sampler delayed’) from testing readiness (‘report uploaded’) across templates. Never imply interpretation via push character limits.",
       },
       {
         type: "figure",
@@ -287,11 +287,11 @@ export const blogPosts: BlogPost[] = [
       },
       {
         type: "h3",
-        text: "Tone without diagnosis",
+        text: "Tone without overstatement",
       },
       {
         type: "p",
-        text: "Localise respectful greetings without implying diagnostic conclusions pending physician review. QA/legal paired review beats marketing solo drafts.",
+        text: "Localise respectful greetings without implying test conclusions pending lab review. QA/legal paired review beats marketing solo drafts.",
       },
       {
         type: "h2",

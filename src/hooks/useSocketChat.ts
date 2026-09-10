@@ -148,7 +148,7 @@ export function useSocketChat(currentUser?: any) {
                   sessionId: res.session.sessionId,
                   senderType: "BOT",
                   senderName: "Litmus Intelligence",
-                  text: "Hello! Welcome to Litmus Diagnostic & Food Testing Assistance. How can we assist you today?",
+                  text: "Hello! Welcome to Litmus Food & Laboratory Testing Assistance. How can we assist you today?",
                   actionSuggestions: [
                     { label: "📋 How do I book a test?", action: "ask_faq", payload: "book_test" },
                     { label: "🔬 What can I test?", action: "ask_faq", payload: "what_can_i_test" },

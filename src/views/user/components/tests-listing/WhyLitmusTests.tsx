@@ -1,7 +1,7 @@
 "use client";
 
 import { Star } from "lucide-react";
-import excellenceImg from "@/assets/clinical-excellence.png";
+import excellenceImg from "@/assets/lab-excellence.png";
 import { cn } from "@/lib/utils";
 import { WhyLitmusFeatureCards } from "./WhyLitmusFeatureCards";
 import { WhyLitmusVisualColumn } from "./WhyLitmusVisualColumn";
@@ -23,7 +23,7 @@ export const WhyLitmusTests = ({ theme = "dark" }: WhyLitmusTestsProps) => {
       <div className="absolute inset-0 z-0 overflow-hidden">
         <img
           src={typeof excellenceImg === "string" ? excellenceImg : (excellenceImg as any)?.src || ""}
-          alt="Clinical Excellence"
+          alt="Laboratory Excellence"
           className={cn(
             "w-full h-full object-cover scale-110 blur-[2px] transition-opacity duration-1000",
             isDark ? "opacity-20 mix-blend-luminosity" : "opacity-5"
@@ -69,7 +69,7 @@ export const WhyLitmusTests = ({ theme = "dark" }: WhyLitmusTestsProps) => {
               >
                 Transparency, Compliance, <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#F06C00]">
-                  Clinical Precision.
+                  Laboratory Precision.
                 </span>
               </h2>
               <p className={cn("text-lg md:text-xl font-medium leading-relaxed max-w-2xl", isDark ? "text-slate-400" : "text-slate-500")}>

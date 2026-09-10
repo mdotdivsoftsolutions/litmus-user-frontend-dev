@@ -31,7 +31,7 @@ export function PackagesCTA() {
             Not sure which package fits your needs?
           </h2>
           <p className="font-body text-white/90 text-base font-normal leading-[1.5]">
-            Connect with our food safety experts for a personalized diagnostic roadmap tailored to your industry and compliance requirements.
+            Connect with our food safety experts for a personalized testing roadmap tailored to your industry and compliance requirements.
           </p>
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <Button 

@@ -46,7 +46,7 @@ export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, h
             </span>
           </>
         }
-        subtitle="Clinically certified labs with verified NABL & FSSAI accreditations across India."
+        subtitle="Certified testing labs with verified NABL & FSSAI accreditations across India."
         className="mb-8"
       />
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">

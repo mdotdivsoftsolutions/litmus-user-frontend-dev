@@ -1,6 +1,6 @@
 # Litmus Food Analytics — User Frontend
 
-Litmus is an advanced digital food diagnostics and laboratory testing marketplace connecting food manufacturers, cloud kitchens, D2C brands, and consumers with NABL-accredited and FSSAI-notified testing laboratories across India.
+Litmus is an advanced digital food testing and laboratory analysis marketplace connecting food manufacturers, cloud kitchens, D2C brands, and consumers with NABL-accredited and FSSAI-notified testing laboratories across India.
 
 ---
 

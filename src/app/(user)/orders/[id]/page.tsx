@@ -7,7 +7,7 @@ interface Props {
 
 export const metadata: Metadata = {
   title: "Order Details & Timeline | Litmus",
-  description: "View diagnostic order progress, collection updates, performing laboratory assignment, and verified PDF reports.",
+  description: "View testing order progress, collection updates, performing laboratory assignment, and verified PDF reports.",
 };
 
 export default async function Page({ params }: Props) {

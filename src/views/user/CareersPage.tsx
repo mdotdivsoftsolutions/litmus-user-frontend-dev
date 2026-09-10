@@ -49,7 +49,7 @@ export default function CareersPage() {
           <>
             Build{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-action">
-              trustworthy diagnostics
+              trustworthy food testing
             </span>
           </>
         }

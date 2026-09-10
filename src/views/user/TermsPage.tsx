@@ -18,7 +18,7 @@ export default function TermsPage() {
             </span>
           </>
         }
-        subtitle="These terms describe how you may use Litmus diagnostics booking, payments, and reports. Demo copy for product preview — replace with counsel-reviewed language before production."
+        subtitle="These terms describe how you may use Litmus laboratory test booking, payments, and reports. Demo copy for product preview — replace with counsel-reviewed language before production."
       />
       <PolicyArticle lastUpdated="May 9, 2026">
         <p>
@@ -44,10 +44,9 @@ export default function TermsPage() {
           <li>Sample integrity requirements (fasting, container type, timing) must be followed; otherwise results may be delayed or invalid.</li>
         </ul>
 
-        <h2>3. Reports &amp; medical disclaimer</h2>
+        <h2>3. Test reports &amp; regulatory disclaimer</h2>
         <p>
-          Diagnostic reports are issued by the performing laboratory. Litmus does not practise medicine. Reports are for informational
-          use and should be interpreted by a qualified clinician. Do not use report content as the sole basis for diagnosis or treatment.
+          Laboratory test reports are issued by the performing accredited laboratory. Litmus provides testing coordination and digital reporting. Test reports are for quality, compliance, and informational verification and should be interpreted by qualified food safety professionals.
         </p>
 
         <h2>4. Acceptable use</h2>

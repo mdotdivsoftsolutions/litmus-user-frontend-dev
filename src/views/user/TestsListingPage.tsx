@@ -158,7 +158,7 @@ export default function TestsListingPage() {
           />
         )}
 
-        {/* 5. MOST BOOKED DIAGNOSTICS */}
+        {/* 5. MOST BOOKED TESTS */}
         <div ref={resultsRef} className="scroll-mt-6">
           <MostBookedTests
             tests={formattedTests}

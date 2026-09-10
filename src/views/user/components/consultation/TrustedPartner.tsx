@@ -11,7 +11,7 @@ export function TrustedPartner() {
              Litmus Food Analytics - Your Trusted Safety Partner
           </h2>
           <p className="text-slate-600 text-sm md:text-base leading-relaxed">
-            Litmus brings the accuracy of world-class food diagnostic labs straight to your business. Whether you are a small cafe or a large food manufacturer, every test is delivered with absolute precision. From routine moisture tests to specialized pathogen panels, our mission is to make food safety premium, accessible, and simple. With over <strong className="text-slate-800 font-bold">50,000+ tests completed</strong> across India, we are your speed, accuracy, and trust partner.
+            Litmus brings the accuracy of world-class food testing labs straight to your business. Whether you are a small cafe or a large food manufacturer, every test is delivered with absolute precision. From routine moisture tests to specialized pathogen panels, our mission is to make food safety premium, accessible, and simple. With over <strong className="text-slate-800 font-bold">50,000+ tests completed</strong> across India, we are your speed, accuracy, and trust partner.
           </p>
         </div>
 
@@ -26,7 +26,7 @@ export function TrustedPartner() {
              </thead>
              <tbody className="text-slate-600">
                 <tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                   <td className="py-4 px-6 font-semibold text-[#D32F2F]">Diagnostic Center for Dairy in Bangalore</td>
+                   <td className="py-4 px-6 font-semibold text-[#D32F2F]">Testing Center for Dairy in Bangalore</td>
                    <td className="py-4 px-6 border-l border-slate-100">Dairy farmers, Milk processing plants, Cheese manufacturers, Paneer & Ghee units, Retailers.</td>
                 </tr>
                 <tr className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
@@ -65,7 +65,7 @@ export function TrustedPartner() {
               </li>
               <li className="flex items-start gap-3">
                  <div className="mt-2 h-1.5 w-1.5 rounded-full bg-[#D32F2F] shrink-0" />
-                 <p className="text-slate-600 text-sm md:text-base leading-relaxed"><strong className="text-slate-800">NABL Quality:</strong> Strictly partnered with ISO certified, FSSAI approved labs using advanced diagnostic technology.</p>
+                 <p className="text-slate-600 text-sm md:text-base leading-relaxed"><strong className="text-slate-800">NABL Quality:</strong> Strictly partnered with ISO certified, FSSAI approved labs using advanced testing technology.</p>
               </li>
               <li className="flex items-start gap-3">
                  <div className="mt-2 h-1.5 w-1.5 rounded-full bg-[#D32F2F] shrink-0" />

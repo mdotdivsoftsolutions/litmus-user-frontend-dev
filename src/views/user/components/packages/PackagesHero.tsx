@@ -36,7 +36,7 @@ export function PackagesHero({
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           <div className="flex-1 text-center lg:text-left space-y-6 py-8 lg:py-0 group">
             <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white shadow-sm border border-slate-100 text-[#D32F2F] text-[10px] font-bold uppercase tracking-[0.2em] animate-fade-in">
-              <Shield className="h-4 w-4" /> Curated Diagnostic Bundles
+              <Shield className="h-4 w-4" /> Curated Testing Bundles
             </div>
 
             <div className="space-y-4">
@@ -97,7 +97,7 @@ export function PackagesHero({
                   Live <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse border border-emerald-100" />
                 </span>
                 <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest leading-none mt-1">
-                  Diagnostics
+                  Testing Panels
                 </span>
               </div>
             </div>

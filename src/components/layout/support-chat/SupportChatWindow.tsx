@@ -108,7 +108,7 @@ export function SupportChatWindow({
                 <Sparkles className="h-5 w-5" />
               </div>
               <div>
-                <CardTitle className="text-slate-900 text-base font-bold tracking-tight">Litmus Clinical AI</CardTitle>
+                <CardTitle className="text-slate-900 text-base font-bold tracking-tight">Litmus Support AI</CardTitle>
                 <div className="flex items-center gap-1.5">
                   <div
                     className={cn(
@@ -117,7 +117,7 @@ export function SupportChatWindow({
                     )}
                   />
                   <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                    {hasOnlineAgents ? "Live Specialists Online" : "AI Diagnostic Desk 24/7"}
+                    {hasOnlineAgents ? "Live Specialists Online" : "AI Support Desk 24/7"}
                   </span>
                 </div>
               </div>
@@ -192,7 +192,7 @@ export function SupportChatWindow({
                 Connect with Live Support?
               </h3>
               <p className="text-xs text-slate-500 max-w-[260px] leading-relaxed mb-6">
-                Can we connect you to our live specialist team? A certified diagnostic expert is ready to assist you directly.
+                Can we connect you to our live specialist team? A certified testing expert is ready to assist you directly.
               </p>
 
               <div className="w-full space-y-2.5">

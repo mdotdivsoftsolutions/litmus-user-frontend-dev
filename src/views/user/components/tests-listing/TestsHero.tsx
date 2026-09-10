@@ -60,7 +60,7 @@ export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHero
                   Live <div className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse border border-emerald-100" />
                 </span>
                 <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest leading-none mt-1 font-semibold">
-                  Diagnostics
+                  Testing Labs
                 </span>
               </div>
             </div>

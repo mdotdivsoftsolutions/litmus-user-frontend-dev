@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import TestsListingPage from "@/views/user/TestsListingPage";
 
 export const metadata: Metadata = {
-  title: "Diagnostic & Food Safety Tests Directory | Litmus",
+  title: "Food Safety & Laboratory Tests Directory | Litmus",
   description: "Explore all accredited laboratory tests for food matrices, nutritional profiling, microbiology, chemical residue, and safety compliance.",
 };
 

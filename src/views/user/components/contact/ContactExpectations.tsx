@@ -20,7 +20,7 @@ const steps = [
     icon: Headphones,
     title: "Specimens & bookings",
     description:
-      "For urgent sample logistics, order changes, or report access, our clinical support desk is built for speed.",
+      "For urgent sample logistics, order changes, or report access, our laboratory support desk is built for speed.",
     linkHref: "/support",
     linkLabel: "Open Support",
   },

@@ -1,7 +1,7 @@
 const TRUST_POINTS = [
   { title: "Fastest Turnaround", desc: "Digital reports delivered in as little as 3-5 working days, direct to your dashboard." },
   { title: "Premium Logistics", desc: "Skilled collection agents with specialized training, ensuring safe and cold-chain sample transport." },
-  { title: "NABL Quality", desc: "Strictly partnered with ISO certified, FSSAI approved labs using advanced diagnostic technology." },
+  { title: "NABL Quality", desc: "Strictly partnered with ISO certified, FSSAI approved labs using advanced analytical technology." },
   { title: "Verified Trust", desc: "Recommended by 500+ industry experts and trusted by 50,000+ food businesses nationwide." },
   { title: "Transparent Billing", desc: "Unified pricing for all tests with no hidden sample collection or reporting charges." },
 ];

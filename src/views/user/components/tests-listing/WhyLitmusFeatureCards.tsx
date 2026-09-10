@@ -7,13 +7,13 @@ const reasons = [
   {
     icon: Shield,
     title: "NABL Calibration",
-    description: "Nationally recognized accuracy standards with certified clinical precision.",
+    description: "Nationally recognized accuracy standards with certified scientific precision.",
     color: "from-blue-500 to-indigo-600",
   },
   {
     icon: Clock,
     title: "Swift TAT",
-    description: "Reports delivered with clinically verified efficiency in just 3-5 days.",
+    description: "Reports delivered with verified laboratory efficiency in just 3-5 days.",
     color: "from-emerald-500 to-teal-600",
   },
   {

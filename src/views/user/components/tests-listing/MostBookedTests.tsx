@@ -85,11 +85,11 @@ export const MostBookedTests = ({
             <>
               Most Booked{" "}
               <span className="text-gradient-brand">
-                Diagnostics
+                Tests
               </span>
             </>
           }
-          subtitle="Clinically verified specialized tests across major industry verticals."
+          subtitle="Accredited specialized tests across major industry verticals."
         />
 
         <div className="grid gap-6 md:grid-cols-2">
@@ -216,7 +216,7 @@ export const MostBookedTests = ({
                   <div className="h-16 w-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
                     <Search className="h-8 w-8 text-slate-400" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-2">No diagnostics found</h3>
+                  <h3 className="text-xl font-bold text-slate-800 mb-2">No tests found</h3>
                   <p className="text-slate-500 max-w-sm">We couldn't find any tests matching your current search or category filters.</p>
                   <Button 
                     variant="outline" 

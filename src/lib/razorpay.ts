@@ -100,7 +100,7 @@ export async function openRazorpayCheckout(options: RazorpayPaymentOptions): Pro
     currency: options.currency,
     order_id: options.orderId,
     name: 'Litmus Labs',
-    description: 'Food & Diagnostic Testing Services',
+    description: 'Food & Laboratory Testing Services',
     image: LITMUS_LOGO_BASE64, // embedded base64 data URI so it loads immediately in Razorpay iframe without 404
     prefill: {
       name: options.prefill?.name || '',

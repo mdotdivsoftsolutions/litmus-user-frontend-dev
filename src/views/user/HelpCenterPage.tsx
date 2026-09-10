@@ -81,7 +81,7 @@ export default function HelpCenterPage() {
               </div>
               <div>
                 <h4 className="font-semibold text-slate-800">Need direct human support?</h4>
-                <p className="text-sm text-slate-500">Reach our clinical operations desk for sample questions or order assistance.</p>
+                <p className="text-sm text-slate-500">Reach our laboratory operations desk for sample questions or order assistance.</p>
               </div>
             </div>
             <Link

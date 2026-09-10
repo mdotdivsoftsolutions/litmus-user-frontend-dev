@@ -21,7 +21,7 @@ export function SupportHero() {
             <div className="flex-1 text-center lg:text-left space-y-6 py-2 lg:py-0">
                 <div className="space-y-4">
                   <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-slate-50 border border-slate-100 text-[#D32F2F] text-[10px] font-semibold uppercase tracking-[0.4em] shadow-sm">
-                    <Headset className="h-4 w-4" /> 24/7 Clinical Helpdesk
+                    <Headset className="h-4 w-4" /> 24/7 Dedicated Helpdesk
                   </div>
                   <h1 className="text-2xl sm:text-4xl font-semibold text-slate-800 tracking-tight leading-tight">
                      Need Assistance?  <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D32F2F] to-[#feba50]"> Our Support Team Is Ready to Help</span>
@@ -34,7 +34,7 @@ export function SupportHero() {
                 <div className="relative max-w-xl mx-auto lg:mx-0 group">
                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-focus-within:text-[#D32F2F] transition-colors" />
                    <Input 
-                     placeholder="Search diagnostics, sample collection..." 
+                     placeholder="Search tests, sample collection..." 
                      className="h-14 pl-14 pr-36 bg-white border border-slate-100 rounded-2xl shadow-[0_16px_32px_rgba(0,0,0,0.03)] text-base placeholder:text-slate-300 text-slate-800 transition-all focus:border-[#D32F2F]/20 focus:ring-0" 
                    />
                    <Button className="absolute right-2 top-1/2 -translate-y-1/2 h-10 px-6 bg-gradient-to-r from-[#D32F2F] to-[#feba50] text-white font-semibold text-xs rounded-xl shadow-lg hover:-translate-y-0.5 transition-all">

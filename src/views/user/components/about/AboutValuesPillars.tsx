@@ -39,7 +39,7 @@ const pillars = [
   {
     icon: FileStack,
     title: "Reports & enterprise workflows",
-    copy: "PDF delivery, GST-ready artefacts, and hooks for procurement teams wiring diagnostics into QA programmes.",
+    copy: "PDF delivery, GST-ready artefacts, and hooks for procurement teams wiring testing data into QA programmes.",
   },
   {
     icon: Sparkles,

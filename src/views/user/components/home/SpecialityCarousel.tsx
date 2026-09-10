@@ -97,7 +97,7 @@ export function SpecialityCarousel({ initialCategories }: { initialCategories?: 
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4">
         <SectionHeader
-          badge="Clinical Specialities"
+          badge="Food Categories"
           title={
             <>
               Tests By Food{" "}
@@ -139,7 +139,7 @@ export function SpecialityCarousel({ initialCategories }: { initialCategories?: 
                   <PastelCategoryCard
                     href={`/tests?category=${encodeURIComponent(cat._id)}`}
                     title={cat.name}
-                    subtitle={cat.description || "Explore specialized diagnostic tests for this category."}
+                    subtitle={cat.description || "Explore specialized laboratory tests for this category."}
                     footnote={`${cat.testCount || 0} tests available`}
                     image={cat.imageUrl || FALLBACK_IMAGE}
                     tint={TINTS[i % TINTS.length]}
