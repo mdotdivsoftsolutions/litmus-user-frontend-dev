@@ -12,14 +12,14 @@ const tiles = [
     icon: FlaskConical,
   },
   {
-    title: "Health packages",
+    title: "Food testing packages",
     description: "Bundle popular assays for compliance checks and routine monitoring.",
     href: "/packages",
     icon: Package,
   },
   {
     title: "Sample collection",
-    description: "How home visits work, fasting rules, and container guidelines.",
+    description: "How sample pickups work, sampling protocol, and container guidelines.",
     href: "/support",
     icon: MapPin,
   },

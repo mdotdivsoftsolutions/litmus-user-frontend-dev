@@ -32,7 +32,7 @@ export default function PrivacyPage() {
             <strong>Account &amp; profile:</strong> name, phone number, email, city, and optional demographics you choose to share.
           </li>
           <li>
-            <strong>Health &amp; order context:</strong> test selections, referrals, prescription uploads when required, and notes you add for phlebotomy or lab handling.
+            <strong>Food testing &amp; order context:</strong> test selections, product specifications, batch details when required, and notes you add for sample collection or lab handling.
           </li>
           <li>
             <strong>Payment:</strong> payment instrument metadata via our PCI-compliant payment partners — we do not store full card numbers on Litmus servers.
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
 
         <h2>4. Retention</h2>
         <p>
-          We retain order and report-related records as needed for healthcare compliance, dispute resolution, and auditing,
+          We retain order and report-related records as needed for food safety & regulatory compliance, dispute resolution, and auditing,
           then delete or anonymize according to internal schedules and applicable law.
         </p>
 

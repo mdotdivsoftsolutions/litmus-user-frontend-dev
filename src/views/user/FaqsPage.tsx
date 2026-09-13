@@ -35,8 +35,8 @@ const faqs = [
     a: "Requests before sample collection may be eligible for cancellation per lab policy. After collection, cancellation may not be possible; contact support with your order ID for options.",
   },
   {
-    q: "Is my health data secure?",
-    a: "We apply administrative and technical safeguards aligned with healthcare expectations. Read our Privacy Policy for categories of data we collect and how we share them with partner labs.",
+    q: "Is my food testing data secure?",
+    a: "We apply administrative and technical safeguards aligned with food testing & compliance standards. Read our Privacy Policy for categories of data we collect and how we share them with partner labs.",
   },
 ];
 

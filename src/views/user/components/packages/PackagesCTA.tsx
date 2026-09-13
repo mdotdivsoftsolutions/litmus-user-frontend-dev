@@ -8,7 +8,7 @@ import { WHATSAPP_URL, WHATSAPP_NUMBER } from "@/lib/constants";
 
 export function PackagesCTA() {
   const handlePhoneClick = () => {
-    toast.success("Connecting you with our medical advisor...", {
+    toast.success("Connecting you with our food testing advisor...", {
       description: "Call initiated to +91 98765 43210 (Litmus Advisory Support).",
     });
   };

@@ -38,7 +38,7 @@ export function AboutMilestonesQuality() {
             </p>
             <ul className="list-disc pl-5 space-y-2 marker:text-slate-300">
               <li>Structured metadata on orders for audit reconstruction (timestamps, parties, document IDs).</li>
-              <li>Privacy posture described in our Privacy Policy; retention tuned for healthcare-adjacent records.</li>
+              <li>Privacy posture described in our Privacy Policy; retention tuned for food testing records.</li>
               <li>
                 Read how we talk about NABL data on the dedicated{" "}
                 <Link href="/nabl" className="font-semibold text-brand-primary hover:underline">

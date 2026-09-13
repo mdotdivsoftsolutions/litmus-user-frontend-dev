@@ -59,7 +59,7 @@ export function HomeHeroDesktopSearch() {
               href="/packages"
               className="flex items-center justify-center gap-2 rounded-full bg-white border-2 border-brand-action px-6 py-3.5 text-xs font-bold text-slate-800 shadow-sm transition hover:bg-brand-action/10 hover:border-brand-action whitespace-nowrap group"
             >
-              <Package className="h-4 w-4 text-brand-action group-hover:scale-110 transition-transform" /> Health Packages
+              <Package className="h-4 w-4 text-brand-action group-hover:scale-110 transition-transform" /> Food Testing Packages
             </Link>
           </div>
         </div>

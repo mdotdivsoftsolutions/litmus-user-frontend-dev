@@ -123,7 +123,7 @@ export const careerOpenings: CareerOpening[] = [
       "Collaborate with product on predictive ETA modelling feeds.",
     ],
     requirements: [
-      "7+ years in healthcare logistics / pharma cold-chain oversight.",
+      "7+ years in food testing logistics / cold-chain oversight.",
       "Demonstrated crisis leadership spanning pilots beyond Tier-I metros.",
       "Comfort analysing telemetry datasets exported into spreadsheets.",
     ],
@@ -143,7 +143,7 @@ export const careerOpenings: CareerOpening[] = [
       "Produce weekly narratives tying VOC insights into backlog grooming.",
     ],
     requirements: [
-      "4+ years scaling omnichannel healthcare contact centres.",
+      "4+ years scaling omnichannel food testing contact centres.",
       "Fluent Hindi plus English business writing.",
       "Experience with Zendesk or Freshdesk automation primitives.",
     ],

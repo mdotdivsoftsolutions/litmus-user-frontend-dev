@@ -111,7 +111,7 @@ export const PromoBanner = ({ className }: { className?: string }) => {
                                  onClick={(e) => {
                                     if (action.id === "phone") {
                                        e.preventDefault();
-                                       toast.success("Connecting you with our medical advisor...", {
+                                       toast.success("Connecting you with our food testing advisor...", {
                                           description: "Call initiated to +91 98765 43210 (Litmus Advisory Support).",
                                        });
                                     } else if (action.id === "whatsapp") {
