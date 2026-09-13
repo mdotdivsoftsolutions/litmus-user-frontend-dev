@@ -9,6 +9,7 @@ import { Download, FileText, ChevronRight, Loader2 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { bookingApi } from "@/lib/api/booking";
+import { cn } from "@/lib/utils";
 import { formatBookingStatus, getOrderTimelineStep } from "@/lib/payment-status";
 import { OrderTrackingTimeline } from "./components/order-detail/OrderTrackingTimeline";
 import { OrderInfoCards } from "./components/order-detail/OrderInfoCards";
@@ -49,6 +50,11 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
 
   const currentStep = getOrderTimelineStep(apiBooking.status, apiBooking.paymentStatus);
   const reportAvailable = Boolean(apiBooking.reportFiles?.length);
+
+  const isCourier =
+    apiBooking.collectionMethod === "COURIER" ||
+    apiBooking.metadata?.collectionMethod === "COURIER" ||
+    Boolean(apiBooking.courierDetails?.trackingId);
 
   let totalSamples = 0;
   const products = new Set<string>();
@@ -117,8 +123,6 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
             <StatusBadge status={formatBookingStatus(apiBooking.status)} />
           </div>
         </div>
-
-        <OrderTrackingTimeline currentStep={currentStep} />
       </div>
 
       <OrderInfoCards
@@ -129,12 +133,6 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
         totalAmount={apiBooking.totalAmount}
         paymentStatus={apiBooking.paymentStatus}
         bookingStatus={apiBooking.status}
-      />
-
-      <OrderCourierTracking
-        bookingId={apiBooking._id}
-        collectionMethod={apiBooking.collectionMethod || apiBooking.metadata?.collectionMethod}
-        courierDetails={apiBooking.courierDetails}
       />
 
       <OrderSampleBreakdown items={apiBooking.items} />
@@ -169,6 +167,18 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
           </div>
         </>
       )}
+
+      {/* Logistics & Fulfillment Tracking Section */}
+      <div className={cn("grid gap-6 items-start pt-1", isCourier ? "grid-cols-1 lg:grid-cols-2" : "grid-cols-1 max-w-2xl")}>
+        {isCourier && (
+          <OrderCourierTracking
+            bookingId={apiBooking._id}
+            collectionMethod="COURIER"
+            courierDetails={apiBooking.courierDetails}
+          />
+        )}
+        <OrderTrackingTimeline booking={apiBooking} currentStep={currentStep} />
+      </div>
 
       {/* GST Tax Invoice Modal */}
       <InvoiceModal
