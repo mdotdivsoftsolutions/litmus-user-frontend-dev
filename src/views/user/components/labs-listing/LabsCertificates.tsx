@@ -7,6 +7,14 @@ import { ConsultationBookingModal } from "../consultation/ConsultationBookingMod
 const mockCertificates = [
   {
     id: 1,
+    title: "HACCP, GMP & FOSTAC Training",
+    subtitle: "Customized Pricing",
+    description: "Equip your team with practical food safety knowledge through customized training programs designed for manufacturing, processing, and hospitality businesses.",
+    image: "/stock_image/WebApp Stock Images/pexels-edward-jenner-4033023.jpg",
+    features: ["Employee and management training", "Practical food safety workshops", "Training certificates and assessment"]
+  },
+  {
+    id: 2,
     title: "Food Label Review",
     subtitle: "Starting @ ₹1000",
     description: "Ensure your product labels comply with the latest food regulations and industry standards. Our experts review every aspect of your label to help you avoid non-compliance and build consumer trust.",
@@ -14,7 +22,7 @@ const mockCertificates = [
     features: ["FSSAI label compliance review", "Claims and declaration verification", "Regulatory gap assessment & recommendations"]
   },
   {
-    id: 2,
+    id: 3,
     title: "FSSAI Licensing & Documentation Support",
     subtitle: "Starting @ ₹1500 (Excl. Govt charges)",
     description: "Simplify the licensing process with expert guidance for obtaining, renewing, or modifying FSSAI registrations and License",
@@ -22,20 +30,12 @@ const mockCertificates = [
     features: ["New license and renewal support", "Documentation preparation", "Regulatory liaison and guidance"]
   },
   {
-    id: 3,
+    id: 4,
     title: "Food Safety Audits & Gap Assessments",
     subtitle: "Starting @ ₹3000",
     description: "Evaluate your facility, processes, and food safety systems to identify risks and improve compliance before regulatory or customer audits.",
     image: "/stock_image/WebApp Stock Images/pexels-chokniti-khongchum-1197604-2280547.jpg",
     features: ["GMP, GHP & HACCP assessments", "Compliance gap analysis", "Corrective action recommendations"]
-  },
-  {
-    id: 4,
-    title: "HACCP, GMP & FOSTAC Training",
-    subtitle: "Customized Pricing",
-    description: "Equip your team with practical food safety knowledge through customized training programs designed for manufacturing, processing, and hospitality businesses.",
-    image: "/stock_image/WebApp Stock Images/pexels-edward-jenner-4033023.jpg",
-    features: ["Employee and management training", "Practical food safety workshops", "Training certificates and assessment"]
   }
 ];
 
