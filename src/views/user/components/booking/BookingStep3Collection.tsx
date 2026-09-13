@@ -49,7 +49,7 @@ export function BookingStep3Collection({
   const coverageLabel = pickupCities.length ? pickupCities.join(", ") : "no cities yet";
   const gstValue = (formData.gstNumber || "").trim();
   const hasGst = gstValue.length > 0;
-  const isGstComplete = gstValue.length === 12;
+  const isGstComplete = gstValue.length >= 12 && gstValue.length <= 15;
   const gstError = hasGst && !isGstComplete;
 
   return (
@@ -195,7 +195,7 @@ export function BookingStep3Collection({
                             : "text-amber-700 bg-amber-50 border-amber-200"
                         )}
                       >
-                        {gstValue.length}/12 chars
+                        {gstValue.length}/15 chars
                       </span>
                     )}
                     <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
@@ -207,12 +207,12 @@ export function BookingStep3Collection({
                   name="gstNumber"
                   value={formData.gstNumber || ""}
                   onChange={(e) => {
-                    const cleanVal = e.target.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 12);
+                    const cleanVal = e.target.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 15);
                     e.target.value = cleanVal;
                     handleInputChange(e);
                   }}
-                  placeholder="e.g. 29AAAAA0000A (12 characters)"
-                  maxLength={12}
+                  placeholder="e.g. 33AAAAA0000A1Z5 (15 characters)"
+                  maxLength={15}
                   className={cn(
                     "h-10 bg-slate-50 rounded-lg text-sm font-mono uppercase tracking-wider transition-colors",
                     gstError
@@ -224,15 +224,15 @@ export function BookingStep3Collection({
                 />
                 {gstError ? (
                   <p className="text-[11px] text-red-500 font-medium">
-                    GST number must be exactly 12 characters ({gstValue.length}/12 entered).
+                    GST number must be between 12 and 15 characters ({gstValue.length} entered).
                   </p>
                 ) : isGstComplete ? (
                   <p className="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
-                    <Check className="h-3 w-3" /> Valid 12-character GST number entered.
+                    <Check className="h-3 w-3" /> Valid GST number entered.
                   </p>
                 ) : (
                   <p className="text-[11px] text-slate-400">
-                    Provide your 12-character business GST number to receive a GST-compliant tax invoice.
+                    Provide your business GSTIN (15 characters) to receive a GST-compliant tax invoice.
                   </p>
                 )}
               </div>
