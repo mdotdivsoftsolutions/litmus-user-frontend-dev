@@ -89,6 +89,10 @@ export default function PackagesPage() {
           setSelectedCategory={(cat) => {
             if (cat === "All") {
               router.push("/tests");
+            } else if (cat.trim().toLowerCase() === "general") {
+              if (resultsRef.current) {
+                resultsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
             } else {
               router.push(`/tests?category=${encodeURIComponent(cat)}`);
             }

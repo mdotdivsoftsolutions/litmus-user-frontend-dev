@@ -134,18 +134,26 @@ export function SpecialityCarousel({ initialCategories }: { initialCategories?: 
         <div className="relative">
           <div ref={scrollRef} className="flex overflow-x-auto scrollbar-hide pb-2 pt-1 -mx-2 scroll-smooth">
             {categories.length > 0 ? (
-              categories.map((cat: any, i: number) => (
-                <div key={cat._id || i} className="shrink-0">
-                  <PastelCategoryCard
-                    href={`/tests?category=${encodeURIComponent(cat._id)}`}
-                    title={cat.name}
-                    subtitle={cat.description || "Explore specialized laboratory tests for this category."}
-                    footnote={`${cat.testCount || 0} tests available`}
-                    image={cat.imageUrl || FALLBACK_IMAGE}
-                    tint={TINTS[i % TINTS.length]}
-                  />
-                </div>
-              ))
+              categories.map((cat: any, i: number) => {
+                const isGeneral = cat.name?.trim().toLowerCase() === "general";
+                const packageCount = cat.packageCount || 8;
+                return (
+                  <div key={cat._id || i} className="shrink-0">
+                    <PastelCategoryCard
+                      href={isGeneral ? "/packages" : `/tests?category=${encodeURIComponent(cat._id)}`}
+                      title={cat.name}
+                      subtitle={cat.description || (isGeneral ? "Explore curated testing packages for this category." : "Explore specialized laboratory tests for this category.")}
+                      footnote={
+                        isGeneral
+                          ? `${packageCount} packages available`
+                          : `${cat.testCount || 0} tests available`
+                      }
+                      image={cat.imageUrl || FALLBACK_IMAGE}
+                      tint={TINTS[i % TINTS.length]}
+                    />
+                  </div>
+                );
+              })
             ) : (
               <div className="col-span-full py-8 text-center text-muted-foreground w-full">
                 No categories available at the moment.

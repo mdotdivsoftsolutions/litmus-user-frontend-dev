@@ -62,11 +62,15 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
     }
     return [
       { name: "All", img: ALL_IMAGE, isLink: false },
-      ...categories.map((c: any) => ({
-        name: c.name,
-        img: c.imageUrl || DEFAULT_FALLBACK,
-        isLink: false,
-      }))
+      ...categories.map((c: any) => {
+        const isGeneral = c.name?.trim().toLowerCase() === "general";
+        return {
+          name: c.name,
+          img: c.imageUrl || DEFAULT_FALLBACK,
+          isLink: isGeneral,
+          href: isGeneral ? "/packages" : undefined,
+        };
+      })
     ];
   }, [categories]);
 

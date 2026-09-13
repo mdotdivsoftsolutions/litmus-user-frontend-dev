@@ -68,7 +68,13 @@ export function SearchAutocomplete({
 
     if (item.type === "test") router.push(`/tests/${item.id}`);
     else if (item.type === "package") router.push(`/packages/${item.id}`);
-    else if (item.type === "category") router.push(`/tests?category=${encodeURIComponent(item.name)}`);
+    else if (item.type === "category") {
+      if (item.name?.trim().toLowerCase() === "general") {
+        router.push("/packages");
+      } else {
+        router.push(`/tests?category=${encodeURIComponent(item.name)}`);
+      }
+    }
     else router.push(`/tests?search=${encodeURIComponent(item.name)}`);
   };
 

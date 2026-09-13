@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useMemo, type MouseEvent } from "react";
+import { useState, useRef, useMemo, useEffect, type MouseEvent } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Package, Milk, Coffee, Wheat, Flame, Drumstick, Droplets, Cookie } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
@@ -24,6 +24,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export default function TestsListingPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const initialCategory = searchParams?.get("category") || "";
   const initialSearch = searchParams?.get("search") || "";
@@ -107,7 +108,20 @@ export default function TestsListingPage() {
     }));
   }, [testsData]);
 
+  useEffect(() => {
+    if (
+      selectedCategory.trim().toLowerCase() === "general" ||
+      activeCategoryName.trim().toLowerCase() === "general"
+    ) {
+      router.replace("/packages");
+    }
+  }, [selectedCategory, activeCategoryName, router]);
+
   const handleCategoryChange = (cat: string) => {
+    if (cat.trim().toLowerCase() === "general") {
+      router.push("/packages");
+      return;
+    }
     setSelectedCategory(cat);
     setSelectedSubcategory("All");
     setVisibleItems(12);
