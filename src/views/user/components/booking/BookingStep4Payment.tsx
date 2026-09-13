@@ -98,9 +98,9 @@ export function BookingStep4Payment({
               </span>
               <span className="text-emerald-700 font-bold">+ ₹{gstAmount.toLocaleString()}</span>
             </div>
-            {formData?.gstNumber && (
+            {formData?.gstNumber && formData.gstNumber.trim().length === 12 && (
               <div className="pt-2 mt-1 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-emerald-800 bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-200/60">
-                <span className="font-semibold">GSTIN on Tax Invoice:</span>
+                <span className="font-semibold">GST Number on Tax Invoice:</span>
                 <span className="font-mono font-bold tracking-wider">{formData.gstNumber}</span>
               </div>
             )}

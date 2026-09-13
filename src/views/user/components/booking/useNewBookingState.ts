@@ -274,7 +274,7 @@ export function useNewBookingState() {
         city: prev.city || city,
         state: prev.state || state,
         pincode: prev.pincode || pincode,
-        gstNumber: prev.gstNumber || u.gstNumber || u.gstin || "",
+        gstNumber: (prev.gstNumber || u.gstNumber || u.gstin || "").replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 12),
       }));
 
       // If user did not have a saved address in profile, check save to profile by default
@@ -380,6 +380,9 @@ export function useNewBookingState() {
 
   const isPickupCovered = isCityCovered(formData.city, pickupCities);
 
+  const gstClean = (formData.gstNumber || "").trim();
+  const isGstValid = gstClean.length === 0 || gstClean.length === 12;
+
   const isStep3Valid = !!(
     formData.name &&
     formData.phone &&
@@ -387,6 +390,7 @@ export function useNewBookingState() {
     formData.city &&
     formData.pincode &&
     formData.collectionMethod &&
+    isGstValid &&
     (formData.collectionMethod === "COURIER" ||
       (formData.collectionMethod === "PICKUP" &&
         isPickupCovered &&
@@ -677,6 +681,11 @@ export function useNewBookingState() {
 
   const handleNext = async () => {
     if (step === 3) {
+      const gstTrimmed = (formData.gstNumber || "").trim();
+      if (gstTrimmed.length > 0 && gstTrimmed.length !== 12) {
+        toast.error("GST number must be exactly 12 characters");
+        return;
+      }
       if (saveAddressToProfile && (formData.address || formData.city || formData.pincode)) {
         try {
           await authApi.updateProfile({
@@ -700,7 +709,7 @@ export function useNewBookingState() {
               pincode: formData.pincode,
               country: "India",
             },
-            ...(formData.gstNumber ? { gstNumber: formData.gstNumber.trim().toUpperCase() } : {}),
+            ...(gstTrimmed.length === 12 ? { gstNumber: gstTrimmed.toUpperCase() } : {}),
           });
           queryClient.invalidateQueries({ queryKey: ["user"] });
           queryClient.invalidateQueries({ queryKey: ["userProfile"] });
@@ -779,7 +788,11 @@ export function useNewBookingState() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => {
-      const next = { ...prev, [name]: value };
+      let finalValue = value;
+      if (name === "gstNumber") {
+        finalValue = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 12);
+      }
+      const next = { ...prev, [name]: finalValue };
       if (name === "city" && next.collectionMethod === "PICKUP" && !isCityCovered(value, pickupCities)) {
         next.collectionMethod = "";
         next.pickupDate = "";

@@ -47,6 +47,10 @@ export function BookingStep3Collection({
   setSaveAddressToProfile,
 }: BookingStep3CollectionProps) {
   const coverageLabel = pickupCities.length ? pickupCities.join(", ") : "no cities yet";
+  const gstValue = (formData.gstNumber || "").trim();
+  const hasGst = gstValue.length > 0;
+  const isGstComplete = gstValue.length === 12;
+  const gstError = hasGst && !isGstComplete;
 
   return (
     <div className="space-y-6 animate-in slide-in-from-right-4 duration-500">
@@ -179,26 +183,58 @@ export function BookingStep3Collection({
               <div className="space-y-1.5 sm:col-span-2 pt-1 border-t border-slate-100">
                 <div className="flex items-center justify-between">
                   <Label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-                    GSTIN / GST Number <span className="text-[10px] font-normal lowercase text-slate-400">(optional)</span>
+                    GST Number <span className="text-[10px] font-normal lowercase text-slate-400">(optional)</span>
                   </Label>
-                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
-                    For 18% Input Tax Credit (ITC)
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {hasGst && (
+                      <span
+                        className={cn(
+                          "text-[10px] font-semibold px-2 py-0.5 rounded border transition-colors",
+                          isGstComplete
+                            ? "text-emerald-700 bg-emerald-50 border-emerald-200"
+                            : "text-amber-700 bg-amber-50 border-amber-200"
+                        )}
+                      >
+                        {gstValue.length}/12 chars
+                      </span>
+                    )}
+                    <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                      For 18% Input Tax Credit (ITC)
+                    </span>
+                  </div>
                 </div>
                 <Input
                   name="gstNumber"
                   value={formData.gstNumber || ""}
                   onChange={(e) => {
-                    e.target.value = e.target.value.toUpperCase();
+                    const cleanVal = e.target.value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 12);
+                    e.target.value = cleanVal;
                     handleInputChange(e);
                   }}
-                  placeholder="e.g. 33AAAAA0000A1Z5 (15-character GSTIN)"
-                  maxLength={15}
-                  className="h-10 bg-slate-50 border-slate-200 rounded-lg text-sm font-mono uppercase tracking-wider"
+                  placeholder="e.g. 29AAAAA0000A (12 characters)"
+                  maxLength={12}
+                  className={cn(
+                    "h-10 bg-slate-50 rounded-lg text-sm font-mono uppercase tracking-wider transition-colors",
+                    gstError
+                      ? "border-red-400 focus-visible:ring-red-400 bg-red-50/20"
+                      : isGstComplete
+                        ? "border-emerald-500 focus-visible:ring-emerald-500 bg-emerald-50/10"
+                        : "border-slate-200"
+                  )}
                 />
-                <p className="text-[11px] text-slate-400">
-                  Provide your business GSTIN to receive a GST-compliant tax invoice.
-                </p>
+                {gstError ? (
+                  <p className="text-[11px] text-red-500 font-medium">
+                    GST number must be exactly 12 characters ({gstValue.length}/12 entered).
+                  </p>
+                ) : isGstComplete ? (
+                  <p className="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
+                    <Check className="h-3 w-3" /> Valid 12-character GST number entered.
+                  </p>
+                ) : (
+                  <p className="text-[11px] text-slate-400">
+                    Provide your 12-character business GST number to receive a GST-compliant tax invoice.
+                  </p>
+                )}
               </div>
             </div>
 
