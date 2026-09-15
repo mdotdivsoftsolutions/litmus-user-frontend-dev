@@ -2,7 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { User, FileText, Settings } from "lucide-react";
+import Link from "next/link";
+import { User, FileText, Settings, Lock, LogIn } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/auth";
@@ -73,10 +75,21 @@ export default function ConsumerProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const replaceIndexRef = useRef<number | null>(null);
 
+  const authModalTriggered = useRef(false);
+
   const { data: userResponse, isLoading } = useQuery({
-    queryKey: ["user"],
+    queryKey: ["userProfile"],
     queryFn: authApi.getMe,
+    retry: false,
   });
+
+  // Force login modal if user is unauthenticated
+  useEffect(() => {
+    if (!isLoading && !userResponse?.data && !authModalTriggered.current) {
+      authModalTriggered.current = true;
+      window.dispatchEvent(new Event("openAuthModal"));
+    }
+  }, [isLoading, userResponse]);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -131,6 +144,7 @@ export default function ConsumerProfilePage() {
     mutationFn: authApi.updateProfile,
     onSuccess: () => {
       toast.success("Profile updated successfully");
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (err: any) => toast.error(err.response?.data?.message || "Failed to update profile"),
@@ -154,6 +168,7 @@ export default function ConsumerProfilePage() {
   const { mutate: persistDocuments, isPending: isSavingDocs } = useMutation({
     mutationFn: (documents: any[]) => authApi.updateProfile({ documents }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (err: any) => toast.error(err.response?.data?.message || "Failed to update documents"),
@@ -280,6 +295,9 @@ export default function ConsumerProfilePage() {
   const handleLogout = async () => {
     try {
       await authApi.logout();
+      queryClient.clear();
+      localStorage.removeItem('litmus_session_id');
+      localStorage.removeItem('litmus_auth_active');
       router.push("/");
     } catch {
       router.push("/");
@@ -296,6 +314,41 @@ export default function ConsumerProfilePage() {
 
   if (isLoading) {
     return <ProfileSkeleton />;
+  }
+
+  // Protect profile route: do not display profile if unauthenticated
+  if (!userResponse?.data) {
+    return (
+      <div className="max-w-md mx-auto px-4 py-20 text-center space-y-6 animate-fade-in">
+        <div className="h-20 w-20 rounded-3xl bg-amber-50 border border-amber-100 mx-auto flex items-center justify-center text-amber-600 shadow-sm">
+          <Lock className="h-10 w-10 text-amber-600" />
+        </div>
+        <div className="space-y-2">
+          <h2 className="font-heading text-2xl font-bold text-slate-900 tracking-tight">
+            Authentication Required
+          </h2>
+          <p className="font-body text-slate-600 text-sm leading-relaxed">
+            Please log in to your account to view your personal profile, business documents, and account settings.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <Button
+            onClick={() => window.dispatchEvent(new Event("openAuthModal"))}
+            className="w-full sm:w-auto bg-brand-primary hover:bg-brand-primary/90 text-white font-body font-semibold text-sm rounded-xl px-7 h-11 shadow-md hover:shadow-lg transition-all active:scale-95"
+          >
+            <LogIn className="h-4 w-4 mr-2" />
+            Log In to Access Profile
+          </Button>
+          <Button
+            asChild
+            variant="outline"
+            className="w-full sm:w-auto border-slate-200 text-slate-700 hover:bg-slate-50 font-body font-semibold text-sm rounded-xl px-6 h-11"
+          >
+            <Link href="/">Return to Home</Link>
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (
