@@ -10,8 +10,8 @@ export function EasyOrderingCard() {
   const user = userResponse?.data;
 
   return (
-    <div className="lg:col-span-6 flex flex-col gap-8">
-      <div className="flex-1 rounded-[2.5rem] border border-slate-100 bg-gradient-to-br from-slate-50 via-white to-orange-50/20 p-8 md:p-10 relative flex flex-col justify-between overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.05)] min-h-[400px] md:min-h-[460px]">
+    <div className="lg:col-span-6 flex flex-col gap-8 w-full min-w-0">
+      <div className="flex-1 rounded-[2rem] sm:rounded-[2.5rem] border border-slate-100 bg-gradient-to-br from-slate-50 via-white to-orange-50/20 p-5 sm:p-8 md:p-10 relative flex flex-col justify-between overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.05)] min-h-[400px] md:min-h-[460px] w-full min-w-0">
         <div className="relative z-10 space-y-6 md:space-y-8">
           <div>
             <h4 className="text-xl md:text-2xl font-bold text-slate-500 mb-2">Easy ordering in</h4>

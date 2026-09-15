@@ -99,7 +99,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
   return (
     <LocationProvider>
     <CartDrawerProvider>
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen bg-background flex flex-col w-full max-w-full overflow-x-hidden">
         <Header
           scrolled={scrolled}
           cartCount={cartCount}
@@ -112,7 +112,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
           user={user}
         />
 
-        <main className="flex-1 pb-20 lg:pb-0">
+        <main className="flex-1 pb-20 lg:pb-0 w-full max-w-full overflow-x-hidden">
           {children}
         </main>
 

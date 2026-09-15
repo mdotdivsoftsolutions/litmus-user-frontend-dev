@@ -110,8 +110,8 @@ export function SubcategoryStrip({
   };
 
   return (
-    <div className="sticky top-[68px] md:top-[94px] z-30 max-w-7xl mx-auto px-4 -mt-2 mb-6 pointer-events-none select-none">
-      <div className="relative pointer-events-auto bg-white/95 backdrop-blur-md rounded-2xl p-2 sm:p-2.5 border border-slate-200/90 shadow-md transition-all">
+    <div className="sticky top-[68px] md:top-[94px] z-30 max-w-7xl mx-auto px-4 -mt-2 mb-6 pointer-events-none select-none w-full min-w-0">
+      <div className="relative pointer-events-auto bg-white/95 backdrop-blur-md rounded-2xl p-2 sm:p-2.5 border border-slate-200/90 shadow-md transition-all overflow-hidden">
         
         {/* Left Scroll Arrow Button & Fade Gradient */}
         <div
@@ -125,7 +125,7 @@ export function SubcategoryStrip({
             type="button"
             onClick={() => handleScroll("left")}
             aria-label="Scroll left subcategories"
-            className="h-8 w-8 -ml-4 rounded-full bg-white shadow-md border border-slate-200 flex items-center justify-center text-slate-700 hover:text-brand-primary hover:bg-slate-50 hover:border-brand-primary/40 active:scale-95 transition-all cursor-pointer"
+            className="h-8 w-8 rounded-full bg-white shadow-md border border-slate-200 flex items-center justify-center text-slate-700 hover:text-brand-primary hover:bg-slate-50 hover:border-brand-primary/40 active:scale-95 transition-all cursor-pointer"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -141,7 +141,7 @@ export function SubcategoryStrip({
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
           className={cn(
-            "flex items-center gap-2 overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-1 py-0.5",
+            "flex items-center gap-2 overflow-x-auto scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-1 py-0.5 w-full min-w-0 max-w-full",
             isDragging ? "cursor-grabbing" : "cursor-grab"
           )}
         >
@@ -202,7 +202,7 @@ export function SubcategoryStrip({
             type="button"
             onClick={() => handleScroll("right")}
             aria-label="Scroll right subcategories"
-            className="h-8 w-8 -mr-4 rounded-full bg-white shadow-md border border-slate-200 flex items-center justify-center text-slate-700 hover:text-brand-primary hover:bg-slate-50 hover:border-brand-primary/40 active:scale-95 transition-all cursor-pointer"
+            className="h-8 w-8 rounded-full bg-white shadow-md border border-slate-200 flex items-center justify-center text-slate-700 hover:text-brand-primary hover:bg-slate-50 hover:border-brand-primary/40 active:scale-95 transition-all cursor-pointer"
           >
             <ChevronRight className="h-4 w-4" />
           </button>
