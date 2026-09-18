@@ -138,20 +138,20 @@ export default function TestsListingPage() {
   };
 
   return (
-    <div className="animate-fade-in bg-slate-50 min-h-screen w-full max-w-full overflow-x-hidden">
+    <div className="animate-fade-in bg-slate-50 min-h-screen">
 
       {/* 1. PANORAMIC HERO */}
-      <div suppressHydrationWarning className="relative z-20 w-full overflow-hidden" data-aos="fade-up">
+      <div suppressHydrationWarning className="relative z-20" data-aos="fade-up">
         <TestsHero search={search} setSearch={setSearch} tests={testsData} onSearch={handleSearch} />
       </div>
 
       {/* 2. STATS STRIP */}
-      <div suppressHydrationWarning className="w-full overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+      <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="100">
         <TestsStatsStrip /> 
       </div>
 
       {/* 3. CATEGORY STRIP — always at top for filtering */}
-      <div suppressHydrationWarning className="w-full overflow-hidden" data-aos="fade-up" data-aos-delay="150">
+      <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="150">
         <CategoryStrip
           selectedCategory={activeCategoryName}
           setSelectedCategory={handleCategoryChange}
@@ -161,7 +161,7 @@ export default function TestsListingPage() {
       </div>
 
       {/* 4 & 5. TESTS SECTION (Sticky Subcategories Bar is bounded strictly to this section) */}
-      <section className="relative w-full overflow-hidden">
+      <section className="relative">
         {/* SUB-CATEGORIES STRIP (Dynamically displays and sticks under navbar with arrow scroll controls) */}
         {selectedCategory !== "All" && activeSubcategories.length > 0 && (
           <SubcategoryStrip
@@ -191,12 +191,12 @@ export default function TestsListingPage() {
       </section>
 
       {/* TRUST & ORDERING SECTION */}
-      <div suppressHydrationWarning className="w-full overflow-hidden" data-aos="fade-up">
+      <div suppressHydrationWarning data-aos="fade-up">
         <TrustAndOrdering />
       </div>
 
       {/* PROMO BANNER CAROUSEL */}
-      <div suppressHydrationWarning className="w-full overflow-hidden" data-aos="fade-up">
+      <div suppressHydrationWarning data-aos="fade-up">
         <PromoBanner className="py-12 bg-slate-50 md:py-20" />
       </div>
     </div>

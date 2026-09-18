@@ -86,8 +86,8 @@ export const PromoBanner = ({ className }: { className?: string }) => {
    };
 
    return (
-      <section className={cn("py-12 md:py-16 overflow-hidden w-full max-w-full", className)}>
-         <div className="max-w-7xl mx-auto px-4 w-full min-w-0">
+      <section className={cn("py-12 md:py-16", className)}>
+         <div className="max-w-7xl mx-auto px-4">
 
             <div className="relative rounded-[2rem] overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.06)] border border-slate-100 min-h-[560px] md:min-h-[350px] md:h-[350px]">
                <div className="h-full w-full flex flex-col lg:flex-row">

@@ -75,8 +75,8 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
   }, [categories]);
 
   return (
-    <div className="w-full max-w-full pt-6 pb-2 md:pt-20 md:pb-14 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 w-full">
+    <div className="w-full pt-6 pb-2 md:pt-20 md:pb-14">
+      <div className="max-w-7xl mx-auto px-4">
         {isPackages && (
           <SectionHeader
             title={
@@ -92,9 +92,9 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
           />
         )}
 
-        <div className="flex flex-col gap-6 w-full min-w-0">
+        <div className="flex flex-col gap-6">
           {/* Container for categories */}
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 md:grid md:grid-cols-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] w-full min-w-0 max-w-full">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 md:grid md:grid-cols-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
             {isLoading ? (
               Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="relative h-[140px] md:h-[180px] w-[110px] shrink-0 md:w-full rounded-2xl overflow-hidden bg-slate-100 flex flex-col justify-end p-4 border-2 border-slate-50/50 snap-start">

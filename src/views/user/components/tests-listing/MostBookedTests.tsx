@@ -78,8 +78,8 @@ export const MostBookedTests = ({
   };
 
   return (
-    <div className="bg-slate-50 pb-12 md:pb-20 w-full overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 py-4 md:py-6 space-y-6 md:space-y-12 w-full min-w-0">
+    <div className="bg-slate-50 pb-12 md:pb-20">
+      <div className="max-w-7xl mx-auto px-4 py-4 md:py-6 space-y-6 md:space-y-12">
         <SectionHeader
           title={
             <>
@@ -92,7 +92,7 @@ export const MostBookedTests = ({
           subtitle="Accredited specialized tests across major industry verticals."
         />
 
-        <div className="grid gap-6 md:grid-cols-2 w-full min-w-0">
+        <div className="grid gap-6 md:grid-cols-2">
           {isLoading ? (
             Array.from({ length: 6 }).map((_, i) => (
               <div
@@ -132,10 +132,10 @@ export const MostBookedTests = ({
                       data-aos="fade-up"
                       data-aos-delay={(i % 10) * 50}
                       onClick={() => router.push(`/tests/${t.id}`)}
-                      className="group bg-white rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs border-2 border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-brand-action/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer overflow-hidden w-full min-w-0"
+                      className="group bg-white rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs border-2 border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-brand-action/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                     >
                       {/* Left: Test Image & Details */}
-                      <div className="flex items-center gap-3.5 sm:gap-4 flex-1 min-w-0 w-full">
+                      <div className="flex items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
                         {/* Image Container with Fallback to Litmus Placeholder */}
                         <div className="h-16 w-16 sm:h-20 sm:w-20 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs group-hover:scale-105 transition-transform duration-300">
                           <img
@@ -189,7 +189,7 @@ export const MostBookedTests = ({
                         </Button>
 
                         {/* Amount in flex at Bottom: Offer value, Real value, Discount */}
-                        <div className="flex items-baseline justify-between sm:justify-end gap-2 flex-wrap w-full sm:w-auto">
+                        <div className="flex items-baseline gap-2 flex-wrap sm:justify-end">
                           {/* Offer value */}
                           <span suppressHydrationWarning className="font-black text-slate-900 text-xl sm:text-2xl tracking-tight leading-none">
                             ₹{formatCurrency(t.price)}
@@ -197,14 +197,14 @@ export const MostBookedTests = ({
 
                           {/* Real value & discount badge */}
                           {t.mrp && t.mrp > t.price ? (
-                            <div className="flex items-baseline gap-1.5">
+                            <>
                               <span suppressHydrationWarning className="text-slate-400 line-through text-xs sm:text-sm font-medium">
                                 ₹{formatCurrency(t.mrp)}
                               </span>
                               <span className="bg-emerald-50 text-emerald-600 text-[10px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider border border-emerald-100">
                                 {discountPct(t.price, t.mrp)}% Off
                               </span>
-                            </div>
+                            </>
                           ) : null}
                         </div>
                       </div>
