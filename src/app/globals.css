@@ -155,6 +155,13 @@
     outline: none !important;
     box-shadow: none;
   }
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+    width: 100%;
+  }
   body {
     @apply bg-background text-foreground font-sans antialiased text-[16px] font-normal leading-[1.5];
   }

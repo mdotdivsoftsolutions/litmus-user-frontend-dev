@@ -49,13 +49,13 @@ export function TestsHeroSearch({ search, setSearch, tests = [], onSearch }: Tes
       : tests.filter((t) => t.testName?.toLowerCase().includes(search.toLowerCase())).slice(0, 5);
 
   return (
-    <div ref={wrapperRef} className="relative z-50">
-      <div className="flex flex-col sm:flex-row items-center gap-3 bg-white p-2 rounded-3xl shadow-[0_24px_80px_rgba(0,0,0,0.06)] border border-slate-100 max-w-xl mx-auto lg:mx-0 ring-4 ring-slate-400/5 hover:ring-slate-400/10 transition-all">
-        <div className="relative flex-1 w-full pl-4">
+    <div ref={wrapperRef} className="relative z-50 w-full max-w-xl mx-auto lg:mx-0">
+      <div className="flex flex-col sm:flex-row items-center gap-3 bg-white p-2 rounded-3xl shadow-[0_24px_80px_rgba(0,0,0,0.06)] border border-slate-100 w-full ring-4 ring-slate-400/5 hover:ring-slate-400/10 transition-all">
+        <div className="relative flex-1 w-full min-w-0 pl-3 sm:pl-4">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-300 group-hover:text-[#D32F2F] transition-colors" />
           <Input
             placeholder="Search 1000+ tests..."
-            className="font-body h-10 sm:h-10 pl-12 pr-6 border-none bg-transparent text-slate-800 placeholder:text-slate-400 text-base focus-visible:ring-0 shadow-none font-normal"
+            className="font-body h-10 sm:h-10 pl-11 sm:pl-12 pr-4 sm:pr-6 border-none bg-transparent text-slate-800 placeholder:text-slate-400 text-sm sm:text-base focus-visible:ring-0 shadow-none font-normal w-full"
             value={search}
             onChange={handleSearchChange}
             onFocus={() => setShowSuggestions(true)}
@@ -66,7 +66,7 @@ export function TestsHeroSearch({ search, setSearch, tests = [], onSearch }: Tes
         </div>
         <Button
           onClick={handleExploreClick}
-          className="w-full sm:w-auto h-11 px-6 bg-gradient-to-r from-[#D32F2F] to-[#F06C00] text-white font-body font-semibold text-base rounded-2xl shadow-[0_12px_24px_rgba(211,47,47,0.25)] transition-all flex items-center gap-3 group/btn hover:scale-[1.02] active:scale-95"
+          className="w-full sm:w-auto h-11 px-6 bg-gradient-to-r from-[#D32F2F] to-[#F06C00] text-white font-body font-semibold text-base rounded-2xl shadow-[0_12px_24px_rgba(211,47,47,0.25)] transition-all flex items-center justify-center gap-3 group/btn hover:scale-[1.02] active:scale-95 shrink-0"
         >
           Explore <ArrowRight className="h-5 w-5 group-hover/btn:translate-x-1 transition-transform" />
         </Button>

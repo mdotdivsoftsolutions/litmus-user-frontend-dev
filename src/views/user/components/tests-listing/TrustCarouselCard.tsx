@@ -58,7 +58,7 @@ export function TrustCarouselCard() {
   const slide = trustCarouselSlides[currentSlide];
 
   return (
-    <div className="lg:col-span-6 rounded-[2.5rem] relative min-h-[400px] md:min-h-[460px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.12)] bg-[#0d3028] group">
+    <div className="lg:col-span-6 rounded-[2rem] sm:rounded-[2.5rem] relative min-h-[400px] md:min-h-[460px] overflow-hidden shadow-[0_24px_60px_rgba(0,0,0,0.12)] bg-[#0d3028] group w-full min-w-0">
       <div className="pointer-events-none absolute -right-16 top-1/2 -translate-y-1/2 h-[340px] w-[340px] rounded-full bg-[#feba50]/35 blur-[80px]" />
       <div className="pointer-events-none absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.04]" />
 
@@ -81,7 +81,7 @@ export function TrustCarouselCard() {
 
       <div
         key={currentSlide}
-        className="relative z-10 flex h-full min-h-[400px] md:min-h-[460px] flex-col justify-between p-8 md:p-10 md:px-20 pb-28 md:pb-28 animate-in fade-in slide-in-from-right-2 duration-500"
+        className="relative z-10 flex h-full min-h-[400px] md:min-h-[460px] flex-col justify-between p-5 sm:p-8 md:p-10 md:px-20 pb-24 md:pb-28 animate-in fade-in slide-in-from-right-2 duration-500"
       >
         <div>
           <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#feba50]">{slide.heading}</h2>
