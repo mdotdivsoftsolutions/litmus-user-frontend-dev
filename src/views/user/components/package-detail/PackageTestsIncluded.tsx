@@ -1,7 +1,6 @@
 "use client";
 
 import { FlaskConical, CheckCircle2 } from "lucide-react";
-import { formatCurrency } from "@/lib/utils";
 
 interface PackageTestsIncludedProps {
   pkg: any;
@@ -29,17 +28,7 @@ export function PackageTestsIncluded({ pkg }: PackageTestsIncludedProps) {
               <CheckCircle2 className="h-5 w-5 text-brand-action shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
               <div>
                 <span className="font-heading text-sm text-slate-800 font-bold block">{test.testName}</span>
-                <div className="mt-1">
-                  {test.offerPrice && test.price > test.offerPrice ? (
-                    <span suppressHydrationWarning className="font-data text-xs text-slate-400 font-normal line-through mr-2">
-                      ₹{formatCurrency(test.price)}
-                    </span>
-                  ) : null}
-                  <span suppressHydrationWarning className="font-data text-xs text-brand-action font-bold">
-                    ₹{formatCurrency(test.offerPrice || test.price || 0)}
-                  </span>
                 </div>
-              </div>
             </div>
           ))
         ) : (
