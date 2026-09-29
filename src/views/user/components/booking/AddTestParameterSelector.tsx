@@ -57,20 +57,23 @@ export function AddTestParameterSelector({
   const rawTests: any[] = testsResponse?.data || [];
 
   // Extract individual parameters and test names
-  const testResults = rawTests.map((t) => {
-    const paramsList: string[] = Array.isArray(t.metadata?.parameters)
-      ? t.metadata.parameters.map((p: any) => (typeof p === "string" ? p : p.name)).filter(Boolean)
-      : Array.isArray(t.parameters)
-      ? t.parameters
-      : [];
+  const testResults = rawTests
+    .map((t) => {
+      const paramsList: string[] = Array.isArray(t.metadata?.parameters)
+        ? t.metadata.parameters.map((p: any) => (typeof p === "string" ? p : p.name)).filter(Boolean)
+        : Array.isArray(t.parameters)
+        ? t.parameters
+        : [];
 
-    return {
-      id: t._id,
-      name: t.testName || t.name,
-      price: t.price || t.offerPrice || 0,
-      parameters: paramsList,
-    };
-  });
+      return {
+        id: t._id,
+        name: t.testName || t.name,
+        price: t.price || t.offerPrice || 0,
+        parameters: paramsList,
+      };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name)); // Alphabetical A→Z
+
 
   const handleSelectParam = (paramName: string) => {
     if (!paramName.trim()) return;
