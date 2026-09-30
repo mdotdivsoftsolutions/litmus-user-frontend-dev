@@ -53,9 +53,9 @@ export function SafetyCheckupBanner() {
 
    return (
       <section className="py-12 md:py-16 bg-white">
-         <div className="max-w-6xl mx-auto px-4 relative flex flex-col items-center">
+         <div className="max-w-6xl mx-auto px-4  relative flex flex-col items-center">
 
-            
+
             {/* Arrows Outside */}
             <button
                type="button"
