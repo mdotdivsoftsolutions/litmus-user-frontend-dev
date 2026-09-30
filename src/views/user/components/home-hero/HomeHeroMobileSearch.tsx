@@ -27,7 +27,7 @@ export function HomeHeroMobileSearch() {
           >
             <SearchAutocomplete
               hideIcon
-              placeholder="Search for checkups..."
+              placeholder="Search for Tests / Packages..."
               inputClassName="relative placeholder:text-slate-400 z-10 w-full rounded-full border-none bg-slate-50/50 hover:bg-slate-50 py-3.5 pl-5 pr-12 text-sm text-slate-800 outline-none ring-0 focus:ring-0 h-[48px] transition-colors"
             >
               <button type="submit" className="absolute right-4 top-1/2 z-20 -translate-y-1/2 text-brand-action hover:text-brand-action-hover">

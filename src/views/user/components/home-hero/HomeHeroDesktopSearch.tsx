@@ -28,7 +28,7 @@ export function HomeHeroDesktopSearch() {
             <SearchAutocomplete
               hideIcon
               dropdownPosition="top"
-              placeholder="Search for checkups..."
+              placeholder="Search for Tests / Packages..."
               inputClassName="relative placeholder:text-slate-400 z-10 w-full rounded-full border-none bg-white/95 hover:bg-white py-3.5 pl-5 pr-12 text-sm text-slate-800 outline-none shadow-inner transition-colors"
             >
               <button

@@ -2,6 +2,15 @@
 
 import { Shield } from "lucide-react";
 import { TestsHeroSearch } from "./TestsHeroSearch";
+import banner1 from "@/assets/banner-hero-1.jpg";
+import banner2 from "@/assets/banner-hero-2.jpg";
+import banner3 from "@/assets/banner-hero-3.jpg";
+
+const scrollImages = [
+  { src: typeof banner1 === "string" ? banner1 : (banner1 as any).src, alt: "Lab testing 1" },
+  { src: typeof banner2 === "string" ? banner2 : (banner2 as any).src, alt: "Lab testing 2" },
+  { src: typeof banner3 === "string" ? banner3 : (banner3 as any).src, alt: "Lab testing 3" },
+];
 
 interface TestsHeroProps {
   search: string;
@@ -66,18 +75,34 @@ export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHero
             </div>
           </div>
 
+          {/* Right Column: Auto-scrolling image strip */}
           <div className="flex-1 relative w-full lg:w-auto">
-            <div className="relative group/pano w-full max-w-[500px] h-[250px] sm:h-[300px] md:h-[350px] mx-auto lg:ml-auto lg:mr-0 rounded-[1.25rem] overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.1)] border-[5px] border-white bg-slate-900 flex items-center justify-center">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
-                className="w-full h-full object-cover"
-                src="https://litmuslabs.sgp1.digitaloceanspaces.com/static-assets/video/video-banner.mp4"
-              />
-
+            <div className="relative group/pano w-full max-w-[500px] h-[250px] sm:h-[300px] md:h-[350px] mx-auto lg:ml-auto lg:mr-0 rounded-[1.25rem] overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.1)] border-[5px] border-white bg-slate-100">
+              <style>{`
+                @keyframes scrollImgs {
+                  0%   { transform: translateY(0); }
+                  100% { transform: translateY(-66.666%); }
+                }
+                .hero-scroll-strip {
+                  animation: scrollImgs 12s linear infinite;
+                }
+                .hero-scroll-strip:hover {
+                  animation-play-state: paused;
+                }
+              `}</style>
+              {/* Triple the images so the loop is seamless */}
+              <div className="hero-scroll-strip flex flex-col">
+                {[...scrollImages, ...scrollImages, ...scrollImages].map((img, i) => (
+                  <img
+                    key={i}
+                    src={img.src}
+                    alt={img.alt}
+                    className="w-full object-cover flex-shrink-0"
+                    style={{ height: "350px" }}
+                    loading={i === 0 ? "eager" : "lazy"}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

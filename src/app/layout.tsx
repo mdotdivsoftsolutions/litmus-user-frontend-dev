@@ -26,6 +26,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  viewportFit: "cover",
 };
 
 export const metadata: Metadata = {
@@ -84,8 +85,19 @@ export const metadata: Metadata = {
     creator: "@LitmusTest",
   },
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon_io/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon_io/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon_io/android-chrome-192x192.png", type: "image/png", sizes: "192x192" },
+      { url: "/favicon_io/android-chrome-512x512.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [
+      { url: "/favicon_io/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon_io/favicon-32x32.png",
   },
+  manifest: "/favicon_io/site.webmanifest",
 };
 
 export default function RootLayout({

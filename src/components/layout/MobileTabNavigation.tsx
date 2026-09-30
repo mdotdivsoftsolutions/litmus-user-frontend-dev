@@ -22,7 +22,11 @@ export function MobileTabNavigation({ cartCount }: MobileTabNavigationProps) {
   ];
 
   return (
-    <nav className="fixed bottom-0 inset-x-0 z-50 bg-card border-t border-border lg:hidden" aria-label="Mobile Navigation Bar">
+    <nav
+      className="fixed bottom-0 inset-x-0 z-50 bg-card border-t border-border lg:hidden"
+      style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+      aria-label="Mobile Navigation Bar"
+    >
       <div className="flex items-center justify-around h-16">
         {bottomTabs.map((tab) => {
           const isActive =

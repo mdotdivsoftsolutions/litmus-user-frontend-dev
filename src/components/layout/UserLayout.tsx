@@ -112,7 +112,10 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
           user={user}
         />
 
-        <main className="flex-1 pb-20 lg:pb-0">
+        <main
+          className="flex-1 lg:pb-0"
+          style={{ paddingBottom: "calc(5rem + env(safe-area-inset-bottom))" }}
+        >
           {children}
         </main>
 
