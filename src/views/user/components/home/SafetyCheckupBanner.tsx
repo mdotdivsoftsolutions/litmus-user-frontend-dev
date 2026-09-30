@@ -61,7 +61,7 @@ export function SafetyCheckupBanner() {
                type="button"
                onClick={prev}
                aria-label="Previous safety program slide"
-               className="absolute left-0 md:left-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
+               className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
             >
                <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
             </button>
@@ -69,22 +69,22 @@ export function SafetyCheckupBanner() {
                type="button"
                onClick={next}
                aria-label="Next safety program slide"
-               className="absolute right-0 md:right-4 top-[100px] -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
+               className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2 z-20 h-10 w-10 md:h-12 md:w-12 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:text-brand-action hover:border-brand-action/30 transition-all shadow-sm"
             >
                <ChevronRight className="h-5 w-5 md:h-6 md:w-6" strokeWidth={1.5} />
             </button>
 
             {/* Banner Track */}
             <div className="w-full max-w-5xl px-8 md:px-14">
-               <div className="relative overflow-hidden rounded-[2rem] bg-[#F1F3F5] h-[200px] shadow-sm">
+               <div className="relative overflow-hidden rounded-[2rem] bg-[#F1F3F5] min-h-[200px] md:h-[200px] shadow-sm">
                   <div
-                     className="h-full w-full flex transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                     className="w-full flex items-start transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
                      style={{ transform: `translateX(-${current * 100}%)` }}
                   >
                      {slides.map((s, i) => (
-                        <div key={i} className="min-w-full h-full flex flex-row">
+                        <div key={i} className="min-w-full flex flex-col sm:flex-row">
                            {/* Left Content */}
-                           <div className="flex-[1.3] px-8 md:px-12 py-5 flex flex-col justify-center bg-[#F1F3F5]">
+                           <div className="flex-[1.3] px-8 md:px-12 py-6 flex flex-col justify-center bg-[#F1F3F5]">
                               <h2 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight leading-snug mb-3">
                                  {s.title}
                               </h2>
@@ -98,7 +98,7 @@ export function SafetyCheckupBanner() {
                               </ConsultationBookingModal>
                            </div>
                            {/* Right Image */}
-                           <div className="flex-[0.7] relative h-full hidden sm:block">
+                           <div className="flex-[0.7] relative hidden sm:block min-h-[200px]">
                               <img src={s.img} className="w-full h-full object-cover" alt={s.titleText} width={300} height={200} loading="lazy" />
                            </div>
                         </div>
