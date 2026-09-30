@@ -1,15 +1,16 @@
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import { Shield } from "lucide-react";
 import { TestsHeroSearch } from "./TestsHeroSearch";
 import banner1 from "@/assets/banner-hero-1.jpg";
 import banner2 from "@/assets/banner-hero-2.jpg";
 import banner3 from "@/assets/banner-hero-3.jpg";
 
-const scrollImages = [
-  { src: typeof banner1 === "string" ? banner1 : (banner1 as any).src, alt: "Lab testing 1" },
-  { src: typeof banner2 === "string" ? banner2 : (banner2 as any).src, alt: "Lab testing 2" },
-  { src: typeof banner3 === "string" ? banner3 : (banner3 as any).src, alt: "Lab testing 3" },
+const carouselImages = [
+  { src: typeof banner1 === "string" ? banner1 : (banner1 as any).src, alt: "NABL Accredited Lab Testing" },
+  { src: typeof banner2 === "string" ? banner2 : (banner2 as any).src, alt: "Food Safety Testing" },
+  { src: typeof banner3 === "string" ? banner3 : (banner3 as any).src, alt: "Certified Lab Results" },
 ];
 
 interface TestsHeroProps {
@@ -20,6 +21,18 @@ interface TestsHeroProps {
 }
 
 export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHeroProps) => {
+  const [current, setCurrent] = useState(0);
+
+  const next = useCallback(() => {
+    setCurrent((c) => (c + 1) % carouselImages.length);
+  }, []);
+
+  // Auto-advance every 3 seconds
+  useEffect(() => {
+    const timer = setInterval(next, 3000);
+    return () => clearInterval(timer);
+  }, [next]);
+
   return (
     <div className="relative bg-white pt-20 md:pt-28 pb-8 md:pb-10 flex flex-col justify-center border-b border-slate-100/60">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -30,6 +43,7 @@ export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHero
 
       <div className="max-w-7xl mx-auto px-4 relative z-10 w-full">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+          {/* Left: Text Content */}
           <div className="flex-1 text-center lg:text-left space-y-6 py-8 lg:py-0 group">
             <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white shadow-sm border border-slate-100 text-[#D32F2F] text-[10px] font-bold uppercase tracking-[0.2em] animate-fade-in">
               <Shield className="h-4 w-4" /> NABL Accredited · FSSAI Certified
@@ -75,33 +89,46 @@ export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHero
             </div>
           </div>
 
-          {/* Right Column: Auto-scrolling image strip */}
+          {/* Right Column: Horizontal Dot Carousel */}
           <div className="flex-1 relative w-full lg:w-auto">
-            <div className="relative group/pano w-full max-w-[500px] h-[250px] sm:h-[300px] md:h-[350px] mx-auto lg:ml-auto lg:mr-0 rounded-[1.25rem] overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.1)] border-[5px] border-white bg-slate-100">
-              <style>{`
-                @keyframes scrollImgs {
-                  0%   { transform: translateY(0); }
-                  100% { transform: translateY(-66.666%); }
-                }
-                .hero-scroll-strip {
-                  animation: scrollImgs 12s linear infinite;
-                }
-                .hero-scroll-strip:hover {
-                  animation-play-state: paused;
-                }
-              `}</style>
-              {/* Triple the images so the loop is seamless */}
-              <div className="hero-scroll-strip flex flex-col">
-                {[...scrollImages, ...scrollImages, ...scrollImages].map((img, i) => (
-                  <img
-                    key={i}
-                    src={img.src}
-                    alt={img.alt}
-                    className="w-full object-cover flex-shrink-0"
-                    style={{ height: "350px" }}
-                    loading={i === 0 ? "eager" : "lazy"}
-                  />
-                ))}
+            <div className="relative w-full max-w-[500px] mx-auto lg:ml-auto lg:mr-0">
+              {/* Image frame */}
+              <div className="relative h-[250px] sm:h-[300px] md:h-[350px] rounded-[1.25rem] overflow-hidden shadow-[0_32px_64px_rgba(0,0,0,0.1)] border-[5px] border-white bg-slate-100">
+                {/* Slides */}
+                <div
+                  className="flex h-full transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                  style={{ transform: `translateX(-${current * 100}%)` }}
+                >
+                  {carouselImages.map((img, i) => (
+                    <img
+                      key={i}
+                      src={img.src}
+                      alt={img.alt}
+                      className="w-full h-full object-cover shrink-0"
+                      style={{ minWidth: "100%" }}
+                      loading={i === 0 ? "eager" : "lazy"}
+                    />
+                  ))}
+                </div>
+
+                {/* Subtle gradient overlay at bottom for dots visibility */}
+                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/30 to-transparent pointer-events-none rounded-b-[1.1rem]" />
+
+                {/* Dot navigation */}
+                <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-2">
+                  {carouselImages.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrent(i)}
+                      aria-label={`Go to slide ${i + 1}`}
+                      className={`transition-all duration-300 rounded-full ${
+                        i === current
+                          ? "w-6 h-2 bg-white"
+                          : "w-2 h-2 bg-white/50 hover:bg-white/80"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -110,3 +137,4 @@ export const TestsHero = ({ search, setSearch, tests = [], onSearch }: TestsHero
     </div>
   );
 };
+
