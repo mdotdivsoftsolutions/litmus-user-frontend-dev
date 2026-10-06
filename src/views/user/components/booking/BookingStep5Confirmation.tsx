@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle2 as CheckCircle2Icon, Building2 as BuildingIcon } from "lucide-react";
 import { CartLine } from "./booking-types";
 import { CourierAddressCard } from "./CourierAddressCard";
+import type { CustomerAddressInput } from "@/hooks/useRegionalOffice";
 
 interface BookingStep5ConfirmationProps {
   orderId: string;
@@ -17,6 +18,8 @@ interface BookingStep5ConfirmationProps {
   gst: number;
   total: number;
   calculateItemPrice: (item: CartLine) => number;
+  /** Customer collection address, used to show the matching Litmus office. */
+  collectionAddress?: CustomerAddressInput;
 }
 
 export function BookingStep5Confirmation({
@@ -28,6 +31,7 @@ export function BookingStep5Confirmation({
   gst,
   total,
   calculateItemPrice,
+  collectionAddress,
 }: BookingStep5ConfirmationProps) {
   const router = useRouter();
 
@@ -127,7 +131,10 @@ export function BookingStep5Confirmation({
       </div>
 
       <div className="max-w-5xl mx-auto">
-        <CourierAddressCard orderId={`BKG-${orderId.substring(orderId.length - 8).toUpperCase()}`} />
+        <CourierAddressCard
+          orderId={`BKG-${orderId.substring(orderId.length - 8).toUpperCase()}`}
+          address={collectionAddress}
+        />
       </div>
 
       <div className="flex flex-col sm:flex-row items-center gap-4 justify-center py-6">

@@ -175,6 +175,8 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
             bookingId={apiBooking._id}
             collectionMethod="COURIER"
             courierDetails={apiBooking.courierDetails}
+            courierDestination={apiBooking.courierDestination}
+            collectionAddress={apiBooking.metadata?.collectionDetails}
           />
         )}
         <OrderTrackingTimeline booking={apiBooking} currentStep={currentStep} />

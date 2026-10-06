@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Building2, Copy, Check, MapPin, Phone, Mail, Clock, AlertTriangle, ChevronRight } from "lucide-react";
+import { Building2, Copy, Check, MapPin, Phone, Mail, Clock, AlertTriangle, ChevronRight, Info } from "lucide-react";
 import { LITMUS_COURIER_ADDRESS } from "@/constants/config";
-import { settingsApi } from "@/lib/api/settings";
+import { settingsApi, ICourierAddress } from "@/lib/api/settings";
+import { useRegionalOffice, CustomerAddressInput } from "@/hooks/useRegionalOffice";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -14,30 +15,50 @@ interface CourierAddressCardProps {
   className?: string;
   orderId?: string;
   compact?: boolean;
+  /** Customer address; the matching Litmus office (e.g. Kochi for Kerala) is shown. */
+  address?: CustomerAddressInput;
+  /** Office saved on an existing booking; shown as-is when present. */
+  destination?: ICourierAddress & { name?: string };
 }
 
-export function CourierAddressCard({ className, orderId, compact = false }: CourierAddressCardProps) {
+export function CourierAddressCard({ className, orderId, compact = false, address, destination }: CourierAddressCardProps) {
   const [copied, setCopied] = useState(false);
+  const hasSnapshot = Boolean(destination?.facilityName && destination?.street);
 
+  const { data: resolved } = useRegionalOffice(address, !hasSnapshot);
+
+  // Legacy fallback: default address from public settings (also used if the lookup fails).
   const { data: settingsData } = useQuery({
     queryKey: ["publicSettings"],
     queryFn: settingsApi.getPublicSettings,
-    staleTime: 1000 * 60 * 5, // Cache for 5 mins
+    staleTime: 1000 * 60 * 5,
+    enabled: !hasSnapshot && !resolved?.office,
   });
 
-  const backendAddr = settingsData?.data?.courierAddress;
+  const source: ICourierAddress | undefined = hasSnapshot
+    ? destination
+    : resolved?.office || settingsData?.data?.courierAddress;
+  const officeName = hasSnapshot ? destination?.name : resolved?.office?.name;
 
   const addr = {
-    facilityName: backendAddr?.facilityName || LITMUS_COURIER_ADDRESS.facilityName,
-    attention: backendAddr?.attention || LITMUS_COURIER_ADDRESS.attention,
-    street: backendAddr?.street || LITMUS_COURIER_ADDRESS.street,
-    city: backendAddr?.city || LITMUS_COURIER_ADDRESS.city,
-    state: backendAddr?.state || LITMUS_COURIER_ADDRESS.state,
-    pincode: backendAddr?.pincode || LITMUS_COURIER_ADDRESS.pincode,
-    phone: backendAddr?.phone || LITMUS_COURIER_ADDRESS.phone,
-    email: backendAddr?.email || LITMUS_COURIER_ADDRESS.email,
-    workingHours: backendAddr?.workingHours || LITMUS_COURIER_ADDRESS.workingHours,
+    facilityName: source?.facilityName || LITMUS_COURIER_ADDRESS.facilityName,
+    attention: source?.attention || LITMUS_COURIER_ADDRESS.attention,
+    street: source?.street || LITMUS_COURIER_ADDRESS.street,
+    city: source?.city || LITMUS_COURIER_ADDRESS.city,
+    state: source?.state || LITMUS_COURIER_ADDRESS.state,
+    pincode: source?.pincode || LITMUS_COURIER_ADDRESS.pincode,
+    phone: source?.phone || LITMUS_COURIER_ADDRESS.phone,
+    email: source?.email || LITMUS_COURIER_ADDRESS.email,
+    workingHours: source?.workingHours || LITMUS_COURIER_ADDRESS.workingHours,
   };
+
+  const customerState = resolved?.resolvedState;
+  const subtitle = hasSnapshot
+    ? `Ship your samples to our ${officeName ? `${officeName} ` : ""}intake facility`
+    : customerState && !resolved?.isFallback
+      ? `Nearest Litmus office for customers in ${customerState}`
+      : "Ship all physical food/water samples directly to our intake facility";
+  const showFallbackNote = !hasSnapshot && Boolean(resolved?.isFallback && customerState);
 
   const fullAddressString = [
     addr.facilityName,
@@ -81,12 +102,10 @@ export function CourierAddressCard({ className, orderId, compact = false }: Cour
                 Litmus Sample Dispatch Address
               </h4>
               <Badge variant="outline" className="bg-emerald-50 text-emerald-800 border-emerald-200 text-[10px] font-bold">
-                Courier Destination
+                {officeName ? `${officeName} Office` : "Courier Destination"}
               </Badge>
             </div>
-            <p className="text-xs text-slate-500 font-medium">
-              Ship all physical food/water samples directly to our intake facility
-            </p>
+            <p className="text-xs text-slate-500 font-medium">{subtitle}</p>
           </div>
         </div>
 
@@ -114,6 +133,13 @@ export function CourierAddressCard({ className, orderId, compact = false }: Cour
           )}
         </Button>
       </div>
+
+      {showFallbackNote && (
+        <p className="flex items-start gap-2 rounded-lg border border-sky-200 bg-sky-50 px-3 py-2 text-[11px] font-medium text-sky-900">
+          <Info className="h-3.5 w-3.5 shrink-0 mt-0.5 text-sky-600" />
+          We don&apos;t have an office in {customerState} yet. Please ship your samples to our {officeName || "main"} office below.
+        </p>
+      )}
 
       {/* Address Details Grid */}
       <div className="grid sm:grid-cols-2 gap-4 text-xs sm:text-sm">

@@ -9,6 +9,8 @@ import { Truck, CheckCircle2, Pencil, X } from "lucide-react";
 import { toast } from "sonner";
 import { bookingApi } from "@/lib/api/booking";
 import { CourierAddressCard } from "../booking/CourierAddressCard";
+import type { ICourierAddress } from "@/lib/api/settings";
+import type { CustomerAddressInput } from "@/hooks/useRegionalOffice";
 
 interface OrderCourierTrackingProps {
   bookingId: string;
@@ -19,9 +21,19 @@ interface OrderCourierTrackingProps {
     notes?: string;
     submittedAt?: string;
   };
+  /** Litmus office saved on the booking (preferred). */
+  courierDestination?: ICourierAddress & { name?: string };
+  /** Collection address, used to resolve the office for older bookings. */
+  collectionAddress?: CustomerAddressInput;
 }
 
-export function OrderCourierTracking({ bookingId, collectionMethod, courierDetails }: OrderCourierTrackingProps) {
+export function OrderCourierTracking({
+  bookingId,
+  collectionMethod,
+  courierDetails,
+  courierDestination,
+  collectionAddress,
+}: OrderCourierTrackingProps) {
   const isCourier = collectionMethod === "COURIER";
   const queryClient = useQueryClient();
   const saved = Boolean(courierDetails?.trackingId);
@@ -90,7 +102,12 @@ export function OrderCourierTracking({ bookingId, collectionMethod, courierDetai
         )}
       </div>
 
-      <CourierAddressCard orderId={`BKG-${bookingId.substring(bookingId.length - 8).toUpperCase()}`} compact />
+      <CourierAddressCard
+        orderId={`BKG-${bookingId.substring(bookingId.length - 8).toUpperCase()}`}
+        compact
+        destination={courierDestination}
+        address={collectionAddress}
+      />
 
       {saved && !editing && (
         <div className="space-y-3">

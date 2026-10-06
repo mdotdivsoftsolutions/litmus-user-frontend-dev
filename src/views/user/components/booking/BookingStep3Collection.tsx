@@ -336,7 +336,7 @@ export function BookingStep3Collection({
           </div>
 
           {formData.collectionMethod === "COURIER" && (
-            <CourierAddressCard />
+            <CourierAddressCard address={{ state: formData.state, city: formData.city, pincode: formData.pincode }} />
           )}
 
           {formData.collectionMethod === "PICKUP" && enablePickupSlotSelection && (

@@ -107,6 +107,11 @@ export default function NewBookingPage() {
                 gst={state.gst}
                 total={state.total}
                 calculateItemPrice={state.calculateItemPrice}
+                collectionAddress={{
+                  state: state.formData.state,
+                  city: state.formData.city,
+                  pincode: state.formData.pincode,
+                }}
               />
             )}
           </div>
