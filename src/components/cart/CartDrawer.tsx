@@ -22,6 +22,7 @@ export function CartDrawer({ children }: CartDrawerProps) {
   const { data: cartResponse, isLoading } = useQuery({
     queryKey: ["cart"],
     queryFn: () => cartApi.getCart(),
+    staleTime: 0, // always re-check on focus so carts stay in sync across tabs
   });
 
   const { data: userResponse } = useQuery({

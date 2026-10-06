@@ -7,13 +7,30 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 import Lenis from "lenis";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const queryClient = new QueryClient();
+/**
+ * One QueryClient per browser session / per server render. A module-level client would be
+ * shared by every SSR request (cache and memory shared across users).
+ */
+function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        // Focus refetch stays on (cart/orders sync across tabs) but only for stale data.
+        staleTime: 30 * 1000,
+        gcTime: 5 * 60 * 1000,
+        retry: 1,
+      },
+    },
+  });
+}
 
 export default function Providers({ children }: { children: React.ReactNode }) {
+  const [queryClient] = useState(makeQueryClient);
+
   useEffect(() => {
     const aosTimeout = setTimeout(() => {
       AOS.init({

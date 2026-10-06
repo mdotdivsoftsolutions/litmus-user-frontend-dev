@@ -49,6 +49,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
   const { data: cartResponse } = useQuery({
     queryKey: ['cart'],
     queryFn: () => cartApi.getCart(),
+    staleTime: 0, // always re-check on focus so carts stay in sync across tabs
   });
 
   const user = userResponse?.data;
