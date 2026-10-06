@@ -25,6 +25,23 @@ export function SubcategoryStrip({
   const [scrollLeftState, setScrollLeftState] = useState(0);
   const [hasMoved, setHasMoved] = useState(false);
 
+  // Reset to the start when the category (and so the chip list) changes
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ left: 0 });
+  }, [subcategories]);
+
+  // Keep the active chip visible inside the horizontal scroller
+  useEffect(() => {
+    const el = scrollRef.current;
+    const chip = el?.querySelector<HTMLElement>('[data-active="true"]');
+    if (!el || !chip) return;
+    const elRect = el.getBoundingClientRect();
+    const chipRect = chip.getBoundingClientRect();
+    if (chipRect.left < elRect.left + 40 || chipRect.right > elRect.right - 40) {
+      el.scrollBy({ left: chipRect.left - elRect.left - elRect.width / 2 + chipRect.width / 2, behavior: "smooth" });
+    }
+  }, [selectedSubcategory]);
+
   // Check scroll position and determine if arrows should be visible
   const checkScroll = useCallback(() => {
     const el = scrollRef.current;
@@ -145,7 +162,7 @@ export function SubcategoryStrip({
             isDragging ? "cursor-grabbing" : "cursor-grab"
           )}
         >
-          <span className="text-xs font-black text-slate-500 uppercase tracking-wider px-2 shrink-0 flex items-center gap-1.5 select-none">
+          <span className="text-[13px] font-black text-slate-600 uppercase tracking-wider px-2 shrink-0 flex items-center gap-1.5 select-none">
             <span className="h-2 w-2 rounded-full bg-brand-primary shrink-0 animate-pulse" />
             Subcategories:
           </span>
@@ -153,11 +170,12 @@ export function SubcategoryStrip({
           {/* "All" Option */}
           <button
             type="button"
+            data-active={selectedSubcategory === "All"}
             onClick={() => {
               if (!hasMoved) onSelectSubcategory("All");
             }}
             className={cn(
-              "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer shadow-2xs whitespace-nowrap",
+              "px-4 py-2 rounded-xl text-sm font-bold transition-all shrink-0 cursor-pointer shadow-2xs whitespace-nowrap",
               selectedSubcategory === "All"
                 ? "bg-brand-primary text-white shadow-xs scale-[1.02]"
                 : "bg-slate-100/90 text-slate-700 hover:bg-slate-200"
@@ -175,11 +193,12 @@ export function SubcategoryStrip({
               <button
                 key={idx}
                 type="button"
+                data-active={isSubActive}
                 onClick={() => {
                   if (!hasMoved) onSelectSubcategory(subName);
                 }}
                 className={cn(
-                  "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 shadow-2xs whitespace-nowrap",
+                  "px-4 py-2 rounded-xl text-sm font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 shadow-2xs whitespace-nowrap",
                   isSubActive
                     ? "bg-brand-primary text-white shadow-xs scale-[1.02]"
                     : "bg-slate-100/90 text-slate-700 hover:bg-slate-200"

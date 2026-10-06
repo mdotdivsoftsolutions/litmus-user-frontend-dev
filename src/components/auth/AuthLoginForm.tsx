@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 interface AuthLoginFormProps {
-  onSubmit: (emailOrPhone: string, pass: string) => void;
+  onSubmit: (email: string, pass: string) => void;
   onGoToRegister: () => void;
   onGoToForgot: () => void;
   isLoading: boolean;
@@ -31,8 +31,9 @@ export function AuthLoginForm({ onSubmit, onGoToRegister, onGoToForgot, isLoadin
         <div className="relative">
           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <Input
-            type="text"
-            placeholder="Email or phone number"
+            type="email"
+            placeholder="Email address"
+            autoComplete="email"
             className="h-12 pl-10 border-slate-200 placeholder:text-slate-400"
             value={identifier}
             onChange={(e) => setIdentifier(e.target.value)}

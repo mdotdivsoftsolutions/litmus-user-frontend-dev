@@ -76,6 +76,16 @@ export function useNewBookingState() {
     });
   }, [labsResponse?.data, items]);
 
+  // Price of tests/parameters added on top of the original item (catalogue price; custom write-ins are 0)
+  const getAddedTestsPrice = (item: CartLine, sample: SampleDetail) =>
+    (item.availableParameters || []).reduce(
+      (sum: number, p: any) => (p.isCustom && sample.selectedParameters.includes(p.name) ? sum + (Number(p.price) || 0) : sum),
+      0
+    );
+
+  const getAddedTestsTotal = (item: CartLine) =>
+    item.samples.reduce((sum, sample) => sum + getAddedTestsPrice(item, sample), 0);
+
   const getLabPrice = (lab: any) => {
     let labTotal = 0;
     items.forEach((item) => {
@@ -84,6 +94,7 @@ export function useNewBookingState() {
         let samplePrice = 0;
         sample.selectedParameters.forEach((paramName) => {
           const platformParam = item.availableParameters?.find((p) => p.name === paramName);
+          if (platformParam?.isCustom) return; // added tests are priced separately below
           const platformPrice = platformParam ? Number(platformParam.price) || 0 : 0;
           if (specificTestPricing && typeof specificTestPricing === "object" && specificTestPricing[paramName] !== undefined) {
             samplePrice += specificTestPricing[paramName];
@@ -94,7 +105,7 @@ export function useNewBookingState() {
         if (samplePrice === 0) {
           samplePrice = typeof specificTestPricing === "number" ? specificTestPricing : item.testObj?.price || 0;
         }
-        labTotal += samplePrice;
+        labTotal += samplePrice + getAddedTestsPrice(item, sample);
       });
     });
     return labTotal;
@@ -407,7 +418,7 @@ export function useNewBookingState() {
       let totalBase = 0;
       item.samples.forEach((sample) => {
         const samplePrice = item.availableParameters!.reduce(
-          (sum: number, p: any) => (sample.selectedParameters.includes(p.name) ? sum + (Number(p.price) || 0) : sum),
+          (sum: number, p: any) => (!p.isCustom && sample.selectedParameters.includes(p.name) ? sum + (Number(p.price) || 0) : sum),
           0
         );
         totalBase += samplePrice > 0 ? samplePrice : item.testObj.price || 0;
@@ -418,9 +429,9 @@ export function useNewBookingState() {
       } else if (item.testObj.discountType === "FLAT") {
         discount = item.testObj.discountValue || 0;
       }
-      return Math.max(0, totalBase - discount);
+      return Math.max(0, totalBase - discount) + getAddedTestsTotal(item);
     }
-    return (item.fixedPrice ?? 0) * item.samples.length;
+    return (item.fixedPrice ?? 0) * item.samples.length + getAddedTestsTotal(item);
   };
 
   const calculateItemMrp = (item: CartLine) => {
@@ -428,15 +439,15 @@ export function useNewBookingState() {
       let totalBase = 0;
       item.samples.forEach((sample) => {
         const samplePrice = item.availableParameters!.reduce(
-          (sum: number, p: any) => (sample.selectedParameters.includes(p.name) ? sum + (Number(p.price) || 0) : sum),
+          (sum: number, p: any) => (!p.isCustom && sample.selectedParameters.includes(p.name) ? sum + (Number(p.price) || 0) : sum),
           0
         );
         totalBase += samplePrice > 0 ? samplePrice : item.testObj.price || 0;
       });
-      return totalBase;
+      return totalBase + getAddedTestsTotal(item);
     }
-    if (item.testObj?.mrp) return item.testObj.mrp * item.samples.length;
-    return (item.fixedPrice ?? 0) * 1.75 * item.samples.length;
+    if (item.testObj?.mrp) return item.testObj.mrp * item.samples.length + getAddedTestsTotal(item);
+    return (item.fixedPrice ?? 0) * 1.75 * item.samples.length + getAddedTestsTotal(item);
   };
 
   const subtotal = items.reduce((acc, item) => acc + calculateItemPrice(item), 0);
@@ -520,7 +531,7 @@ export function useNewBookingState() {
     );
   };
 
-  const addCustomParamToSample = (itemId: string, sampleId: string, customParamName: string) => {
+  const addCustomParamToSample = (itemId: string, sampleId: string, customParamName: string, price = 0) => {
     const trimmed = customParamName.trim();
     if (!trimmed) return;
 
@@ -533,7 +544,7 @@ export function useNewBookingState() {
         );
         const newAvailable = existsInAvailable
           ? item.availableParameters
-          : [...(item.availableParameters || []), { name: trimmed, price: 0, isCustom: true }];
+          : [...(item.availableParameters || []), { name: trimmed, price: Number(price) || 0, isCustom: true }];
 
         const newSamples = item.samples.map((sample) => {
           if (sample.id !== sampleId) return sample;

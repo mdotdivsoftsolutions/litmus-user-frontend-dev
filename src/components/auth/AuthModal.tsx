@@ -21,7 +21,7 @@ const subtitles: Record<AuthStep, string> = {
   login: "Welcome back! Sign in to continue.",
   register: "Create your account to get started.",
   otp: "Enter the 6-digit code sent to your email.",
-  forgot: "Enter your registered email or phone number.",
+  forgot: "Enter your registered email address.",
   "forgot-otp": "Enter the 6-digit code sent to your account.",
   "reset-password": "Set a new strong password for your account.",
   "reset-success": "",

@@ -32,6 +32,10 @@ export default function TestsListingPage() {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || "All");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("All");
   const [visibleItems, setVisibleItems] = useState(12);
+  // Scroll to the subcategory bar once the chosen category's data is ready (also on deep links)
+  const pendingCategoryFocus = useRef(!!initialCategory);
+  const [categoryFocusTick, setCategoryFocusTick] = useState(0);
+  const subcategorySectionRef = useRef<HTMLElement>(null);
 
   const { data: catRes, isLoading: catLoading } = useQuery({
     queryKey: ['categories'],
@@ -104,6 +108,7 @@ export default function TestsListingPage() {
       mrp: t.price || t.offerPrice,
       tat: t.turnAroundTime || "3 days",
       tests: t.metadata?.parameters?.length || 0,
+      parameterNames: (t.metadata?.parameters || []).map((p: any) => (typeof p === "string" ? p : p?.name)).filter(Boolean),
       imageUrl: t.imageUrl || t.image || t.icon || "",
     }));
   }, [testsData]);
@@ -117,11 +122,22 @@ export default function TestsListingPage() {
     }
   }, [selectedCategory, activeCategoryName, router]);
 
+  useEffect(() => {
+    if (!pendingCategoryFocus.current || selectedCategory === "All" || catLoading) return;
+    pendingCategoryFocus.current = false;
+    const frame = requestAnimationFrame(() => {
+      subcategorySectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [selectedCategory, catLoading, activeSubcategories, categoryFocusTick]);
+
   const handleCategoryChange = (cat: string) => {
     if (cat.trim().toLowerCase() === "general") {
       router.push("/packages");
       return;
     }
+    pendingCategoryFocus.current = cat !== "All";
+    setCategoryFocusTick((n) => n + 1);
     setSelectedCategory(cat);
     setSelectedSubcategory("All");
     setVisibleItems(12);
@@ -161,7 +177,7 @@ export default function TestsListingPage() {
       </div>
 
       {/* 4 & 5. TESTS SECTION (Sticky Subcategories Bar is bounded strictly to this section) */}
-      <section className="relative">
+      <section ref={subcategorySectionRef} className="relative scroll-mt-[76px] md:scroll-mt-[102px]">
         {/* SUB-CATEGORIES STRIP (Dynamically displays and sticks under navbar with arrow scroll controls) */}
         {selectedCategory !== "All" && activeSubcategories.length > 0 && (
           <SubcategoryStrip

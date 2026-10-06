@@ -13,7 +13,7 @@ interface BookingStep1SamplesProps {
   onRemoveSample: (itemId: string, sampleId: string) => void;
   onToggleParam: (itemId: string, sampleId: string, paramName: string) => void;
   onUpdateField: (itemId: string, sampleId: string, field: keyof SampleDetail, value: string) => void;
-  onAddCustomParam?: (itemId: string, sampleId: string, customParamName: string) => void;
+  onAddCustomParam?: (itemId: string, sampleId: string, customParamName: string, price?: number) => void;
   onRemoveCustomParam?: (itemId: string, sampleId: string, paramName: string) => void;
 }
 

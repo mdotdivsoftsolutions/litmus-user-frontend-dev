@@ -19,7 +19,7 @@ interface SampleCardProps {
   onRemoveSample: (itemId: string, sampleId: string) => void;
   onToggleParam: (itemId: string, sampleId: string, paramName: string) => void;
   onUpdateField: (itemId: string, sampleId: string, field: keyof SampleDetail, value: string) => void;
-  onAddCustomParam?: (itemId: string, sampleId: string, customParamName: string) => void;
+  onAddCustomParam?: (itemId: string, sampleId: string, customParamName: string, price?: number) => void;
   onRemoveCustomParam?: (itemId: string, sampleId: string, paramName: string) => void;
 }
 
@@ -101,7 +101,13 @@ export function SampleCard({
                       {isBasePackage && <Lock className="h-3 w-3 text-emerald-600 shrink-0" />}
                     </p>
                     <p className="text-[9px] text-slate-400 uppercase font-bold">
-                      {isBasePackage ? "Included in Package" : !isPackage ? `₹${param.price}` : "Added Test"}
+                      {isBasePackage
+                        ? "Included in Package"
+                        : !isPackage
+                        ? `₹${param.price}`
+                        : Number(param.price) > 0
+                        ? `Added Test · ₹${param.price}`
+                        : "Added Test"}
                     </p>
                   </div>
                   {isCustom && (

@@ -13,7 +13,8 @@ interface AddTestParameterSelectorProps {
   itemId: string;
   sampleId: string;
   selectedParameters: string[];
-  onAddParam: (itemId: string, sampleId: string, paramName: string) => void;
+  /** price is the catalogue price of the added test/parameter (0 for custom write-ins) */
+  onAddParam: (itemId: string, sampleId: string, paramName: string, price?: number) => void;
 }
 
 export function AddTestParameterSelector({
@@ -59,25 +60,25 @@ export function AddTestParameterSelector({
   // Extract individual parameters and test names
   const testResults = rawTests
     .map((t) => {
-      const paramsList: string[] = Array.isArray(t.metadata?.parameters)
-        ? t.metadata.parameters.map((p: any) => (typeof p === "string" ? p : p.name)).filter(Boolean)
-        : Array.isArray(t.parameters)
-        ? t.parameters
-        : [];
+      const paramsList: { name: string; price: number }[] = (
+        Array.isArray(t.metadata?.parameters) ? t.metadata.parameters : Array.isArray(t.parameters) ? t.parameters : []
+      )
+        .map((p: any) => (typeof p === "string" ? { name: p, price: 0 } : { name: p?.name, price: Number(p?.price) || 0 }))
+        .filter((p: { name?: string }) => !!p.name);
 
       return {
         id: t._id,
         name: t.testName || t.name,
-        price: t.price || t.offerPrice || 0,
+        price: Number(t.offerPrice || t.price) || 0,
         parameters: paramsList,
       };
     })
     .sort((a, b) => a.name.localeCompare(b.name)); // Alphabetical A→Z
 
 
-  const handleSelectParam = (paramName: string) => {
+  const handleSelectParam = (paramName: string, price = 0) => {
     if (!paramName.trim()) return;
-    onAddParam(itemId, sampleId, paramName.trim());
+    onAddParam(itemId, sampleId, paramName.trim(), price);
     setSearchTerm("");
     setIsOpen(false);
   };
@@ -186,7 +187,7 @@ export function AddTestParameterSelector({
                           type="button"
                           size="sm"
                           variant="ghost"
-                          onClick={() => handleSelectParam(test.name)}
+                          onClick={() => handleSelectParam(test.name, test.price)}
                           className="h-7 px-2 text-xs font-bold text-brand-action hover:bg-brand-action/10"
                         >
                           + Add Test
@@ -197,14 +198,14 @@ export function AddTestParameterSelector({
                     {/* Sub-parameters if available */}
                     {test.parameters.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 pl-2 pt-0.5">
-                        {test.parameters.map((param) => {
+                        {test.parameters.map(({ name: param, price: paramPrice }) => {
                           const paramSelected = isAlreadySelected(param);
                           return (
                             <button
                               key={param}
                               type="button"
                               disabled={paramSelected}
-                              onClick={() => handleSelectParam(param)}
+                              onClick={() => handleSelectParam(param, paramPrice)}
                               className={cn(
                                 "text-[11px] px-2 py-0.5 rounded-md border text-left transition-all",
                                 paramSelected
@@ -213,6 +214,7 @@ export function AddTestParameterSelector({
                               )}
                             >
                               {paramSelected ? `✓ ${param}` : `+ ${param}`}
+                              {paramPrice > 0 && <span className="ml-1 text-slate-400">₹{paramPrice}</span>}
                             </button>
                           );
                         })}

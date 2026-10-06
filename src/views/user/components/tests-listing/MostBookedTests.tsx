@@ -1,10 +1,12 @@
 "use client";
 
-import { Clock, Search, Zap } from "lucide-react";
+import { Check, Clock, Loader2, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { authApi } from "@/lib/api/auth";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { cartApi } from "@/lib/api/cart";
+import { useCartDrawer } from "@/components/cart/CartDrawerContext";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/utils";
 import { SectionHeader } from "../home/SectionHeader";
@@ -20,6 +22,8 @@ interface FeaturedTest {
   tat: string;
   type?: string;
   tests: number;
+  /** Parameter names added to the cart (all selected by default, same as the detail page) */
+  parameterNames?: string[];
   imageUrl?: string;
   image?: string;
   icon?: string;
@@ -60,21 +64,35 @@ export const MostBookedTests = ({
   isFetchingNextPage
 }: MostBookedTestsProps) => {
   const router = useRouter();
-  const { data: userResponse } = useQuery({
-    queryKey: ["userProfile"],
-    queryFn: authApi.getMe,
-    retry: false,
-    staleTime: 60 * 1000,
-  });
-  const user = userResponse?.data;
+  const queryClient = useQueryClient();
+  const { openCart } = useCartDrawer();
 
-  const handleBookNow = (testId: string, e: React.MouseEvent) => {
+  const { data: cartResponse } = useQuery({ queryKey: ["cart"], queryFn: cartApi.getCart });
+  const cartTestIds = new Set<string>(
+    (cartResponse?.data?.items || [])
+      .filter((item: { itemType: string }) => item.itemType === "TEST")
+      .map((item: { testId?: { _id: string } | string }) =>
+        typeof item.testId === "string" ? item.testId : item.testId?._id
+      )
+  );
+
+  const addMutation = useMutation({
+    mutationFn: (test: FeaturedTest) =>
+      cartApi.addToCart({ itemType: "TEST", testId: test.id, parameters: test.parameterNames || [] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+      toast.success("Added to cart!");
+      openCart();
+    },
+    onError: (err: Error & { response?: { data?: { message?: string } } }) => {
+      toast.error(err.response?.data?.message || "Failed to add to cart");
+    },
+  });
+
+  const handleAddToCart = (test: FeaturedTest, e: React.MouseEvent) => {
     e.stopPropagation();
-    const isAuthStored = typeof window !== "undefined" && localStorage.getItem("litmus_auth_active") === "1";
-    if (!user && !isAuthStored) {
-      e.preventDefault();
-      window.dispatchEvent(new Event("openAuthModal"));
-    }
+    if (cartTestIds.has(test.id) || addMutation.isPending) return;
+    addMutation.mutate(test);
   };
 
   return (
@@ -172,21 +190,30 @@ export const MostBookedTests = ({
                         </div>
                       </div>
 
-                      {/* Right: Book Now Button on Top, Amount in flex at Bottom */}
+                      {/* Right: Add to Cart Button on Top, Amount in flex at Bottom */}
                       <div className="flex flex-col items-start sm:items-end justify-center gap-2 shrink-0 pt-3 sm:pt-0 border-t sm:border-t-0 sm:border-l sm:border-slate-100 sm:pl-5 w-full sm:w-auto">
-                        {/* Book Now Button on Top */}
-                        <Button
-                          asChild
-                          className="bg-brand-action hover:bg-brand-action-hover text-white font-bold text-xs sm:text-sm px-5 h-9 sm:h-10 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 shrink-0 w-full sm:w-auto justify-center"
-                        >
-                          <Link
-                            href={`/bookings/new?testId=${t.id}`}
-                            onClick={(e) => handleBookNow(t.id, e)}
-                          >
-                            <Zap className="h-3.5 w-3.5 fill-current" />
-                            <span>Book Now</span>
-                          </Link>
-                        </Button>
+                        {/* Add to Cart Button on Top */}
+                        {(() => {
+                          const inCart = cartTestIds.has(t.id);
+                          const adding = addMutation.isPending && addMutation.variables?.id === t.id;
+                          return (
+                            <Button
+                              type="button"
+                              onClick={(e) => handleAddToCart(t, e)}
+                              disabled={inCart || adding}
+                              className="bg-brand-action hover:bg-brand-action-hover text-white font-bold text-xs sm:text-sm px-5 h-9 sm:h-10 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-95 flex items-center gap-1.5 shrink-0 w-full sm:w-auto justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                              {adding ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : inCart ? (
+                                <Check className="h-3.5 w-3.5" />
+                              ) : (
+                                <ShoppingCart className="h-3.5 w-3.5" />
+                              )}
+                              <span>{inCart ? "Added to Cart" : "Add to Cart"}</span>
+                            </Button>
+                          );
+                        })()}
 
                         {/* Amount in flex at Bottom: Offer value, Real value, Discount */}
                         <div className="flex items-baseline gap-2 flex-wrap sm:justify-end">
