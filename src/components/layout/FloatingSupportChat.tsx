@@ -37,6 +37,8 @@ export function FloatingSupportChat() {
     emitTyping,
     submitRating,
     requeueChat,
+    queueElapsedSec,
+    queueAttempt,
   } = useSocketChat(currentUser);
 
   return (
@@ -65,6 +67,8 @@ export function FloatingSupportChat() {
         onEmitTyping={emitTyping}
         onRequeue={requeueChat}
         onSubmitRating={submitRating}
+        queueElapsedSec={queueElapsedSec}
+        queueAttempt={queueAttempt}
       />
     </div>
   );

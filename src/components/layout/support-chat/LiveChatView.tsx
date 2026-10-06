@@ -6,6 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChatMessageItem } from "@/hooks/useSocketChat";
+import {
+  LIVE_SUPPORT_ATTEMPT_SECONDS,
+  LIVE_SUPPORT_MAX_ATTEMPTS,
+  QUEUE_ATTEMPT_MESSAGES,
+} from "@/lib/liveSupport";
 
 interface LiveChatViewProps {
   chatStatus: "BOT" | "QUEUED" | "ACTIVE" | "RESOLVED" | "MISSED";
@@ -20,6 +25,10 @@ interface LiveChatViewProps {
   onSubmitRating: (score: number, feedback?: string) => void;
   onBackToBot: () => void;
   onCancelRequest?: () => void;
+  /** Seconds since the live-support request was queued (driven by useSocketChat). */
+  queueElapsedSec?: number;
+  /** Current retry attempt, 1..LIVE_SUPPORT_MAX_ATTEMPTS. */
+  queueAttempt?: number;
 }
 
 export function LiveChatView({
@@ -35,31 +44,14 @@ export function LiveChatView({
   onSubmitRating,
   onBackToBot,
   onCancelRequest,
+  queueElapsedSec = 0,
+  queueAttempt = 1,
 }: LiveChatViewProps) {
   const [inputText, setInputText] = useState("");
   const [ratingScore, setRatingScore] = useState(5);
   const [ratingFeedback, setRatingFeedback] = useState("");
   const [isRatingSubmitted, setIsRatingSubmitted] = useState(false);
-  const [queueSecondsElapsed, setQueueSecondsElapsed] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (chatStatus === "QUEUED") {
-      const timer = setInterval(() => {
-        setQueueSecondsElapsed((prev) => prev + 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    } else {
-      setQueueSecondsElapsed(0);
-    }
-  }, [chatStatus]);
-
-  useEffect(() => {
-    if (chatStatus === "QUEUED" && queueSecondsElapsed >= 300) {
-      if (onCancelRequest) onCancelRequest();
-      else onBackToBot();
-    }
-  }, [chatStatus, queueSecondsElapsed, onCancelRequest, onBackToBot]);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -88,10 +80,11 @@ export function LiveChatView({
 
   // ── 1. QUEUE STATE ────────────────────────────────────────────────────────
   if (chatStatus === "QUEUED") {
-    const cycle = Math.floor(queueSecondsElapsed / 60);
-    const secondsInCycle = queueSecondsElapsed % 60;
-    const progressPercent = (secondsInCycle / 60) * 100;
-    const isBusy = cycle > 0;
+    const attempt = Math.min(Math.max(queueAttempt, 1), LIVE_SUPPORT_MAX_ATTEMPTS);
+    const secondsInAttempt = Math.min(queueElapsedSec - (attempt - 1) * LIVE_SUPPORT_ATTEMPT_SECONDS, LIVE_SUPPORT_ATTEMPT_SECONDS);
+    const progressPercent = (Math.max(0, secondsInAttempt) / LIVE_SUPPORT_ATTEMPT_SECONDS) * 100;
+    const secondsLeft = Math.max(0, LIVE_SUPPORT_ATTEMPT_SECONDS - secondsInAttempt);
+    const copy = QUEUE_ATTEMPT_MESSAGES[attempt - 1] ?? QUEUE_ATTEMPT_MESSAGES[0];
 
     return (
       <div className="flex flex-col items-center justify-center h-full p-6 text-center bg-white text-slate-900">
@@ -104,19 +97,17 @@ export function LiveChatView({
           </div>
         </div>
 
-        <h3 className="text-base font-bold text-slate-900 mb-1.5">
-          {isBusy ? "Specialists are busy" : "Connecting to a Live Specialist"}
+        <h3 className="text-base font-bold text-slate-900 mb-1.5" aria-live="polite">
+          {copy.title}
         </h3>
-        <p className="text-xs text-slate-500 max-w-[260px] leading-relaxed mb-6">
-          {isBusy
-            ? "All our specialists are currently assisting other clients. Please wait another minute, or you can switch back to the AI Assistant."
-            : "Your request has been dispatched to our support desk. An available specialist will accept shortly."}
-        </p>
+        <p className="text-xs text-slate-500 max-w-[260px] leading-relaxed mb-6">{copy.description}</p>
 
         <div className="w-full bg-slate-50 rounded-2xl p-4 border border-slate-200 mb-6 space-y-2 shadow-sm">
           <div className="flex items-center justify-between text-xs font-semibold text-slate-600">
-            <span>{isBusy ? `Wait time extended (${cycle}/5)` : "Estimated wait time"}</span>
-            <span className="text-slate-900">&lt; 1 minute</span>
+            <span>
+              Attempt {attempt} of {LIVE_SUPPORT_MAX_ATTEMPTS}
+            </span>
+            <span className="text-slate-900 tabular-nums">{secondsLeft}s</span>
           </div>
           <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
             <div

@@ -2,6 +2,14 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
+import {
+  ChatActionSuggestion,
+  DEFAULT_CHAT_PROMPTS,
+  LIVE_SUPPORT_AWAY_MESSAGE,
+  LIVE_SUPPORT_ATTEMPT_SECONDS,
+  LIVE_SUPPORT_MAX_ATTEMPTS,
+  LIVE_SUPPORT_TOTAL_SECONDS,
+} from "@/lib/liveSupport";
 
 export interface ChatMessageItem {
   id?: string;
@@ -14,7 +22,7 @@ export interface ChatMessageItem {
   attachments?: Array<{ url: string; name: string; type: string; size?: number }>;
   createdAt?: string | Date;
   status?: "pending" | "delivered" | "failed";
-  actionSuggestions?: Array<{ label: string; action: string; payload?: any }>;
+  actionSuggestions?: ChatActionSuggestion[];
 }
 
 export interface GuestInfo {
@@ -47,8 +55,13 @@ export function useSocketChat(currentUser?: any) {
   const [showRatingPrompt, setShowRatingPrompt] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
+  const [queueStartedAt, setQueueStartedAt] = useState<number | null>(null);
+  const [queueElapsedSec, setQueueElapsedSec] = useState(0);
+
   const socketRef = useRef<Socket | null>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const queueTimeoutSentRef = useRef(false);
+  const isAuthenticated = Boolean(currentUser && (currentUser._id || currentUser.id));
 
   // Initialize guest info from localStorage or generate new
   useEffect(() => {
@@ -120,7 +133,11 @@ export function useSocketChat(currentUser?: any) {
         (res: any) => {
           if (res?.success) {
             setSessionId(res.session.sessionId);
-            setChatStatus(res.session.status || "BOT");
+            setChatStatus(res.session.status === "MISSED" ? "BOT" : res.session.status || "BOT");
+            // Resume the retry countdown from the real queue time after a page reload.
+            if (res.session.status === "QUEUED" && res.session.queuedAt) {
+              setQueueStartedAt(new Date(res.session.queuedAt).getTime());
+            }
             setHasOnlineAgents(Boolean(res.hasOnlineAgents));
 
             if (res.transcript && res.transcript.length > 0) {
@@ -128,14 +145,7 @@ export function useSocketChat(currentUser?: any) {
                 if (idx === 0 && m.senderType === "BOT" && (!m.actionSuggestions || m.actionSuggestions.length === 0)) {
                   return {
                     ...m,
-                    actionSuggestions: [
-                      { label: "📋 How do I book a test?", action: "ask_faq", payload: "book_test" },
-                      { label: "🔬 What can I test?", action: "ask_faq", payload: "what_can_i_test" },
-                      { label: "⚖️ How much sample is required?", action: "ask_faq", payload: "sample_quantity" },
-                      { label: "📍 Track my sample", action: "ask_faq", payload: "track_sample" },
-                      { label: "⏱️ When will I get my report?", action: "ask_faq", payload: "report_timeline" },
-                      { label: "💬 Talk to Support", action: "request_live_support" },
-                    ],
+                    actionSuggestions: DEFAULT_CHAT_PROMPTS,
                   };
                 }
                 return m;
@@ -149,14 +159,7 @@ export function useSocketChat(currentUser?: any) {
                   senderType: "BOT",
                   senderName: "Litmus Intelligence",
                   text: "Hello! Welcome to Litmus Food & Laboratory Testing Assistance. How can we assist you today?",
-                  actionSuggestions: [
-                    { label: "📋 How do I book a test?", action: "ask_faq", payload: "book_test" },
-                    { label: "🔬 What can I test?", action: "ask_faq", payload: "what_can_i_test" },
-                    { label: "⚖️ How much sample is required?", action: "ask_faq", payload: "sample_quantity" },
-                    { label: "📍 Track my sample", action: "ask_faq", payload: "track_sample" },
-                    { label: "⏱️ When will I get my report?", action: "ask_faq", payload: "report_timeline" },
-                    { label: "💬 Talk to Support", action: "request_live_support" },
-                  ],
+                  actionSuggestions: DEFAULT_CHAT_PROMPTS,
                   createdAt: new Date().toISOString(),
                 },
               ]);
@@ -239,14 +242,71 @@ export function useSocketChat(currentUser?: any) {
       setAgentDisconnectedAlert(false);
     });
 
+    // No specialist accepted within the retry window: server posted the "agents away" auto-reply.
+    newSocket.on("chat_missed", () => {
+      setChatStatus("BOT");
+      setAgentDisconnectedAlert(false);
+    });
+
     newSocket.on("agents_online_status", (data: { hasOnline: boolean }) => {
       setHasOnlineAgents(data.hasOnline);
     });
 
     return () => {
+      newSocket.removeAllListeners();
       newSocket.disconnect();
     };
   }, [guestInfo?.guestId, currentUser?._id]);
+
+  // ── Queue retry countdown (lives here so it survives tab switches) ────────
+  useEffect(() => {
+    if (chatStatus !== "QUEUED") {
+      setQueueStartedAt(null);
+      setQueueElapsedSec(0);
+      queueTimeoutSentRef.current = false;
+      return;
+    }
+    if (queueStartedAt === null) {
+      setQueueStartedAt(Date.now());
+      return;
+    }
+    const tick = () => setQueueElapsedSec(Math.max(0, Math.floor((Date.now() - queueStartedAt) / 1000)));
+    tick();
+    const timer = setInterval(tick, 1000);
+    return () => clearInterval(timer);
+  }, [chatStatus, queueStartedAt]);
+
+  useEffect(() => {
+    if (chatStatus !== "QUEUED" || queueElapsedSec < LIVE_SUPPORT_TOTAL_SECONDS) return;
+    if (queueTimeoutSentRef.current || !socket || !sessionId) return;
+    queueTimeoutSentRef.current = true;
+
+    setChatStatus("BOT");
+    socket
+      .timeout(8000)
+      .emit(
+        "live_support_timeout",
+        { sessionId, attempts: LIVE_SUPPORT_MAX_ATTEMPTS },
+        (err: Error | null, res?: { success?: boolean; missed?: boolean }) => {
+          // Server normally posts the auto-reply itself; fall back locally if it could not.
+          if (err || !res?.success || !res.missed) {
+            setMessages((prev) => [
+              ...prev,
+              {
+                sessionId,
+                senderType: "BOT",
+                senderName: "Litmus Assistant",
+                text: LIVE_SUPPORT_AWAY_MESSAGE,
+                actionSuggestions: [{ label: "🔁 Try Live Chat Again", action: "request_live_support" }, ...DEFAULT_CHAT_PROMPTS.slice(0, 3)],
+                createdAt: new Date().toISOString(),
+              },
+            ]);
+          }
+        }
+      );
+  }, [chatStatus, queueElapsedSec, socket, sessionId]);
+
+  const queueAttempt = Math.min(LIVE_SUPPORT_MAX_ATTEMPTS, Math.floor(queueElapsedSec / LIVE_SUPPORT_ATTEMPT_SECONDS) + 1);
 
   // ── Send Bot Query ────────────────────────────────────────────────────────
   const sendBotQuery = useCallback(
@@ -267,7 +327,7 @@ export function useSocketChat(currentUser?: any) {
       setMessages((prev) => [...prev, optimisticMsg]);
       setIsSubmitting(true);
 
-      socket.emit("bot_query", { sessionId, text: text.trim(), clientMessageId }, (res: any) => {
+      socket.emit("bot_query", { sessionId, text: text.trim(), clientMessageId, isAuthenticated }, (res: any) => {
         setIsSubmitting(false);
         if (!res?.success) {
           setMessages((prev) =>
@@ -276,7 +336,7 @@ export function useSocketChat(currentUser?: any) {
         }
       });
     },
-    [socket, sessionId]
+    [socket, sessionId, isAuthenticated]
   );
 
   // ── Send Live Message ─────────────────────────────────────────────────────
@@ -448,10 +508,10 @@ export function useSocketChat(currentUser?: any) {
   // ── Cancel Live Support Request ───────────────────────────────────────────
   const cancelLiveSupport = useCallback(() => {
     if (!socket || !sessionId) return;
-    socket.emit("cancel_live_support", { sessionId }, () => {
+    socket.emit("cancel_live_support", { sessionId, attempts: queueAttempt }, () => {
       setChatStatus("BOT");
     });
-  }, [socket, sessionId]);
+  }, [socket, sessionId, queueAttempt]);
 
   return {
     socket,
@@ -477,5 +537,8 @@ export function useSocketChat(currentUser?: any) {
     submitRating,
     requeueChat,
     setChatStatus,
+    queueElapsedSec,
+    queueAttempt,
+    isAuthenticated,
   };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Bot, Headphones, ShieldCheck, X, Sparkles } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -27,6 +27,8 @@ interface SupportChatWindowProps {
   onEmitTyping: (isTyping: boolean) => void;
   onRequeue: () => void;
   onSubmitRating: (score: number, feedback?: string) => void;
+  queueElapsedSec?: number;
+  queueAttempt?: number;
 }
 
 export function SupportChatWindow({
@@ -47,17 +49,26 @@ export function SupportChatWindow({
   onEmitTyping,
   onRequeue,
   onSubmitRating,
+  queueElapsedSec,
+  queueAttempt,
 }: SupportChatWindowProps) {
+  const isAuthenticated = Boolean(currentUser && (currentUser._id || currentUser.id));
   const [activeTab, setActiveTab] = useState<"bot" | "live">("bot");
   const [showGuestForm, setShowGuestForm] = useState(false);
   const [showConnectConfirm, setShowConnectConfirm] = useState(false);
 
-  // Switch to live tab automatically if live chat is queued or active
+  // Follow the live-chat lifecycle: live tab while queued/active, back to the AI assistant
+  // when the request was missed or cancelled (the bot posts the "agents away" message there).
+  const previousStatusRef = useRef(chatStatus);
   useEffect(() => {
+    const previous = previousStatusRef.current;
+    previousStatusRef.current = chatStatus;
     if (chatStatus === "QUEUED" || chatStatus === "ACTIVE") {
       setActiveTab("live");
       setShowGuestForm(false);
       setShowConnectConfirm(false);
+    } else if (chatStatus === "BOT" && previous === "QUEUED") {
+      setActiveTab("bot");
     }
   }, [chatStatus]);
 
@@ -242,6 +253,8 @@ export function SupportChatWindow({
                 onCancelLiveSupport();
                 setActiveTab("bot");
               }}
+              queueElapsedSec={queueElapsedSec}
+              queueAttempt={queueAttempt}
             />
           ) : (
             <BotChatView
@@ -249,6 +262,8 @@ export function SupportChatWindow({
               onSendMessage={onSendBotMessage}
               onRequestLiveSupport={() => setShowConnectConfirm(true)}
               hasOnlineAgents={hasOnlineAgents}
+              isAuthenticated={isAuthenticated}
+              onNavigate={onClose}
             />
           )}
         </div>

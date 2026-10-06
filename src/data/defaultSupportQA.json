@@ -21,10 +21,25 @@
     "intent": "how_to_book_test",
     "answer": "To book a test:\n1. Select the product category.\n2. Choose the required test package or individual parameters.\n3. Enter sample and contact details.\n4. Select sample collection or self-submission option.\n5. Review your order and complete the payment.\n6. You will receive an order confirmation and tracking ID.",
     "actionSuggestions": [
-      { "label": "🔬 What can I test?", "action": "ask_faq", "payload": "what_can_i_test" },
-      { "label": "📦 How much sample is required?", "action": "ask_faq", "payload": "sample_quantity" },
-      { "label": "🧪 Browse All Tests", "action": "navigate", "payload": "/tests" },
-      { "label": "💬 Talk to Support", "action": "request_live_support" }
+      {
+        "label": "🔬 What can I test?",
+        "action": "ask_faq",
+        "payload": "what_can_i_test"
+      },
+      {
+        "label": "📦 How much sample is required?",
+        "action": "ask_faq",
+        "payload": "sample_quantity"
+      },
+      {
+        "label": "🧪 Browse All Tests",
+        "action": "navigate",
+        "payload": "/tests"
+      },
+      {
+        "label": "💬 Talk to Support",
+        "action": "request_live_support"
+      }
     ]
   },
   {
@@ -58,10 +73,25 @@
     "intent": "what_can_i_test",
     "answer": "You can test a wide range of samples, including:\n• Food and beverage products\n• Raw materials and ingredients\n• Dairy products\n• Meat, fish and poultry products\n• Bakery and confectionery products\n• Fruits and vegetables\n• Oils and fats\n• Water and ice samples\n\nTo know more, you can get in touch with our technical support.",
     "actionSuggestions": [
-      { "label": "📋 How do I book a test?", "action": "ask_faq", "payload": "book_test" },
-      { "label": "📦 How much sample is required?", "action": "ask_faq", "payload": "sample_quantity" },
-      { "label": "🧪 Browse Tests Catalog", "action": "navigate", "payload": "/tests" },
-      { "label": "💬 Talk to Support", "action": "request_live_support" }
+      {
+        "label": "📋 How do I book a test?",
+        "action": "ask_faq",
+        "payload": "book_test"
+      },
+      {
+        "label": "📦 How much sample is required?",
+        "action": "ask_faq",
+        "payload": "sample_quantity"
+      },
+      {
+        "label": "🧪 Browse Tests Catalog",
+        "action": "navigate",
+        "payload": "/tests"
+      },
+      {
+        "label": "💬 Talk to Support",
+        "action": "request_live_support"
+      }
     ]
   },
   {
@@ -87,10 +117,25 @@
     "intent": "sample_quantity_required",
     "answer": "The required sample quantity depends on the product type and selected tests. Typical requirements are:\n• Solid foods: 200–500 g\n• Liquid samples: 250–500 ml\n• Water samples: 500 ml–1 litre\n• Swab samples: As per collection kit instructions\n\nThe exact sample quantity will be displayed during test selection and booking.",
     "actionSuggestions": [
-      { "label": "📋 How do I book a test?", "action": "ask_faq", "payload": "book_test" },
-      { "label": "🔬 What can I test?", "action": "ask_faq", "payload": "what_can_i_test" },
-      { "label": "⏱️ When will I get my report?", "action": "ask_faq", "payload": "report_timeline" },
-      { "label": "💬 Talk to Support", "action": "request_live_support" }
+      {
+        "label": "📋 How do I book a test?",
+        "action": "ask_faq",
+        "payload": "book_test"
+      },
+      {
+        "label": "🔬 What can I test?",
+        "action": "ask_faq",
+        "payload": "what_can_i_test"
+      },
+      {
+        "label": "⏱️ When will I get my report?",
+        "action": "ask_faq",
+        "payload": "report_timeline"
+      },
+      {
+        "label": "💬 Talk to Support",
+        "action": "request_live_support"
+      }
     ]
   },
   {
@@ -111,12 +156,31 @@
       "order progress"
     ],
     "intent": "track_my_sample",
-    "answer": "You can track your sample in the **My Orders** section of the app.\n\nYou will also receive notifications at important stages.",
+    "answer": "You can track your sample live in the **My Orders** section — open any order to see its current stage, courier details and expected report date.\n\nYou will also receive notifications at important stages.",
     "actionSuggestions": [
-      { "label": "📦 Open My Orders", "action": "navigate", "payload": "/dashboard/bookings" },
-      { "label": "⏱️ When will I get my report?", "action": "ask_faq", "payload": "report_timeline" },
-      { "label": "💬 Talk to Support", "action": "request_live_support" }
-    ]
+      {
+        "label": "📦 Open My Orders",
+        "action": "navigate",
+        "payload": "/orders",
+        "requiresAuth": true
+      },
+      {
+        "label": "📄 View My Reports",
+        "action": "navigate",
+        "payload": "/reports",
+        "requiresAuth": true
+      },
+      {
+        "label": "⏱️ When will I get my report?",
+        "action": "ask_faq",
+        "payload": "report_timeline"
+      },
+      {
+        "label": "💬 Talk to Support",
+        "action": "request_live_support"
+      }
+    ],
+    "requiresAuth": true
   },
   {
     "id": "report_timeline",
@@ -141,9 +205,22 @@
     "intent": "report_timeline",
     "answer": "Report timelines depend on the selected tests and sample type.\n\nTypical turnaround times:\n• Basic tests: 5-7 working days\n• Microbiological tests: 5-7 working days\n• Nutritional analysis: 7–10 working days\n• Specialised tests: As communicated during booking\n\nYou can check the expected timeline in your order details and track the status in the app.",
     "actionSuggestions": [
-      { "label": "📍 Track my sample", "action": "ask_faq", "payload": "track_sample" },
-      { "label": "📦 View My Orders", "action": "navigate", "payload": "/dashboard/bookings" },
-      { "label": "💬 Talk to Support", "action": "request_live_support" }
+      {
+        "label": "📍 Track my sample",
+        "action": "ask_faq",
+        "payload": "track_sample",
+        "requiresAuth": true
+      },
+      {
+        "label": "📦 View My Orders",
+        "action": "navigate",
+        "payload": "/orders",
+        "requiresAuth": true
+      },
+      {
+        "label": "💬 Talk to Support",
+        "action": "request_live_support"
+      }
     ]
   },
   {
@@ -169,9 +246,21 @@
     "intent": "talk_to_support",
     "answer": "You can connect with us through:\n• Live Chat\n• WhatsApp\n• Email Support\n• Phone Support\n\nPlease keep your Order ID ready for faster assistance.",
     "actionSuggestions": [
-      { "label": "💬 Connect to Live Chat", "action": "request_live_support" },
-      { "label": "📋 How do I book a test?", "action": "ask_faq", "payload": "book_test" },
-      { "label": "📍 Track my sample", "action": "ask_faq", "payload": "track_sample" }
+      {
+        "label": "💬 Connect to Live Chat",
+        "action": "request_live_support"
+      },
+      {
+        "label": "📋 How do I book a test?",
+        "action": "ask_faq",
+        "payload": "book_test"
+      },
+      {
+        "label": "📍 Track my sample",
+        "action": "ask_faq",
+        "payload": "track_sample",
+        "requiresAuth": true
+      }
     ]
   }
 ]

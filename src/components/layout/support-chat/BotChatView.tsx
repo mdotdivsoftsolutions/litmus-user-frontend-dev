@@ -1,11 +1,19 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, Sparkles, Headphones, ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Send, Bot, User, Sparkles, ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ChatMessageItem } from "@/hooks/useSocketChat";
+import {
+  ChatActionSuggestion,
+  DEFAULT_CHAT_PROMPTS,
+  filterSuggestionsForAuth,
+  isProtectedRoute,
+  resolveChatRoute,
+} from "@/lib/liveSupport";
 
 interface BotChatViewProps {
   messages: ChatMessageItem[];
@@ -13,15 +21,22 @@ interface BotChatViewProps {
   onRequestLiveSupport: () => void;
   isSubmitting?: boolean;
   hasOnlineAgents?: boolean;
+  isAuthenticated?: boolean;
+  /** Called after an in-app navigation (e.g. to close the widget). */
+  onNavigate?: () => void;
 }
+
+const openLoginModal = () => window.dispatchEvent(new Event("openAuthModal"));
 
 export function BotChatView({
   messages,
   onSendMessage,
   onRequestLiveSupport,
   isSubmitting = false,
-  hasOnlineAgents = false,
+  isAuthenticated = false,
+  onNavigate,
 }: BotChatViewProps) {
+  const router = useRouter();
   const [inputText, setInputText] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,15 +54,31 @@ export function BotChatView({
     setInputText("");
   };
 
-  const handleChipClick = (suggestion: { label: string; action: string; payload?: any }) => {
+  const handleChipClick = (suggestion: ChatActionSuggestion) => {
     if (suggestion.action === "request_live_support") {
       onRequestLiveSupport();
-    } else if (suggestion.action === "navigate" && suggestion.payload) {
-      window.location.href = suggestion.payload;
-    } else {
-      // Send clean human-readable label for user chat bubble
-      onSendMessage(suggestion.label);
+      return;
     }
+    if (suggestion.action === "login") {
+      openLoginModal();
+      return;
+    }
+    if (suggestion.action === "navigate" && typeof suggestion.payload === "string") {
+      const target = resolveChatRoute(suggestion.payload);
+      if (!isAuthenticated && isProtectedRoute(target)) {
+        openLoginModal();
+        return;
+      }
+      if (/^https?:\/\//i.test(target)) {
+        window.open(target, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(target);
+        onNavigate?.();
+      }
+      return;
+    }
+    // Send clean human-readable label for user chat bubble
+    onSendMessage(suggestion.label);
   };
 
   return (
@@ -76,7 +107,7 @@ export function BotChatView({
           }
 
           return (
-            <div key={index} className={cn("flex flex-col gap-1.5", isUser ? "items-end" : "items-start")}>
+            <div key={msg._id || msg.clientMessageId || index} className={cn("flex flex-col gap-1.5", isUser ? "items-end" : "items-start")}>
               <div className={cn("flex items-center gap-1.5 px-1", isUser ? "flex-row-reverse" : "flex-row")}>
                 <div
                   className={cn(
@@ -106,18 +137,13 @@ export function BotChatView({
               {/* Interactive Quick Reply Suggestion Chips */}
               {isBot && (
                 <div className="flex flex-wrap gap-1.5 pt-1 pl-1 max-w-[95%]">
-                  {(msg.actionSuggestions && msg.actionSuggestions.length > 0
-                    ? msg.actionSuggestions
-                    : (index === 0 || index === messages.length - 1)
-                      ? [
-                          { label: "📋 How do I book a test?", action: "ask_faq", payload: "book_test" },
-                          { label: "🔬 What can I test?", action: "ask_faq", payload: "what_can_i_test" },
-                          { label: "⚖️ How much sample is required?", action: "ask_faq", payload: "sample_quantity" },
-                          { label: "📍 Track my sample", action: "ask_faq", payload: "track_sample" },
-                          { label: "⏱️ When will I get my report?", action: "ask_faq", payload: "report_timeline" },
-                          { label: "💬 Connect with Live Specialist", action: "request_live_support" },
-                        ]
-                      : []
+                  {filterSuggestionsForAuth(
+                    msg.actionSuggestions && msg.actionSuggestions.length > 0
+                      ? msg.actionSuggestions
+                      : index === 0 || index === messages.length - 1
+                        ? DEFAULT_CHAT_PROMPTS
+                        : [],
+                    isAuthenticated
                   ).map((suggestion, chipIdx) => (
                     <button
                       key={chipIdx}
