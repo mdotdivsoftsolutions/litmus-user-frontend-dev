@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { Bot, Headphones, ShieldCheck, X, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { Bot, Headphones, X, Sparkles } from "lucide-react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { BotChatView } from "./BotChatView";
@@ -59,18 +59,17 @@ export function SupportChatWindow({
 
   // Follow the live-chat lifecycle: live tab while queued/active, back to the AI assistant
   // when the request was missed or cancelled (the bot posts the "agents away" message there).
-  const previousStatusRef = useRef(chatStatus);
-  useEffect(() => {
-    const previous = previousStatusRef.current;
-    previousStatusRef.current = chatStatus;
+  const [previousStatus, setPreviousStatus] = useState(chatStatus);
+  if (previousStatus !== chatStatus) {
+    setPreviousStatus(chatStatus);
     if (chatStatus === "QUEUED" || chatStatus === "ACTIVE") {
       setActiveTab("live");
       setShowGuestForm(false);
       setShowConnectConfirm(false);
-    } else if (chatStatus === "BOT" && previous === "QUEUED") {
+    } else if (chatStatus === "BOT" && previousStatus === "QUEUED") {
       setActiveTab("bot");
     }
-  }, [chatStatus]);
+  }
 
   const handleLiveTabClick = () => {
     if (chatStatus === "BOT") {

@@ -152,7 +152,7 @@ export function ConsultationHero() {
             <div className="flex items-center gap-4">
               <div className="flex -space-x-3">
                 {[21, 22, 23, 24].map((i) => (
-                  <img key={i} src={`https://i.pravatar.cc/100?img=${i}`} className="h-12 w-12 rounded-full border-4 border-white shadow-xl ring-1 ring-slate-100" />
+                  <img key={i} src={`https://i.pravatar.cc/100?img=${i}`} alt="" className="h-12 w-12 rounded-full border-4 border-white shadow-xl ring-1 ring-slate-100" />
                 ))}
               </div>
               <div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useMemo, useEffect, type MouseEvent } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Package, Milk, Coffee, Wheat, Flame, Drumstick, Droplets, Cookie } from "lucide-react";
@@ -31,7 +31,6 @@ export default function TestsListingPage() {
   const [search, setSearch] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState(initialCategory || "All");
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("All");
-  const [visibleItems, setVisibleItems] = useState(12);
   // Scroll to the subcategory bar once the chosen category's data is ready (also on deep links)
   const pendingCategoryFocus = useRef(!!initialCategory);
   const [categoryFocusTick, setCategoryFocusTick] = useState(0);
@@ -140,7 +139,6 @@ export default function TestsListingPage() {
     setCategoryFocusTick((n) => n + 1);
     setSelectedCategory(cat);
     setSelectedSubcategory("All");
-    setVisibleItems(12);
   };
 
   const discountPct = (price: number, mrp: number) => Math.round(((mrp - price) / mrp) * 100);

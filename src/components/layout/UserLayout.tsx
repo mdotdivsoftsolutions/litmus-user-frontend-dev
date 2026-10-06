@@ -64,7 +64,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
       toast.success("Logged out successfully");
       // Force a hard reload to completely reset all React and Query state
       window.location.href = "/";
-    } catch (error) {
+    } catch {
       toast.error("Failed to logout");
     }
   };
@@ -81,12 +81,18 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  useEffect(() => {
+  // Close the mobile menu & search when the route changes (adjusted during render, no extra pass).
+  const [menuPathname, setMenuPathname] = useState(pathname);
+  if (menuPathname !== pathname) {
+    setMenuPathname(pathname);
     setMobileMenuOpen(false);
     setShowSearch(false);
+  }
+
+  useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    if ((window as any).__lenis) {
-      (window as any).__lenis.scrollTo(0, { immediate: true });
+    if (window.__lenis) {
+      window.__lenis.scrollTo(0, { immediate: true });
     }
   }, [pathname]);
 
@@ -113,10 +119,8 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
           user={user}
         />
 
-        <main
-          className="flex-1 lg:pb-0"
-          style={{ paddingBottom: "calc(5rem + env(safe-area-inset-bottom))" }}
-        >
+        {/* Bottom padding only below lg, where the fixed mobile tab bar is shown. */}
+        <main className="flex-1 pb-[calc(5rem+env(safe-area-inset-bottom))] lg:pb-0">
           {children}
         </main>
 

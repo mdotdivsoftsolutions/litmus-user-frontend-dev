@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,12 +42,16 @@ export function OrderCourierTracking({
   const [courierName, setCourierName] = useState(courierDetails?.courierName || "");
   const [notes, setNotes] = useState(courierDetails?.notes || "");
 
-  useEffect(() => {
+  // Re-sync the form when the saved tracking details change (adjusted during render).
+  const savedKey = `${courierDetails?.trackingId || ""}|${courierDetails?.courierName || ""}|${courierDetails?.notes || ""}`;
+  const [syncedKey, setSyncedKey] = useState(savedKey);
+  if (syncedKey !== savedKey) {
+    setSyncedKey(savedKey);
     setTrackingId(courierDetails?.trackingId || "");
     setCourierName(courierDetails?.courierName || "");
     setNotes(courierDetails?.notes || "");
     if (courierDetails?.trackingId) setEditing(false);
-  }, [courierDetails?.trackingId, courierDetails?.courierName, courierDetails?.notes]);
+  }
 
   const resetFields = () => {
     setTrackingId(courierDetails?.trackingId || "");

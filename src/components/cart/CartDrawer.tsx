@@ -34,7 +34,6 @@ export function CartDrawer({ children }: CartDrawerProps) {
 
   const cartItems = cartResponse?.data?.items || [];
   const subtotal = cartItems.reduce((a: number, b: any) => a + b.price, 0);
-  const totalMrp = cartItems.reduce((a: number, b: any) => a + b.mrp, 0);
   const gst = Math.round(subtotal * 0.18);
   const total = subtotal + gst;
 

@@ -1,5 +1,3 @@
-import { FooterSteps } from "./FooterSteps";
-import { FooterFAQGrid } from "./FooterFAQGrid";
 import { FooterIntroGrid } from "./FooterIntroGrid";
 import { FooterTrustPoints } from "./FooterTrustPoints";
 

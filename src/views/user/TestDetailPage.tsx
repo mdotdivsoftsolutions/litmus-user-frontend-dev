@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { ChevronRight, FlaskConical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,7 +24,6 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
   const [selectedParams, setSelectedParams] = useState<string[]>([]);
   const { openCart } = useCartDrawer();
   const queryClient = useQueryClient();
-  const router = useRouter();
 
   const { data: userResponse } = useQuery({ queryKey: ["userProfile"], queryFn: authApi.getMe, retry: false });
   const { data: cartResponse } = useQuery({ queryKey: ["cart"], queryFn: cartApi.getCart });

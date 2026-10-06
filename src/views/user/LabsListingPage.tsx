@@ -2,12 +2,11 @@
 
 import { useState, useRef } from "react";
 import { useDebounce } from "@/hooks/use-debounce";
-import { laboratories } from "@/lib/placeholder-data";
 import { LabsHero } from "./components/labs-listing/LabsHero";
 import { LabsGrid } from "./components/labs-listing/LabsGrid";
 import { ConsultationServices } from "./components/consultation/ConsultationServices";
 
-import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { labApi } from "@/lib/api/lab";
 
 export default function LabsListingPage() {

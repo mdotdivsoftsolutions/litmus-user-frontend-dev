@@ -14,7 +14,6 @@ import { PackagesCTA } from "./components/packages/PackagesCTA";
 export default function PackagesPage() {
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [visibleCount, setVisibleCount] = useState(12);
   const router = useRouter();
   const heroCategories = ["All", "Compliance", "Safety", "Labeling"];
   const resultsRef = useRef<HTMLDivElement>(null);

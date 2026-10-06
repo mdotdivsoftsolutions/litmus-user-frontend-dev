@@ -27,7 +27,6 @@ interface BookingSidebarSummaryProps {
 export function BookingSidebarSummary({
   step,
   items,
-  subtotal,
   totalMrp,
   discount,
   gst,

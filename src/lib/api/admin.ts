@@ -1,7 +1,8 @@
 import { apiClient } from './axios';
+import type { ApiQueryParams, ApiRequestBody } from "./types";
 
 export const adminApi = {
-  createLab: async (data: any) => {
+  createLab: async (data: ApiRequestBody) => {
     const response = await apiClient.post('/admin/lab', data);
     return response.data;
   },
@@ -51,7 +52,7 @@ export const adminApi = {
     return response.data;
   },
 
-  updateLab: async (id: string, data: any) => {
+  updateLab: async (id: string, data: ApiRequestBody) => {
     const response = await apiClient.patch(`/admin/lab/${id}`, data);
     return response.data;
   },
@@ -61,7 +62,7 @@ export const adminApi = {
     return response.data;
   },
 
-  createUser: async (data: any) => {
+  createUser: async (data: ApiRequestBody) => {
     const response = await apiClient.post('/admin/user', data);
     return response.data;
   },

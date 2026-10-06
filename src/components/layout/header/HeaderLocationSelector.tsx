@@ -13,18 +13,18 @@ export function HeaderLocationSelector() {
   const { city, permission, isDetecting, source, detectLocation, setCity } = useUserLocation();
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
-  const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
-  const [isSearchingApi, setIsSearchingApi] = useState(false);
+  const [fetchedSuggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
+  const [isFetching, setIsSearchingApi] = useState(false);
+  // Queries shorter than 2 characters show nothing (derived, not stored).
+  const isQueryTooShort = search.trim().length < 2;
+  const suggestions = isQueryTooShort ? [] : fetchedSuggestions;
+  const isSearchingApi = !isQueryTooShort && isFetching;
   const label = city || "Set location";
 
   // Live Location Autocomplete using modular location utility
   useEffect(() => {
     const query = search.trim();
-    if (query.length < 2) {
-      setSuggestions([]);
-      setIsSearchingApi(false);
-      return;
-    }
+    if (query.length < 2) return;
 
     const controller = new AbortController();
     const timer = setTimeout(async () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, ArrowUpRight, Milk, Coffee, Wheat, Flame, LucideIcon } from "lucide-react";
+import { ArrowUpRight, Milk, Coffee, Wheat, Flame, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "./SectionHeader";
 

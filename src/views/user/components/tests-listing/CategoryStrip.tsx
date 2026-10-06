@@ -87,7 +87,7 @@ export const CategoryStrip = ({ selectedCategory, setSelectedCategory, categorie
                 </span>
               </>
             }
-            subtitle={<>Here are our most frequently selected packages. If you don't see what you need, <Link href="/contact" className="text-brand-primary hover:underline font-bold">reach out</Link> for a custom solution.</>}
+            subtitle={<>Here are our most frequently selected packages. If you don&apos;t see what you need, <Link href="/contact" className="text-brand-primary hover:underline font-bold">reach out</Link> for a custom solution.</>}
             className="mb-10"
           />
         )}

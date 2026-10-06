@@ -33,7 +33,8 @@ export function useNewBookingState() {
 
   const searchParams = useSearchParams();
   const testId = searchParams?.get("testId") || null;
-  const testParams = searchParams?.get("params")?.split(",") || [];
+  const paramsQuery = searchParams?.get("params");
+  const testParams = useMemo(() => paramsQuery?.split(",") || [], [paramsQuery]);
   const packageId = searchParams?.get("packageId") || null;
 
   const { data: testResponse, isLoading: isTestLoading } = useQuery({
@@ -66,15 +67,16 @@ export function useNewBookingState() {
     queryFn: () => labApi.getLabsPublic(),
   });
 
+  const publicLabs = labsResponse?.data;
   const eligibleLabs = useMemo(() => {
-    if (!labsResponse?.data) return [];
+    if (!publicLabs) return [];
     const requiredTestIds = items.map((item) => item.id);
-    if (requiredTestIds.length === 0) return labsResponse.data;
-    return labsResponse.data.filter((lab: any) => {
+    if (requiredTestIds.length === 0) return publicLabs;
+    return publicLabs.filter((lab: any) => {
       const labTestIds = lab.tests?.map((t: any) => t._id || t) || [];
       return requiredTestIds.every((tId) => labTestIds.includes(tId));
     });
-  }, [labsResponse?.data, items]);
+  }, [publicLabs, items]);
 
   // Price of tests/parameters added on top of the original item (catalogue price; custom write-ins are 0)
   const getAddedTestsPrice = (item: CartLine, sample: SampleDetail) =>
@@ -115,6 +117,7 @@ export function useNewBookingState() {
     if (dataLoaded) return;
     if (testId && testResponse?.data) {
       const test = testResponse.data;
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time hydration from async test/package/cart queries (guarded by dataLoaded; builds random sample ids)
       setItems((prev) => {
         if (prev.length > 0 && prev[0].id === test._id) {
           const updated = [...prev];
@@ -182,16 +185,13 @@ export function useNewBookingState() {
         const isPkg = cartItem.itemType === "PACKAGE";
         const name = isTest ? cartItem.testId?.testName : cartItem.packageId?.name;
         let testIds: string[] = [];
-        let basePrice = cartItem.price;
 
         if (isTest && cartItem.parameters?.length) {
           testIds = cartItem.parameters;
-          basePrice = Math.round(cartItem.price / (cartItem.parameters.length || 1));
         } else if (isPkg) {
           const pkgTests = cartItem.packageId?.tests?.map((t: any) => t.testName);
           const pkgFeats = cartItem.packageId?.features?.map((f: string) => f);
           testIds = (pkgTests?.length ? pkgTests : pkgFeats) || ["General Evaluation"];
-          basePrice = Math.round(cartItem.price / (testIds.length || 1));
         } else {
           testIds = ["General"];
         }
@@ -224,7 +224,7 @@ export function useNewBookingState() {
       setItems(serverItems);
       setDataLoaded(true);
     }
-  }, [cartResponse, isCartLoading, dataLoaded, testId, packageId, testResponse, packageResponse]);
+  }, [cartResponse, isCartLoading, dataLoaded, testId, packageId, testResponse, packageResponse, testParams]);
 
   const { data: userResponse } = useQuery({ queryKey: ["userProfile"], queryFn: authApi.getMe });
 
@@ -276,6 +276,7 @@ export function useNewBookingState() {
         u.billingAddress?.pincode ||
         "";
 
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time prefill from the async profile query (guarded by isAddressInitialized)
       setFormData((prev) => ({
         ...prev,
         name: prev.name || `${u.firstName || ""} ${u.lastName || ""}`.trim(),

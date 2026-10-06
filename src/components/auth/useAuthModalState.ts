@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { authApi } from "@/lib/api/auth";
@@ -138,14 +138,17 @@ export function useAuthModalState(isOpen: boolean, onClose: () => void) {
     });
   };
 
-  useEffect(() => {
+  // Reset the wizard when the modal closes (adjusted during render, no extra pass).
+  const [wasOpen, setWasOpen] = useState(isOpen);
+  if (wasOpen !== isOpen) {
+    setWasOpen(isOpen);
     if (!isOpen) {
       setStep("login");
       setOtp(["", "", "", "", "", ""]);
       setForgotIdentifier("");
       setRegData({ name: "", email: "", phone: "", pass: "" });
     }
-  }, [isOpen]);
+  }
 
   return {
     step,

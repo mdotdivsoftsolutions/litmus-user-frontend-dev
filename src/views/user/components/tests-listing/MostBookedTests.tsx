@@ -53,11 +53,7 @@ interface MostBookedTestsProps {
 export const MostBookedTests = ({
   tests,
   discountPct,
-  selectedCategory,
   setSelectedCategory,
-  categories,
-  iconMap,
-  cn,
   isLoading,
   hasMore,
   onLoadMore,
@@ -244,7 +240,7 @@ export const MostBookedTests = ({
                     <Search className="h-8 w-8 text-slate-400" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-800 mb-2">No tests found</h3>
-                  <p className="text-slate-500 max-w-sm">We couldn't find any tests matching your current search or category filters.</p>
+                  <p className="text-slate-500 max-w-sm">We couldn&apos;t find any tests matching your current search or category filters.</p>
                   <Button 
                     variant="outline" 
                     className="mt-6 border-slate-200 text-slate-600 hover:text-slate-900"

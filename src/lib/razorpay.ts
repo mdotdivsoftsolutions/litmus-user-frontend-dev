@@ -7,9 +7,18 @@ import { LITMUS_LOGO_BASE64 } from "@/constants/brandLogo";
  * actually reaches Step 4 (Payment), not on every page.
  */
 
+interface RazorpayFailureResponse {
+  error?: { code?: string; description?: string; reason?: string };
+}
+
+interface RazorpayCheckout {
+  on(event: 'payment.failed', handler: (response: RazorpayFailureResponse) => void): void;
+  open(): void;
+}
+
 declare global {
   interface Window {
-    Razorpay: any;
+    Razorpay?: new (options: Record<string, unknown>) => RazorpayCheckout;
   }
 }
 
@@ -133,7 +142,7 @@ export async function openRazorpayCheckout(options: RazorpayPaymentOptions): Pro
     },
   });
 
-  rzp.on('payment.failed', (response: any) => {
+  rzp.on('payment.failed', (response: RazorpayFailureResponse) => {
     options.onFailure({
       code: response.error?.code || 'PAYMENT_FAILED',
       description: response.error?.description || 'Payment failed',

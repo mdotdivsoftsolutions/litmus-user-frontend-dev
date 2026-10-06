@@ -1,7 +1,6 @@
 "use client";
 
 import { SectionHeader } from "./SectionHeader";
-import { UserPlus, Search, CalendarCheck, Truck, FlaskConical, FileCheck, Stethoscope } from "lucide-react";
 
 const processSteps = [
     {

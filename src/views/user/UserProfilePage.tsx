@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,24 +34,25 @@ export default function UserProfilePage() {
     gstNumber: ""
   });
 
-  useEffect(() => {
-    if (userResponse?.data) {
-      const user = userResponse.data;
-      setFormData({
-        businessName: user.companyName || user.metadata?.businessName || "",
-        firstName: user.firstName || "",
-        lastName: user.lastName || "",
-        phone: user.phone || "",
-        email: user.email || "",
-        street: user.billingAddress?.street || user.address?.street || "",
-        city: user.billingAddress?.city || user.address?.city || "",
-        state: user.billingAddress?.state || user.address?.state || "",
-        pinCode: user.billingAddress?.pincode || user.address?.pinCode || "",
-        fssaiNumber: user.fssaiNumber || "",
-        gstNumber: user.gstNumber || user.metadata?.gstNumber || ""
-      });
-    }
-  }, [userResponse]);
+  // Fill the form once per loaded profile (adjusted during render instead of an extra effect pass).
+  const [syncedProfile, setSyncedProfile] = useState<unknown>(null);
+  if (userResponse?.data && userResponse !== syncedProfile) {
+    setSyncedProfile(userResponse);
+    const user = userResponse.data;
+    setFormData({
+      businessName: user.companyName || user.metadata?.businessName || "",
+      firstName: user.firstName || "",
+      lastName: user.lastName || "",
+      phone: user.phone || "",
+      email: user.email || "",
+      street: user.billingAddress?.street || user.address?.street || "",
+      city: user.billingAddress?.city || user.address?.city || "",
+      state: user.billingAddress?.state || user.address?.state || "",
+      pinCode: user.billingAddress?.pincode || user.address?.pinCode || "",
+      fssaiNumber: user.fssaiNumber || "",
+      gstNumber: user.gstNumber || user.metadata?.gstNumber || ""
+    });
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

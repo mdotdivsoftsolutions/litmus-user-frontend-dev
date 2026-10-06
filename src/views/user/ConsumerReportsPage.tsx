@@ -3,32 +3,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { 
-  Search, 
-  Eye, 
-  Download, 
-  FileText, 
-  Calendar, 
-  CheckCircle2, 
-  Clock, 
-  Loader2, 
-  ShieldCheck, 
-  Lightbulb, 
-  HelpCircle, 
-  FileCheck, 
-  Sparkles,
-  ExternalLink
-} from "lucide-react";
+import { Search, Eye, Download, FileText, Calendar, CheckCircle2, Clock, Loader2, ShieldCheck, Lightbulb, HelpCircle, FileCheck, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { bookingApi } from "@/lib/api/booking";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useDebounce } from "@/hooks/use-debounce";
 import { ListPagination } from "@/components/common/ListPagination";
 import { ReportListSkeleton } from "./components/list-skeletons";

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Home, Search, FlaskConical, Package, Stethoscope, Headphones, ArrowRight } from "lucide-react";
+import { Home, FlaskConical, Package, Stethoscope, Headphones, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function NotFound() {

@@ -1,4 +1,5 @@
 import { apiClient } from './axios';
+import type { ApiQueryParams, ApiRequestBody } from "./types";
 
 export const labApi = {
   getLabsPublic: async (params?: { lat?: number; lng?: number; location?: string, isTrusted?: boolean, search?: string, page?: number, limit?: number }) => {
@@ -41,7 +42,7 @@ export const labApi = {
     return response.data;
   },
 
-  updateMyLabProfile: async (data: any) => {
+  updateMyLabProfile: async (data: ApiRequestBody) => {
     const response = await apiClient.patch('/lab-portal/profile', data);
     return response.data;
   },
@@ -76,12 +77,12 @@ export const labApi = {
     return response.data;
   },
   
-  createMyLabTest: async (data: any) => {
+  createMyLabTest: async (data: ApiRequestBody) => {
     const response = await apiClient.post('/lab-portal/tests', data);
     return response.data;
   },
 
-  updateMyLabTest: async (id: string, data: any) => {
+  updateMyLabTest: async (id: string, data: ApiRequestBody) => {
     const response = await apiClient.put(`/lab-portal/tests/${id}`, data);
     return response.data;
   },
@@ -101,12 +102,12 @@ export const labApi = {
     return response.data;
   },
 
-  createMyLabPackage: async (data: any) => {
+  createMyLabPackage: async (data: ApiRequestBody) => {
     const response = await apiClient.post('/lab-portal/packages', data);
     return response.data;
   },
 
-  updateMyLabPackage: async (id: string, data: any) => {
+  updateMyLabPackage: async (id: string, data: ApiRequestBody) => {
     const response = await apiClient.put(`/lab-portal/packages/${id}`, data);
     return response.data;
   }

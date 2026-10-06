@@ -74,6 +74,7 @@ export function useSocketChat(currentUser?: any) {
     } catch {}
 
     if (saved && saved.guestId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- guest identity lives in localStorage, which is only readable after mount (SSR-safe)
       setGuestInfo(saved);
       if (saved.sessionId) setSessionId(saved.sessionId);
     } else {
@@ -106,6 +107,7 @@ export function useSocketChat(currentUser?: any) {
     });
 
     socketRef.current = newSocket;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- exposes the socket instance created in this effect (external system)
     setSocket(newSocket);
 
     newSocket.on("connect", () => {
@@ -189,7 +191,7 @@ export function useSocketChat(currentUser?: any) {
     // ── Incoming Messages ──────────────────────────────────────────────────
     newSocket.on("receive_message", (msg: ChatMessageItem) => {
       // Sanitize SYSTEM messages on the client side to hide employee names
-      let sanitizedMsg = { ...msg };
+      const sanitizedMsg = { ...msg };
       if (sanitizedMsg.senderType === "SYSTEM" && sanitizedMsg.text) {
         if (sanitizedMsg.text.toLowerCase().includes("forwarded to specialist")) {
           sanitizedMsg.text = "Conversation forwarded to Litmus Specialist.";
@@ -213,12 +215,12 @@ export function useSocketChat(currentUser?: any) {
     });
 
     // ── Chat State Transitions ─────────────────────────────────────────────
-    newSocket.on("chat_queued", (data: any) => {
+    newSocket.on("chat_queued", () => {
       setChatStatus("QUEUED");
       setAgentDisconnectedAlert(false);
     });
 
-    newSocket.on("chat_connected", (data: any) => {
+    newSocket.on("chat_connected", () => {
       setChatStatus("ACTIVE");
       setAssignedAgentName("Litmus Specialist");
       setAgentDisconnectedAlert(false);
@@ -256,11 +258,15 @@ export function useSocketChat(currentUser?: any) {
       newSocket.removeAllListeners();
       newSocket.disconnect();
     };
+    // Reconnect only when the chat identity changes; adding sessionId / full objects here would
+    // tear down and re-create the socket on every session update and drop the live chat.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guestInfo?.guestId, currentUser?._id]);
 
   // ── Queue retry countdown (lives here so it survives tab switches) ────────
   useEffect(() => {
     if (chatStatus !== "QUEUED") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- queue timer is driven by an external clock (Date.now) and must reset with the chat status
       setQueueStartedAt(null);
       setQueueElapsedSec(0);
       queueTimeoutSentRef.current = false;
@@ -486,7 +492,7 @@ export function useSocketChat(currentUser?: any) {
   const submitRating = useCallback(
     (score: number, feedback?: string) => {
       if (!socket || !sessionId) return;
-      socket.emit("rate_session", { sessionId, score, feedback }, (res: any) => {
+      socket.emit("rate_session", { sessionId, score, feedback }, () => {
         setShowRatingPrompt(false);
         setChatStatus("BOT");
       });

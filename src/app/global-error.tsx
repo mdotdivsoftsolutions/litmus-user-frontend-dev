@@ -40,6 +40,8 @@ export default function RootGlobalError({
               Reload Page
             </button>
 
+            {/* A full page load (not client navigation) is intended here: the app shell crashed. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a
               href="/"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-medium hover:bg-slate-100 transition-colors"

@@ -1,7 +1,8 @@
 import { apiClient } from './axios';
+import type { ApiQueryParams, ApiRequestBody } from "./types";
 
 export const testApi = {
-  getTests: async (params?: any) => {
+  getTests: async (params?: ApiQueryParams) => {
     const response = await apiClient.get('/tests', { params });
     return response.data;
   },
@@ -16,12 +17,12 @@ export const testApi = {
     return response.data;
   },
 
-  createTest: async (data: any) => {
+  createTest: async (data: ApiRequestBody) => {
     const response = await apiClient.post('/tests', data);
     return response.data;
   },
 
-  updateTest: async (id: string, data: any) => {
+  updateTest: async (id: string, data: ApiRequestBody) => {
     const response = await apiClient.patch(`/tests/${id}`, data);
     return response.data;
   },

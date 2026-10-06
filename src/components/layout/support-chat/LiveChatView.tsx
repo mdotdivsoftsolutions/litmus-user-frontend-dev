@@ -270,7 +270,6 @@ export function LiveChatView({
       >
         {messages.map((msg, index) => {
           const isUser = msg.senderType === "USER";
-          const isAgent = msg.senderType === "AGENT";
           const isSystem = msg.senderType === "SYSTEM";
 
           if (isSystem) {

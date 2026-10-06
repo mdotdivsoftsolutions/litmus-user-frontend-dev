@@ -1,3 +1,6 @@
+import type { TestItem, TestParameter } from "./test.types";
+import type { PackageItem } from "./package.types";
+
 export interface SampleDetail {
   sampleName: string;
   category?: string;
@@ -13,9 +16,9 @@ export interface CartLineItem {
   price: number;
   mrp: number;
   count: number;
-  testObj?: any;
-  packageObj?: any;
-  availableParameters?: any[];
+  testObj?: TestItem;
+  packageObj?: PackageItem;
+  availableParameters?: TestParameter[];
   category?: string;
   samples: SampleDetail[];
 }

@@ -82,6 +82,7 @@ export function LocationProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const stored = readStored();
     if (stored?.city) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- saved city lives in localStorage, which is only readable after mount (SSR-safe)
       setCityState(stored.city);
       setSource(stored.source);
     }

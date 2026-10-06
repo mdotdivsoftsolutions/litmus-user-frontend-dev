@@ -46,7 +46,7 @@ export function PackagesGrid({ packages, search, isLoading, selectedCategory, ha
             </div>
             <h3 className="text-xl font-bold text-slate-800 tracking-tight">No packages found</h3>
             <p className="text-sm text-slate-500 font-medium max-w-sm mt-3 leading-relaxed">
-              We couldn't find any packages matching "{search}". Try searching with different keywords or category.
+              We couldn&apos;t find any packages matching &quot;{search}&quot;. Try searching with different keywords or category.
             </p>
           </div>
         )}

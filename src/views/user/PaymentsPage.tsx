@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Download, CreditCard, Clock, FileText, CheckCircle2, AlertTriangle, ExternalLink } from "lucide-react";
+import { Download, CreditCard, Clock, FileText, AlertTriangle, ExternalLink } from "lucide-react";
 import { bookingApi } from "@/lib/api/booking";
 import { InvoiceModal } from "@/components/InvoiceModal";
 import { exportToCsv } from "@/lib/utils/exportCsv";

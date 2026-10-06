@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageSquare, X, Sparkles, Headphones } from "lucide-react";
+import { MessageSquare, X, Headphones } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SupportChatTriggerProps {

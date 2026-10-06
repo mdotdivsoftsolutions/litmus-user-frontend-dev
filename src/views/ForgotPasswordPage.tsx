@@ -96,7 +96,7 @@ export default function ForgotPasswordPage() {
                 </InputOTP>
               </div>
               <Button className="w-full bg-primary hover:bg-primary-deep" disabled={otp.length < 6} onClick={handleVerifyOtp}>Verify OTP</Button>
-              <p className="text-center text-xs text-muted-foreground">Didn't receive code? <button className="text-primary hover:underline font-medium" onClick={() => forgotPasswordMutation.mutate({ email })}>Resend</button></p>
+              <p className="text-center text-xs text-muted-foreground">Didn&apos;t receive code? <button className="text-primary hover:underline font-medium" onClick={() => forgotPasswordMutation.mutate({ email })}>Resend</button></p>
             </>
           )}
           {step === 2 && (

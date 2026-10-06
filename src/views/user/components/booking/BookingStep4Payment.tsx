@@ -28,7 +28,6 @@ export function BookingStep4Payment({
   items,
   calculateItemPrice,
   paymentError,
-  isPaymentProcessing,
   total,
   acceptedTerms,
   setAcceptedTerms,

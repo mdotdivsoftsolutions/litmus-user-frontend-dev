@@ -3,12 +3,12 @@
  * Exports tabular data as a properly formatted UTF-8 CSV with Excel BOM compatibility.
  */
 
-export interface CsvColumn<T = any> {
-  key: keyof T | ((row: T) => any);
+export interface CsvColumn<T = Record<string, unknown>> {
+  key: keyof T | ((row: T) => unknown);
   label: string;
 }
 
-export function exportToCsv<T extends Record<string, any>>(
+export function exportToCsv<T extends object>(
   filename: string,
   rows: T[],
   columns: CsvColumn<T>[]
@@ -21,7 +21,7 @@ export function exportToCsv<T extends Record<string, any>>(
   const dataLines = rows.map((row) =>
     columns
       .map((col) => {
-        let val = typeof col.key === "function" ? col.key(row) : row[col.key];
+        let val: unknown = typeof col.key === "function" ? col.key(row) : row[col.key];
         if (val === null || val === undefined) return '""';
         if (typeof val === "object") val = JSON.stringify(val);
         const escaped = String(val).replace(/"/g, '""');

@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Search, Star, MapPin, ArrowRight, Activity } from "lucide-react";
-import { laboratories } from "@/lib/placeholder-data";
 import { SectionHeader } from "../home/SectionHeader";
 
 interface LabItem {
@@ -34,7 +33,7 @@ interface LabsGridProps {
   isFetchingNextPage?: boolean;
 }
 
-export function LabsGrid({ filtered, visibleCount, setVisibleCount, isLoading, hasMore, onLoadMore, isFetchingNextPage }: LabsGridProps) {
+export function LabsGrid({ filtered, isLoading, hasMore, onLoadMore, isFetchingNextPage }: LabsGridProps) {
   return (
     <div className="max-w-7xl mx-auto px-6 py-20">
       <SectionHeader

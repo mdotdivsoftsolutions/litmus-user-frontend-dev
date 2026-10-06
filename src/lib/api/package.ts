@@ -1,12 +1,13 @@
 import { apiClient } from './axios';
+import type { ApiQueryParams, ApiRequestBody } from "./types";
 
 export const packageApi = {
-  getAllPackages: async (params?: any) => {
+  getAllPackages: async (params?: ApiQueryParams) => {
     const response = await apiClient.get('/packages', { params });
     return response.data;
   },
 
-  getPackages: async (params?: any) => {
+  getPackages: async (params?: ApiQueryParams) => {
     const response = await apiClient.get('/packages', { params });
     return response.data;
   },
@@ -21,12 +22,12 @@ export const packageApi = {
     return response.data;
   },
 
-  createPackage: async (data: any) => {
+  createPackage: async (data: ApiRequestBody) => {
     const response = await apiClient.post('/packages', data);
     return response.data;
   },
 
-  updatePackage: async (id: string, data: any) => {
+  updatePackage: async (id: string, data: ApiRequestBody) => {
     const response = await apiClient.put(`/packages/${id}`, data);
     return response.data;
   },

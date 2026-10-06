@@ -1,4 +1,5 @@
 import { apiClient } from './axios';
+import type { ApiQueryParams, ApiRequestBody } from "./types";
 
 // Local type definitions (extracted from backend validators)
 export interface RegisterInput {
@@ -76,12 +77,12 @@ export const authApi = {
     return response.data;
   },
 
-  updateProfile: async (data: any) => {
+  updateProfile: async (data: ApiRequestBody) => {
     const response = await apiClient.patch('/auth/profile', data);
     return response.data;
   },
 
-  changePassword: async (data: any) => {
+  changePassword: async (data: ApiRequestBody) => {
     const response = await apiClient.post('/auth/change-password', data);
     return response.data;
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import { Shield, Target, Bookmark, Activity, ArrowRight } from "lucide-react";
+import { Shield, Target, Bookmark, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "../home/SectionHeader";
 

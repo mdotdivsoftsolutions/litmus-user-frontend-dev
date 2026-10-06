@@ -42,7 +42,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
     const lenis = new Lenis();
     if (typeof window !== "undefined") {
-      (window as any).__lenis = lenis;
+      window.__lenis = lenis;
     }
 
     let rafId: number;
@@ -57,7 +57,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       cancelAnimationFrame(rafId);
       lenis.destroy();
       if (typeof window !== "undefined") {
-        delete (window as any).__lenis;
+        delete window.__lenis;
       }
     };
   }, []);

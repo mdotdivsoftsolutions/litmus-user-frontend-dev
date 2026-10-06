@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { ConsultationBookingModal } from "../consultation/ConsultationBookingModal";
 
 const slides = [

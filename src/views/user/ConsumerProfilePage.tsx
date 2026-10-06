@@ -112,33 +112,34 @@ export default function ConsumerProfilePage() {
     shippingPincode: "",
   });
 
-  useEffect(() => {
-    if (userResponse?.data) {
-      const u = userResponse.data;
-      setFormData({
-        firstName: u.firstName || "",
-        lastName: u.lastName || "",
-        email: u.email || "",
-        phone: u.phone || "",
-        alternatePhone: u.alternatePhone || "",
-        businessName: u.companyName || u.metadata?.businessName || "",
-        industryCategory: u.industryCategory || "General Food & Beverage",
-        customerSegment: u.customerSegment || "INDIVIDUAL",
-        fssaiNo: u.fssaiNumber || "",
-        gstNumber: u.gstNumber || u.metadata?.gstNumber || "",
-        billingStreet: u.billingAddress?.street || u.address?.street || "",
-        billingCity: u.billingAddress?.city || u.address?.city || "",
-        billingState: u.billingAddress?.state || u.address?.state || "",
-        billingPincode: u.billingAddress?.pincode || u.address?.pincode || u.address?.pinCode || "",
-        shippingStreet: u.shippingAddress?.street || "",
-        shippingCity: u.shippingAddress?.city || "",
-        shippingState: u.shippingAddress?.state || "",
-        shippingPincode: u.shippingAddress?.pincode || "",
-      });
-      if (u.notifications) setNotifications(u.notifications);
-      else if (u.metadata?.notifications) setNotifications(u.metadata.notifications);
-    }
-  }, [userResponse]);
+  // Fill the form once per loaded profile (adjusted during render instead of an extra effect pass).
+  const [syncedProfile, setSyncedProfile] = useState<unknown>(null);
+  if (userResponse?.data && userResponse !== syncedProfile) {
+    setSyncedProfile(userResponse);
+    const u = userResponse.data;
+    setFormData({
+      firstName: u.firstName || "",
+      lastName: u.lastName || "",
+      email: u.email || "",
+      phone: u.phone || "",
+      alternatePhone: u.alternatePhone || "",
+      businessName: u.companyName || u.metadata?.businessName || "",
+      industryCategory: u.industryCategory || "General Food & Beverage",
+      customerSegment: u.customerSegment || "INDIVIDUAL",
+      fssaiNo: u.fssaiNumber || "",
+      gstNumber: u.gstNumber || u.metadata?.gstNumber || "",
+      billingStreet: u.billingAddress?.street || u.address?.street || "",
+      billingCity: u.billingAddress?.city || u.address?.city || "",
+      billingState: u.billingAddress?.state || u.address?.state || "",
+      billingPincode: u.billingAddress?.pincode || u.address?.pincode || u.address?.pinCode || "",
+      shippingStreet: u.shippingAddress?.street || "",
+      shippingCity: u.shippingAddress?.city || "",
+      shippingState: u.shippingAddress?.state || "",
+      shippingPincode: u.shippingAddress?.pincode || "",
+    });
+    if (u.notifications) setNotifications(u.notifications);
+    else if (u.metadata?.notifications) setNotifications(u.metadata.notifications);
+  }
 
   const { mutate: updateProfile, isPending: isUpdating } = useMutation({
     mutationFn: authApi.updateProfile,

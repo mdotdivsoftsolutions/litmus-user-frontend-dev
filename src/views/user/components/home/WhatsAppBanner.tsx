@@ -99,7 +99,7 @@ export function WhatsAppBanner({ className }: { className?: string }) {
                 Adulteration | Fat Content | SNF | Analysis
               </p>
               <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
-                Can't find what you are looking for?
+                Can&apos;t find what you are looking for?
               </h2>
             </div>
 

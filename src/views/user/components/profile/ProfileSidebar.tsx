@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ShieldCheck, ShieldAlert, LogOut, LucideIcon, Mail, Phone, Building2, CheckCircle2, HelpCircle } from "lucide-react";
+import { ShieldCheck, ShieldAlert, LogOut, LucideIcon, Mail, Phone, Building2, HelpCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 

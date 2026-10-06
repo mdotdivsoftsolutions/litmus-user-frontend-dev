@@ -44,9 +44,8 @@ export function InvoiceModal({ bookingId, open, onOpenChange }: InvoiceModalProp
     };
   }, [previewUrl]);
 
-  useEffect(() => {
-    if (!open) setPreviewUrl(null);
-  }, [open]);
+  // Clear the preview when the dialog closes (the cleanup effect above revokes its blob URL).
+  if (!open && previewUrl) setPreviewUrl(null);
 
   const fetchBlobUrl = async () => {
     const blob = await bookingApi.downloadBookingInvoice(bookingId as string);
