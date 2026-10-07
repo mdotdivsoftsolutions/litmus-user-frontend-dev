@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
@@ -8,55 +8,45 @@ import Fade from "embla-carousel-fade";
 import { cn } from "@/lib/utils";
 import { homeHeroSlides } from "./HomeHeroSlides";
 
-/** The hero video is ~3.4 MB: only stream it on wide screens without data-saver. */
-const WIDE_SCREEN = "(min-width: 768px)";
-
-function canPlayHeroVideo() {
-  const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-  return window.matchMedia(WIDE_SCREEN).matches && !connection?.saveData;
-}
-
-function subscribeToScreenSize(onChange: () => void) {
-  const query = window.matchMedia(WIDE_SCREEN);
-  query.addEventListener("change", onChange);
-  return () => query.removeEventListener("change", onChange);
-}
+/**
+ * The hero video (~3.4 MB) streams only on screens at least this wide. It is selected by the
+ * browser from <source media> while parsing the HTML, so desktop starts downloading it immediately
+ * and phones never download it (they keep the poster, which is the video's first frame).
+ */
+const VIDEO_MEDIA = "(min-width: 768px)";
 
 export function HomeHeroCarousel() {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  // false on the server render and on phones: they get the poster image instead of the video.
-  const showVideo = useSyncExternalStore(subscribeToScreenSize, canPlayHeroVideo, () => false);
 
   useEffect(() => {
     if (!api) return;
 
-    const handleSelect = () => {
+    const handleSelect = (isInitial: boolean) => {
       const idx = api.selectedScrollSnap();
       setCurrent(idx);
 
       const autoplay = api.plugins().autoplay;
-      if (homeHeroSlides[idx].video && showVideo) {
-        if (autoplay) autoplay.stop();
-        const slideNode = api.slideNodes()[idx];
-        if (slideNode) {
-          const videoElement = slideNode.querySelector("video");
-          if (videoElement) {
-            videoElement.currentTime = 0;
-            videoElement.play().catch((e) => console.log("Video play error:", e));
-          }
-        }
-      } else if (autoplay) {
-        autoplay.play();
+      const videoElement = api.slideNodes()[idx]?.querySelector("video");
+      if (homeHeroSlides[idx].video && videoElement && window.matchMedia(VIDEO_MEDIA).matches) {
+        // Let the video finish before moving on (onEnded advances the carousel).
+        autoplay?.stop();
+        // On first load the video is already playing from the HTML: don't rewind it (that would
+        // flash back to the start). Rewind only when the visitor comes back to this slide.
+        if (!isInitial) videoElement.currentTime = 0;
+        videoElement.play().catch(() => autoplay?.play());
+      } else {
+        autoplay?.play();
       }
     };
 
-    handleSelect();
-    api.on("select", handleSelect);
+    handleSelect(true);
+    const onSelect = () => handleSelect(false);
+    api.on("select", onSelect);
     return () => {
-      api.off("select", handleSelect);
+      api.off("select", onSelect);
     };
-  }, [api, showVideo]);
+  }, [api]);
 
   return (
     <Carousel
@@ -69,17 +59,31 @@ export function HomeHeroCarousel() {
         {homeHeroSlides.map((slide, idx) => (
           <CarouselItem key={slide.id}>
             <div className="overflow-hidden relative h-[75vh] md:h-screen min-h-[500px] md:min-h-[600px] max-h-[850px] flex flex-col justify-center">
-              {slide.video && showVideo ? (
-                <video
-                  autoPlay
-                  muted
-                  playsInline
-                  preload="auto"
-                  poster={slide.image.src}
-                  onEnded={() => api?.scrollNext()}
-                  className="absolute inset-0 w-full h-full object-cover z-0"
-                  src={slide.video}
-                />
+              {slide.video ? (
+                <>
+                  {idx === 0 && slide.poster && (
+                    // Hoisted into <head>: the poster is the first thing visitors see (LCP).
+                    <link rel="preload" as="image" href={slide.poster.src} fetchPriority="high" />
+                  )}
+                  <video
+                    autoPlay
+                    muted
+                    playsInline
+                    preload="auto"
+                    poster={(slide.poster ?? slide.image).src}
+                    onEnded={() => api?.scrollNext()}
+                    aria-label={slide.imageAlt || slide.title}
+                    className="absolute inset-0 w-full h-full object-cover z-0"
+                  >
+                    <source
+                      src={slide.video}
+                      type="video/mp4"
+                      media={VIDEO_MEDIA}
+                      // If the video can't load, keep the slideshow moving instead of stopping here.
+                      onError={() => api?.plugins().autoplay?.play()}
+                    />
+                  </video>
+                </>
               ) : (
                 <Image
                   src={slide.image}

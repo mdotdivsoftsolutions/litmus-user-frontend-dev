@@ -1,6 +1,9 @@
 import { Shield, FileText, Package, Microscope } from "lucide-react";
 import heroScientist from "@/assets/banner-hero-1.jpg";
 import hero2 from "@/assets/main banner.webp";
+// First frame of the hero video: shown until the video plays (and on phones, which skip the video),
+// so there is no visible jump when playback starts.
+import heroVideoPoster from "@/assets/hero-video-poster.webp";
 
 export const homeHeroSlides = [
   {
@@ -12,7 +15,8 @@ export const homeHeroSlides = [
     offer: "GET OFFERS UPTO 15% ON YOUR FIRST BOOKING",
     image: heroScientist,
     imageAlt: "Food Safety Specialist",
-    video: "https://litmuslabs.sgp1.digitaloceanspaces.com/static-assets/video/video-banner.mp4",
+    video: "/video/hero-banner.mp4",
+    poster: heroVideoPoster,
     floatingBadges: [
 
       {
