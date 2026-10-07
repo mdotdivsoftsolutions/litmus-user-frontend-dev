@@ -99,7 +99,7 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
-      ...["/images/:path*", "/stock_image/:path*", "/favicon_io/:path*", "/logo.webp", "/favicon.ico"].map(
+      ...["/images/:path*", "/stock_image/:path*", "/video/:path*", "/favicon_io/:path*", "/logo.webp", "/favicon.ico"].map(
         (source) => ({
           source,
           headers: [{ key: "Cache-Control", value: STATIC_ASSET_CACHE }],

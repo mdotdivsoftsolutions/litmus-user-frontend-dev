@@ -11,7 +11,7 @@ export function PackagesHeroVideo() {
           playsInline
           preload="metadata"
           className="w-full h-full object-cover"
-          src="https://litmuslabs.sgp1.digitaloceanspaces.com/static-assets/video/video-banner.mp4"
+          src="/video/hero-banner.mp4"
         />
 
       </div>
