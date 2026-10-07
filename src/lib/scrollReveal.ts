@@ -55,7 +55,12 @@ export function initScrollReveal(): () => void {
   // Initial pass: read every position first, then write, so the browser lays out only once.
   const initial = Array.from(document.querySelectorAll<HTMLElement>(SELECTOR));
   const viewportBottom = window.innerHeight;
-  const onScreen = initial.map((el) => el.getBoundingClientRect().top < viewportBottom);
+  // Elements with no box are not on screen: they may still sit in a hidden streaming placeholder
+  // (Next.js Suspense) or a hidden breakpoint section. Watch those instead of showing them.
+  const onScreen = initial.map((el) => {
+    const rect = el.getBoundingClientRect();
+    return (rect.width > 0 || rect.height > 0) && rect.top < viewportBottom && rect.bottom > 0;
+  });
   initial.forEach((el, i) => {
     if (onScreen[i]) {
       seen.add(el);
