@@ -13,6 +13,7 @@ import { MainFooter } from "./footer/MainFooter";
 import { MobileTabNavigation } from "./MobileTabNavigation";
 import { FooterSearchLinks } from "./footer/FooterSearchLinks";
 import { LocationProvider } from "@/components/location/LocationContext";
+import { scrollToTopInstant } from "@/lib/smoothScroll";
 
 // Loaded after hydration in their own chunks: socket.io + chat UI and the auth forms are not
 // needed to render the page, so they stay off the critical path.
@@ -72,6 +73,8 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
       await authApi.logout();
       queryClient.clear();
       localStorage.removeItem('litmus_session_id');
+      // Chat identity (name/phone/email + chat token) must not carry over to the next person on this device.
+      localStorage.removeItem('litmus_chat_guest_session');
       localStorage.removeItem('litmus_auth_active');
       toast.success("Logged out successfully");
       // Force a hard reload to completely reset all React and Query state
@@ -102,7 +105,7 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    scrollToTopInstant();
   }, [pathname]);
 
   // Handle global event for opening auth modal

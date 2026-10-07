@@ -155,17 +155,17 @@ export default function TestsListingPage() {
     <div className="animate-fade-in bg-slate-50 min-h-screen">
 
       {/* 1. PANORAMIC HERO */}
-      <div suppressHydrationWarning className="relative z-20">
+      <div suppressHydrationWarning className="relative z-20" data-aos="fade-up">
         <TestsHero search={search} setSearch={setSearch} tests={testsData} onSearch={handleSearch} />
       </div>
 
       {/* 2. STATS STRIP */}
-      <div suppressHydrationWarning>
+      <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="100">
         <TestsStatsStrip /> 
       </div>
 
       {/* 3. CATEGORY STRIP — always at top for filtering */}
-      <div suppressHydrationWarning>
+      <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="150">
         <CategoryStrip
           selectedCategory={activeCategoryName}
           setSelectedCategory={handleCategoryChange}
@@ -205,12 +205,12 @@ export default function TestsListingPage() {
       </section>
 
       {/* TRUST & ORDERING SECTION */}
-      <div suppressHydrationWarning>
+      <div suppressHydrationWarning data-aos="fade-up">
         <TrustAndOrdering />
       </div>
 
       {/* PROMO BANNER CAROUSEL */}
-      <div suppressHydrationWarning>
+      <div suppressHydrationWarning data-aos="fade-up">
         <PromoBanner className="py-12 bg-slate-50 md:py-20" />
       </div>
     </div>

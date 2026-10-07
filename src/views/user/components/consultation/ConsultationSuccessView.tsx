@@ -2,6 +2,7 @@
 
 import { CheckCircle2, X } from "lucide-react";
 import { DialogClose, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 interface ConsultationSuccessViewProps {
   serviceName: string;
@@ -9,20 +10,34 @@ interface ConsultationSuccessViewProps {
 
 export function ConsultationSuccessView({ serviceName }: ConsultationSuccessViewProps) {
   return (
-    <div className="p-12 text-center flex flex-col items-center justify-center space-y-4 animate-in fade-in zoom-in duration-500 fill-mode-forwards relative">
+    <div className="relative animate-in fade-in duration-200">
       <DialogClose asChild>
-        <button className="absolute right-6 top-6 h-8 w-8 rounded-full border-2 border-red-200 bg-white text-red-500 hover:text-red-700 hover:border-red-400 hover:bg-red-50/50 flex items-center justify-center transition-all shadow-sm focus:outline-none">
-          <X className="h-4 w-4 stroke-[3]" />
+        <button
+          type="button"
+          aria-label="Close"
+          className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <X className="h-4 w-4" />
         </button>
       </DialogClose>
-      <div className="h-20 w-20 bg-litmus-mint/20 text-litmus-teal rounded-full flex items-center justify-center mb-2">
-        <CheckCircle2 className="h-10 w-10" />
+
+      <div className="flex flex-col items-center px-8 pb-6 pt-10 text-center">
+        <CheckCircle2 className="mb-4 h-10 w-10 text-litmus-teal" strokeWidth={1.75} />
+        <DialogTitle className="text-lg font-semibold text-foreground">Request received</DialogTitle>
+        <DialogDescription className="mt-2 max-w-sm text-sm text-muted-foreground">
+          Thanks — we&apos;ve received your consultation request for{" "}
+          <span className="font-medium text-foreground">{serviceName}</span>. Our advisory team will contact you
+          shortly to confirm the schedule.
+        </DialogDescription>
       </div>
-      <DialogTitle className="text-2xl font-bold text-foreground tracking-tight">Booking Confirmed</DialogTitle>
-      <DialogDescription className="text-sm font-medium text-muted-foreground">
-        Your consultation request for <span className="font-bold text-foreground">{serviceName}</span> has been received.
-        Our advisory team will contact you shortly to confirm the schedule.
-      </DialogDescription>
+
+      <div className="border-t border-border bg-muted/30 px-6 py-4">
+        <DialogClose asChild>
+          <Button variant="outline" className="h-10 w-full rounded-md text-sm font-medium">
+            Done
+          </Button>
+        </DialogClose>
+      </div>
     </div>
   );
 }

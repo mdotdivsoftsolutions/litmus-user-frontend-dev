@@ -33,6 +33,7 @@ export function GuestAuthForm({ onSubmit, onCancel, isSubmitting = false }: Gues
 
   return (
     <div
+      data-lenis-prevent="true"
       onWheel={(e) => e.stopPropagation()}
       className="absolute inset-0 p-4 sm:p-5 bg-white text-slate-900 flex flex-col overflow-y-auto overscroll-contain z-10"
     >
