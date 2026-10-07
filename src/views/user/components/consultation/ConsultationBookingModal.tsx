@@ -72,7 +72,7 @@ export function ConsultationBookingModal({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden rounded-xl border border-border shadow-lg [&>button]:hidden">
+      <DialogContent className="sm:max-w-[520px] gap-0 p-0 overflow-hidden rounded-lg border border-border shadow-xl [&>button]:hidden">
         {isSubmitted ? (
           <ConsultationSuccessView serviceName={serviceName} />
         ) : (
