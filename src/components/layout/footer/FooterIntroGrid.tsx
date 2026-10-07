@@ -34,8 +34,8 @@ export function FooterIntroGrid() {
           >
             {/* Background Portrait Certificate Image */}
             <div className="absolute inset-0 z-0 border">
-                <img 
-                    src="/images/certificate.jpg" 
+                <img loading="lazy" decoding="async" 
+                    src="/images/certificate.webp" 
                     alt="Certificate background" 
                     className="w-full h-full object-cover transition-all duration-500"
                 />
@@ -47,7 +47,7 @@ export function FooterIntroGrid() {
                 <div className="mt-auto p-3 flex justify-end items-end">
                     {/* Floating Seal */}
                     <div className="w-8 h-8 opacity-40 group-hover:opacity-100 group-hover:scale-110 group-hover:rotate-[15deg] transition-all duration-500 rounded-full shadow-sm">
-                        <img 
+                        <img loading="lazy" decoding="async" 
                             src="/images/certification-seal.webp" 
                             alt="Seal" 
                             className="w-full h-full object-contain rounded-full" 
@@ -64,8 +64,8 @@ export function FooterIntroGrid() {
         <DialogContent className="max-w-md bg-white p-0 overflow-hidden border-none shadow-2xl rounded-xl">
            {selectedCert && (
              <div className="relative aspect-[3/4] w-full p-8 flex flex-col bg-white">
-                <img 
-                    src="/images/fssai-bg.png" 
+                <img loading="lazy" decoding="async" 
+                    src="/images/fssai-bg.webp" 
                     alt="Certificate background" 
                     className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -82,7 +82,7 @@ export function FooterIntroGrid() {
                     </div>
 
                     <div className="mt-auto pt-8 flex justify-between items-end border-t border-slate-100">
-                         <img 
+                         <img loading="lazy" decoding="async" 
                              src="/images/certification-seal.webp" 
                              alt="Seal" 
                              className="w-14 h-14 object-contain shadow-md rounded-full p-2 border-4 border-slate-50 rotate-[-10deg]" 

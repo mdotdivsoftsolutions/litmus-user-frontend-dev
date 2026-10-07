@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import {
@@ -95,17 +95,6 @@ export function SampleCollectionTermsCard({
 }: SampleCollectionTermsCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Prevent Lenis background scroll while modal is active
-  useEffect(() => {
-    if (isModalOpen) {
-      (window as any).__lenis?.stop();
-    } else {
-      (window as any).__lenis?.start();
-    }
-    return () => {
-      (window as any).__lenis?.start();
-    };
-  }, [isModalOpen]);
 
   return (
     <>
@@ -133,8 +122,7 @@ export function SampleCollectionTermsCard({
 
       {/* Full Terms & Conditions Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent 
-          data-lenis-prevent="true"
+        <DialogContent
           className="max-w-2xl max-h-[85vh] flex flex-col p-6 sm:p-7 overflow-hidden"
         >
           <DialogHeader className="pb-3 border-b border-slate-100 shrink-0">
@@ -151,8 +139,7 @@ export function SampleCollectionTermsCard({
           </DialogHeader>
 
           {/* Scrollable Terms Clauses List with Lenis Prevention */}
-          <div 
-            data-lenis-prevent="true"
+          <div
             className="space-y-3 pt-3 pb-2 text-xs text-slate-700 leading-relaxed overflow-y-auto max-h-[60vh] overscroll-contain pr-2 focus:outline-none"
           >
             {TERMS_CONDITIONS_LIST.map((clause) => {

@@ -112,8 +112,6 @@ export const MostBookedTests = ({
               <div
                 suppressHydrationWarning
                 key={i}
-                data-aos="fade-up"
-                data-aos-delay={(i % 6) * 100}
                 className="bg-white rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs border-2 border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative overflow-hidden"
               >
                 <div className="flex items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
@@ -143,8 +141,6 @@ export const MostBookedTests = ({
                     <div
                       suppressHydrationWarning
                       key={t.id}
-                      data-aos="fade-up"
-                      data-aos-delay={(i % 10) * 50}
                       onClick={() => router.push(`/tests/${t.id}`)}
                       className="group bg-white rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs border-2 border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-brand-action/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
                     >

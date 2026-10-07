@@ -5,7 +5,8 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 
-const FALLBACK_IMAGE = "/stock_image/speciality-1.png";
+// Shown when a category has no image (or its URL fails to load).
+const FALLBACK_IMAGE = "/images/certificates/lab-samples.webp";
 
 const TINTS = [
   "bg-[#e8f5e9]",

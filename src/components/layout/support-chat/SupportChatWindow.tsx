@@ -97,7 +97,6 @@ export function SupportChatWindow({
 
   return (
     <div
-      data-lenis-prevent="true"
       onWheel={(e) => e.stopPropagation()}
       className={cn(
         "fixed bottom-24 right-4 sm:right-8 w-[calc(100vw-32px)] sm:w-[360px] h-[520px] max-h-[80vh] transition-all duration-500 cubic-bezier(0.16, 1, 0.3, 1) transform origin-bottom-right z-50 overscroll-contain",
@@ -107,7 +106,6 @@ export function SupportChatWindow({
       )}
     >
       <Card
-        data-lenis-prevent="true"
         className="rounded-3xl border border-slate-200 bg-white/95 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] overflow-hidden flex flex-col h-full overscroll-contain relative"
       >
         {/* Header */}

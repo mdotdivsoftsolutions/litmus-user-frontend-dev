@@ -8,16 +8,16 @@ import { TrustedPartner } from "./components/consultation/TrustedPartner";
 export default function SupportPage() {
    return (
       <div className="animate-fade-in bg-slate-50 min-h-screen">
-         <div suppressHydrationWarning data-aos="fade-up">
+         <div suppressHydrationWarning>
             <SupportHero />
          </div>
-         <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="100">
+         <div suppressHydrationWarning>
             <HowToBookProcess className="bg-white" />
          </div>
-         <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="150">
+         <div suppressHydrationWarning>
             <SupportContact />
          </div>
-         <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="200">
+         <div suppressHydrationWarning>
             <TrustedPartner/>
          </div>
       </div>

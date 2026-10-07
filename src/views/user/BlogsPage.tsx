@@ -12,7 +12,7 @@ function BlogCard({ post }: { post: BlogPost }) {
       className="group flex flex-col sm:flex-row gap-5 rounded-2xl border border-slate-100 bg-white overflow-hidden hover:border-brand-primary/25 hover:shadow-[0_16px_48px_rgba(0,0,0,0.06)] transition-all"
     >
       <div className="sm:w-48 md:w-56 shrink-0 aspect-[16/10] sm:aspect-auto sm:min-h-[140px] relative overflow-hidden">
-        <img
+        <img loading="lazy" decoding="async"
           src={post.coverImage}
           alt=""
           className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"

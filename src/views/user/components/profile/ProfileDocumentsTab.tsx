@@ -146,7 +146,7 @@ export function ProfileDocumentsTab({
           >
             <div className="h-11 w-11 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
               {isImageDoc(doc) ? (
-                <img src={doc.url} alt="" className="h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={doc.url} alt="" className="h-full w-full object-cover" />
               ) : (
                 <FileText className="h-5 w-5 text-brand-action" />
               )}

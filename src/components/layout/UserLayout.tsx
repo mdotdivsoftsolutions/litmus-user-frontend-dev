@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, Suspense } from "react";
+import dynamic from "next/dynamic";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -8,12 +9,20 @@ import { authApi } from "@/lib/api/auth";
 import { cartApi } from "@/lib/api/cart";
 import { CartDrawerProvider } from "../cart/CartDrawerContext";
 import { Header } from "./header/Header";
-import { AuthModal } from "../auth/AuthModal";
 import { MainFooter } from "./footer/MainFooter";
-import { FloatingSupportChat } from "./FloatingSupportChat";
 import { MobileTabNavigation } from "./MobileTabNavigation";
 import { FooterSearchLinks } from "./footer/FooterSearchLinks";
 import { LocationProvider } from "@/components/location/LocationContext";
+
+// Loaded after hydration in their own chunks: socket.io + chat UI and the auth forms are not
+// needed to render the page, so they stay off the critical path.
+const FloatingSupportChat = dynamic(
+  () => import("./FloatingSupportChat").then((m) => m.FloatingSupportChat),
+  { ssr: false },
+);
+const AuthModal = dynamic(() => import("../auth/AuthModal").then((m) => m.AuthModal), {
+  ssr: false,
+});
 
 function AuthLoginQuerySync({ setOpen }: { setOpen: (open: boolean) => void }) {
   const searchParams = useSearchParams();
@@ -39,6 +48,9 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  // Mount the auth modal (and fetch its code) only once it has been opened.
+  const [authModalLoaded, setAuthModalLoaded] = useState(false);
+  if (isAuthModalOpen && !authModalLoaded) setAuthModalLoaded(true);
 
   const { data: userResponse } = useQuery({
     queryKey: ["userProfile"],
@@ -91,9 +103,6 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-    if (window.__lenis) {
-      window.__lenis.scrollTo(0, { immediate: true });
-    }
   }, [pathname]);
 
   // Handle global event for opening auth modal
@@ -135,11 +144,13 @@ export function UserLayout({ children }: { children: React.ReactNode }) {
           <AuthLoginQuerySync setOpen={setIsAuthModalOpen} />
         </Suspense>
 
-        <AuthModal
-          isOpen={isAuthModalOpen}
-          onClose={() => setIsAuthModalOpen(false)}
-          isSkippable={true}
-        />
+        {authModalLoaded && (
+          <AuthModal
+            isOpen={isAuthModalOpen}
+            onClose={() => setIsAuthModalOpen(false)}
+            isSkippable={true}
+          />
+        )}
       </div>
     </CartDrawerProvider>
     </LocationProvider>

@@ -123,7 +123,7 @@ export function WhatsAppBanner({ className }: { className?: string }) {
                           description: `Opening chat with +${WHATSAPP_NUMBER}.`,
                         });
                         setTimeout(() => {
-                          window.open(WHATSAPP_URL, "_blank");
+                          window.open(WHATSAPP_URL, "_blank", "noopener,noreferrer");
                         }, 800);
                       }
                     }}

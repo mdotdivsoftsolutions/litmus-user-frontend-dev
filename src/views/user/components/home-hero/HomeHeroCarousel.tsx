@@ -1,15 +1,32 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import Image from "next/image";
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import Fade from "embla-carousel-fade";
 import { cn } from "@/lib/utils";
 import { homeHeroSlides } from "./HomeHeroSlides";
 
+/** The hero video is ~3.4 MB: only stream it on wide screens without data-saver. */
+const WIDE_SCREEN = "(min-width: 768px)";
+
+function canPlayHeroVideo() {
+  const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+  return window.matchMedia(WIDE_SCREEN).matches && !connection?.saveData;
+}
+
+function subscribeToScreenSize(onChange: () => void) {
+  const query = window.matchMedia(WIDE_SCREEN);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
 export function HomeHeroCarousel() {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  // false on the server render and on phones: they get the poster image instead of the video.
+  const showVideo = useSyncExternalStore(subscribeToScreenSize, canPlayHeroVideo, () => false);
 
   useEffect(() => {
     if (!api) return;
@@ -19,7 +36,7 @@ export function HomeHeroCarousel() {
       setCurrent(idx);
 
       const autoplay = api.plugins().autoplay;
-      if (homeHeroSlides[idx].video) {
+      if (homeHeroSlides[idx].video && showVideo) {
         if (autoplay) autoplay.stop();
         const slideNode = api.slideNodes()[idx];
         if (slideNode) {
@@ -36,7 +53,10 @@ export function HomeHeroCarousel() {
 
     handleSelect();
     api.on("select", handleSelect);
-  }, [api]);
+    return () => {
+      api.off("select", handleSelect);
+    };
+  }, [api, showVideo]);
 
   return (
     <Carousel
@@ -46,23 +66,29 @@ export function HomeHeroCarousel() {
       className="w-full relative"
     >
       <CarouselContent>
-        {homeHeroSlides.map((slide) => (
+        {homeHeroSlides.map((slide, idx) => (
           <CarouselItem key={slide.id}>
             <div className="overflow-hidden relative h-[75vh] md:h-screen min-h-[500px] md:min-h-[600px] max-h-[850px] flex flex-col justify-center">
-              {slide.video ? (
+              {slide.video && showVideo ? (
                 <video
                   autoPlay
                   muted
                   playsInline
+                  preload="auto"
+                  poster={slide.image.src}
                   onEnded={() => api?.scrollNext()}
                   className="absolute inset-0 w-full h-full object-cover z-0"
                   src={slide.video}
                 />
               ) : (
-                <img
-                  src={typeof slide.image === "string" ? slide.image : slide.image?.src}
+                <Image
+                  src={slide.image}
                   alt={slide.imageAlt || slide.title}
-                  className="absolute inset-0 w-full h-full object-cover z-0"
+                  fill
+                  sizes="100vw"
+                  priority={idx === 0}
+                  placeholder="blur"
+                  className="object-cover z-0"
                 />
               )}
               <div

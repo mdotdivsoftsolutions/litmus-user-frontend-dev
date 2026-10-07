@@ -51,7 +51,7 @@ export function EasyOrderingCard() {
         </div>
 
         <div className="absolute right-0 bottom-0 w-[60%] lg:w-[65%] h-full z-0 pointer-events-none overflow-hidden rounded-br-[2.5rem]">
-          <img
+          <img loading="lazy" decoding="async"
             src="https://images.unsplash.com/photo-1651008376811-b9dd05c85058?w=800&q=80"
             className="w-full h-full object-cover object-center opacity-80 mix-blend-multiply"
             alt=""

@@ -66,7 +66,7 @@ export function LabReviewsTab({ lab, rating, ratingDistribution }: LabReviewsTab
                     <div className="flex items-center gap-4">
                       <div className="h-14 w-14 rounded-2xl bg-slate-50 border border-slate-100 flex items-center justify-center group-hover:border-[#D32F2F]/20 group-hover:bg-slate-100 transition-all overflow-hidden">
                         {rev.userImage ? (
-                          <img src={rev.userImage} className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt={rev.reviewerName} />
+                          <img loading="lazy" decoding="async" src={rev.userImage} className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" alt={rev.reviewerName} />
                         ) : (
                           <span className="text-xl font-bold text-slate-400">{rev.reviewerName?.[0]}</span>
                         )}
