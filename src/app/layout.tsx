@@ -33,7 +33,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://litmustest.in"),
   title: {
     default: "Litmus | Certified Food Testing & NABL Laboratory Services",
-    template: "%s | Litmus Food Testing",
+    // Page titles already end with their own "| Litmus ..." suffix.
+    template: "%s",
   },
   description:
     "Book certified food testing services from accredited NABL laboratories. Fast turnaround, comprehensive nutritional analysis, safety certifications, and expert consultations.",

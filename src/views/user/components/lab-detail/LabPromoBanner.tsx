@@ -31,7 +31,7 @@ export function LabPromoBanner() {
 
           <div className="hidden lg:block relative">
             <div className="aspect-[4/3] rounded-[2.5rem] bg-gradient-to-br from-white/10 to-transparent border border-white/10 p-4 relative group-hover:scale-105 transition-transform duration-700">
-              <img
+              <img loading="lazy" decoding="async"
                 src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=800"
                 alt="Institutional Science"
                 className="w-full h-full object-cover rounded-[2rem] opacity-60"

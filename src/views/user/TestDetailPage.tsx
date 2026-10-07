@@ -16,12 +16,15 @@ import { TestDetailHeader } from "./components/test-detail/TestDetailHeader";
 import { TestParametersSelector } from "./components/test-detail/TestParametersSelector";
 import { TestBookingSidebar } from "./components/test-detail/TestBookingSidebar";
 
-export default function TestDetailPage({ id: propId }: { id?: string }) {
+export default function TestDetailPage({ id: propId, initialTest }: { id?: string; initialTest?: any }) {
   const params = useParams();
   const id = propId || (params?.id as string);
-  const [testObj, setTestObj] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [selectedParams, setSelectedParams] = useState<string[]>([]);
+  // initialTest comes from the server render (SEO + instant first paint); fetch only if it is missing.
+  const [testObj, setTestObj] = useState<any>(initialTest ?? null);
+  const [loading, setLoading] = useState(!initialTest);
+  const [selectedParams, setSelectedParams] = useState<string[]>(
+    () => initialTest?.metadata?.parameters?.map((p: any) => p.name) || []
+  );
   const { openCart } = useCartDrawer();
   const queryClient = useQueryClient();
 
@@ -73,8 +76,8 @@ export default function TestDetailPage({ id: propId }: { id?: string }) {
         setLoading(false);
       }
     };
-    if (id) fetchTest();
-  }, [id]);
+    if (id && initialTest?._id !== id) fetchTest();
+  }, [id, initialTest]);
 
   const toggleParameter = (paramName: string) => {
     setSelectedParams((prev) => (prev.includes(paramName) ? prev.filter((p) => p !== paramName) : [...prev, paramName]));

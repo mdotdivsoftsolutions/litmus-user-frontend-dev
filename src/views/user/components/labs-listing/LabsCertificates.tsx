@@ -10,7 +10,7 @@ const mockCertificates = [
     title: "HACCP, GMP & FOSTAC Training",
     subtitle: "Customized Pricing",
     description: "Equip your team with practical food safety knowledge through customized training programs designed for manufacturing, processing, and hospitality businesses.",
-    image: "/stock_image/WebApp Stock Images/pexels-edward-jenner-4033023.jpg",
+    image: "/images/certificates/lab-microscope.webp",
     features: ["Employee and management training", "Practical food safety workshops", "Training certificates and assessment"]
   },
   {
@@ -18,7 +18,7 @@ const mockCertificates = [
     title: "Food Label Review",
     subtitle: "Starting @ ₹1000",
     description: "Ensure your product labels comply with the latest food regulations and industry standards. Our experts review every aspect of your label to help you avoid non-compliance and build consumer trust.",
-    image: "/stock_image/WebApp Stock Images/pexels-chokniti-khongchum-1197604-2280547.jpg",
+    image: "/images/certificates/lab-samples.webp",
     features: ["FSSAI label compliance review", "Claims and declaration verification", "Regulatory gap assessment & recommendations"]
   },
   {
@@ -26,7 +26,7 @@ const mockCertificates = [
     title: "FSSAI Licensing & Documentation Support",
     subtitle: "Starting @ ₹1500 (Excl. Govt charges)",
     description: "Simplify the licensing process with expert guidance for obtaining, renewing, or modifying FSSAI registrations and License",
-    image: "/stock_image/WebApp Stock Images/pexels-edward-jenner-4033023.jpg",
+    image: "/images/certificates/lab-microscope.webp",
     features: ["New license and renewal support", "Documentation preparation", "Regulatory liaison and guidance"]
   },
   {
@@ -34,7 +34,7 @@ const mockCertificates = [
     title: "Food Safety Audits & Gap Assessments",
     subtitle: "Starting @ ₹3000",
     description: "Evaluate your facility, processes, and food safety systems to identify risks and improve compliance before regulatory or customer audits.",
-    image: "/stock_image/WebApp Stock Images/pexels-chokniti-khongchum-1197604-2280547.jpg",
+    image: "/images/certificates/lab-samples.webp",
     features: ["GMP, GHP & HACCP assessments", "Compliance gap analysis", "Corrective action recommendations"]
   }
 ];
@@ -64,7 +64,7 @@ export function LabsCertificates() {
               <div className="bg-white rounded-[1.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-col hover:shadow-lg hover:border-[#D32F2F]/20 hover:scale-[1.01] transition-all cursor-pointer flex-shrink-0 w-[300px] md:w-[340px] snap-start">
                 {/* Top Image Section */}
                 <div className="relative h-44 overflow-hidden bg-slate-100">
-                  <img src={cert.image} alt={cert.title} className="w-full h-full object-cover" />
+                  <img loading="lazy" decoding="async" src={cert.image} alt={cert.title} className="w-full h-full object-cover" />
                 </div>
 
                 {/* Text Section */}

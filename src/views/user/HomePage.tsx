@@ -11,13 +11,7 @@ import { FooterSEO } from "@/components/layout/footer/FooterSEO";
 import { packageApi } from "@/lib/api/package";
 import { categoryApi } from "@/lib/api/category";
 import { reviewApi } from "@/lib/api/review";
-
-const withTimeout = <T,>(promise: Promise<T>, ms = 2500): Promise<T | null> => {
-  return Promise.race([
-    promise,
-    new Promise<null>((resolve) => setTimeout(() => resolve(null), ms)),
-  ]).catch(() => null);
-};
+import { withTimeout } from "@/lib/serverData";
 
 async function PopularPackages() {
   const res = await withTimeout(packageApi.getAllPackages());

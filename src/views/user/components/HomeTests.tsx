@@ -115,7 +115,7 @@ export const HomeTests = ({ initialPackages }: HomeTestsProps) => {
           <div ref={scrollRef} className="flex overflow-x-auto scrollbar-hide pb-5 pt-2 -mx-2 scroll-smooth">
             {displayPackages.length > 0 ? (
               displayPackages.map((t: TestItemType, index: number) => (
-                <div suppressHydrationWarning key={`popular-pkg-${t._id || index}`} data-aos="fade-up" data-aos-delay={index * 100}>
+                <div suppressHydrationWarning key={`popular-pkg-${t._id || index}`}>
                   <TestCard t={t} />
                 </div>
               ))

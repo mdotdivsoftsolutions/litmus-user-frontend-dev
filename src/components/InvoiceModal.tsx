@@ -49,7 +49,11 @@ export function InvoiceModal({ bookingId, open, onOpenChange }: InvoiceModalProp
 
   const fetchBlobUrl = async () => {
     const blob = await bookingApi.downloadBookingInvoice(bookingId as string);
-    return URL.createObjectURL(blob);
+    // The blob URL runs with this site's origin: only let PDFs/raster images render in the iframe.
+    const safe = /^(application\/pdf|image\/(jpe?g|png|gif|webp))$/i.test(blob.type)
+      ? blob
+      : new Blob([blob], { type: "application/octet-stream" });
+    return URL.createObjectURL(safe);
   };
 
   const handleView = async () => {

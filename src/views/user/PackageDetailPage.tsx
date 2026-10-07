@@ -16,7 +16,7 @@ import { PackageTestsIncluded } from "./components/package-detail/PackageTestsIn
 import { PackageFaqSection } from "./components/package-detail/PackageFaqSection";
 import { PackageBookingSidebar } from "./components/package-detail/PackageBookingSidebar";
 
-export default function PackageDetailPage({ id: propId }: { id?: string }) {
+export default function PackageDetailPage({ id: propId, initialPackage }: { id?: string; initialPackage?: any }) {
   const params = useParams();
   const id = propId || (params?.id as string);
   const router = useRouter();
@@ -32,6 +32,8 @@ export default function PackageDetailPage({ id: propId }: { id?: string }) {
     queryKey: ["package", id],
     queryFn: () => packageApi.getPackage(id!),
     enabled: !!id,
+    // Server-rendered data (SEO + instant first paint); the client refetches once it is stale.
+    initialData: initialPackage && initialPackage._id === id ? { success: true, data: initialPackage } : undefined,
   });
 
   const pkg = packageResponse?.data;

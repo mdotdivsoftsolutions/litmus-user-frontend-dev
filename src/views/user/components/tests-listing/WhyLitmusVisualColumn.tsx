@@ -16,7 +16,7 @@ export function WhyLitmusVisualColumn({ isDark }: WhyLitmusVisualColumnProps) {
           isDark ? "border-white/5" : "border-white shadow-xl shadow-slate-200/50"
         )}
       >
-        <img
+        <img loading="lazy" decoding="async"
           src="https://images.unsplash.com/photo-1579154235602-382b996311bd?auto=format&fit=crop&q=80&w=800"
           alt="Lab Equipment"
           className="w-full h-full object-cover transition-transform duration-[5000ms] hover:scale-110"

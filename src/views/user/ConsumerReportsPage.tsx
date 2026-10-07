@@ -25,6 +25,17 @@ function isPdfFile(url?: string, type?: string) {
   return type === "application/pdf" || /\.pdf$/i.test(url);
 }
 
+/**
+ * Blob URLs run with this site's origin, so a file served as text/html (or SVG) would execute
+ * scripts when shown in the preview iframe. Re-label the blob with a type that can only render
+ * as a PDF or a raster image; anything else becomes a plain download.
+ */
+function toSafePreviewBlob(blob: Blob, url?: string): Blob {
+  if (isPdfFile(url, blob.type)) return new Blob([blob], { type: "application/pdf" });
+  if (/^image\/(jpe?g|png|gif|webp)$/i.test(blob.type)) return blob;
+  return new Blob([blob], { type: "application/octet-stream" });
+}
+
 export default function ConsumerReportsPage() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -92,7 +103,7 @@ export default function ConsumerReportsPage() {
   const handlePreview = async (r: (typeof reports)[number]) => {
     setBusyId(`preview-${r.id}`);
     try {
-      const blob = await fetchReportBlob(r.bookingId);
+      const blob = toSafePreviewBlob(await fetchReportBlob(r.bookingId), r.reportUrl);
       const blobUrl = URL.createObjectURL(blob);
       setPreview({
         id: r.id,

@@ -139,7 +139,7 @@ export default function BlogDetailPage({ slug: propSlug }: { slug?: string }) {
                       className="group flex gap-4 rounded-xl border border-transparent p-1 -m-1 hover:border-slate-100 hover:bg-slate-50/80 transition-colors"
                     >
                       <div className="w-20 h-14 shrink-0 rounded-lg overflow-hidden bg-slate-100">
-                        <img
+                        <img loading="lazy" decoding="async"
                           src={item.coverImage}
                           alt=""
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

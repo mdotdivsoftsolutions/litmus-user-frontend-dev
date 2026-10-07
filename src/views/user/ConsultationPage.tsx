@@ -7,13 +7,13 @@ import { LabsCertificates } from "./components/labs-listing/LabsCertificates";
 export default function ConsultationPage() {
   return (
     <div className="animate-fade-in min-h-screen bg-slate-50">
-      <div suppressHydrationWarning data-aos="fade-up">
+      <div suppressHydrationWarning>
         <ConsultationHero />
       </div>
-      <div suppressHydrationWarning className="pb-10 bg-white" data-aos="fade-up" data-aos-delay="100">
+      <div suppressHydrationWarning className="pb-10 bg-white">
         <LabsCertificates />
       </div>
-      <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="150">
+      <div suppressHydrationWarning>
         <PromoBanner className="py-20" />
       </div>
     </div>

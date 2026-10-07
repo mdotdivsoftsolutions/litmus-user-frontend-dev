@@ -1,7 +1,7 @@
 "use client";
 
 import { Star } from "lucide-react";
-import excellenceImg from "@/assets/lab-excellence.png";
+import excellenceImg from "@/assets/lab-excellence.webp";
 import { cn } from "@/lib/utils";
 import { WhyLitmusFeatureCards } from "./WhyLitmusFeatureCards";
 import { WhyLitmusVisualColumn } from "./WhyLitmusVisualColumn";
@@ -21,7 +21,7 @@ export const WhyLitmusTests = ({ theme = "dark" }: WhyLitmusTestsProps) => {
       )}
     >
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <img
+        <img loading="lazy" decoding="async"
           src={typeof excellenceImg === "string" ? excellenceImg : (excellenceImg as any)?.src || ""}
           alt="Laboratory Excellence"
           className={cn(
@@ -89,7 +89,7 @@ export const WhyLitmusTests = ({ theme = "dark" }: WhyLitmusTestsProps) => {
                       isDark ? "border-[#0A0D14] bg-slate-800 ring-white/5" : "border-white bg-slate-200 ring-slate-100"
                     )}
                   >
-                    <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="User" />
+                    <img loading="lazy" decoding="async" src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="User" />
                     {i === 5 && (
                       <div className="absolute inset-0 bg-gradient-to-br from-[#D32F2F] to-[#F06C00] flex items-center justify-center text-[10px] font-black text-white">
                         5K+
