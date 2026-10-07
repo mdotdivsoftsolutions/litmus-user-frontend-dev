@@ -122,7 +122,8 @@ export function SampleCollectionTermsCard({
 
       {/* Full Terms & Conditions Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent
+        <DialogContent 
+          data-lenis-prevent="true"
           className="max-w-2xl max-h-[85vh] flex flex-col p-6 sm:p-7 overflow-hidden"
         >
           <DialogHeader className="pb-3 border-b border-slate-100 shrink-0">
@@ -139,7 +140,8 @@ export function SampleCollectionTermsCard({
           </DialogHeader>
 
           {/* Scrollable Terms Clauses List with Lenis Prevention */}
-          <div
+          <div 
+            data-lenis-prevent="true"
             className="space-y-3 pt-3 pb-2 text-xs text-slate-700 leading-relaxed overflow-y-auto max-h-[60vh] overscroll-contain pr-2 focus:outline-none"
           >
             {TERMS_CONDITIONS_LIST.map((clause) => {

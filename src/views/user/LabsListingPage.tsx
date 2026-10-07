@@ -60,7 +60,7 @@ export default function LabsListingPage() {
 
   return (
     <div className="animate-fade-in min-h-screen bg-white">
-      <div suppressHydrationWarning className="relative z-20">
+      <div suppressHydrationWarning className="relative z-20" data-aos="fade-up">
         <LabsHero
           search={search}
           setSearch={setSearch}
@@ -70,7 +70,7 @@ export default function LabsListingPage() {
           onSearch={handleSearch}
         />
       </div>
-      <div suppressHydrationWarning ref={resultsRef} className="bg-slate-50 scroll-mt-6 relative z-10">
+      <div suppressHydrationWarning ref={resultsRef} className="bg-slate-50 scroll-mt-6 relative z-10" data-aos="fade-up" data-aos-delay="100">
         <LabsGrid
           filtered={filtered}
           visibleCount={visibleCount}
@@ -81,7 +81,7 @@ export default function LabsListingPage() {
           isFetchingNextPage={isFetchingNextPage}
         />
       </div>
-      <div suppressHydrationWarning>
+      <div suppressHydrationWarning data-aos="fade-up" data-aos-delay="150">
         <ConsultationServices />
       </div>
     </div>

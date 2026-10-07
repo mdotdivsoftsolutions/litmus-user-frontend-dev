@@ -92,16 +92,16 @@ export const PromoBanner = ({ className }: { className?: string }) => {
             <div className="relative rounded-[2rem] overflow-hidden bg-white shadow-[0_24px_80px_rgba(0,0,0,0.06)] border border-slate-100 min-h-[560px] md:min-h-[350px] md:h-[350px]">
                <div className="h-full w-full flex flex-col lg:flex-row">
                   <div className="flex-[1.1] p-8 sm:p-10 lg:pl-16 flex flex-col justify-center relative z-10 bg-white">
-                     <div suppressHydrationWarning className="inline-flex items-center gap-2 mb-3" style={{ color: banner.color }}>
+                     <div suppressHydrationWarning className="inline-flex items-center gap-2 mb-3" style={{ color: banner.color }} data-aos="fade-right">
                         <span className="text-[10px] font-black uppercase tracking-[0.2em]">{banner.subtitle}</span>
                      </div>
-                     <h2 suppressHydrationWarning className="text-2xl lg:text-3xl font-bold text-slate-800 tracking-tighter leading-[1.05] mb-4">
+                     <h2 suppressHydrationWarning className="text-2xl lg:text-3xl font-bold text-slate-800 tracking-tighter leading-[1.05] mb-4" data-aos="fade-right" data-aos-delay="100">
                         {banner.title}
                      </h2>
-                     <p suppressHydrationWarning className="text-slate-500 text-sm font-semibold mb-8 max-w-lg">
+                     <p suppressHydrationWarning className="text-slate-500 text-sm font-semibold mb-8 max-w-lg" data-aos="fade-right" data-aos-delay="200">
                         {banner.desc}
                      </p>
-                     <div suppressHydrationWarning className="flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4">
+                     <div suppressHydrationWarning className="flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4" data-aos="fade-up" data-aos-delay="300">
                         {actions.map((action) => {
                            const Icon = action.icon;
                            const linkEl = (
@@ -156,7 +156,7 @@ export const PromoBanner = ({ className }: { className?: string }) => {
                      </div>
                   </div>
                   <div className="flex-1 relative h-48 sm:h-64 lg:h-auto overflow-hidden">
-                     <img loading="lazy" decoding="async" suppressHydrationWarning src={banner.img} className="w-full h-full object-cover object-center" alt="NABL Accredited Laboratory Testing" />
+                     <img loading="lazy" decoding="async" suppressHydrationWarning src={banner.img} className="w-full h-full object-cover object-center" alt="NABL Accredited Laboratory Testing" data-aos="fade-left" data-aos-delay="200" />
                      <div className="absolute inset-0 bg-black/5" />
                      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent hidden lg:block" />
                   </div>

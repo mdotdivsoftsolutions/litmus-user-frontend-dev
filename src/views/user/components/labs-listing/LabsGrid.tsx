@@ -51,7 +51,7 @@ export function LabsGrid({ filtered, isLoading, hasMore, onLoadMore, isFetchingN
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
         {isLoading ? (
           Array.from({ length: 4 }).map((_, i) => (
-            <Card suppressHydrationWarning key={`skeleton-${i}`} className="border-1 border-slate-50 shadow-sm rounded-[1rem] overflow-hidden bg-white">
+            <Card suppressHydrationWarning key={`skeleton-${i}`} data-aos="fade-up" data-aos-delay={(i % 4) * 100} className="border-1 border-slate-50 shadow-sm rounded-[1rem] overflow-hidden bg-white">
               <CardContent className="p-4 space-y-4">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
@@ -91,7 +91,7 @@ export function LabsGrid({ filtered, isLoading, hasMore, onLoadMore, isFetchingN
             </Card>
           ))
         ) : filtered.map((lab, i) => (
-          <Link suppressHydrationWarning key={lab.id} href={`/labs/${lab.id}`} className="block group decoration-transparent">
+          <Link suppressHydrationWarning key={lab.id} href={`/labs/${lab.id}`} data-aos="fade-up" data-aos-delay={(i % 10) * 50} className="block group decoration-transparent">
             <Card className="h-full border border-slate-100 shadow-sm hover:border-[#D32F2F]/20 hover:shadow-xl transition-all duration-300 rounded-[1rem] overflow-hidden bg-white">
               <CardContent className="p-4 space-y-4">
                 <div className="flex items-start justify-between">

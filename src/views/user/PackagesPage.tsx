@@ -51,7 +51,7 @@ export default function PackagesPage() {
   return (
     <div className="animate-fade-in bg-white min-h-screen">
       {/* 1. VIBRANT PANORAMIC HERO */}
-      <div suppressHydrationWarning className="relative z-20">
+      <div suppressHydrationWarning className="relative z-20" data-aos="fade-up">
         <PackagesHero
           categories={heroCategories}
           selectedCategory={selectedCategory}
@@ -77,12 +77,12 @@ export default function PackagesPage() {
       </section>
 
       {/* 3. CALL TO ACTION */}
-      <section suppressHydrationWarning className="bg-white py-10 md:py-20">
+      <section suppressHydrationWarning className="bg-white py-10 md:py-20" data-aos="fade-up" data-aos-delay="150">
         <PackagesCTA />
       </section>
 
       {/* 4. FOOD CATEGORY WISE PACKAGES */}
-      <section suppressHydrationWarning className="bg-slate-50">
+      <section suppressHydrationWarning className="bg-slate-50" data-aos="fade-up">
         <CategoryStrip 
           selectedCategory={""} 
           setSelectedCategory={(cat) => {

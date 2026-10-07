@@ -316,3 +316,48 @@
     background-color: hsl(var(--muted-foreground) / 0.45);
   }
 }
+
+/* ── Scroll-reveal animations (src/lib/scrollReveal.ts) ──────────────────────
+   Only opacity/transform are animated (GPU-composited, no layout). Nothing is hidden until the
+   script adds .reveal-ready, and content already on screen at load is never hidden. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-ready [data-aos]:not([data-aos-done]) {
+    transition-property: opacity, transform;
+    transition-duration: 700ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--aos-delay, 0ms);
+  }
+  .reveal-ready [data-aos]:not([data-aos-shown]) {
+    opacity: 0;
+  }
+  .reveal-ready [data-aos="fade-up"]:not([data-aos-shown]) {
+    transform: translate3d(0, 40px, 0);
+  }
+  .reveal-ready [data-aos="fade-down"]:not([data-aos-shown]) {
+    transform: translate3d(0, -40px, 0);
+  }
+  .reveal-ready [data-aos="fade-left"]:not([data-aos-shown]) {
+    transform: translate3d(40px, 0, 0);
+  }
+  .reveal-ready [data-aos="fade-right"]:not([data-aos-shown]) {
+    transform: translate3d(-40px, 0, 0);
+  }
+  .reveal-ready [data-aos="zoom-in"]:not([data-aos-shown]) {
+    transform: scale(0.92);
+  }
+}
+
+/* ── Smooth scrolling (src/lib/smoothScroll.ts, desktop only) — from lenis/dist/lenis.css ── */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
