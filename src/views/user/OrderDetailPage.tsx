@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { bookingApi } from "@/lib/api/booking";
 import { cn } from "@/lib/utils";
-import { formatBookingStatus, getOrderTimelineStep } from "@/lib/payment-status";
+import { formatBookingStatus, getOrderTimelineStep, paymentStatusLabel } from "@/lib/payment-status";
 import { OrderTrackingTimeline } from "./components/order-detail/OrderTrackingTimeline";
 import { OrderInfoCards } from "./components/order-detail/OrderInfoCards";
 import { OrderSampleBreakdown } from "./components/order-detail/OrderSampleBreakdown";
@@ -18,6 +18,9 @@ import { OrderCourierTracking } from "./components/order-detail/OrderCourierTrac
 import { OrderReportInsights } from "./components/order-detail/OrderReportInsights";
 import { OrderDetailSkeleton } from "./components/order-detail/OrderDetailSkeleton";
 import { InvoiceModal } from "@/components/InvoiceModal";
+import { OrderPriceBreakdown } from "./components/order-detail/OrderPriceBreakdown";
+import { OrderPayNow } from "./components/order-detail/OrderPayNow";
+import { bookingDisplayCode } from "@/lib/bookingCode";
 
 export default function OrderDetailPage({ id: propId }: { id?: string }) {
   const params = useParams();
@@ -50,6 +53,11 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
 
   const currentStep = getOrderTimelineStep(apiBooking.status, apiBooking.paymentStatus);
   const reportAvailable = Boolean(apiBooking.reportFiles?.length);
+  // Orders booked by Litmus support can be paid later from here (website checkouts pay during checkout).
+  const canPayNow =
+    apiBooking.bookingChannel === "ADMIN_ASSISTED" &&
+    String(apiBooking.status || "").toUpperCase() === "PENDING" &&
+    paymentStatusLabel(apiBooking.paymentStatus, apiBooking.status) === "Pending";
 
   const isCourier =
     apiBooking.collectionMethod === "COURIER" ||
@@ -100,7 +108,7 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
             Orders
           </Link>
           <ChevronRight className="h-3.5 w-3.5" />
-          <span className="text-foreground font-mono font-medium break-all">{apiBooking._id}</span>
+          <span className="text-foreground font-mono font-medium break-all">{bookingDisplayCode(apiBooking)}</span>
         </nav>
 
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-5">
@@ -134,6 +142,12 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
         paymentStatus={apiBooking.paymentStatus}
         bookingStatus={apiBooking.status}
       />
+
+      {canPayNow && (
+        <OrderPayNow bookingId={apiBooking._id} totalAmount={apiBooking.totalAmount} customer={apiBooking.userId} />
+      )}
+
+      <OrderPriceBreakdown pricing={apiBooking.pricing} totalAmount={apiBooking.totalAmount} />
 
       <OrderSampleBreakdown items={apiBooking.items} />
 
@@ -173,6 +187,7 @@ export default function OrderDetailPage({ id: propId }: { id?: string }) {
         {isCourier && (
           <OrderCourierTracking
             bookingId={apiBooking._id}
+            orderCode={apiBooking.orderCode}
             collectionMethod="COURIER"
             courierDetails={apiBooking.courierDetails}
             courierDestination={apiBooking.courierDestination}

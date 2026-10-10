@@ -100,6 +100,7 @@ export default function NewBookingPage() {
             {state.step === 5 && (
               <BookingStep5Confirmation
                 orderId={state.orderId}
+                orderCode={state.orderCode}
                 selectedLab={state.selectedLab}
                 eligibleLabs={state.eligibleLabs}
                 items={state.items}
