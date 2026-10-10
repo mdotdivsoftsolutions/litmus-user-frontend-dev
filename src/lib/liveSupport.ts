@@ -57,6 +57,15 @@ export function resolveChatRoute(path: string): string {
   return LEGACY_ROUTE_MAP[path] ?? path;
 }
 
+/**
+ * Chat suggestions come from the server: only follow in-site paths ("/orders") or plain
+ * http(s) links. Blocks javascript:/data: URLs and protocol-relative "//evil.com" paths.
+ */
+export function isSafeChatTarget(target: string): boolean {
+  if (/^https?:\/\//i.test(target)) return true;
+  return target.startsWith("/") && !target.startsWith("//") && !target.startsWith("/\\");
+}
+
 export function isProtectedRoute(path: string): boolean {
   const resolved = resolveChatRoute(path);
   return PROTECTED_PREFIXES.some((prefix) => resolved === prefix || resolved.startsWith(`${prefix}/`));

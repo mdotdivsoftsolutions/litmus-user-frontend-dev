@@ -255,6 +255,8 @@ export function useSocketChat(currentUser?: any) {
     });
 
     return () => {
+      if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = null;
       newSocket.removeAllListeners();
       newSocket.disconnect();
     };

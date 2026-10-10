@@ -25,10 +25,10 @@ export function CourierAddressCard({ className, orderId, compact = false, addres
   const [copied, setCopied] = useState(false);
   const hasSnapshot = Boolean(destination?.facilityName && destination?.street);
 
-  const { data: resolved } = useRegionalOffice(address, !hasSnapshot);
+  const { data: resolved, isLoading: officeLoading } = useRegionalOffice(address, !hasSnapshot);
 
   // Legacy fallback: default address from public settings (also used if the lookup fails).
-  const { data: settingsData } = useQuery({
+  const { data: settingsData, isLoading: settingsLoading } = useQuery({
     queryKey: ["publicSettings"],
     queryFn: settingsApi.getPublicSettings,
     staleTime: 1000 * 60 * 5,
@@ -82,6 +82,22 @@ export function CourierAddressCard({ className, orderId, compact = false, addres
       toast.error("Failed to copy address");
     }
   };
+
+  // Don't flash the built-in fallback address while the real office is still loading.
+  if (!source && (officeLoading || settingsLoading)) {
+    return (
+      <div
+        role="status"
+        aria-label="Loading courier address"
+        className={cn("rounded-xl border border-emerald-200/90 bg-white p-5 sm:p-6 shadow-sm space-y-3 animate-pulse", className)}
+      >
+        <div className="h-5 w-1/2 rounded bg-slate-200" />
+        <div className="h-4 w-3/4 rounded bg-slate-100" />
+        <div className="h-4 w-2/3 rounded bg-slate-100" />
+        <div className="h-4 w-1/3 rounded bg-slate-100" />
+      </div>
+    );
+  }
 
   return (
     <div

@@ -24,7 +24,11 @@ export function exportToCsv<T extends object>(
         let val: unknown = typeof col.key === "function" ? col.key(row) : row[col.key];
         if (val === null || val === undefined) return '""';
         if (typeof val === "object") val = JSON.stringify(val);
-        const escaped = String(val).replace(/"/g, '""');
+        let text = String(val);
+        // Text starting with = + - @ (or tab/CR) runs as a formula in Excel: prefix ' so it stays text.
+        // Numbers are left alone so negative amounts still read as numbers.
+        if (typeof val === "string" && /^[=+\-@\t\r]/.test(text)) text = `'${text}`;
+        const escaped = text.replace(/"/g, '""');
         return `"${escaped}"`;
       })
       .join(",")

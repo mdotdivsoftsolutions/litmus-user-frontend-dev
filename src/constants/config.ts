@@ -1,17 +1,21 @@
-export const WHATSAPP_NUMBER = "919876543210";
-export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%20need%20assistance%20with%20Food%20Testing%20at%20Litmus.`;
-export const SUPPORT_PHONE = "+91 98765 43210";
-export const SUPPORT_EMAIL = "support@litmustest.com";
+/** Customer support line (same number as the site header). */
+export const SUPPORT_PHONE = "+91 73569 24029";
+export const SUPPORT_PHONE_TEL = "tel:+917356924029";
+export const SUPPORT_EMAIL = "support@litmuslabs.in";
 export const APP_NAME = "Litmus Food Safety & Testing";
 
+/**
+ * Chennai office, as entered by the admin in Settings → Regional offices.
+ * Only a fallback: the courier card normally shows the office returned by the API.
+ */
 export const LITMUS_COURIER_ADDRESS = {
-  facilityName: "Litmus Sample Central Intake & Testing Hub",
+  facilityName: "Litmus Food Analytics",
   attention: "Sample Logistics & Ingestion Desk",
-  street: "Tower B, Innovation Corridor, Old Mahabalipuram Road (OMR)",
+  street: "715A, 7th Floor, Spencer Plaza, Anna Salai",
   city: "Chennai",
   state: "Tamil Nadu",
-  pincode: "600097",
-  phone: "+91 98765 43210",
-  email: "samples@litmustest.com",
+  pincode: "600002",
+  phone: SUPPORT_PHONE,
+  email: SUPPORT_EMAIL,
   workingHours: "Mon – Sat · 08:00 AM – 08:00 PM IST",
 };

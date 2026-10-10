@@ -12,6 +12,7 @@ import {
   DEFAULT_CHAT_PROMPTS,
   filterSuggestionsForAuth,
   isProtectedRoute,
+  isSafeChatTarget,
   resolveChatRoute,
 } from "@/lib/liveSupport";
 
@@ -65,6 +66,7 @@ export function BotChatView({
     }
     if (suggestion.action === "navigate" && typeof suggestion.payload === "string") {
       const target = resolveChatRoute(suggestion.payload);
+      if (!isSafeChatTarget(target)) return;
       if (!isAuthenticated && isProtectedRoute(target)) {
         openLoginModal();
         return;

@@ -8,10 +8,16 @@ import { packageApi } from "@/lib/api/package";
  * page renders without initial data and the client fetches it as before.
  */
 export const withTimeout = <T,>(promise: Promise<T>, ms = 2500): Promise<T | null> => {
+  let timer: ReturnType<typeof setTimeout> | undefined;
   return Promise.race([
     promise,
-    new Promise<null>((resolve) => setTimeout(() => resolve(null), ms)),
-  ]).catch(() => null);
+    new Promise<null>((resolve) => {
+      timer = setTimeout(() => resolve(null), ms);
+    }),
+  ])
+    .catch(() => null)
+    // Clear the timer once the API answers so each server render doesn't leave one pending.
+    .finally(() => clearTimeout(timer));
 };
 
 const isObjectId = (id: string) => /^[a-f0-9]{24}$/i.test(id);
