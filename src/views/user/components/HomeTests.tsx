@@ -5,6 +5,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeader } from "./home/SectionHeader";
 import { TestCard, TestItemType } from "./TestCard";
 import { Skeleton } from "@/components/ui/skeleton";
+import { packageApi } from "@/lib/api/package";
+import { useHomeList } from "./home/useHomeList";
 
 export type HomeTestsProps = {
   initialPackages?: any;
@@ -78,11 +80,13 @@ export const HomeTests = ({ initialPackages }: HomeTestsProps) => {
     }
   };
 
-  const popularPackages = Array.isArray(initialPackages?.data)
-    ? initialPackages.data
-    : Array.isArray(initialPackages)
-      ? initialPackages
-      : initialPackages?.data?.data || [];
+  const { items: popularPackages, isLoading, isError, retry } = useHomeList<TestItemType>(
+    "popularPackages",
+    () => packageApi.getAllPackages(),
+    initialPackages
+  );
+
+  if (isLoading) return <HomeTestsSkeleton />;
 
   const displayPackages = popularPackages.slice(0, 5);
 
@@ -120,7 +124,18 @@ export const HomeTests = ({ initialPackages }: HomeTestsProps) => {
                 </div>
               ))
             ) : (
-              <div className="w-full text-center py-10 text-muted-foreground">No popular packages found.</div>
+              <div className="w-full text-center py-10 text-muted-foreground">
+                {isError ? (
+                  <>
+                    Couldn&apos;t load packages.{" "}
+                    <button onClick={retry} className="font-semibold text-brand-action hover:underline">
+                      Try again
+                    </button>
+                  </>
+                ) : (
+                  "No popular packages found."
+                )}
+              </div>
             )}
           </div>
         </div>
