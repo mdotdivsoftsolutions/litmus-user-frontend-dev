@@ -12,6 +12,7 @@ import { bookingApi } from "@/lib/api/booking";
 import { InvoiceModal } from "@/components/InvoiceModal";
 import { exportToCsv } from "@/lib/utils/exportCsv";
 import Link from "next/link";
+import { bookingDisplayCode } from "@/lib/bookingCode";
 
 export default function PaymentsPage() {
   const [selectedInvoiceBookingId, setSelectedInvoiceBookingId] = useState<string | null>(null);
@@ -37,7 +38,7 @@ export default function PaymentsPage() {
     return {
       id: b._id,
       invoiceNumber: invoiceNum,
-      bookingDisplayId: `BKG-${suffix}`,
+      bookingDisplayId: bookingDisplayCode(b),
       serviceName,
       lab: b.labId?.labName || (b.metadata?.isLitmusDirect ? "Litmus Direct" : "Litmus Network"),
       date: new Date(b.bookingDate || b.createdAt).toLocaleDateString("en-IN", {

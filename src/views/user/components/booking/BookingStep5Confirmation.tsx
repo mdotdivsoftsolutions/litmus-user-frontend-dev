@@ -8,9 +8,12 @@ import { CheckCircle2 as CheckCircle2Icon, Building2 as BuildingIcon } from "luc
 import { CartLine } from "./booking-types";
 import { CourierAddressCard } from "./CourierAddressCard";
 import type { CustomerAddressInput } from "@/hooks/useRegionalOffice";
+import { bookingDisplayCode } from "@/lib/bookingCode";
 
 interface BookingStep5ConfirmationProps {
   orderId: string;
+  /** Sequential order code (LIT-ORD-10001) returned when the booking was created. */
+  orderCode?: string;
   selectedLab: string | null;
   eligibleLabs: any[];
   items: CartLine[];
@@ -24,6 +27,7 @@ interface BookingStep5ConfirmationProps {
 
 export function BookingStep5Confirmation({
   orderId,
+  orderCode,
   selectedLab,
   eligibleLabs,
   items,
@@ -34,6 +38,7 @@ export function BookingStep5Confirmation({
   collectionAddress,
 }: BookingStep5ConfirmationProps) {
   const router = useRouter();
+  const displayCode = bookingDisplayCode({ _id: orderId, orderCode });
 
   return (
     <div className="animate-in fade-in zoom-in-95 duration-1000 space-y-8 py-4">
@@ -47,7 +52,7 @@ export function BookingStep5Confirmation({
           <p className="text-slate-500 font-medium max-w-lg mx-auto text-sm">
             Thank you for choosing Litmus Food Analytics. Your order{" "}
             <span className="text-slate-900 font-bold font-mono">
-              #{orderId.substring(orderId.length - 8).toUpperCase()}
+              {displayCode}
             </span>{" "}
             has been received.
           </p>
@@ -64,7 +69,7 @@ export function BookingStep5Confirmation({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Order ID</p>
-                <p className="font-bold text-slate-900 text-base font-mono">BKG-{orderId.substring(orderId.length - 8).toUpperCase()}</p>
+                <p className="font-bold text-slate-900 text-base font-mono">{displayCode}</p>
               </div>
               <div>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Timestamp</p>
@@ -132,7 +137,7 @@ export function BookingStep5Confirmation({
 
       <div className="max-w-5xl mx-auto">
         <CourierAddressCard
-          orderId={`BKG-${orderId.substring(orderId.length - 8).toUpperCase()}`}
+          orderId={displayCode}
           address={collectionAddress}
         />
       </div>

@@ -13,6 +13,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { ListPagination } from "@/components/common/ListPagination";
 import { OrderListSkeleton } from "./components/list-skeletons";
 import { toast } from "sonner";
+import { bookingDisplayCode } from "@/lib/bookingCode";
 
 const tabs = ["All Orders", "Active", "Completed", "Reports Ready"] as const;
 const PAGE_SIZE = 10;
@@ -66,7 +67,7 @@ export default function OrdersPage() {
         : "Custom Testing";
 
     return {
-      id: `#LTMS-${b._id.slice(-6).toUpperCase()}`,
+      id: bookingDisplayCode(b),
       originalId: b._id,
       date: new Date(b.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
       product: mainProduct,

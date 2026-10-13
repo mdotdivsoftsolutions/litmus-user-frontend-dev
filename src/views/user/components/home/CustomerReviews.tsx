@@ -3,6 +3,8 @@
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "./SectionHeader";
+import { reviewApi } from "@/lib/api/review";
+import { useHomeList } from "./useHomeList";
 
 function ReviewCard({ r }: { r: any }) {
    return (
@@ -35,9 +37,7 @@ function ReviewCard({ r }: { r: any }) {
 }
 
 export function CustomerReviews({ initialReviews }: { initialReviews?: any }) {
-   const reviews = Array.isArray(initialReviews?.data) 
-      ? initialReviews.data 
-      : (Array.isArray(initialReviews) ? initialReviews : (initialReviews?.data?.data || []));
+   const { items: reviews } = useHomeList<any>("publicReviews", () => reviewApi.getPublicReviews(), initialReviews);
 
    // Duplicate for seamless infinite scroll
    const marqueeItems = [...reviews, ...reviews];

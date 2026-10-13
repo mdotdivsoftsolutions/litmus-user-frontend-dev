@@ -11,9 +11,11 @@ import { bookingApi } from "@/lib/api/booking";
 import { CourierAddressCard } from "../booking/CourierAddressCard";
 import type { ICourierAddress } from "@/lib/api/settings";
 import type { CustomerAddressInput } from "@/hooks/useRegionalOffice";
+import { bookingDisplayCode } from "@/lib/bookingCode";
 
 interface OrderCourierTrackingProps {
   bookingId: string;
+  orderCode?: string;
   collectionMethod?: string;
   courierDetails?: {
     trackingId?: string;
@@ -29,6 +31,7 @@ interface OrderCourierTrackingProps {
 
 export function OrderCourierTracking({
   bookingId,
+  orderCode,
   collectionMethod,
   courierDetails,
   courierDestination,
@@ -107,7 +110,7 @@ export function OrderCourierTracking({
       </div>
 
       <CourierAddressCard
-        orderId={`BKG-${bookingId.substring(bookingId.length - 8).toUpperCase()}`}
+        orderId={bookingDisplayCode({ _id: bookingId, orderCode })}
         compact
         destination={courierDestination}
         address={collectionAddress}

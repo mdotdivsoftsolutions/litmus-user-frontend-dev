@@ -25,6 +25,7 @@ export function useNewBookingState() {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [selectedLab, setSelectedLab] = useState<string | null>(null);
   const [orderId, setOrderId] = useState("");
+  const [orderCode, setOrderCode] = useState("");
   // Payment-specific state
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState<string | null>(null);
@@ -614,6 +615,7 @@ export function useNewBookingState() {
       }
       // Store so retries reuse the same booking
       setCreatedBookingId(bookingId);
+      setOrderCode(res.data.orderCode || "");
       await initiateRazorpayPayment(bookingId);
     },
     onError: (err: any) => {
@@ -842,6 +844,7 @@ export function useNewBookingState() {
     selectedLab,
     setSelectedLab,
     orderId,
+    orderCode,
     formData,
     handleInputChange,
     setCollectionMethod,

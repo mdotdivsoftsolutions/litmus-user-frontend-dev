@@ -4,6 +4,8 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
+import { categoryApi } from "@/lib/api/category";
+import { useHomeList } from "./useHomeList";
 
 // Shown when a category has no image (or its URL fails to load).
 const FALLBACK_IMAGE = "/images/certificates/lab-samples.webp";
@@ -87,9 +89,7 @@ export function SpecialityCarousel({ initialCategories }: { initialCategories?: 
     }
   };
 
-  const categories = Array.isArray(initialCategories?.data) 
-    ? initialCategories.data 
-    : (Array.isArray(initialCategories) ? initialCategories : (initialCategories?.data?.data || []));
+  const { items: categories } = useHomeList<any>("categories", () => categoryApi.getCategories(), initialCategories);
 
   return (
     <section className="relative flex flex-col justify-center overflow-hidden bg-white py-12 md:py-16">

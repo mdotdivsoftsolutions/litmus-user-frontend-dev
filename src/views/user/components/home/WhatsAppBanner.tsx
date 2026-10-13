@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { ConsultationBookingModal } from "../consultation/ConsultationBookingModal";
 import { WHATSAPP_URL, WHATSAPP_NUMBER } from "@/lib/constants";
+import { SUPPORT_PHONE, SUPPORT_PHONE_TEL } from "@/constants/config";
 
 // WhatsApp SVG logo (official green icon)
 const WhatsAppIcon = () => (
@@ -51,7 +52,7 @@ const actions = [
     cardBg: "bg-white/90",
     border: "border-white/60",
     hoverShadow: "hover:shadow-md hover:bg-white",
-    href: "tel:+919876543210",
+    href: SUPPORT_PHONE_TEL,
   },
   {
     id: "quick-order",
@@ -113,9 +114,8 @@ export function WhatsAppBanner({ className }: { className?: string }) {
                     href={action.id === "quick-order" ? undefined : action.href}
                     onClick={(e) => {
                       if (action.id === "phone") {
-                        e.preventDefault();
                         toast.success("Connecting you with our food testing advisor...", {
-                          description: "Call initiated to +91 98765 43210 (Litmus Advisory Support).",
+                          description: `Calling ${SUPPORT_PHONE} (Litmus Advisory Support).`,
                         });
                       } else if (action.id === "whatsapp") {
                         e.preventDefault();
