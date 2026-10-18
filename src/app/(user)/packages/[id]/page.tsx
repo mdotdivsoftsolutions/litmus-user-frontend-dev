@@ -16,15 +16,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const pkg = await getPackageForPage(id);
   if (!pkg?.name) {
-    return { title: "Testing Package Details | Litmus", description: DEFAULT_DESCRIPTION };
+    return { title: "Testing Package Details | Litmus Labs", description: DEFAULT_DESCRIPTION };
   }
   const description = toMetaDescription(pkg.description, DEFAULT_DESCRIPTION);
   return {
-    title: `${pkg.name} - Testing Package | Litmus`,
+    title: `${pkg.name} - Testing Package | Litmus Labs`,
     description,
     alternates: { canonical: `/packages/${id}` },
     openGraph: {
-      title: `${pkg.name} | Litmus`,
+      title: `${pkg.name} | Litmus Labs`,
       description,
       ...(typeof pkg.image === "string" && pkg.image.startsWith("http") ? { images: [pkg.image] } : {}),
     },

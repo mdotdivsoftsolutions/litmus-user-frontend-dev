@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import ConsultationPage from "@/views/user/ConsultationPage";
 
-export const metadata: Metadata = {
-  title: "Book Scientific & Lab Consultation | Litmus",
-  description: "Schedule a one-on-one consultation with food scientists and quality assurance specialists for customized testing panels.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Free Food Safety Consultation in India | Litmus Labs",
+  description:
+    "Talk to Litmus Labs experts about FSSAI compliance, FoSTaC training & product development in Chennai and Kochi. Book your free consultation today.",
+  path: "/consultation",
+});
 
 export default function Page() {
   return <ConsultationPage />;

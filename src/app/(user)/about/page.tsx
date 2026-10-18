@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import AboutPage from "@/views/user/AboutPage";
 
-export const metadata: Metadata = {
-  title: "About Us | Litmus Testing Network",
-  description: "Learn about Litmus - India's unified testing marketplace connecting businesses and consumers with accredited testing laboratories.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "About Litmus Labs | NABL Accredited Food Testing Network",
+  description:
+    "Litmus Labs connects food businesses across India, including Chennai and Kochi, with NABL accredited, FSSAI approved labs for fast, trusted testing.",
+  path: "/about",
+});
 
 export default function Page() {
   return <AboutPage />;

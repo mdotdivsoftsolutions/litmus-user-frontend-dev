@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Suspense } from "react";
 import CartPage from "@/views/user/CartPage";
 
-export const metadata: Metadata = {
-  title: "Your Cart | Litmus",
-  description: "Review selected tests, testing packages, order summary, and proceed to booking.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Your Cart | Food Testing Booking | Litmus Labs",
+  description:
+    "Review your selected food and water tests and complete your secure booking with Litmus Labs.",
+  path: "/cart",
+});
 
 export default function Page() {
   return (

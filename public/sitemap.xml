@@ -233,11 +233,6 @@
        <priority>0.8000</priority>
   </url>
   <url>
-       <loc>https://litmuslabs.in/profile</loc>
-       <lastmod>2026-10-02T14:28:55+00:00</lastmod>
-       <priority>0.8000</priority>
-  </url>
-  <url>
        <loc>https://litmuslabs.in/packages/6abbccae79fd84365123d04f</loc>
        <lastmod>2026-10-02T14:28:55+00:00</lastmod>
        <priority>0.8000</priority>
@@ -389,11 +384,6 @@
   </url>
   <url>
        <loc>https://litmuslabs.in/blogs/heavy-metals-trends-plain-language</loc>
-       <lastmod>2026-10-02T14:28:55+00:00</lastmod>
-       <priority>0.6400</priority>
-  </url>
-  <url>
-       <loc>https://litmuslabs.in/reports</loc>
        <lastmod>2026-10-02T14:28:55+00:00</lastmod>
        <priority>0.6400</priority>
   </url>

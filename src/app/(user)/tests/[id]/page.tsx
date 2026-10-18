@@ -16,17 +16,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const test = await getTestForPage(id);
   if (!test?.testName) {
-    return { title: "Test Parameters, Methods & Pricing | Litmus", description: DEFAULT_DESCRIPTION };
+    return { title: "Test Parameters, Methods & Pricing | Litmus Labs", description: DEFAULT_DESCRIPTION };
   }
   const description = toMetaDescription(
     test.description,
     `Book ${test.testName} testing at NABL accredited labs. ${DEFAULT_DESCRIPTION}`
   );
   return {
-    title: `${test.testName} Test - Price, Method & Turnaround | Litmus`,
+    title: `${test.testName} Test - Price, Method & Turnaround | Litmus Labs`,
     description,
     alternates: { canonical: `/tests/${id}` },
-    openGraph: { title: `${test.testName} Test | Litmus`, description },
+    openGraph: { title: `${test.testName} Test | Litmus Labs`, description },
   };
 }
 
