@@ -1,14 +1,15 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SectionHeader } from "./SectionHeader";
 import { reviewApi } from "@/lib/api/review";
 import { useHomeList } from "./useHomeList";
 
-function ReviewCard({ r }: { r: any }) {
+function ReviewCard({ r, duplicate }: { r: any; duplicate?: boolean }) {
    return (
-      <div className="w-[520px] shrink-0 bg-white p-8 rounded-[1.5rem] border border-slate-100 flex flex-col relative group hover:border-emerald-100 transition-all duration-500">
+      <div aria-hidden={duplicate || undefined} className="w-[520px] shrink-0 bg-white p-8 rounded-[1.5rem] border border-slate-100 flex flex-col relative group hover:border-emerald-100 transition-all duration-500">
          <div className="flex items-center gap-1.5 mb-6 relative z-10">
             {[1, 2, 3, 4, 5].map(s => (
                <Star
@@ -39,11 +40,32 @@ function ReviewCard({ r }: { r: any }) {
 export function CustomerReviews({ initialReviews }: { initialReviews?: any }) {
    const { items: reviews } = useHomeList<any>("publicReviews", () => reviewApi.getPublicReviews(), initialReviews);
 
-   // Duplicate for seamless infinite scroll
-   const marqueeItems = [...reviews, ...reviews];
+   // The marquee needs a second copy of the cards to loop seamlessly. Add it (and start the
+   // animation) only when the section comes near the screen, so the first load has half the cards.
+   const sectionRef = useRef<HTMLElement>(null);
+   const [nearScreen, setNearScreen] = useState(false);
+   useEffect(() => {
+      const el = sectionRef.current;
+      if (!el || typeof IntersectionObserver === "undefined") {
+         setNearScreen(true);
+         return;
+      }
+      const observer = new IntersectionObserver(
+         ([entry]) => {
+            if (entry.isIntersecting) {
+               setNearScreen(true);
+               observer.disconnect();
+            }
+         },
+         { rootMargin: "400px 0px" }
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+   }, []);
+   const marqueeItems = nearScreen ? [...reviews, ...reviews] : reviews;
 
    return (
-      <section className="py-12 md:py-16 relative overflow-hidden min-h-full flex flex-col justify-center">
+      <section ref={sectionRef} className="py-12 md:py-16 relative overflow-hidden min-h-full flex flex-col justify-center">
          <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-emerald-50/50 rounded-full blur-[100px] pointer-events-none -translate-x-1/2 translate-y-1/2" />
 
 
@@ -64,10 +86,10 @@ export function CustomerReviews({ initialReviews }: { initialReviews?: any }) {
             <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-gradient-to-r from-slate-50 to-transparent" />
             <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-gradient-to-l from-slate-50 to-transparent" />
 
-            <div className="flex w-max gap-6 animate-marquee hover:[animation-play-state:paused] px-4">
+            <div className={cn("flex w-max gap-6 px-4", nearScreen && "animate-marquee hover:[animation-play-state:paused]")}>
                {reviews.length > 0 ? (
                   marqueeItems.map((r, i) => (
-                     <ReviewCard key={`review-${i}`} r={r} />
+                     <ReviewCard key={`review-${i}`} r={r} duplicate={i >= reviews.length} />
                   ))
                ) : (
                   <div className="w-full text-center py-12 text-slate-500">

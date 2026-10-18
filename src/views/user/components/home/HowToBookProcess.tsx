@@ -10,7 +10,7 @@ const processSteps = [
         image: "/images/icons/icon_account_3d.webp",
         colorClass: "text-blue-600",
         bgClass: "bg-blue-50 border-blue-200 group-hover:border-blue-400 group-hover:bg-blue-100",
-        shadowClass: "shadow-blue-500/20 group-hover:shadow-blue-500/40"
+        shadowClass: "md:shadow-blue-500/20 md:group-hover:shadow-blue-500/40"
     },
     {
         number: "02",
@@ -19,7 +19,7 @@ const processSteps = [
         image: "/images/icons/icon_search_3d.webp",
         colorClass: "text-purple-600",
         bgClass: "bg-purple-50 border-purple-200 group-hover:border-purple-400 group-hover:bg-purple-100",
-        shadowClass: "shadow-purple-500/20 group-hover:shadow-purple-500/40"
+        shadowClass: "md:shadow-purple-500/20 md:group-hover:shadow-purple-500/40"
     },
     {
         number: "03",
@@ -28,7 +28,7 @@ const processSteps = [
         image: "/images/icons/icon_payment_3d.webp",
         colorClass: "text-emerald-600",
         bgClass: "bg-emerald-50 border-emerald-200 group-hover:border-emerald-400 group-hover:bg-emerald-100",
-        shadowClass: "shadow-emerald-500/20 group-hover:shadow-emerald-500/40"
+        shadowClass: "md:shadow-emerald-500/20 md:group-hover:shadow-emerald-500/40"
     },
     {
         number: "04",
@@ -37,7 +37,7 @@ const processSteps = [
         image: "/images/icons/icon_calendar_3d.webp",
         colorClass: "text-orange-600",
         bgClass: "bg-orange-50 border-orange-200 group-hover:border-orange-400 group-hover:bg-orange-100",
-        shadowClass: "shadow-orange-500/20 group-hover:shadow-orange-500/40"
+        shadowClass: "md:shadow-orange-500/20 md:group-hover:shadow-orange-500/40"
     },
     {
         number: "05",
@@ -46,7 +46,7 @@ const processSteps = [
         image: "/images/icons/icon_truck_3d.webp",
         colorClass: "text-pink-600",
         bgClass: "bg-pink-50 border-pink-200 group-hover:border-pink-400 group-hover:bg-pink-100",
-        shadowClass: "shadow-pink-500/20 group-hover:shadow-pink-500/40"
+        shadowClass: "md:shadow-pink-500/20 md:group-hover:shadow-pink-500/40"
     },
     {
         number: "06",
@@ -55,7 +55,7 @@ const processSteps = [
         image: "/images/icons/icon_lab_3d.webp",
         colorClass: "text-teal-600",
         bgClass: "bg-teal-50 border-teal-200 group-hover:border-teal-400 group-hover:bg-teal-100",
-        shadowClass: "shadow-teal-500/20 group-hover:shadow-teal-500/40"
+        shadowClass: "md:shadow-teal-500/20 md:group-hover:shadow-teal-500/40"
     },
     {
         number: "07",
@@ -64,7 +64,7 @@ const processSteps = [
         image: "/images/icons/icon_report_3d.webp",
         colorClass: "text-indigo-600",
         bgClass: "bg-indigo-50 border-indigo-200 group-hover:border-indigo-400 group-hover:bg-indigo-100",
-        shadowClass: "shadow-indigo-500/20 group-hover:shadow-indigo-500/40"
+        shadowClass: "md:shadow-indigo-500/20 md:group-hover:shadow-indigo-500/40"
     },
 ] as const;
 
@@ -88,74 +88,51 @@ export function HowToBookProcess({ className }: { className?: string }) {
                     className="mb-16 md:mb-20 justify-start"
                 />
 
-                {/* Desktop: Horizontal Flow Chart with Icons */}
-                <div className="hidden md:block">
-                    {/* Connected flow with icons */}
-                    <div className="relative">
-                        {/* Curved Dashed Connection Line */}
-                        <div className="absolute top-0 left-0 w-full h-20 pointer-events-none">
-                            <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1400 100">
-                                {/* Path for 7 items. Centers at 100, 300, 500, 700, 900, 1100, 1300 */}
-                                <path 
-                                    d="M 100 50 Q 200 0 300 50 T 500 50 T 700 50 T 900 50 T 1100 50 T 1300 50" 
-                                    stroke="#cbd5e1" 
-                                    strokeWidth="2" 
-                                    strokeDasharray="6 6" 
-                                    fill="none" 
-                                />
-                            </svg>
-                        </div>
+                {/* One list for both layouts: vertical on mobile, a 7-column flow chart from md up. */}
+                <div className="relative">
+                    {/* Curved Dashed Connection Line (desktop only) */}
+                    <div className="hidden md:block absolute top-0 left-0 w-full h-20 pointer-events-none">
+                        <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1400 100">
+                            {/* Path for 7 items. Centers at 100, 300, 500, 700, 900, 1100, 1300 */}
+                            <path 
+                                d="M 100 50 Q 200 0 300 50 T 500 50 T 700 50 T 900 50 T 1100 50 T 1300 50" 
+                                stroke="#cbd5e1" 
+                                strokeWidth="2" 
+                                strokeDasharray="6 6" 
+                                fill="none" 
+                            />
+                        </svg>
+                    </div>
 
-                        {/* Steps grid */}
-                        <div className="grid grid-cols-7 gap-3 lg:gap-5">
-                            {processSteps.map((step) => {
-                                return (
-                                    <div suppressHydrationWarning key={step.number} className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
-                                        {/* Icon circle */}
-                                        <div className={`relative z-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 group-hover:scale-110 ${step.bgClass} ${step.shadowClass} overflow-hidden`}>
-                                            <img loading="lazy" decoding="async" src={step.image} alt={step.title} width={160} height={160} className="w-full h-full object-cover " />
-                                        </div>
+                    <div className="space-y-6 md:space-y-0 md:grid md:grid-cols-7 md:gap-3 lg:gap-5">
+                        {processSteps.map((step) => {
+                            return (
+                                <div suppressHydrationWarning key={step.number} className="flex gap-4 md:gap-0 md:flex-col md:items-center md:text-center group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
+                                    {/* Icon circle */}
+                                    <div className={`flex-shrink-0 md:relative md:z-10 md:mb-4 flex h-14 w-14 md:h-20 md:w-20 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 md:group-hover:scale-110 ${step.bgClass} ${step.shadowClass} overflow-hidden`}>
+                                        <img loading="lazy" decoding="async" src={step.image} alt={step.title} width={160} height={160} className="w-full h-full object-cover " />
+                                    </div>
 
+                                    <div className="flex-1 pt-1 md:flex-none md:pt-0">
                                         {/* Step number badge */}
-                                        <span className={`text-[10px] font-black tracking-wider mb-2 ${step.colorClass}`}>
+                                        <span className={`block text-[9px] md:text-[10px] font-black tracking-wider md:mb-2 ${step.colorClass}`}>
                                             STEP {step.number}
                                         </span>
 
                                         {/* Title */}
-                                        <h4 className="text-sm font-bold text-slate-900 leading-tight mb-1.5">
+                                        <h4 className="text-base md:text-sm font-bold text-slate-900 mt-0.5 md:mt-0 md:leading-tight md:mb-1.5">
                                             {step.title}
                                         </h4>
 
                                         {/* Subtitle */}
-                                        <p className="text-xs text-slate-500 leading-relaxed">
+                                        <p className="mt-1 md:mt-0 text-sm md:text-xs text-slate-600 md:text-slate-500 md:leading-relaxed">
                                             {step.subtitle}
                                         </p>
                                     </div>
-                                );
-                            })}
-                        </div>
+                                </div>
+                            );
+                        })}
                     </div>
-                </div>
-
-                {/* Mobile: Vertical Flow */}
-                <div className="md:hidden space-y-6">
-                    {processSteps.map((step) => {
-                        return (
-                            <div suppressHydrationWarning key={step.number} className="flex gap-4 group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
-                                {/* Icon */}
-                                <div className={`flex-shrink-0 flex h-14 w-14 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 ${step.bgClass} overflow-hidden`}>
-                                    <img loading="lazy" decoding="async" src={step.image} alt={step.title} width={160} height={160} className="w-full h-full object-cover " />
-                                </div>
-
-                                {/* Content */}
-                                <div className="flex-1 pt-1">
-                                    <span className={`text-[9px] font-black tracking-wider ${step.colorClass}`}>STEP {step.number}</span>
-                                    <h4 className="text-base font-bold text-slate-900 mt-0.5">{step.title}</h4>
-                                    <p className="mt-1 text-sm text-slate-600">{step.subtitle}</p>
-                                </div>
-                            </div>
-                        );
-                    })}
                 </div>
 
                 {/* Footer Message */}
