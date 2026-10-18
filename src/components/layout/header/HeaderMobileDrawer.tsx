@@ -6,6 +6,7 @@ import { X, LogIn } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { headerNavLinks } from "./HeaderNavLinks";
+import { useDeferredMount } from "@/hooks/use-deferred-mount";
 
 interface HeaderMobileDrawerProps {
   open: boolean;
@@ -23,18 +24,22 @@ export function HeaderMobileDrawer({
   onLogoutClick,
 }: HeaderMobileDrawerProps) {
   const pathname = usePathname();
+  // The menu isn't rendered until it is first opened.
+  const { mounted, shown } = useDeferredMount(open);
 
   const getInitials = () => {
     if (!user) return "U";
     return `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`.toUpperCase() || "U";
   };
 
+  if (!mounted) return null;
+
   return (
     <>
       <div
         className={cn(
           "fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          shown ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
         onClick={onClose}
       />
@@ -42,7 +47,7 @@ export function HeaderMobileDrawer({
       <div
         className={cn(
           "fixed top-0 right-0 z-50 h-full w-72 bg-card shadow-2xl flex flex-col transition-transform duration-300 ease-in-out lg:hidden",
-          open ? "translate-x-0" : "translate-x-full"
+          shown ? "translate-x-0" : "translate-x-full"
         )}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-border">

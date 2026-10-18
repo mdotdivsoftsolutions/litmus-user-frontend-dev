@@ -6,9 +6,11 @@ import { authApi } from "@/lib/api/auth";
 import { SupportChatTrigger } from "./support-chat/SupportChatTrigger";
 import { SupportChatWindow } from "./support-chat/SupportChatWindow";
 import { useSocketChat } from "@/hooks/useSocketChat";
+import { useDeferredMount } from "@/hooks/use-deferred-mount";
 
 export function FloatingSupportChat() {
   const [isOpen, setIsOpen] = useState(false);
+  const chatWindow = useDeferredMount(isOpen);
 
   // Fetch logged-in user data if authenticated
   const { data: userData } = useQuery({
@@ -49,27 +51,30 @@ export function FloatingSupportChat() {
         unreadCount={unreadCount}
         hasOnlineAgents={hasOnlineAgents}
       />
-      <SupportChatWindow
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        chatStatus={chatStatus}
-        messages={messages}
-        hasOnlineAgents={hasOnlineAgents}
-        isAgentTyping={isAgentTyping}
-        assignedAgentName={assignedAgentName}
-        agentDisconnectedAlert={agentDisconnectedAlert}
-        showRatingPrompt={showRatingPrompt}
-        currentUser={currentUser}
-        onSendBotMessage={sendBotQuery}
-        onSendLiveMessage={sendLiveMessage}
-        onRequestLiveSupport={requestLiveSupport}
-        onCancelLiveSupport={cancelLiveSupport}
-        onEmitTyping={emitTyping}
-        onRequeue={requeueChat}
-        onSubmitRating={submitRating}
-        queueElapsedSec={queueElapsedSec}
-        queueAttempt={queueAttempt}
-      />
+      {/* Not rendered until the visitor first opens the chat (~100 fewer elements on load). */}
+      {chatWindow.mounted && (
+        <SupportChatWindow
+          isOpen={chatWindow.shown}
+          onClose={() => setIsOpen(false)}
+          chatStatus={chatStatus}
+          messages={messages}
+          hasOnlineAgents={hasOnlineAgents}
+          isAgentTyping={isAgentTyping}
+          assignedAgentName={assignedAgentName}
+          agentDisconnectedAlert={agentDisconnectedAlert}
+          showRatingPrompt={showRatingPrompt}
+          currentUser={currentUser}
+          onSendBotMessage={sendBotQuery}
+          onSendLiveMessage={sendLiveMessage}
+          onRequestLiveSupport={requestLiveSupport}
+          onCancelLiveSupport={cancelLiveSupport}
+          onEmitTyping={emitTyping}
+          onRequeue={requeueChat}
+          onSubmitRating={submitRating}
+          queueElapsedSec={queueElapsedSec}
+          queueAttempt={queueAttempt}
+        />
+      )}
     </div>
   );
 }

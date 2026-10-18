@@ -53,7 +53,10 @@ export function SupportChatWindow({
   queueAttempt,
 }: SupportChatWindowProps) {
   const isAuthenticated = Boolean(currentUser && (currentUser._id || currentUser.id));
-  const [activeTab, setActiveTab] = useState<"bot" | "live">("bot");
+  // The window mounts on first open, possibly after a live chat was already restored.
+  const [activeTab, setActiveTab] = useState<"bot" | "live">(
+    chatStatus === "QUEUED" || chatStatus === "ACTIVE" ? "live" : "bot"
+  );
   const [showGuestForm, setShowGuestForm] = useState(false);
   const [showConnectConfirm, setShowConnectConfirm] = useState(false);
 
