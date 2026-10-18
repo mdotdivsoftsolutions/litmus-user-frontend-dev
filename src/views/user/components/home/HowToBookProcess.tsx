@@ -113,7 +113,7 @@ export function HowToBookProcess({ className }: { className?: string }) {
                                     <div suppressHydrationWarning key={step.number} className="flex flex-col items-center text-center group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
                                         {/* Icon circle */}
                                         <div className={`relative z-10 mb-4 flex h-20 w-20 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 group-hover:scale-110 ${step.bgClass} ${step.shadowClass} overflow-hidden`}>
-                                            <img loading="lazy" decoding="async" src={step.image} alt={step.title} className="w-full h-full object-cover " />
+                                            <img loading="lazy" decoding="async" src={step.image} alt={step.title} width={160} height={160} className="w-full h-full object-cover " />
                                         </div>
 
                                         {/* Step number badge */}
@@ -144,7 +144,7 @@ export function HowToBookProcess({ className }: { className?: string }) {
                             <div suppressHydrationWarning key={step.number} className="flex gap-4 group" data-aos="fade-up" data-aos-delay={parseInt(step.number) * 50}>
                                 {/* Icon */}
                                 <div className={`flex-shrink-0 flex h-14 w-14 items-center justify-center rounded-full border-2 shadow-sm transition-all duration-300 ${step.bgClass} overflow-hidden`}>
-                                    <img loading="lazy" decoding="async" src={step.image} alt={step.title} className="w-full h-full object-cover " />
+                                    <img loading="lazy" decoding="async" src={step.image} alt={step.title} width={160} height={160} className="w-full h-full object-cover " />
                                 </div>
 
                                 {/* Content */}

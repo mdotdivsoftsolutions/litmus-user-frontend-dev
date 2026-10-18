@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Nunito, Inter } from "next/font/google";
 import Providers from "./providers";
+import { Analytics, AnalyticsNoScript } from "@/components/seo/Analytics";
+import { OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -30,27 +32,30 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://litmustest.in"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Litmus | Certified Food Testing & NABL Laboratory Services",
-    // Page titles already end with their own "| Litmus ..." suffix.
+    default: "Litmus Labs | Food Testing Lab in India | NABL & FSSAI",
+    // Page titles already end with their own "| Litmus Labs" suffix.
     template: "%s",
   },
   description:
-    "Book certified food testing services from accredited NABL laboratories. Fast turnaround, comprehensive nutritional analysis, safety certifications, and expert consultations.",
+    "Litmus Labs offers NABL accredited food, water & agri testing across India, including Chennai & Kochi. FSSAI-approved reports & up to 15% off.",
   keywords: [
-    "food testing",
+    "food testing lab in India",
     "NABL accredited lab",
-    "nutritional analysis",
-    "FSSAI compliance",
-    "food safety testing",
+    "FSSAI food testing",
+    "food testing Chennai",
+    "food testing Kochi",
+    "water testing",
+    "pesticide residue testing",
+    "heavy metal testing",
     "microbiology testing",
-    "chemical food analysis",
     "shelf life study",
   ],
-  authors: [{ name: "Litmus Food Analytics" }],
-  creator: "Litmus Food Analytics",
-  publisher: "Litmus",
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   robots: {
     index: true,
     follow: true,
@@ -63,27 +68,19 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Litmus - NABL Certified Food Testing Labs",
+    title: "Litmus Labs | Food Testing Lab in India | NABL & FSSAI",
     description:
-      "Find certified laboratories for food quality testing, nutritional profiling, pesticide residue analysis, and FSSAI compliance.",
+      "NABL accredited food, water & agri testing across India, including Chennai & Kochi. FSSAI-approved reports.",
     type: "website",
     locale: "en_IN",
-    siteName: "Litmus",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Litmus Food Testing Labs",
-      },
-    ],
+    siteName: SITE_NAME,
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Litmus - NABL Certified Food Testing Labs",
+    title: "Litmus Labs | Food Testing Lab in India | NABL & FSSAI",
     description:
-      "Certified laboratory food testing, quick turnaround, and regulatory compliance reports.",
-    creator: "@LitmusTest",
+      "NABL accredited food, water & agri testing across India, including Chennai & Kochi. FSSAI-approved reports.",
   },
   icons: {
     icon: [
@@ -116,7 +113,9 @@ export default function RootLayout({
         className="font-sans antialiased bg-background text-foreground selection:bg-brand-primary selection:text-white"
         suppressHydrationWarning
       >
+        <AnalyticsNoScript />
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

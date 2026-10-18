@@ -156,7 +156,7 @@ export const PromoBanner = ({ className }: { className?: string }) => {
                      </div>
                   </div>
                   <div className="flex-1 relative h-48 sm:h-64 lg:h-auto overflow-hidden">
-                     <img loading="lazy" decoding="async" suppressHydrationWarning src={banner.img} className="w-full h-full object-cover object-center" alt="NABL Accredited Laboratory Testing" data-aos="fade-left" data-aos-delay="200" />
+                     <img loading="lazy" decoding="async" suppressHydrationWarning src={banner.img} width={1200} height={801} className="w-full h-full object-cover object-center" alt="NABL Accredited Laboratory Testing" data-aos="fade-left" data-aos-delay="200" />
                      <div className="absolute inset-0 bg-black/5" />
                      <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white to-transparent hidden lg:block" />
                   </div>

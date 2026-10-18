@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import PackagesPage from "@/views/user/PackagesPage";
 
-export const metadata: Metadata = {
-  title: "Food Testing Packages | Litmus",
-  description: "Explore curated testing packages designed for comprehensive compliance, export screening, and quality certification.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Food Safety Testing Packages | FSSAI | Litmus Labs",
+  description:
+    "Save up to 20% on Litmus Labs food safety packages for water, toxin & shelf life testing. NABL labs serving Chennai, Kochi & all of India.",
+  path: "/packages",
+});
 
 export default function Page() {
   return <PackagesPage />;

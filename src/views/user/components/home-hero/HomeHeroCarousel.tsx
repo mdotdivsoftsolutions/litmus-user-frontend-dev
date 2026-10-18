@@ -9,15 +9,42 @@ import { cn } from "@/lib/utils";
 import { homeHeroSlides } from "./HomeHeroSlides";
 
 /**
- * The hero video (~3.4 MB) streams only on screens at least this wide. It is selected by the
- * browser from <source media> while parsing the HTML, so desktop starts downloading it immediately
- * and phones never download it (they keep the poster, which is the video's first frame).
+ * The hero video only plays on screens at least this wide; phones keep the poster image.
+ * It is attached after the page has finished loading (and the browser is idle), so the poster
+ * paints first and the video never competes with the page's own CSS, JS and images.
  */
 const VIDEO_MEDIA = "(min-width: 768px)";
+
+/** Resolves once the window has loaded and the browser has a quiet moment. */
+function whenPageIdle(cb: () => void) {
+  let cancelled = false;
+  let idleId: number | ReturnType<typeof setTimeout> | undefined;
+  const hasIdle = typeof window.requestIdleCallback === "function";
+  const schedule = () => {
+    if (cancelled) return;
+    idleId = hasIdle ? window.requestIdleCallback(cb, { timeout: 2000 }) : setTimeout(cb, 300);
+  };
+  if (document.readyState === "complete") schedule();
+  else window.addEventListener("load", schedule, { once: true });
+  return () => {
+    cancelled = true;
+    window.removeEventListener("load", schedule);
+    if (idleId !== undefined) {
+      if (hasIdle) window.cancelIdleCallback(idleId as number);
+      else clearTimeout(idleId);
+    }
+  };
+}
 
 export function HomeHeroCarousel() {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
+  const [showVideo, setShowVideo] = useState(false);
+
+  useEffect(() => {
+    if (!window.matchMedia(VIDEO_MEDIA).matches) return;
+    return whenPageIdle(() => setShowVideo(true));
+  }, []);
 
   useEffect(() => {
     if (!api) return;
@@ -28,11 +55,11 @@ export function HomeHeroCarousel() {
 
       const autoplay = api.plugins().autoplay;
       const videoElement = api.slideNodes()[idx]?.querySelector("video");
-      if (homeHeroSlides[idx].video && videoElement && window.matchMedia(VIDEO_MEDIA).matches) {
+      if (homeHeroSlides[idx].video && videoElement) {
         // Let the video finish before moving on (onEnded advances the carousel).
         autoplay?.stop();
-        // On first load the video is already playing from the HTML: don't rewind it (that would
-        // flash back to the start). Rewind only when the visitor comes back to this slide.
+        // Don't rewind a video that is already playing on first load; rewind only when the
+        // visitor comes back to this slide.
         if (!isInitial) videoElement.currentTime = 0;
         videoElement.play().catch(() => autoplay?.play());
       } else {
@@ -61,28 +88,37 @@ export function HomeHeroCarousel() {
             <div className="overflow-hidden relative h-[75vh] md:h-screen min-h-[500px] md:min-h-[600px] max-h-[850px] flex flex-col justify-center">
               {slide.video ? (
                 <>
-                  {idx === 0 && slide.poster && (
-                    // Hoisted into <head>: the poster is the first thing visitors see (LCP).
-                    <link rel="preload" as="image" href={slide.poster.src} fetchPriority="high" />
-                  )}
-                  <video
-                    autoPlay
-                    muted
-                    playsInline
-                    preload="auto"
-                    poster={(slide.poster ?? slide.image).src}
-                    onEnded={() => api?.scrollNext()}
-                    aria-label={slide.imageAlt || slide.title}
-                    className="absolute inset-0 w-full h-full object-cover z-0"
-                  >
-                    <source
+                  {/* The poster (video's first frame) is the LCP image; the video fades in over it. */}
+                  <Image
+                    src={slide.poster ?? slide.image}
+                    alt={slide.imageAlt || slide.title}
+                    fill
+                    sizes="100vw"
+                    priority={idx === 0}
+                    className="object-cover z-0"
+                  />
+                  {showVideo && (
+                    <video
                       src={slide.video}
-                      type="video/mp4"
-                      media={VIDEO_MEDIA}
+                      autoPlay
+                      muted
+                      playsInline
+                      preload="auto"
+                      poster={(slide.poster ?? slide.image).src}
+                      onPlay={(e) => {
+                        // Mounted while another slide is showing: wait until the visitor gets here.
+                        if (api && api.selectedScrollSnap() !== idx) e.currentTarget.pause();
+                        else api?.plugins().autoplay?.stop();
+                      }}
+                      onEnded={() => {
+                        if (api?.selectedScrollSnap() === idx) api.scrollNext();
+                      }}
                       // If the video can't load, keep the slideshow moving instead of stopping here.
                       onError={() => api?.plugins().autoplay?.play()}
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover z-0"
                     />
-                  </video>
+                  )}
                 </>
               ) : (
                 <Image

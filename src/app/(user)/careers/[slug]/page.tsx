@@ -11,11 +11,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const opening = getCareerBySlug(slug);
   if (!opening) {
     return {
-      title: "Opening Not Found | Litmus Careers",
+      title: "Opening Not Found | Litmus Labs Careers",
     };
   }
   return {
-    title: `${opening.title} | Litmus Careers`,
+    title: `${opening.title} | Litmus Labs Careers`,
     description: opening.summary,
   };
 }

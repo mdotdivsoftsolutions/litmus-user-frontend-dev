@@ -22,16 +22,22 @@ const RAZORPAY = "https://checkout.razorpay.com https://api.razorpay.com https:/
 const GEO_APIS =
   "https://photon.komoot.io https://nominatim.openstreetmap.org https://ipwho.is https://ipapi.co https://freeipapi.com https://api.bigdatacloud.net";
 
+// Google Analytics / Tag Manager and Meta Pixel (see src/components/seo/Analytics.tsx).
+const ANALYTICS_SCRIPTS = "https://www.googletagmanager.com https://*.googletagmanager.com https://connect.facebook.net";
+const ANALYTICS_CONNECT =
+  "https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://www.facebook.com https://connect.facebook.net";
+const ANALYTICS_FRAMES = "https://www.googletagmanager.com https://www.facebook.com";
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   // Next.js injects inline bootstrap scripts; Razorpay checkout is loaded on the payment step.
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://checkout.razorpay.com`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://checkout.razorpay.com ${ANALYTICS_SCRIPTS}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   `media-src 'self' blob: ${SPACES}`,
-  `connect-src 'self' ${[...new Set([apiOrigin, socketOrigin, wsOrigin])].join(" ")} ${SPACES} ${RAZORPAY} ${GEO_APIS}${isDev ? " ws: http://localhost:*" : ""}`,
-  `frame-src 'self' blob: ${SPACES} ${RAZORPAY} https://www.google.com https://maps.google.com`,
+  `connect-src 'self' ${[...new Set([apiOrigin, socketOrigin, wsOrigin])].join(" ")} ${SPACES} ${RAZORPAY} ${GEO_APIS} ${ANALYTICS_CONNECT}${isDev ? " ws: http://localhost:*" : ""}`,
+  `frame-src 'self' blob: ${SPACES} ${RAZORPAY} https://www.google.com https://maps.google.com ${ANALYTICS_FRAMES}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self' https://*.razorpay.com",
@@ -99,7 +105,7 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
-      ...["/images/:path*", "/stock_image/:path*", "/video/:path*", "/favicon_io/:path*", "/logo.webp", "/favicon.ico"].map(
+      ...["/images/:path*", "/stock_image/:path*", "/video/:path*", "/favicon_io/:path*", "/logo.webp", "/og-image.jpg", "/favicon.ico"].map(
         (source) => ({
           source,
           headers: [{ key: "Cache-Control", value: STATIC_ASSET_CACHE }],

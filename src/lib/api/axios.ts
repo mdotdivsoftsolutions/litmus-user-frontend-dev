@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { clearAuthHint, hasAuthHint } from '../authSession';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
 
@@ -33,9 +34,11 @@ apiClient.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // If error is 401 and we haven't retried yet, AND it's not a login/refresh request
+    // If error is 401 and we haven't retried yet, AND it's not a login/refresh request.
+    // Visitors who never signed in have no session to refresh, so skip the extra 401.
     if (
       error.response?.status === 401 &&
+      hasAuthHint() &&
       !originalRequest._retry &&
       !originalRequest.url?.includes('/auth/login') &&
       !originalRequest.url?.includes('/auth/refresh-token')
@@ -56,6 +59,7 @@ apiClient.interceptors.response.use(
         processQueue(null);
         return apiClient(originalRequest);
       } catch (refreshError) {
+        clearAuthHint();
         processQueue(refreshError);
         return Promise.reject(refreshError);
       } finally {

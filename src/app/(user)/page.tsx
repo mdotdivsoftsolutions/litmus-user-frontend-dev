@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
 import HomePage from "@/views/user/HomePage";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { pageMetadata } from "@/lib/seo";
+import { faqPageSchema, organizationSchema } from "@/lib/schema";
+import { homeFaqs } from "@/views/user/components/home/faq-data";
 
-export const metadata: Metadata = {
-  title: "Litmus | Accredited Food & Laboratory Testing Network",
-  description: "Book verified food, water, and agricultural testing across NABL & FSSAI certified laboratories in India.",
-  openGraph: {
-    title: "Litmus | Accredited Food & Laboratory Testing Network",
-    description: "Book verified food, water, and agricultural testing across NABL & FSSAI certified laboratories in India.",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Litmus Labs | Food Testing Lab in India | NABL & FSSAI",
+  description:
+    "Litmus Labs offers NABL accredited food, water & agri testing across India, including Chennai & Kochi. FSSAI-approved reports & up to 15% off.",
+  path: "/",
+});
 
 export const revalidate = 60;
 
 export default function Page() {
-  return <HomePage />;
+  return (
+    <>
+      <JsonLd data={organizationSchema} />
+      <JsonLd data={faqPageSchema(homeFaqs)} />
+      <HomePage />
+    </>
+  );
 }

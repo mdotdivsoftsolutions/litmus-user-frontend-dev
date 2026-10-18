@@ -6,7 +6,9 @@ interface Props {
 }
 
 export const metadata: Metadata = {
-  title: "Order Details & Timeline | Litmus",
+  // Signed-in / one-off page: keep it out of search results.
+  robots: { index: false, follow: true },
+  title: "Order Details & Timeline | Litmus Labs",
   description: "View testing order progress, collection updates, performing laboratory assignment, and verified PDF reports.",
 };
 

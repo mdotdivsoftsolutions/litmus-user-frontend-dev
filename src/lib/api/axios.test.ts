@@ -28,6 +28,7 @@ describe("apiClient 401 refresh flow", () => {
 
   beforeEach(() => {
     refresh = vi.spyOn(axios, "post");
+    localStorage.setItem("litmus_auth_active", "1");
   });
   afterEach(() => refresh.mockRestore());
 
@@ -86,6 +87,21 @@ describe("apiClient 401 refresh flow", () => {
     await expect(apiClient.get("/bookings")).rejects.toMatchObject({ response: { status: 401 } });
     expect(refresh).toHaveBeenCalledOnce();
     expect(calls).toHaveLength(2);
+  });
+
+  it("does not call refresh-token for visitors who never signed in", async () => {
+    localStorage.removeItem("litmus_auth_active");
+    const calls = useServer(() => ({ status: 401 }));
+    await expect(apiClient.get("/bookings")).rejects.toMatchObject({ response: { status: 401 } });
+    expect(refresh).not.toHaveBeenCalled();
+    expect(calls).toHaveLength(1);
+  });
+
+  it("forgets the sign-in hint when the refresh fails", async () => {
+    useServer(() => ({ status: 401 }));
+    refresh.mockRejectedValue(new Error("expired"));
+    await expect(apiClient.get("/bookings")).rejects.toThrow("expired");
+    expect(localStorage.getItem("litmus_auth_active")).toBeNull();
   });
 
   it("passes other errors straight through", async () => {

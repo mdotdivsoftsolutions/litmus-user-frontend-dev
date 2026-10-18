@@ -11,11 +11,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getBlogBySlug(slug);
   if (!post) {
     return {
-      title: "Article Not Found | Litmus Blog",
+      title: "Article Not Found | Litmus Labs Blog",
     };
   }
   return {
-    title: `${post.title} | Litmus Blog`,
+    title: `${post.title} | Litmus Labs Blog`,
     description: post.excerpt,
     openGraph: {
       title: post.title,

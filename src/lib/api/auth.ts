@@ -1,4 +1,6 @@
+import { isAxiosError } from 'axios';
 import { apiClient } from './axios';
+import { clearAuthHint, hasAuthHint, setAuthHint } from '../authSession';
 import type { ApiQueryParams, ApiRequestBody } from "./types";
 
 // Local type definitions (extracted from backend validators)
@@ -49,16 +51,19 @@ export const authApi = {
   
   register: async (data: RegisterInput & { otp: string }) => {
     const response = await apiClient.post('/auth/register', data);
+    setAuthHint();
     return response.data;
   },
 
   login: async (data: LoginInput) => {
     const response = await apiClient.post('/auth/login', data);
+    setAuthHint();
     return response.data;
   },
 
   logout: async () => {
     const response = await apiClient.post('/auth/logout');
+    clearAuthHint();
     return response.data;
   },
 
@@ -73,8 +78,15 @@ export const authApi = {
   },
 
   getMe: async () => {
-    const response = await apiClient.get('/auth/me');
-    return response.data;
+    // Never signed in on this browser: skip the request instead of collecting a 401.
+    if (!hasAuthHint()) return { success: false, data: null };
+    try {
+      const response = await apiClient.get('/auth/me');
+      return response.data;
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 401) clearAuthHint();
+      throw error;
+    }
   },
 
   updateProfile: async (data: ApiRequestBody) => {

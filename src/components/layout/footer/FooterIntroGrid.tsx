@@ -35,7 +35,7 @@ export function FooterIntroGrid() {
             {/* Background Portrait Certificate Image */}
             <div className="absolute inset-0 z-0 border">
                 <img loading="lazy" decoding="async" 
-                    src="/images/certificate.webp" 
+                    src="/images/certificate.webp" width={424} height={600} 
                     alt="Certificate background" 
                     className="w-full h-full object-cover transition-all duration-500"
                 />
@@ -48,7 +48,7 @@ export function FooterIntroGrid() {
                     {/* Floating Seal */}
                     <div className="w-8 h-8 opacity-40 group-hover:opacity-100 group-hover:scale-110 group-hover:rotate-[15deg] transition-all duration-500 rounded-full shadow-sm">
                         <img loading="lazy" decoding="async" 
-                            src="/images/certification-seal.webp" 
+                            src="/images/certification-seal.webp" width={300} height={300} 
                             alt="Seal" 
                             className="w-full h-full object-contain rounded-full" 
                         />
@@ -65,7 +65,7 @@ export function FooterIntroGrid() {
            {selectedCert && (
              <div className="relative aspect-[3/4] w-full p-8 flex flex-col bg-white">
                 <img loading="lazy" decoding="async" 
-                    src="/images/fssai-bg.webp" 
+                    src="/images/fssai-bg.webp" width={640} height={640} 
                     alt="Certificate background" 
                     className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -83,7 +83,7 @@ export function FooterIntroGrid() {
 
                     <div className="mt-auto pt-8 flex justify-between items-end border-t border-slate-100">
                          <img loading="lazy" decoding="async" 
-                             src="/images/certification-seal.webp" 
+                             src="/images/certification-seal.webp" width={300} height={300} 
                              alt="Seal" 
                              className="w-14 h-14 object-contain shadow-md rounded-full p-2 border-4 border-slate-50 rotate-[-10deg]" 
                          />
