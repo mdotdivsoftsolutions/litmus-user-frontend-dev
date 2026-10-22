@@ -67,6 +67,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification: {
+    google: "QU0PyDjeVxtTQXn7F6sfkvXF00Wb6ov9EHyxtjw55K0",
+  },
   openGraph: {
     title: "Litmus Labs | Food Testing Lab in India | NABL & FSSAI",
     description:
