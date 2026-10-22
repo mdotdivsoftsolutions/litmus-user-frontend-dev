@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Nunito, Inter } from "next/font/google";
 import Providers from "./providers";
-import { Analytics, AnalyticsNoScript } from "@/components/seo/Analytics";
+import { AnalyticsHead, AnalyticsNoScript, AnalyticsRouteTracking } from "@/components/seo/Analytics";
 import { OG_IMAGE, SITE_NAME, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
@@ -112,13 +112,16 @@ export default function RootLayout({
       className={`${manrope.variable} ${nunito.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <AnalyticsHead />
+      </head>
       <body
         className="font-sans antialiased bg-background text-foreground selection:bg-brand-primary selection:text-white"
         suppressHydrationWarning
       >
         <AnalyticsNoScript />
         <Providers>{children}</Providers>
-        <Analytics />
+        <AnalyticsRouteTracking />
       </body>
     </html>
   );
