@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Trash2 as TrashIcon, Lock, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CartLine, SampleDetail } from "./booking-types";
+import { CartLine, SampleDetail, TESTING_PURPOSES } from "./booking-types";
 import { AddTestParameterSelector } from "./AddTestParameterSelector";
 
 interface SampleCardProps {
@@ -35,6 +35,13 @@ export function SampleCard({
   onRemoveCustomParam,
 }: SampleCardProps) {
   const isPackage = item.category !== "Test Panel";
+  const purposes = (sample.testingPurpose || "").split(",").map((p) => p.trim()).filter(Boolean);
+  const togglePurpose = (purpose: string) => {
+    const next = purposes.includes(purpose) ? purposes.filter((p) => p !== purpose) : [...purposes, purpose];
+    // Keep the fixed display order regardless of click order.
+    const ordered = TESTING_PURPOSES.filter((p) => next.includes(p));
+    onUpdateField(item.id, sample.id, "testingPurpose", ordered.join(", "));
+  };
 
   return (
     <Card className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden relative">
@@ -149,7 +156,7 @@ export function SampleCard({
             <Input
               value={sample.productName}
               onChange={(e) => onUpdateField(item.id, sample.id, "productName", e.target.value)}
-              placeholder="e.g., Full cream toned milk pouch 500ml"
+              placeholder="Enter your product name, e.g. Full cream toned milk pouch 500ml"
               className="h-11 rounded-lg border-slate-200 bg-slate-50/80 text-sm"
             />
           </div>
@@ -181,12 +188,33 @@ export function SampleCard({
             />
           </div>
           <div className="space-y-1.5 md:col-span-2">
-            <Label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">What exactly should we analyse on this sample?</Label>
+            <Label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">What is the purpose of testing?</Label>
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Purpose of testing">
+              {TESTING_PURPOSES.map((purpose) => {
+                const active = purposes.includes(purpose);
+                return (
+                  <button
+                    key={purpose}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => togglePurpose(purpose)}
+                    className={cn(
+                      "px-3 py-1.5 rounded-full border text-xs font-semibold transition-colors",
+                      active
+                        ? "bg-brand-action text-white border-brand-action"
+                        : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                    )}
+                  >
+                    {purpose}
+                  </button>
+                );
+              })}
+            </div>
             <Textarea
               value={sample.specifics}
               onChange={(e) => onUpdateField(item.id, sample.id, "specifics", e.target.value)}
-              placeholder="Material form (liquid / powder), packaging, suspicion (adulterant, legal limit check), regulator or customer mandate, sampling context…"
-              className="min-h-[80px] rounded-lg border-slate-200 bg-slate-50/80 text-sm resize-y"
+              placeholder="Anything else the lab should know? (optional) — e.g. material form, packaging, specific limits or customer mandate…"
+              className="min-h-[70px] rounded-lg border-slate-200 bg-slate-50/80 text-sm resize-y mt-2"
             />
           </div>
         </div>

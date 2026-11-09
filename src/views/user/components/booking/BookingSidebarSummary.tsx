@@ -94,7 +94,7 @@ export function BookingSidebarSummary({
                     Select lab partner <ArrowRightIcon className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
                   {!canProceedSampleDetails && items.length > 0 && (
-                    <p className="text-[11px] text-center text-slate-500 px-1 leading-snug">Please fill in at least one field to proceed.</p>
+                    <p className="text-[11px] text-center text-slate-500 px-1 leading-snug">Please enter the product / sample name for every sample to proceed.</p>
                   )}
                 </>
               )}

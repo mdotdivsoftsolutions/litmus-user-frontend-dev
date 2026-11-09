@@ -103,6 +103,8 @@ export function useSocketChat(currentUser?: any) {
       transports: ["websocket", "polling"],
       auth: {
         token: guestToken,
+        // Tells the server this is the customer website, so a staff login here chats as a customer.
+        client: "customer",
       },
     });
 

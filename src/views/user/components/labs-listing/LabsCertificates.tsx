@@ -36,6 +36,14 @@ const mockCertificates = [
     description: "Evaluate your facility, processes, and food safety systems to identify risks and improve compliance before regulatory or customer audits.",
     image: "/images/certificates/lab-samples.webp",
     features: ["GMP, GHP & HACCP assessments", "Compliance gap analysis", "Corrective action recommendations"]
+  },
+  {
+    id: 5,
+    title: "Product Development or Enhancement",
+    subtitle: "Starting @ ₹750 (Online consulting charges)",
+    description: "Know what your product wants to make it stand out and retain its uniqueness throughout its shelf life.",
+    image: "/images/certificates/lab-microscope.webp",
+    features: ["Product stability study", "Enhancement approaches", "Packaging techniques handholding"]
   }
 ];
 
