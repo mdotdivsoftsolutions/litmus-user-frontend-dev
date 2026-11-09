@@ -11,7 +11,7 @@ import { bookingApi } from "@/lib/api/booking";
 import { authApi } from "@/lib/api/auth";
 import { paymentApi } from "@/lib/api/payment";
 import { openRazorpayCheckout } from "@/lib/razorpay";
-import { CartLine, SampleDetail, BookingFormData, CollectionMethod } from "./booking-types";
+import { CartLine, SampleDetail, BookingFormData, CollectionMethod, composeSampleSpecifics } from "./booking-types";
 import { settingsApi } from "@/lib/api/settings";
 import { isCityCovered } from "@/lib/pickup-coverage";
 import { useUserLocation } from "@/components/location/LocationContext";
@@ -129,7 +129,7 @@ export function useNewBookingState() {
         const testParamsMetadata = test.metadata?.parameters || [];
         const initialSample: SampleDetail = {
           id: Math.random().toString(36).substr(2, 9),
-          productName: test.testName,
+          productName: "",
           quantity: "",
           batchNumber: "",
           sku: "",
@@ -159,7 +159,7 @@ export function useNewBookingState() {
       const availableParameters = testIds.map((tid: string) => ({ name: tid, price: 0, isBasePackageTest: true }));
       const initialSample: SampleDetail = {
         id: Math.random().toString(36).substr(2, 9),
-        productName: pkg.name,
+        productName: "",
         quantity: "",
         batchNumber: "",
         sku: "",
@@ -203,7 +203,7 @@ export function useNewBookingState() {
 
         const initialSample: SampleDetail = {
           id: Math.random().toString(36).substr(2, 9),
-          productName: name || "",
+          productName: "",
           quantity: "",
           batchNumber: "",
           sku: "",
@@ -458,9 +458,11 @@ export function useNewBookingState() {
   const gst = Math.round(subtotal * 0.18);
   const total = subtotal + gst;
 
+  // Every sample needs its own product name (the field starts empty); at least one parameter must be chosen.
   const canProceedSampleDetails =
     items.length > 0 &&
-    items.some((item) => item.samples.some((s) => s.productName.trim().length > 0 && s.selectedParameters.length > 0));
+    items.every((item) => item.samples.every((s) => s.productName.trim().length > 0)) &&
+    items.some((item) => item.samples.some((s) => s.selectedParameters.length > 0));
 
   const removeItem = (id: string) => setItems(items.filter((i) => i.id !== id));
 
@@ -768,11 +770,11 @@ export function useNewBookingState() {
           price: calculateItemPrice(item),
           mrp: calculateItemMrp(item),
           samples: item.samples.map((s) => ({
-            productName: s.productName,
+            productName: s.productName.trim(),
             quantity: s.quantity,
             batchNumber: s.batchNumber,
             sku: s.sku,
-            specifics: s.specifics,
+            specifics: composeSampleSpecifics(s),
             selectedParameters: item.category === "Test Panel" ? s.selectedParameters : undefined,
             selectedTests: item.category !== "Test Panel" ? s.selectedParameters : undefined,
           })),
